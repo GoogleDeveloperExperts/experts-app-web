@@ -1,0 +1,6 @@
+{
+  "preset": "google",
+  "disallowSpacesInAnonymousFunctionExpression": null,
+  "disallowTrailingWhitespace": "ignoreEmptyLines",
+  "excludeFiles": ["node_modules/**"]
+}
