@@ -75,6 +75,12 @@ gulp
 
 Build and optimize the current project, ready for deployment. This includes linting as well as vulcanization, image, script, stylesheet and HTML optimization and minification.
 
+#### Build & Vulcanize for App Engine
+
+```sh
+gulp build:ae
+```
+
 This will prepare the `dist` folder to be directly deployed to App Engine.
 
 ## Application Theming

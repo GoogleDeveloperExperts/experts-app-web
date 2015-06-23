@@ -21,6 +21,8 @@ var path = require('path');
 var fs = require('fs');
 var glob = require('glob');
 
+var destDir = 'dist';
+
 var AUTOPREFIXER_BROWSERS = [
   'ie >= 10',
   'ie_mob >= 10',
@@ -33,6 +35,8 @@ var AUTOPREFIXER_BROWSERS = [
   'bb >= 10'
 ];
 
+var isWin = /^win/.test(process.platform);
+
 var styleTask = function (stylesPath, srcs) {
   return gulp.src(srcs.map(function(src) {
       return path.join('app', stylesPath, src);
@@ -41,7 +45,7 @@ var styleTask = function (stylesPath, srcs) {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
     .pipe($.if('*.css', $.cssmin()))
-    .pipe(gulp.dest('dist/static/' + stylesPath))
+    .pipe(gulp.dest(destDir + '/' + stylesPath))
     .pipe($.size({title: stylesPath}));
 };
 
@@ -75,7 +79,7 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/static/images'))
+    .pipe(gulp.dest(destDir + '/images'))
     .pipe($.size({title: 'images'}));
 });
 
@@ -87,36 +91,39 @@ gulp.task('copy', function () {
     '!app/precache.json'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist/static'));
-
-  var ae = gulp.src(['app_engine_config/*'])
-    .pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest(destDir));
 
   var bower = gulp.src([
     'bower_components/**/*'
-  ]).pipe(gulp.dest('dist/static/bower_components'));
+  ]).pipe(gulp.dest(destDir + '/bower_components'));
 
   var elements = gulp.src(['app/elements/**/*.html'])
-    .pipe(gulp.dest('dist/static/elements'));
+    .pipe(gulp.dest(destDir + '/elements'));
 
   var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
-    .pipe(gulp.dest('dist/static/elements/bootstrap'));
+    .pipe(gulp.dest(destDir + '/elements/bootstrap'));
 
   var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
-    .pipe(gulp.dest('dist/static/sw-toolbox'));
+    .pipe(gulp.dest(destDir + '/sw-toolbox'));
 
   var vulcanized = gulp.src(['app/elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
-    .pipe(gulp.dest('dist/static/elements'));
+    .pipe(gulp.dest(destDir + '/elements'));
 
-  return merge(app, ae, bower, elements, vulcanized, swBootstrap, swToolbox)
+  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
     .pipe($.size({title: 'copy'}));
+});
+
+gulp.task('copy:ae', function () {
+  return gulp.src(['app_engine_config/*'])
+    .pipe(gulp.dest('dist'))
+    .pipe($.size({title: 'copy:ae'}));
 });
 
 // Copy Web Fonts To Dist
 gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/static/fonts'))
+    .pipe(gulp.dest(destDir + '/fonts'))
     .pipe($.size({title: 'fonts'}));
 });
 
@@ -142,19 +149,19 @@ gulp.task('html', function () {
       spare: true
     })))
     // Output Files
-    .pipe(gulp.dest('dist/static'))
+    .pipe(gulp.dest(destDir))
     .pipe($.size({title: 'html'}));
 });
 
 // Vulcanize imports
 gulp.task('vulcanize', function () {
-  var DEST_DIR = 'dist/static/elements';
+  var DEST_DIR = destDir + '/elements';
 
-  return gulp.src('dist/static/elements/elements.vulcanized.html')
+  return gulp.src(destDir + '/elements/elements.vulcanized.html')
     .pipe($.vulcanize({
       dest: DEST_DIR,
       strip: true,
-      //inlineCss: true, workaround for Windows dev environment
+      inlineCss: !isWin, // workaround for windows platform
       inlineScripts: true
     }))
     .pipe(gulp.dest(DEST_DIR))
@@ -164,7 +171,7 @@ gulp.task('vulcanize', function () {
 // Generate a list of files that should be precached when serving from 'dist'.
 // The list will be consumed by the <platinum-sw-cache> element.
 gulp.task('precache', function (callback) {
-  var dir = 'dist/static';
+  var dir = destDir;
 
   glob('{elements,scripts,styles}/**/*.*', {cwd: dir}, function(error, files) {
     if (error) {
@@ -227,7 +234,7 @@ gulp.task('serve:dist', ['default'], function () {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: 'dist/static'
+    server: destDir
   });
 });
 
@@ -235,6 +242,16 @@ gulp.task('serve:dist', ['default'], function () {
 gulp.task('default', ['clean'], function (cb) {
   runSequence(
     ['copy', 'styles'],
+    'elements',
+    ['jshint', 'images', 'fonts', 'html'],
+    'vulcanize', 'precache',
+    cb);
+});
+
+gulp.task('build:ae', ['clean'], function(cb) {
+  destDir = 'dist/static';
+  runSequence(
+    ['copy', 'copy:ae', 'styles'],
     'elements',
     ['jshint', 'images', 'fonts', 'html'],
     'vulcanize', 'precache',
