@@ -1,0 +1,194 @@
+<dom-module id="gde-app">
+
+  <link rel="import" type="css" href="gde-app.css">
+
+  <template>
+
+    <discovery-api-elements
+      name="gdetracking"
+      version="v1.0b2"
+      app-id="omega-keep-406"
+      loaded="{{elementsReady}}"
+      ></discovery-api-elements>
+
+    <paper-drawer-panel id="paperDrawerPanel">
+      <div drawer>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+          <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
+              <a data-route="home" href="/">
+                <iron-icon icon="home"></iron-icon>
+                <span>Home</span>
+              </a>
+
+              <a data-route="users" href="/users">
+                <iron-icon icon="info"></iron-icon>
+                <span>Users</span>
+              </a>
+
+              <a data-route="contact" href="/contact">
+                <iron-icon icon="mail"></iron-icon>
+                <span>Contact</span>
+              </a>
+
+              <!-- To help during development -->
+              <a data-route="api-docs" href="/api-docs">
+                <iron-icon icon="settings"></iron-icon>
+                <span>API Element Docs</span>
+              </a>
+          </paper-menu>
+      </div>
+      <paper-header-panel main mode="waterfall-tall">
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar">
+          <paper-icon-button id="paperToggle" icon="menu" paper-drawer-toggle></paper-icon-button>
+          <span class="flex"></span>
+
+          <div hidden$="[[!isAuthorized]]" id="user">
+            <span>[[user.name]]</span>
+            <img src$="[[user.image]]">
+          </div>
+
+          <!-- Toolbar icons -->
+          <google-signin
+            client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com"
+            scope="email profile"
+            is-authorized="{{isAuthorized}}"></google-signin>
+
+          <!-- Application name -->
+          <div class="middle paper-font-display2 app-name">GDE Tracking App</div>
+
+          <!-- Application sub title -->
+          <div class="bottom title"></div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+            <section data-route="home">
+              <paper-material elevation="1">
+                <my-greeting></my-greeting>
+
+                <p class="paper-font-subhead">You now have:</p>
+                <my-list></my-list>
+
+                <p class="paper-font-body2">Looking for more Web App layouts? Check out our <a href="https://github.com/PolymerElements/app-layout-templates">layouts</a> collection. You can also <a href="http://polymerelements.github.io/app-layout-templates/">preview</a> them live.</p>
+              </paper-material>
+              <paper-material elevation="1">
+                <p class="paper-font-body2">This is another card.</p>
+              </paper-material>
+
+              <paper-material elevation="1" class="paper-font-body2">
+                <h1 id="license">License</h1>
+                <p>Everything in this repo is BSD style license unless otherwise specified.</p>
+                <p>Copyright (c) 2015 The Polymer Authors. All rights reserved.</p>
+                <p>Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:</p>
+                <ul>
+                <li>Redistributions of source code must retain the above copyright
+                notice, this list of conditions and the following disclaimer.</li>
+                <li>Redistributions in binary form must reproduce the above
+                copyright notice, this list of conditions and the following disclaimer
+                in the documentation and/or other materials provided with the
+                distribution.</li>
+                <li>Neither the name of Google Inc. nor the names of its
+                contributors may be used to endorse or promote products derived from
+                this software without specific prior written permission.</li>
+                </ul>
+                <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS &quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</p>
+              </paper-material>
+
+            </section>
+
+            <section data-route="users">
+              <paper-material elevation="1">
+                <h2 class="paper-font-display2">Users</h2>
+                <p>This is the users section</p>
+                <a href="/users/Rob">Rob</a>
+              </paper-material>
+            </section>
+
+            <section data-route="user-info">
+              <paper-material elevation="1">
+                <h2 class="paper-font-display2">
+                User:<span>{{params.name}}</span>
+                </h2>
+                <div>This is <span>{{params.name}}</span>'s section</div>
+              </paper-material>
+            </section>
+
+            <section data-route="contact">
+              <paper-material elevation="1">
+                <h2 class="paper-font-display2">Contact</h2>
+                <p>This is the contact section</p>
+              </paper-material>
+            </section>
+
+            <!-- To help during development -->
+            <section data-route="api-docs">
+              <discovery-api-docs
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"></discovery-api-docs>
+            </section>
+
+          </iron-pages>
+        </div>
+      </paper-header-panel>
+    </paper-drawer-panel>
+
+    <paper-toast id="cachingComplete"
+                 duration="6000"
+                 text="Caching complete! This app will work offline.">
+    </paper-toast>
+
+    <platinum-sw-register auto-register
+                          clients-claim
+                          skip-waiting
+                          on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="networkFirst"
+                         precache-file="precache.json">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'gde-app',
+        properties: {
+          user: {
+            type: Object,
+            computed: 'computeUser(isAuthorized)'
+          }
+        },
+        displayInstalledToast: function () {
+          this.$.cachingComplete().show();
+        },
+        onMenuSelect: function () {
+          var drawerPanel = this.$.paperDrawerPanel;
+          if (drawerPanel.narrow) {
+            drawerPanel.closeDrawer();
+          }
+        },
+        computeUser: function (isAuthorized) {
+          if (!isAuthorized) { return undefined; }
+          var profile = gapi.auth2.getAuthInstance()
+                          .currentUser.get().getBasicProfile();
+          return {
+            id: profile.getId(),
+            name: profile.getName(),
+            image: profile.getImageUrl()
+          };
+        }
+      });
+    })();
+  </script>
+</dom-module>
