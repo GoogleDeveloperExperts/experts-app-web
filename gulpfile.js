@@ -41,7 +41,7 @@ var styleTask = function (stylesPath, srcs) {
     .pipe($.autoprefixer(AUTOPREFIXER_BROWSERS))
     .pipe(gulp.dest('.tmp/' + stylesPath))
     .pipe($.if('*.css', $.cssmin()))
-    .pipe(gulp.dest('dist/' + stylesPath))
+    .pipe(gulp.dest('dist/static/' + stylesPath))
     .pipe($.size({title: stylesPath}));
 };
 
@@ -75,7 +75,7 @@ gulp.task('images', function () {
       progressive: true,
       interlaced: true
     })))
-    .pipe(gulp.dest('dist/images'))
+    .pipe(gulp.dest('dist/static/images'))
     .pipe($.size({title: 'images'}));
 });
 
@@ -87,33 +87,36 @@ gulp.task('copy', function () {
     '!app/precache.json'
   ], {
     dot: true
-  }).pipe(gulp.dest('dist'));
+  }).pipe(gulp.dest('dist/static'));
+
+  var ae = gulp.src(['app_engine_config/*'])
+    .pipe(gulp.dest('dist'));
 
   var bower = gulp.src([
     'bower_components/**/*'
-  ]).pipe(gulp.dest('dist/bower_components'));
+  ]).pipe(gulp.dest('dist/static/bower_components'));
 
   var elements = gulp.src(['app/elements/**/*.html'])
-    .pipe(gulp.dest('dist/elements'));
+    .pipe(gulp.dest('dist/static/elements'));
 
   var swBootstrap = gulp.src(['bower_components/platinum-sw/bootstrap/*.js'])
-    .pipe(gulp.dest('dist/elements/bootstrap'));
+    .pipe(gulp.dest('dist/static/elements/bootstrap'));
 
   var swToolbox = gulp.src(['bower_components/sw-toolbox/*.js'])
-    .pipe(gulp.dest('dist/sw-toolbox'));
+    .pipe(gulp.dest('dist/static/sw-toolbox'));
 
   var vulcanized = gulp.src(['app/elements/elements.html'])
     .pipe($.rename('elements.vulcanized.html'))
-    .pipe(gulp.dest('dist/elements'));
+    .pipe(gulp.dest('dist/static/elements'));
 
-  return merge(app, bower, elements, vulcanized, swBootstrap, swToolbox)
+  return merge(app, ae, bower, elements, vulcanized, swBootstrap, swToolbox)
     .pipe($.size({title: 'copy'}));
 });
 
 // Copy Web Fonts To Dist
 gulp.task('fonts', function () {
   return gulp.src(['app/fonts/**'])
-    .pipe(gulp.dest('dist/fonts'))
+    .pipe(gulp.dest('dist/static/fonts'))
     .pipe($.size({title: 'fonts'}));
 });
 
@@ -139,19 +142,19 @@ gulp.task('html', function () {
       spare: true
     })))
     // Output Files
-    .pipe(gulp.dest('dist'))
+    .pipe(gulp.dest('dist/static'))
     .pipe($.size({title: 'html'}));
 });
 
 // Vulcanize imports
 gulp.task('vulcanize', function () {
-  var DEST_DIR = 'dist/elements';
+  var DEST_DIR = 'dist/static/elements';
 
-  return gulp.src('dist/elements/elements.vulcanized.html')
+  return gulp.src('dist/static/elements/elements.vulcanized.html')
     .pipe($.vulcanize({
       dest: DEST_DIR,
       strip: true,
-      inlineCss: true,
+      //inlineCss: true, workaround for Windows dev environment
       inlineScripts: true
     }))
     .pipe(gulp.dest(DEST_DIR))
@@ -161,7 +164,7 @@ gulp.task('vulcanize', function () {
 // Generate a list of files that should be precached when serving from 'dist'.
 // The list will be consumed by the <platinum-sw-cache> element.
 gulp.task('precache', function (callback) {
-  var dir = 'dist';
+  var dir = 'dist/static';
 
   glob('{elements,scripts,styles}/**/*.*', {cwd: dir}, function(error, files) {
     if (error) {
@@ -224,7 +227,7 @@ gulp.task('serve:dist', ['default'], function () {
     // Note: this uses an unsigned certificate which on first access
     //       will present a certificate warning in the browser.
     // https: true,
-    server: 'dist'
+    server: 'dist/static'
   });
 });
 
