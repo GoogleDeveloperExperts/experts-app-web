@@ -276,7 +276,12 @@
                 <!-- placeholder for element that will handle gde activities -->
                 <paper-material elevation="1">
                   <p>GDE Area</p>
+                  <activity-list user-id="[[user.id]]"></activity-list>
                 </paper-material>
+              </section>
+
+              <section data-route="activity">
+                Activity: <span>[[params.activityId]]</span>
               </section>
             </template>
 

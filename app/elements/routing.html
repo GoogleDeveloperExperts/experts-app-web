@@ -23,6 +23,15 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       app.route = 'my-statistics';
     });
 
+    page('/my-statistics', function () {
+      app.route = 'my-statistics';
+    });
+
+    page('/activity/:activityId', function (data) {
+      app.route = 'activity';
+      app.params = data.params;
+    });
+
     page('/general-statistics', function () {
       app.route = 'general-statistics';
     });
