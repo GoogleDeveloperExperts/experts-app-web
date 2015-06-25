@@ -1,0 +1,115 @@
+<!--
+  Sign-in component hooked up to the GDE Tracking Backend
+  to retrieve relevant user information like access rights.
+
+  Exposes a `user` property that can be used to enable/disable
+  features in the app via data-binding
+-->
+
+<dom-module id="gde-signin">
+  <template>
+    <!-- Prepare elements to access the API -->
+    <discovery-api-elements
+      name="gdetracking"
+      version="v1.0b2"
+      app-id="omega-keep-406"
+      ></discovery-api-elements>
+
+    <!-- Fetch information about currently signed-in User -->
+    <gdetracking-account-get
+      id="[[_googleUser.id]]"
+      auto$="[[_isAuthorized]]"
+      response="{{_apiUser}}"></gdetracking-account-get>
+
+    <google-signin
+      client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com"
+      scope="email profile"
+      is-authorized="{{_isAuthorized}}"></google-signin>
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'gde-signin',
+        properties: {
+          /**
+           * All relevant information about the authenticated user
+           */
+          user: {
+            type: Object,
+            notify: true,
+            readonly: true,
+            computed: '_computeUser(_googleUser, _apiUser)'
+          },
+
+          /**
+           * User is authorized and all data has been retrieved
+           */
+          isAuthorized: {
+            type: Boolean,
+            readonly: true,
+            notify: true,
+            value: false,
+            computed: '_computeAuthorized(user)'
+          },
+
+          /**
+           * User information from Google authentication
+           */
+          _googleUser: {
+            type: Object,
+            computed: '_getBasicProfile(_isAuthorized)'
+          },
+
+          /**
+           * User information from the GDE Tracking App backend
+           */
+          _apiUser: Object,
+        },
+
+        /**
+         * Retrieve user information from Google authentication
+         */
+        _getBasicProfile: function (isAuthorized) {
+          if (!isAuthorized) { return undefined; }
+          var profile = gapi.auth2.getAuthInstance()
+                          .currentUser.get().getBasicProfile();
+          return {
+            id: profile.getId(),
+            name: profile.getName(),
+            image: profile.getImageUrl(),
+            email: profile.getEmail()
+          };
+        },
+
+        /**
+         * Basic user information and access rights for the user
+         */
+        _computeUser: function (googleUser, apiUser) {
+          if (!googleUser || !apiUser) { return undefined; }
+
+          var isAdmin = (apiUser.type === 'administrator') ||
+                        (apiUser.type === 'manager');
+
+          return {
+            id: googleUser.id,
+            name: googleUser.name,
+            image: googleUser.image,
+            email: googleUser.email,
+            isGde: (apiUser.type === 'active'),
+            isAdmin: isAdmin,
+            isGoogler: isAdmin ||
+                       (googleUser.email.split('@')[1] === 'google.com')
+          };
+        },
+
+        /**
+         * Check if user data is initialized correctly
+         */
+        _computeAuthorized: function (user) {
+          return (!!user && !!user.id);
+        }
+      });
+    })();
+  </script>
+</dom-module>

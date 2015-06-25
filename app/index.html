@@ -57,7 +57,142 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
 <body unresolved class="fullbleed layout vertical">
   <span id="browser-sync-binding"></span>
-  <gde-app id="app"></gde-app>
+  <template is="dom-bind" id="app">
+    <paper-drawer-panel id="paperDrawerPanel">
+      <div drawer>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
+          <a data-route="home" href="/">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+
+          <template is="dom-if" if="[[user.isGoogler]]">
+            <a data-route="general-statistics" href="/general-statistics">
+              <iron-icon icon="trending-up"></iron-icon>
+              <span>Googler Access</span>
+            </a>
+          </template>
+
+          <template is="dom-if" if="[[user.isGde]]">
+            <a data-route="my-statistics" href="/my-statistics">
+              <iron-icon icon="face"></iron-icon>
+              <span>GDE Access</span>
+            </a>
+          </template>
+
+          <!-- To help during development -->
+          <a data-route="api-docs" href="/api-docs">
+            <iron-icon icon="settings"></iron-icon>
+            <span>API Element Docs</span>
+          </a>
+        </paper-menu>
+      </div>
+      <paper-header-panel main mode="waterfall-tall">
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar">
+          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          <span class="flex"></span>
+
+          <div hidden$="[[!isAuthorized]]" id="user">
+            <span>[[user.name]]</span>
+            <img src$="[[user.image]]">
+          </div>
+
+          <!-- Toolbar icons -->
+          <gde-signin user="{{user}}" is-authorized="{{isAuthorized}}"></gde-signin>
+
+          <!-- Application name -->
+          <div class="middle paper-font-display2 app-name">GDE Tracking App</div>
+
+          <!-- Application sub title -->
+          <div class="bottom title"></div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+
+            <section data-route="home">
+              <template is="dom-if" if="[[user.isGde]]">
+                <paper-material elevation="1">
+                  <p class="paper-font-body2">You are a GDE!</p>
+                </paper-material>
+              </template>
+              <template is="dom-if" if="[[user.isAdmin]]">
+                <paper-material elevation="1">
+                  <p class="paper-font-body2">You are an Admin!</p>
+                </paper-material>
+              </template>
+              <template is="dom-if" if="[[user.isGoogler]]">
+                <paper-material elevation="1">
+                  <p class="paper-font-body2">You are a Googler!</p>
+                </paper-material>
+              </template>
+            </section>
+
+            <template is="dom-if" if="[[user.isGde]]">
+              <section data-route="my-statistics">
+                <!-- placeholder for element that will handle gde activities -->
+                <paper-material elevation="1">
+                  <p>GDE Area</p>
+                  <activity-list user-id="[[user.id]]"></activity-list>
+                </paper-material>
+              </section>
+
+              <section data-route="activity">
+                Activity: <span>[[params.activityId]]</span>
+              </section>
+            </template>
+
+            <template is="dom-if" if="[[user.isGoogler]]">
+              <section data-route="general-statistics">
+                <!-- placeholder for element that will handle statistics for Googlers -->
+                <paper-material elevation="1">
+                  <p>Googler Area</p>
+                </paper-material>
+              </section>
+            </template>
+
+            <section data-route="api-docs">
+              <!-- To help during development -->
+              <discovery-api-docs
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"></discovery-api-docs>
+            </section>
+
+          </iron-pages>
+        </div>
+      </paper-header-panel>
+    </paper-drawer-panel>
+
+    <paper-toast id="cachingComplete"
+                 duration="6000"
+                 text="Caching complete! This app will work offline.">
+    </paper-toast>
+
+    <platinum-sw-register auto-register
+                          clients-claim
+                          skip-waiting
+                          on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="networkFirst"
+                         precache-file="precache.json">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+  </template>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
 </body>
 
 </html>
