@@ -1,0 +1,157 @@
+<form class="stats dateRange">
+	<paper-shadow z="1">
+  	<h2>Show activities since:</h2>
+  	<select	ng-model="monthSelected"	ng-options="month.value for month in months"	ng-change="dateFilter()" required>
+  		<option	value="">
+  			-Select month-
+  		</option>
+  	</select>
+  	<select ng-model="yearSelected"		ng-options="year.value for year in years"		ng-change="dateFilter()" required>
+  		<option value="">
+  			-Select year-
+  		</option>
+  	</select>
+  	<select ng-model="productSelected" ng-options="product.tag for product in products"		ng-change="productFilter()" required>
+  		<option value="">
+  			-All Products-
+  		</option>
+  	</select>
+  	<div style="width:100%;padding-bottom: 10px;">
+      Include activities from Trash?
+      <paper-checkbox ng-model="includeDeleted" ng-click="updateIsDeleted()"></paper-checkbox>
+    </div>
+	</paper-shadow>
+</form>
+<div style='text-align:center'>
+	<paper-button class="colored green" raised onclick="toggleDialog('impactExplanation')">
+    Impact Explanation
+  </paper-button>
+</div>
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>Most popular activities</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="top100activities" id="top100activities" horizontal layout wrap center-justified>
+  		<div id="top100activitiesChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>General Statistics by GDE</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="gdesGeneralStats" id="generalStatisticsByGDE" horizontal layout wrap center-justified>
+  		<div vertical layout>
+  			<div id="GDE_selector" class="GDE_selector"></div>
+  			<div id="GDE_activitiesSlider"	class="GDE_activitiesSlider"></div>
+  			<div id="GDE_socialImpactSlider"	class="GDE_socialImpactSlider"></div>
+  			<div id="GDE_metaImpactSlider" class="GDE_metaImpactSlider"></div>
+  			<div id="GDE_impactSlider" class="GDE_impactSlider"></div>
+  		</div>
+  		<div id="GDE_TableChart"></div>
+  		<div id="GDE_PieChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
+
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>General Statistics by Product</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="gdesGeneralStats" id="generalStatisticsByProduct" horizontal layout wrap center-justified>
+  		<div vertical layout>
+  			<div id="Product_selector" class="Product_selector"></div>
+  			<div id="Product_activitiesSlider" class="Product_activitiesSlider"></div>
+  			<div id="Product_socialImpactSlider" class="Product_SocialImpactSlider"></div>
+  			<div id="Product_metaImpactSlider" class="Product_metaImpactSlider"></div>
+  			<div id="Product_impactSlider" class="Product_impactSlider"></div>
+  		</div>
+  		<div id="Product_TableChart"></div>
+  		<div id="Product_BarChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>General Statistics by Activity</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="gdesGeneralStats" id="generalStatisticsByActivity" horizontal layout wrap center-justified>
+  		<div vertical layout>
+  			<div id="Activity_selector" class="Activity_selector"></div>
+  			<div id="Activity_activitiesSlider" class="Activity_activitiesSlider"></div>
+  			<div id="Activity_socialImpactSlider" class="Activity_socialImpactSlider"></div>
+  			<div id="Activity_metaImpactSlider" class="Activity_metaImpactSlider"></div>
+  			<div id="Activity_impactSlider" class="Activity_impactSlider"></div>
+  		</div>
+  		<div id="Activity_TableChart"></div>
+  		<div id="Activity_BarChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>General Statistics by Region</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="gdesGeneralStats" id="generalStatisticsByRegion"  horizontal layout wrap center-justified>
+  		<div vertical layout>
+  			<div id="Region_selector" class="Region_selector"></div>
+  			<div id="Region_activitiesSlider" class="Region_activitiesSlider"></div>
+  			<div id="Region_socialImpactSlider" class="Region_socialImpactSlider"></div>
+  			<div id="Region_metaImpactSlider" class="Region_metaImpactSlider"></div>
+  			<div id="Region_impactSlider" class="Region_impactSlider"></div>
+  		</div>
+  		<div id="Region_TableChart"></div>
+  		<div id="Region_BarChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
+</br>
+<a href="#/">
+  <paper-button>
+    <core-icon icon="arrow-back"></core-icon>
+    Map
+  </paper-button>
+</a>
+
+<paper-action-dialog	id="impactExplanation"	transition="paper-dialog-transition-center">
+	<h1>The Impact Columns</h1>
+	<p>The Impact columns are the result of a first attempt to make all the different kind of activities comparable.</p>
+	<h3>Social Impact (RAW)</h3>
+  <p>The sum of the +1s, Reshares and comments that we can extract from the activity if shared with Google +,
+     or if manually updated for people who use Twitter more, the values should of favorites, reshares, replies.</p>
+  <h3>Metadata Impact (RAW)</h3>
+  <p>GDEs can set addictional <i>impacts</i> for the single activities<br>
+  For example if I create an article with source code related to it, I have 2 different activity types:
+  <ul>
+    <li><b>article</b> with the number of views (ex. 1000 views)</li>
+    <li><b>sourcecode</b> with the number of stars (ex. 10 starts)</li>
+  </ul>
+  The <i>Metadata Impact (RAW)</i> for this activity will be 1010.</p>
+  <br>
+  <p>This 2 columns where the first introduced, but we quickly found out huge spikes in the Metadata Impact (RAW) on videos and articles reshared by the Google Developers Page.</p>
+  <p>To make numbers smaller and comparable we came up with a simple formula to calculate the Total Impact of an activity.<br>
+  For each activity we make the following:
+  <ol>
+    <li>Calculate Social Impact as <b>log10(Social Impact RAW)</b></li>
+    <li>Calculate Metadata Impact as <b>log10(Metadata Impact RAW)</b></li>
+  </ol>
+  After we have the log10 values, we sum them up and add a base value of <b>1</b> (to count the effort of making the activity) and we have the Total Impact.
+  </p>
+  <br>
+  <p>The Total Impact full formula can be expressed as follows:
+    <blockquote>
+      <p>Total Impact = 1 + log10(Social Impact RAW) + log10(Metadata Impact RAW)</p>
+    </blockquote>
+  </p>
+  <hr>
+  <h3>Automatic Updates</h3>
+  <p>Activities from the following sources are updated regularly by the server </p>
+  <li>Google + Posts</li>
+  <li>Youtube Videos</li>
+  <paper-button dismissive>
+    <core-icon icon="close"></core-icon>
+    Close
+  </paper-button>
+</paper-action-dialog>
+
+<script src="js/googleUniversalAnalytics.js"></script>

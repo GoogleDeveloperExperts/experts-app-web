@@ -1,0 +1,22 @@
+{
+  "name": "GDE Tacking App",
+  "description": "Web Application to track the activities from GDEs",
+  "homepage": "http://gdetracking.gweb.io/",
+  "keywords": [],
+  "author": "",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#~0.5.5",
+    "core-elements": "Polymer/core-elements#~0.5.5",
+    "paper-button": "Polymer/paper-button#~0.5.5",
+    "paper-fab": "Polymer/paper-fab#~0.5.5",
+    "paper-icon-button": "Polymer/paper-icon-button#~0.5.5",
+    "paper-dialog": "Polymer/paper-dialog#~0.5.5",
+    "paper-toast": "Polymer/paper-toast#~0.5.5",
+    "paper-input": "Polymer/paper-input#~0.5.5",
+    "paper-checkbox": "Polymer/paper-checkbox#~0.5.5",
+    "paper-tabs": "Polymer/paper-tabs#~0.5.5",
+    "paper-spinner": "Polymer/paper-spinner#~0.5.5",
+    "webcomponentsjs": "WebComponents/webcomponentsjs#~0.5.5"
+  }
+}

@@ -1,0 +1,639 @@
+/*	*********************************************************************************	*/
+/*		Site Name: http://gdetracking.gweb.io/											*/
+/*		Author: GDE tracking app team.													*/
+/*		Polymer & CSS3 -Webkit/W3C- Layout												*/
+/*	*********************************************************************************	*/
+html,body {
+	height				: 95%;
+	font-family			: 'roboto' !important;
+	overflow			: hidden;
+}
+/*	*********************************************************************************	*/
+/*								Polymer Web Components									*/
+/*	*********************************************************************************	*/
+core-header-panel {
+	background			: white;
+	overflow			: hidden;
+}
+html /deep/ core-toolbar {
+	color				: #fafafa;
+	text-shadow			: 0 0 0.5px #fafafa;
+	background-color	: #212121;
+	fill				: #fafafa;
+}
+core-scroll-header-panel {
+	position			: absolute;
+	top					: 0;
+	right				: 0;
+	bottom				: 0;
+	left				: 0;
+}
+
+/*	Note:																				*/
+/*		Drawer is always visible on a wide screen so menu button should be hidden		*/
+core-drawer-panel:not([narrow]) #navicon {
+	display				: none;
+}
+#drawerPanel::shadow #drawer {
+	width				: 310px;
+}
+#drawerPanel::shadow #main {
+	left				: 310px;
+}
+core-header-panel drawer {
+	width				: 310px;
+}
+html /deep/ paper-action-dialog {
+	width				: 80%;
+	min-width			: 430px;
+	min-height			: 30%;
+	margin :0px;
+}
+html /deep/ paper-action-dialog::shadow #scroller {
+	padding:5px;
+}
+html /deep/ paper-action-dialog.tall{
+	height:90%;
+}
+
+html /deep/ paper-shadow{
+  padding:1px;
+}
+
+paper-button {
+	margin				: 1em;
+	width				: 13em;
+	height				: 5em;
+	line-height			: 4.25em;
+}
+.colored	{
+	fill				: #fafafa;
+	color				: #fafafa;
+	text-shadow			: 0 0 0.5px #fafafa;
+}
+.colored.red		{
+	background			: #e84e40;
+}
+.colored.blue		{
+	background			: #5677fc;
+}
+.colored.green		{
+	background			: #7cb342;
+}
+.colored.yellow		{
+	background			: #f9a825;
+}
+.colored.deepPurple	{
+	background			: #673ab7;
+}
+paper-toast {
+	bottom				: 0;
+	right				: 0;
+	width				: 20%;
+}
+.nav-fab	{
+	position      : fixed;
+	right         : -100px;
+	bottom        : 5em;
+	z-index       : 1;
+}
+
+html /deep/ paper-input{
+  width:auto;
+  padding:8px;
+  margin:0px 2px 0px 2px;
+}
+
+paper-checkbox::shadow #ink {
+  width: 24px;
+  height: 24px;
+}
+paper-radio-button::shadow #ink {
+  top:-4px;
+  left:-4px;
+  width: 24px;
+  height: 24px;
+}
+/*	*********************************************************************************	*/
+/*								AngularJS Directives									*/
+/*	*********************************************************************************	*/
+google-map	{
+	display			: inline-block;
+	width				: 100%;
+	min-height  : 80%;
+}
+marker	{
+	box-shadow:			1px 1px 50px #aaa, inset -1px -1px 50px #ccc;
+}
+paper-action-dialog table		{
+    /* W3C */
+	border-width		: 0;
+	background-color	: #f5f5f5;
+    margin				: 0.5em;
+    padding				: 1.5em;
+    border-radius		: 5px;
+    box-shadow			: 0px 1px 4px #777, inset 0px 0px 2px #aaa;
+    transition			: all 1s ease-in-out;
+}
+paper-action-dialog table:hover {
+    /* W3C */
+    box-shadow			: 0px 3px 8px #555, inset 0px 0px 3px #999;
+}
+/*	*********************************************************************************	*/
+/*									Custom Classes										*/
+/*	*********************************************************************************	*/
+window
+{
+	background-color	: #f5f5f5;
+	width				: 300px;
+	height				: 450px;
+    margin				: 0.5em;
+    padding				: 1.5em;
+    text-align			: center;
+}
+select
+{
+    /* W3C */
+	border-width		: 0;
+	padding				  : 1em;
+	margin				  : 1em;
+  transition			: all 1s ease-in-out;
+  box-shadow			: 0px 1px 4px #777, inset 0px 0px 2px #aaa;
+  min-height      : 48px;
+}
+select:hover
+{
+    /* W3C */
+    box-shadow			: 0px 3px 6px #555, inset 0px 0px 3px #999;
+}
+.menuButtonZone
+{
+	justify-content		: center;
+}
+.scrollBar	{
+	display				: block;
+	overflow-y			: hidden;
+}
+.wrap {
+    /* W3C */
+    display				: flex !important;
+    flex-wrap			: wrap;
+    flex-direction		: row;
+    align-items			: flex-start;
+}
+#gdeStatistics,	#generalStatisticsForGooglers, #gdeAvatarBuilder	{
+	display				: none;
+}
+.gplus		{
+	margin				: 1em;
+	margin-top			: 5em;
+}
+.plusLogin	{
+	position			: relative;
+	top					: -20px;
+}
+.plusLogin	.userName	{
+	display				: inline-block;
+	position			: relative;
+	top					: -15px;
+}
+.plusLogin	#userImg	{
+	margin				: 1em;
+}
+.plusLogin	#userImg	img	{
+	height				: 90px;
+	box-shadow			: 2px 2px 10px #000;
+}
+
+.appLogo	{
+	position			: absolute;
+	left				: 2.5em;
+	margin				: 1em;
+	padding				: 1em;
+	text-align			: right;
+	width				: 300px;
+	margin-top			: -10em;
+	border-radius		: 0.5em;
+	background-color	: rgba(255, 255, 255, .7);
+	box-shadow			: 1px 1px 4px #999, inset 1px 1px 3px #aaa;
+}
+.gdeLogo	{
+	height				: 40px;
+}
+.gdeTrackingApp_text	{
+	position			: relative;
+	top					: -6px;
+	color				: #616161;
+	text-shadow			: 0 0 0.5px #616161;
+}
+.gdesAround	{
+	color				: #616161;
+	text-shadow			: 0 0 0.5px #616161;
+}
+.googleDevelopersLogo {
+  position: relative;
+  top: 35px;
+  height: 150px;
+  left: 35px;
+}
+html /deep/ .content	{
+	padding				: 20px;
+}
+.mapArea	{
+	position			: absolute;
+	top					: -1000px;
+	left				: 0px;
+	width				: 100%;
+}
+.gdeList {
+
+	opacity				: 0;
+	position			: absolute;
+	right				: 0;
+	width				: 90%;
+    transition			: all 0.4s ease-in-out;
+}
+.gdeCard {
+	min-width: 15em;
+	background-color: #f5f5f5;
+	margin: 0.5em;
+	padding: 1.5em;
+	text-align: center;
+	border-radius: 5px;
+	box-shadow: 0px 1px 4px #777, inset 0px 0px 2px #aaa;
+}
+.gdeCard:hover {
+    /* W3C */
+    box-shadow			: 0px 3px 8px #555, inset 0px 0px 3px #999;
+}
+.gdeCard * {
+    /* W3C */
+    text-decoration		: none;
+	color				: #212121;
+	text-shadow			: 0 0 1px #212121;
+}
+.gdePic
+{
+    /* W3C */
+	transition			: all 1s linear;
+	box-shadow			: 1px 1px 3px #555, inset 1px 1px 2px #888;
+}
+.gdePic:hover
+{
+    /* W3C */
+	box-shadow			: 1px 1px 5px #444, inset 1px 1px 2px #888;
+}
+.badge
+{
+    /* W3C */
+	height				: 120px;
+	margin				: 5px;
+}
+.flag
+{
+    /* W3C */
+	height				: 30px;
+	margin				: 2px;
+}
+.loading
+{
+	display				: none;
+}
+html /deep/ .prettyTable
+{
+	/* W3C */
+	margin				: 1em;
+	padding				: 1em;
+}
+html /deep/ .prettyTable tr
+{
+	/* W3C */
+	margin				: 1em;
+	padding				: 1em;
+	transition			: all 0.3s ease-in-out;
+}
+html /deep/ .prettyTable tr:nth-child(even)
+{
+	/* W3C */
+	background-color	: #eee;
+}
+html /deep/ .prettyTable tr:hover
+{
+	/* W3C */
+	background-color	: #666;
+	color				: #fff!important;
+}
+html /deep/ .prettyTable th
+{
+	/* W3C */
+	font-size			: 1.17em;
+	color				: #fff !important;
+	text-shadow			: 0em 0em 0.01em #fff !important;
+	margin				: 1em;
+	padding				: 1em;
+	background-color	: #666;
+	border-radius		: 5px;
+}
+.stats
+{
+	border-radius	: 5px;
+	margin			: 1em;
+	padding			: 1em;
+	text-align		: center;
+}
+.dateRange
+{
+	width			: 30%;
+}
+
+.countryButtons	paper-button
+{
+	background  : #dfdfdf;
+}
+/*	*********************************************************************************	*/
+/*								CSS3 Animation Keyframes								*/
+/*	*********************************************************************************	*/
+
+/*	---------------------------------------------------------------------------------	*/
+/*										Opening											*/
+/*	---------------------------------------------------------------------------------	*/
+@-webkit-keyframes mapAppears
+{
+    0%
+	{
+		top				: -1000px;
+	}
+	50%
+	{
+		top				: -100px;
+	}
+	100%
+	{
+		top				: 0px;
+	}
+}
+@keyframes mapAppears
+{
+    0%
+	{
+		top				: -1000px;
+	}
+	50%
+	{
+		top				: -100px;
+	}
+	100%
+	{
+		top				: 0px;
+	}
+}
+@-webkit-keyframes fabAppears
+{
+    0%
+	{
+		right			: 3em;
+	}
+	70%
+	{
+		right			: 3em;
+	}
+	100%
+	{
+		right			: 3em;
+	}
+}
+@keyframes fabAppears
+{
+    0%
+	{
+		right			: 3em;
+	}
+	70%
+	{
+		right			: 3em;
+	}
+	100%
+	{
+		right			: 3em;
+	}
+}
+
+/*	---------------------------------------------------------------------------------	*/
+/*									paper-fab goes left									*/
+/*	---------------------------------------------------------------------------------	*/
+@-webkit-keyframes fabGoesLeft
+{
+  0%
+	{
+	  right			: 3em;
+		transform		: rotate(0deg);
+	}
+	100%
+	{
+	  right			: 3em;
+		transform		: rotate(180deg);
+	}
+}
+@keyframes fabGoesLeft
+{
+  0%
+	{
+	  right			: 3em;
+		transform		: rotate(0deg);
+	}
+	100%
+	{
+	  right			: 3em;
+		transform		: rotate(180deg);
+	}
+}
+@-webkit-keyframes mapSlideLeft
+{
+    0%
+	{
+		left			: 0px;
+		top				: 0px;
+	}
+	30%
+	{
+		left			: -200px;
+		top				: 0px;
+	}
+	100%
+	{
+		left			: -2000px;
+		top				: 0px;
+	}
+}
+@keyframes mapSlideLeft
+{
+    0%
+	{
+		-left			: 0px;
+		top				: 0px;
+	}
+	30%
+	{
+		left			: -200px;
+		top				: 0px;
+	}
+	100%
+	{
+		left			: -2000px;
+		top				: 0px;
+	}
+}
+
+/*	---------------------------------------------------------------------------------	*/
+/*									paper-fab goes right								*/
+/*	---------------------------------------------------------------------------------	*/
+@-webkit-keyframes fabGoesRight
+{
+  100%
+	{
+	  right			: 3em;
+		transform		: rotate(0deg);
+	}
+	0%
+	{
+	  right			: 3em;
+		transform		: rotate(180deg);
+	}
+}
+@keyframes fabGoesRight
+{
+  100%
+	{
+	  right			: 3em;
+		transform		: rotate(0deg);
+	}
+	0%
+	{
+	  right			: 3em;
+		transform		: rotate(180deg);
+	}
+}
+@-webkit-keyframes mapSlideRight
+{
+    100%
+	{
+		left			: 0px;
+		top				: 0px;
+	}
+	30%
+	{
+		left			: -200px;
+		top				: 0px;
+	}
+	0%
+	{
+		left			: -2000px;
+		top				: 0px;
+	}
+}
+@keyframes mapSlideRight
+{
+    100%
+	{
+		left			: 0px;
+		top				: 0px;
+	}
+	30%
+	{
+		left			: -200px;
+		top				: 0px;
+	}
+	0%
+	{
+		left			: -2000px;
+		top				: 0px;
+	}
+}
+
+/*	---------------------------------------------------------------------------------	*/
+/*										hide paper-fab									*/
+/*	---------------------------------------------------------------------------------	*/
+@-webkit-keyframes hideFab
+{
+    100%
+	{
+		right			: -20%;
+	}
+}
+@keyframes hideFab
+{
+    100%
+	{
+		right			: -20%;
+	}
+}
+
+/*-------Media queries--------*/
+@media (max-width: 600px) {
+  .plusLogin	.userName	{
+  	display				: none;
+  }
+  paper-button {
+    margin: 0.5em;
+    width: 13em;
+    height: 2.5em;
+    line-height: 1.25em;
+  }
+  .googleDevelopersLogo {
+    position: relative;
+    top: 34px;
+    height: 134px;
+  }
+  .countryButtons	paper-button {
+    width: 10em;
+  }
+  .appLogo{
+    display:none;
+  }
+  .hideForSmallScreen{
+    display:none;
+  }
+}
+
+@media (max-height: 500px) {
+  paper-button {
+    margin: 0.5em;
+    width: 13em;
+    height: 2.5em;
+    line-height: 1.25em;
+  }
+  .googleDevelopersLogo {
+    position: relative;
+    top: 5px;
+    height: 50px;
+  }
+  .countryButtons	paper-button {
+    width: 10em;
+  }
+  .appLogo{
+    display:none;
+  }
+  .plusLogin{
+    position: relative;
+    top:10px;
+  }
+  .plusLogin	#userImg img {
+    height: 50px;
+    box-shadow: 2px 2px 10px #000;
+  }
+  core-toolbar.medium-tall{
+    height:auto;
+  }
+  .hideForSmallScreen{
+    display:none;
+  }
+}
+@media (max-width: 1050px) {
+  .hideForSmallScreen{
+    display:none;
+  }
+  html /deep/ .prettyTable {
+    margin: 1em;
+    padding:initial;
+  }
+}

@@ -1,0 +1,68 @@
+<core-item	class="mapArea" layout vertical center fit>
+	<google-map	center="map.center"	zoom="map.zoom"	draggable="true"	options='{"mapTypeId":"terrain"}' flex>
+		<markers>
+			<marker ng-repeat="marker in markers"	coords="marker" icon="marker.icon"	click="markerClick(marker.id)">
+				<window isIconVisibleOnClick="false">
+					<div style="width:300px" layout vertical center>
+						<h2>{{marker.name}}</h2>
+						<img ng-src="{{marker.pic}}" class="gdePic"/>
+						<h3 ng-repeat="product in marker.pgObjects">
+              {{product.description}}&nbsp;
+            </h3>
+            <img class="badge" ng-repeat="pg_filename in marker.pgObjects" ng-if ="pg_filename.image" ng-src="img/badges/{{pg_filename.image}}"></img>
+					</div>
+				</window>
+			</marker>
+		</markers>
+	</google-map>
+	<div	class="appLogo">
+		<img	class="gdeLogo"	src="img/gdeLogo_transparent.png"	alt="Google Developer Expert"></img>
+		<div	class="gdeTrackingApp_text"><strong><i>Tracking App</i></strong></br>{{gdeNumber}} around the world!</div>
+	</div>
+	<div class="countryButtons" layout horizontal flex wrap>
+		<paper-button	raised  ng-click="focusMap('World')">
+		  <core-icon icon="maps:place"></core-icon>
+		  World
+		</paper-button>
+		<paper-button	raised  ng-click="focusMap('Asia')">
+		  <core-icon icon="maps:place"></core-icon>
+		  Asia
+		</paper-button>
+		<paper-button	raised  ng-click="focusMap('Africa')">
+		  <core-icon icon="maps:place"></core-icon>
+		  Africa
+		</paper-button>
+		<paper-button	raised	ng-click="focusMap('Europe')">
+		  <core-icon icon="maps:place"></core-icon>
+		  Europe
+		</paper-button>
+		<paper-button	raised	ng-click="focusMap('North America')">
+		  <core-icon icon="maps:place"></core-icon>
+		  North America
+		</paper-button>
+		<paper-button	raised	ng-click="focusMap('South America')">
+		  <core-icon icon="maps:place"></core-icon>
+		  South America
+		</paper-button>
+		<paper-button	raised	ng-click="focusMap('Oceania')">
+		  <core-icon icon="maps:place"></core-icon>
+		  Oceania
+		</paper-button>
+	</div>
+</core-item>
+<core-item>
+	<div layout horizontal start wrap class="gdeList">
+		<div class="gdeCard" layout vertical center center-justified
+		      ng-repeat="gde in gdeList | orderBy : +'display_name'"  id="{{gde.id}}">
+			<a href={{gde.gplus_page}} target="_blank" title="Open {{gde.real_name}} g+ in another page.">
+				<h2>{{gde.real_name}}</h2>
+				<img ng-src="{{gde.pic_url}}" class="gdePic"/>
+				<h3 ng-repeat="product in gde.pgObjects">
+					{{product.description}}
+				</h3>
+				<p><small>{{gde.country}}</small> <img class="flag" ng-if ="gde.ctry_filename" ng-src="img/flags/{{gde.ctry_filename}}.svg"></img></p>
+			</a>
+		</div>
+	</div>
+</core-item>
+<script src="js/googleUniversalAnalytics.js"></script>
