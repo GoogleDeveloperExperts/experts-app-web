@@ -133,7 +133,10 @@ gulp.task('html', function () {
 
   return gulp.src(['app/**/*.html', '!app/{elements,test}/**/*.html'])
     // Replace path for vulcanized assets
-    .pipe($.if('*.html', $.replace('elements/elements.html', 'elements/elements.vulcanized.html')))
+    .pipe($.if('*.html', $.replace(
+      'elements/elements.html',
+      'elements/elements.vulcanized.html'
+    )))
     .pipe(assets)
     // Concatenate And Minify JavaScript
     .pipe($.if('*.js', $.uglify({preserveComments: 'some'})))
@@ -177,7 +180,11 @@ gulp.task('precache', function (callback) {
     if (error) {
       callback(error);
     } else {
-      files.push('index.html', './', 'bower_components/webcomponentsjs/webcomponents-lite.min.js');
+      files.push(
+        'index.html',
+        './',
+        'bower_components/webcomponentsjs/webcomponents-lite.min.js'
+      );
       var filePath = path.join(dir, 'precache.json');
       fs.writeFile(filePath, JSON.stringify(files), callback);
     }
@@ -186,6 +193,11 @@ gulp.task('precache', function (callback) {
 
 // Clean Output Directory
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
+
+// Clear cache (used by imagemin)
+gulp.task('clearcache', function (cb) {
+  return $.cache.clearAll(cb);
+});
 
 // Watch Files For Changes & Reload
 gulp.task('serve', ['styles', 'elements', 'images'], function () {
@@ -239,7 +251,7 @@ gulp.task('serve:dist', ['default'], function () {
 });
 
 // Build Production Files, the Default Task
-gulp.task('default', ['clean'], function (cb) {
+gulp.task('default', ['clean', 'clearcache'], function (cb) {
   runSequence(
     ['copy', 'styles'],
     'elements',
@@ -248,7 +260,7 @@ gulp.task('default', ['clean'], function (cb) {
     cb);
 });
 
-gulp.task('build:ae', ['clean'], function(cb) {
+gulp.task('build:ae', ['clean', 'clearcache'], function(cb) {
   destDir = 'dist/static';
   runSequence(
     ['copy', 'copy:ae', 'styles'],
