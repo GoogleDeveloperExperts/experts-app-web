@@ -13,6 +13,7 @@
       name="gdetracking"
       version="v1.0b2"
       app-id="omega-keep-406"
+      no-client
       ></discovery-api-elements>
 
     <!-- Fetch information about currently signed-in User -->
@@ -90,18 +91,24 @@
         _signedIn: function () {
           var profile = gapi.auth2.getAuthInstance()
                           .currentUser.get().getBasicProfile();
+
+          var authResponse = gapi.auth2.getAuthInstance()
+                            .currentUser.get().getAuthResponse();
+
           this._googleUser = {
             id: profile.getId(),
             name: profile.getName(),
             image: profile.getImageUrl(),
-            email: profile.getEmail()
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
           };
           this._isAuthorized = true;
           this._localUser = {
             id: profile.getId(),
             name: profile.getName(),
             image: profile.getImageUrl(),
-            email: profile.getEmail()
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
           };
         },
 
@@ -132,7 +139,8 @@
               id: this._localUser.id,
               name: this._localUser.name,
               image: this._localUser.image,
-              email: this._localUser.email
+              email: this._localUser.email,
+              token: this._localUser.token
             };
             this._isAuthorized = true;
           }

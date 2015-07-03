@@ -8,7 +8,7 @@
     "neon-elements": "PolymerElements/neon-elements#1.0.0",
     "page": "visionmedia/page.js#~1.6.3",
     "google-signin": "GoogleWebComponents/google-signin#^1.0.2",
-    "discovery-api-elements": "Scarygami/discovery-api-elements#^0.2.0"
+    "discovery-api-elements": "Scarygami/discovery-api-elements#^0.3.1"
   },
   "devDependencies": {
     "web-component-tester": "*",
