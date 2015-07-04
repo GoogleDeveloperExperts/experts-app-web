@@ -80,7 +80,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </a>
           </template>
 
-          <template is="dom-if" if="[[user.isGde]]">
+          <template is="dom-if" if="[[user.isExpert]]">
             <a data-route="my-statistics" href="/my-statistics">
               <iron-icon icon="face"></iron-icon>
               <span>Expert Area</span>
@@ -108,7 +108,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <!-- Toolbar icons -->
-          <gde-signin user="{{user}}" is-authorized="{{isAuthorized}}"></gde-signin>
+          <expert-signin user="{{user}}" is-authorized="{{isAuthorized}}"></expert-signin>
 
           <!-- Application name -->
           <div class="middle paper-font-display2 app-name">
@@ -126,7 +126,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <template is="dom-if" if="[[user.isGde]]">
+              <template is="dom-if" if="[[user.isExpert]]">
                 <paper-material elevation="1">
                   <p class="paper-font-body2">You are an Expert!</p>
                 </paper-material>
@@ -143,9 +143,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </template>
             </section>
 
-            <template is="dom-if" if="[[user.isGde]]">
+            <template is="dom-if" if="[[user.isExpert]]">
               <section data-route="my-statistics">
-                <!-- placeholder for element that will handle gde activities -->
+                <!-- placeholder for element that will handle Expert activities -->
                 <paper-material elevation="1">
                   <p>Expert Area</p>
                   <activity-list user-id="[[user.id]]"></activity-list>

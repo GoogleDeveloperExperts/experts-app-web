@@ -6,7 +6,7 @@
   features in the app via data-binding
 -->
 
-<dom-module id="gde-signin">
+<dom-module id="expert-signin">
   <template>
     <!-- Prepare elements to access the API -->
     <discovery-api-elements
@@ -38,7 +38,7 @@
   <script>
     (function() {
       Polymer({
-        is: 'gde-signin',
+        is: 'expert-signin',
         properties: {
           /**
            * All relevant information about the authenticated user
@@ -162,7 +162,7 @@
             name: googleUser.name,
             image: googleUser.image,
             email: googleUser.email,
-            isGde: (apiUser.type === 'active'),
+            isExpert: (apiUser.type === 'active'),
             isAdmin: isAdmin,
             isGoogler: isAdmin ||
                        (googleUser.email.split('@')[1] === 'google.com')
