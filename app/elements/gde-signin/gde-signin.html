@@ -13,6 +13,7 @@
       name="gdetracking"
       version="v1.0b2"
       app-id="omega-keep-406"
+      no-client
       ></discovery-api-elements>
 
     <!-- Fetch information about currently signed-in User -->
@@ -24,7 +25,14 @@
     <google-signin
       client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com"
       scope="email profile"
-      is-authorized="{{_isAuthorized}}"></google-signin>
+      on-google-signin-aware-success="_signedIn"
+      on-google-signed-out="_signedOut"></google-signin>
+
+    <iron-localstorage
+      name="current-user"
+      value="{{_localUser}}"
+      on-iron-localstorage-load="_localUserLoaded"
+      on-iron-localstorage-load-empty="_initLocalUser"></iron-localstorage>
   </template>
 
   <script>
@@ -56,37 +64,95 @@
           /**
            * User information from Google authentication
            */
-          _googleUser: {
-            type: Object,
-            computed: '_getBasicProfile(_isAuthorized)'
-          },
+          _googleUser: Object,
 
           /**
            * User information from the GDE Tracking App backend
            */
           _apiUser: Object,
+
+          /**
+           * User information from local storage
+           */
+          _localUser: Object,
+
+          /**
+           * User has granted Google authorization
+           */
+          _isAuthorized: {
+            type: Boolean,
+            value: false
+          }
         },
 
         /**
-         * Retrieve user information from Google authentication
+         * User signed in, retrieve user information from Google authentication
          */
-        _getBasicProfile: function (isAuthorized) {
-          if (!isAuthorized) { return undefined; }
+        _signedIn: function () {
           var profile = gapi.auth2.getAuthInstance()
                           .currentUser.get().getBasicProfile();
-          return {
+
+          var authResponse = gapi.auth2.getAuthInstance()
+                            .currentUser.get().getAuthResponse();
+
+          this._googleUser = {
             id: profile.getId(),
             name: profile.getName(),
             image: profile.getImageUrl(),
-            email: profile.getEmail()
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
           };
+          this._isAuthorized = true;
+          this._localUser = {
+            id: profile.getId(),
+            name: profile.getName(),
+            image: profile.getImageUrl(),
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
+          };
+        },
+
+        /**
+         * User signed out, remove all user information
+         */
+        _signedOut: function () {
+          this._googleUser = undefined;
+          this._apiUser = undefined;
+          this._localUser = {};
+          this._isAuthorized = false;
+          this._setUser({});
+        },
+
+        /**
+         * Initialize User in local storage
+         */
+        _initLocalUser: function () {
+          this._localUser = {};
+        },
+
+        /**
+         * User information available in local storage
+         */
+        _localUserLoaded: function () {
+          if (this._localUser && this._localUser.id) {
+            this._googleUser = {
+              id: this._localUser.id,
+              name: this._localUser.name,
+              image: this._localUser.image,
+              email: this._localUser.email,
+              token: this._localUser.token
+            };
+            this._isAuthorized = true;
+          }
         },
 
         /**
          * Basic user information and access rights for the user
          */
         _computeUser: function (googleUser, apiUser) {
-          if (!googleUser || !apiUser) { return undefined; }
+          if (!googleUser || !googleUser.id || !apiUser || !apiUser.id) {
+            return {};
+          }
 
           var isAdmin = (apiUser.type === 'administrator') ||
                         (apiUser.type === 'manager');
