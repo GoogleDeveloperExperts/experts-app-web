@@ -1,12 +1,12 @@
 ## gde-app-web
 
-The GDE App is an application that aims to help Google Developer Experts track their activities and give Googlers a way to analyze the most impactful activities.
+The GDE App is an application that aims to help Google Experts track their activities and give Googlers a way to analyze the most impactful activities.
 
 ### Install dependencies
 
 #### Quick-start (for experienced users)
 
-With Node.js installed, run the following one liner from the root of the GDE App download:
+With Node.js installed, run the following one liner from the root of the Experts Tracking App download:
 
 ```sh
 npm install -g gulp bower && npm install && bower install

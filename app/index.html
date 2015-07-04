@@ -16,7 +16,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
   <meta name="description" content="">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="generator" content="Polymer Starter Kit" />
-  <title>GDE Tracking App</title>
+  <title>Experts Tracking App</title>
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
 
   <!-- Chrome for Android theme color -->
@@ -80,10 +80,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </a>
           </template>
 
-          <template is="dom-if" if="[[user.isGde]]">
+          <template is="dom-if" if="[[user.isExpert]]">
             <a data-route="my-statistics" href="/my-statistics">
               <iron-icon icon="face"></iron-icon>
-              <span>GDE Access</span>
+              <span>Expert Area</span>
             </a>
           </template>
 
@@ -99,6 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          
           <span class="flex"></span>
 
           <div hidden$="[[!isAuthorized]]" id="user">
@@ -107,10 +108,13 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <!-- Toolbar icons -->
-          <gde-signin user="{{user}}" is-authorized="{{isAuthorized}}"></gde-signin>
+          <expert-signin user="{{user}}" is-authorized="{{isAuthorized}}"></expert-signin>
 
           <!-- Application name -->
-          <div class="middle paper-font-display2 app-name">GDE Tracking App</div>
+          <div class="middle paper-font-display2 app-name">
+            <img src="images/experts_logo_no_text_48x48.png">
+            Experts Tracking App
+          </div>
 
           <!-- Application sub title -->
           <div class="bottom title"></div>
@@ -122,9 +126,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
 
             <section data-route="home">
-              <template is="dom-if" if="[[user.isGde]]">
+              <template is="dom-if" if="[[user.isExpert]]">
                 <paper-material elevation="1">
-                  <p class="paper-font-body2">You are a GDE!</p>
+                  <p class="paper-font-body2">You are an Expert!</p>
                 </paper-material>
               </template>
               <template is="dom-if" if="[[user.isAdmin]]">
@@ -139,11 +143,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </template>
             </section>
 
-            <template is="dom-if" if="[[user.isGde]]">
+            <template is="dom-if" if="[[user.isExpert]]">
               <section data-route="my-statistics">
-                <!-- placeholder for element that will handle gde activities -->
+                <!-- placeholder for element that will handle Expert activities -->
                 <paper-material elevation="1">
-                  <p>GDE Area</p>
+                  <p>Expert Area</p>
                   <activity-list user-id="[[user.id]]"></activity-list>
                 </paper-material>
               </section>
