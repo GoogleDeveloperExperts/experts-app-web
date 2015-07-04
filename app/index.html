@@ -83,7 +83,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <template is="dom-if" if="[[user.isGde]]">
             <a data-route="my-statistics" href="/my-statistics">
               <iron-icon icon="face"></iron-icon>
-              <span>GDE Access</span>
+              <span>Expert Area</span>
             </a>
           </template>
 
@@ -99,6 +99,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar">
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+          
           <span class="flex"></span>
 
           <div hidden$="[[!isAuthorized]]" id="user">
@@ -110,7 +111,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <gde-signin user="{{user}}" is-authorized="{{isAuthorized}}"></gde-signin>
 
           <!-- Application name -->
-          <div class="middle paper-font-display2 app-name">GDE Tracking App</div>
+          <div class="middle paper-font-display2 app-name">
+            <img src="images/experts_logo_no_text_48x48.png">
+            Experts Tracking App
+          </div>
 
           <!-- Application sub title -->
           <div class="bottom title"></div>
@@ -124,7 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <section data-route="home">
               <template is="dom-if" if="[[user.isGde]]">
                 <paper-material elevation="1">
-                  <p class="paper-font-body2">You are a GDE!</p>
+                  <p class="paper-font-body2">You are an Expert!</p>
                 </paper-material>
               </template>
               <template is="dom-if" if="[[user.isAdmin]]">
@@ -143,7 +147,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <section data-route="my-statistics">
                 <!-- placeholder for element that will handle gde activities -->
                 <paper-material elevation="1">
-                  <p>GDE Area</p>
+                  <p>Expert Area</p>
                   <activity-list user-id="[[user.id]]"></activity-list>
                 </paper-material>
               </section>
