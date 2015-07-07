@@ -18,5 +18,8 @@
     "paper-tabs": "Polymer/paper-tabs#~0.5.5",
     "paper-spinner": "Polymer/paper-spinner#~0.5.5",
     "webcomponentsjs": "WebComponents/webcomponentsjs#~0.5.5"
+  },
+  "resolutions": {
+    "webcomponentsjs": "^0.6.0"
   }
 }
