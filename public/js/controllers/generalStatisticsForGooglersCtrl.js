@@ -435,10 +435,8 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
               for (var j=0;j<$scope.data.items[i].product_groups.length;j++)
               {
                 var product = $scope.data.items[i].product_groups[j];
-                //MSO - 2015-07-07 - Aggregate android tags
                 if (product =='#diagnostics' || product =='#appindexing' || product =='#deeplinking'){
                   product = '#android';
-                  debugger;
                 }
                 //Get the Product Description
                 $rootScope.productGroups.some(function(pg){
@@ -449,7 +447,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                     return false;
                   }
                 });
-                
+
                 if (!$scope.activityBy['Product'][product])
                 {
                   $scope.activityBy['Product'][product] = {};	// Initialize a new JSON unordered array
