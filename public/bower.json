@@ -17,7 +17,7 @@
     "paper-checkbox": "Polymer/paper-checkbox#~0.5.5",
     "paper-tabs": "Polymer/paper-tabs#~0.5.5",
     "paper-spinner": "Polymer/paper-spinner#~0.5.5",
-    "webcomponentsjs": "WebComponents/webcomponentsjs#~0.5.5"
+    "webcomponentsjs": "WebComponents/webcomponentsjs#^0.6.0"
   },
   "resolutions": {
     "webcomponentsjs": "^0.6.0"
