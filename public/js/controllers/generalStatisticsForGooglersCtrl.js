@@ -435,6 +435,10 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
               for (var j=0;j<$scope.data.items[i].product_groups.length;j++)
               {
                 var product = $scope.data.items[i].product_groups[j];
+                if (product == '#diagnostics' || product == '#appindexing' || 
+                    product == '#deeplinking' || product == '#androidm'){
+                  product = '#android';
+                }
                 //Get the Product Description
                 $rootScope.productGroups.some(function(pg){
                   if (pg.tag==product){
