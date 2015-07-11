@@ -46,7 +46,7 @@
           user: {
             type: Object,
             notify: true,
-            readonly: true,
+            readOnly: true,
             computed: '_computeUser(_googleUser, _apiUser)'
           },
 
@@ -55,7 +55,7 @@
            */
           isAuthorized: {
             type: Boolean,
-            readonly: true,
+            readOnly: true,
             notify: true,
             value: false,
             computed: '_computeAuthorized(user)'
@@ -120,7 +120,7 @@
           this._apiUser = undefined;
           this._localUser = {};
           this._isAuthorized = false;
-          this._setUser({});
+          this.__setProperty('user', {});
         },
 
         /**
@@ -150,6 +150,7 @@
          * Basic user information and access rights for the user
          */
         _computeUser: function (googleUser, apiUser) {
+          console.log(googleUser, apiUser);
           if (!googleUser || !googleUser.id || !apiUser || !apiUser.id) {
             return {};
           }
