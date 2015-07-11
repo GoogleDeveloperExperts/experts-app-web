@@ -46,7 +46,7 @@
           user: {
             type: Object,
             notify: true,
-            readonly: true,
+            readOnly: true,
             computed: '_computeUser(_googleUser, _apiUser)'
           },
 
@@ -55,7 +55,7 @@
            */
           isAuthorized: {
             type: Boolean,
-            readonly: true,
+            readOnly: true,
             notify: true,
             value: false,
             computed: '_computeAuthorized(user)'
@@ -120,7 +120,7 @@
           this._apiUser = undefined;
           this._localUser = {};
           this._isAuthorized = false;
-          this._setUser({});
+          this.__setProperty('user', {});
         },
 
         /**
