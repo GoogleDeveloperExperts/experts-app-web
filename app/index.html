@@ -81,7 +81,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
 
           <template is="dom-if" if="[[user.isExpert]]">
-            <a data-route="my-statistics" href="/my-statistics">
+            <a data-route="my-activities" href="/my-activities">
               <iron-icon icon="face"></iron-icon>
               <span>Expert Area</span>
             </a>
@@ -192,9 +192,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 no-client
                 ></discovery-api-elements>
               <!--Load Product Groups from the API-->
-              <gdetracking-product_group-list auto response="{{pgGroups}}"></gdetracking-product_group-list>
+              <gdetracking-product_group-list auto limit="100" response="{{pgGroups}}"></gdetracking-product_group-list>
               <!--Load Activity Types from the API-->
-              <gdetracking-activity_type-list auto response="{{activityTypes}}"></gdetracking-activity_type-list>
+              <gdetracking-activity_type-list auto limit="100" response="{{activityTypes}}"></gdetracking-activity_type-list>
               <paper-material elevation="1">
                 
                 <p>
@@ -245,7 +245,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <!--Dynamic Content sections-->
             <template is="dom-if" if="[[user.isExpert]]">
-              <section data-route="my-statistics">
+              <section data-route="my-activities">
                 <!-- placeholder for element that will handle Expert activities -->
                 <paper-material elevation="1">
                   <p>Expert Area</p>
