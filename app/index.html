@@ -184,8 +184,62 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
             
             <section data-route="how-to-use">
+              <!-- Prepare elements to access the API -->
+              <discovery-api-elements
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"
+                no-client
+                ></discovery-api-elements>
+              <!--Load Product Groups from the API-->
+              <gdetracking-product_group-list auto response="{{pgGroups}}"></gdetracking-product_group-list>
+              <!--Load Activity Types from the API-->
+              <gdetracking-activity_type-list auto response="{{activityTypes}}"></gdetracking-activity_type-list>
               <paper-material elevation="1">
-                TODO: How is it used
+                
+                <p>
+                  The application checks all the <a href='https://developers.google.com/experts/' target="_blank">Google Experts'</a> 
+                  <a href='https://plus.google.com/' target='_blank'>Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain 
+                  the hashtag <a href="https://plus.google.com/explore/experts" target="_blank">#experts</a> and the area of expertise (<i>#gde, #marketing, #ProductStrategy, #ux_ui</i>).
+                </p>
+                <p>
+                  To be processed by the application, other information are required, so Experts need to add other tags to the Google+ post they are sharing to specify the kind of content they are sharing.
+                </p>
+                <p>
+                  To properly compute the impact of an activity, Experts are <b>strongly</b> recommended to manually input the Activity Metadata section.
+                  <br/>
+                  Activity Metadata edit is activated only on activities that has one or more Activity Type
+                </p>
+                <br/>
+                <p>
+                  The special <b>#</b>tags are divided in 2 categories:
+                </p>
+                <ul>
+                  <li>Product Tags</li>
+                  <li>Activity Type Tags</li>
+                </ul>
+                
+                <p>Following a <i>cheat sheet</i> of the Tags:</p>
+                <div class="layout horizontal wrap">
+                  <paper-material class="container layout vertical">
+                    <h4>Product Tags</h4>
+                    <template is="dom-repeat" items="[[pgGroups.items]]" as="pg">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[pg.tag]]</span>
+                        <span class="descr"><a href$="[[pg.url]]" target="_blank">[[pg.description]]</a></span>
+                      </div>
+                    </template>  
+                  </paper-material>
+                  <paper-material class="container layout vertical">
+                    <h4>Activity Types</h4>
+                    <template is="dom-repeat" items="[[activityTypes.items]]" as="activityType">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[activityType.tag]]</span>
+                        <span class="descr">[[activityType.description]]</span>
+                      </div>
+                    </template>  
+                  </paper-material>
+                </div>
               </paper-material>
             </section>
 
