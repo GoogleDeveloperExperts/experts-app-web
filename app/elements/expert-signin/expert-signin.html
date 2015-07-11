@@ -46,8 +46,7 @@
           user: {
             type: Object,
             notify: true,
-            readOnly: true,
-            computed: '_computeUser(_googleUser, _apiUser)'
+            readOnly: true
           },
 
           /**
@@ -64,12 +63,18 @@
           /**
            * User information from Google authentication
            */
-          _googleUser: Object,
+          _googleUser: {
+            type: Object,
+            observer: '_userInfoChanged'
+          },
 
           /**
            * User information from the Experts Tracking App backend
            */
-          _apiUser: Object,
+          _apiUser: {
+            type: Object,
+            observer: '_userInfoChanged'
+          },
 
           /**
            * User information from local storage
@@ -83,6 +88,10 @@
             type: Boolean,
             value: false
           }
+        },
+
+        _googlerUserChanged: function (e) {
+          console.log(e);
         },
 
         /**
@@ -120,7 +129,6 @@
           this._apiUser = undefined;
           this._localUser = {};
           this._isAuthorized = false;
-          this.__setProperty('user', {});
         },
 
         /**
@@ -149,24 +157,27 @@
         /**
          * Basic user information and access rights for the user
          */
-        _computeUser: function (googleUser, apiUser) {
-          if (!googleUser || !googleUser.id || !apiUser || !apiUser.id) {
-            return {};
+        _userInfoChanged: function () {
+          if (!this._googleUser || !this._googleUser.id ||
+              !this._apiUser || !this._apiUser.id) {
+
+            this._setUser({});
+            return;
           }
 
-          var isAdmin = (apiUser.type === 'administrator') ||
-                        (apiUser.type === 'manager');
+          var isAdmin = (this._apiUser.type === 'administrator') ||
+                        (this._apiUser.type === 'manager');
 
-          return {
-            id: googleUser.id,
-            name: googleUser.name,
-            image: googleUser.image,
-            email: googleUser.email,
-            isExpert: (apiUser.type === 'active'),
+          this._setUser({
+            id: this._googleUser.id,
+            name: this._googleUser.name,
+            image: this._googleUser.image,
+            email: this._googleUser.email,
+            isExpert: (this._apiUser.type === 'active'),
             isAdmin: isAdmin,
             isGoogler: isAdmin ||
-                       (googleUser.email.split('@')[1] === 'google.com')
-          };
+                       (this._googleUser.email.split('@')[1] === 'google.com')
+          });
         },
 
         /**
