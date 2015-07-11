@@ -128,7 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- Application name -->
           <div class="middle paper-font-display2 app-name">
             <img src="images/experts_logo_no_text_48x48.png">
-            Experts Tracking App
+            <span>[[title]]</span>
           </div>
 
           <!-- Application sub title -->
@@ -159,11 +159,34 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             </section>
             
             <section data-route="workflow">
-              TODO:workflow
+              <paper-material elevation="1">
+                <p> The application aims to simplify tracking activities done by Google Experts.</p>
+                <p>To do so, the backend on Google App Engine implements a series of jobs to automatically grab and update activities:</p>
+                <ul>
+                  <li>Create/Update activities from Google+</li>
+                  <li>Update Impact on Youtube videos with the number of views</li>
+                </ul>
+                
+                <h2>Activities from Google + Stream</h2>
+                <p> 
+                  A daily task is in charge of obtaining new <b>public</b> Google+ posts for each Google Expert, and create a new activity 
+                  if the post has the proper #hashtags as explained in the "How is it used" section.<br>
+                  <br>
+                  In case a post has only some of the required hashtags, the activity is still created and available for the Expert to fix using this app.
+                  <br>
+                  Once a week, activities generated from Google+ posts are updated with the new values of +1s, reshares and comments (Social Impact)
+                </p>
+                <h2>Youtube Videos statistics</h2>
+                <p>
+                  During the weekly update of the activities, if the activity has a YouTube link attached, the impact for the #content metadata is automatically updated with the views on the video.
+                </p>
+              </paper-material>
             </section>
             
             <section data-route="how-to-use">
-              TODO:how-to-use
+              <paper-material elevation="1">
+                TODO: How is it used
+              </paper-material>
             </section>
 
             <!--Dynamic Content sections-->
