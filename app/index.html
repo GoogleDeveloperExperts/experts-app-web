@@ -81,11 +81,26 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </template>
 
           <template is="dom-if" if="[[user.isExpert]]">
-            <a data-route="my-statistics" href="/my-statistics">
+            <a data-route="my-activities" href="/my-activities">
               <iron-icon icon="face"></iron-icon>
               <span>Expert Area</span>
             </a>
           </template>
+          
+          <a data-route="workflow" href="/workflow">
+            <iron-icon icon="assignment"></iron-icon>
+            <span>How does it work</span>
+          </a>
+          
+          <a data-route="how-to-use" href="/how-to-use">
+            <iron-icon icon="info"></iron-icon>
+            <span>How is it used</span>
+          </a>
+          
+          <a href="https://github.com/GoogleDeveloperExperts/experts-app-web/issues" target="_blank">
+            <iron-icon icon="feedback"></iron-icon>
+            <span>Feedback/Issues</span>
+          </a>
 
           <!-- To help during development -->
           <a data-route="api-docs" href="/api-docs">
@@ -113,7 +128,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           <!-- Application name -->
           <div class="middle paper-font-display2 app-name">
             <img src="images/experts_logo_no_text_48x48.png">
-            Experts Tracking App
+            <span>[[title]]</span>
           </div>
 
           <!-- Application sub title -->
@@ -124,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
+            <!-- Fixed Content sections-->
             <section data-route="home">
               <template is="dom-if" if="[[user.isExpert]]">
                 <paper-material elevation="1">
@@ -142,9 +157,95 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-material>
               </template>
             </section>
+            
+            <section data-route="workflow">
+              <paper-material elevation="1">
+                <p> The application aims to simplify tracking activities done by Google Experts.</p>
+                <p>To do so, the backend on Google App Engine implements a series of jobs to automatically grab and update activities:</p>
+                <ul>
+                  <li>Create/Update activities from Google+</li>
+                  <li>Update Impact on Youtube videos with the number of views</li>
+                </ul>
+                
+                <h2>Activities from Google + Stream</h2>
+                <p> 
+                  A daily task is in charge of obtaining new <b>public</b> Google+ posts for each Google Expert, and create a new activity 
+                  if the post has the proper #hashtags as explained in the "How is it used" section.<br>
+                  <br>
+                  In case a post has only some of the required hashtags, the activity is still created and available for the Expert to fix using this app.
+                  <br>
+                  Once a week, activities generated from Google+ posts are updated with the new values of +1s, reshares and comments (Social Impact)
+                </p>
+                <h2>Youtube Videos statistics</h2>
+                <p>
+                  During the weekly update of the activities, if the activity has a YouTube link attached, the impact for the #content metadata is automatically updated with the views on the video.
+                </p>
+              </paper-material>
+            </section>
+            
+            <section data-route="how-to-use">
+              <!-- Prepare elements to access the API -->
+              <discovery-api-elements
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"
+                no-client
+                ></discovery-api-elements>
+              <!--Load Product Groups from the API-->
+              <gdetracking-product_group-list auto limit="100" response="{{pgGroups}}"></gdetracking-product_group-list>
+              <!--Load Activity Types from the API-->
+              <gdetracking-activity_type-list auto limit="100" response="{{activityTypes}}"></gdetracking-activity_type-list>
+              <paper-material elevation="1">
+                
+                <p>
+                  The application checks all the <a href='https://developers.google.com/experts/' target="_blank">Google Experts'</a> 
+                  <a href='https://plus.google.com/' target='_blank'>Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain 
+                  the hashtag <a href="https://plus.google.com/explore/experts" target="_blank">#experts</a> and the area of expertise (<i>#gde, #marketing, #ProductStrategy, #ux_ui</i>).
+                </p>
+                <p>
+                  To be processed by the application, other information are required, so Experts need to add other tags to the Google+ post they are sharing to specify the kind of content they are sharing.
+                </p>
+                <p>
+                  To properly compute the impact of an activity, Experts are <b>strongly</b> recommended to manually input the Activity Metadata section.
+                  <br/>
+                  Activity Metadata edit is activated only on activities that has one or more Activity Type
+                </p>
+                <br/>
+                <p>
+                  The special <b>#</b>tags are divided in 2 categories:
+                </p>
+                <ul>
+                  <li>Product Tags</li>
+                  <li>Activity Type Tags</li>
+                </ul>
+                
+                <p>Following a <i>cheat sheet</i> of the Tags:</p>
+                <div class="layout horizontal wrap">
+                  <paper-material class="container layout vertical">
+                    <h4>Product Tags</h4>
+                    <template is="dom-repeat" items="[[pgGroups.items]]" as="pg">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[pg.tag]]</span>
+                        <span class="descr"><a href$="[[pg.url]]" target="_blank">[[pg.description]]</a></span>
+                      </div>
+                    </template>  
+                  </paper-material>
+                  <paper-material class="container layout vertical">
+                    <h4>Activity Types</h4>
+                    <template is="dom-repeat" items="[[activityTypes.items]]" as="activityType">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[activityType.tag]]</span>
+                        <span class="descr">[[activityType.description]]</span>
+                      </div>
+                    </template>  
+                  </paper-material>
+                </div>
+              </paper-material>
+            </section>
 
+            <!--Dynamic Content sections-->
             <template is="dom-if" if="[[user.isExpert]]">
-              <section data-route="my-statistics">
+              <section data-route="my-activities">
                 <!-- placeholder for element that will handle Expert activities -->
                 <paper-material elevation="1">
                   <p>Expert Area</p>

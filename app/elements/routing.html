@@ -17,14 +17,22 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     // More info: https://visionmedia.github.io/page.js/
     page('/', function () {
       app.route = 'home';
-    });
+      app.title = 'Experts Tracking App';
+    }); 
 
-    page('/my-statistics', function () {
-      app.route = 'my-statistics';
+    page('/my-activities', function () {
+      app.route = 'my-activities';
+      app.title = 'My Activities';
     });
-
-    page('/my-statistics', function () {
-      app.route = 'my-statistics';
+    
+    page('/workflow', function () {
+      app.route = 'workflow';
+      app.title = 'How does it works?';
+    });
+    
+    page('/how-to-use', function () {
+      app.route = 'how-to-use';
+      app.title = 'How is it used?';
     });
 
     page('/activity/:activityId', function (data) {
@@ -34,10 +42,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     page('/general-statistics', function () {
       app.route = 'general-statistics';
+      app.title = 'General Statistics';
     });
 
     page('/api-docs', function () {
       app.route = 'api-docs';
+      app.title = 'API Docs';
     });
 
     // add #! before urls

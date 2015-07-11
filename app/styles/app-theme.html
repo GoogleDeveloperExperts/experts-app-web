@@ -63,6 +63,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     background: white;
   }
 
+  paper-material.container {
+    width: auto;
+    max-width: calc(98.66% - 16px);
+  }
+
   paper-menu iron-icon {
     margin-right: 33px;
     opacity: 0.54;
@@ -134,8 +139,20 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
     width: 48px;
     height: 48px;
   }
+  
+  span.tag {
+    min-width: 150px;
+    margin-right: 5px;
+  }
+  
+  span.descr {
+    width: 320px;
+  }
 
-
+  .item-line {
+      border: 1px solid #e5e5e5;
+      padding: 5px 5px 5px 5px;
+  }
 
   /* Breakpoints */
 
@@ -147,6 +164,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       width: calc(97.33% - 32px);
       padding-left: 16px;
       padding-right: 16px;
+    }
+
+    paper-material.container {
+      width: auto;
+      max-width: calc(97.33% - 32px);
     }
 
     .paper-font-display1 {
@@ -183,6 +205,11 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       margin-bottom: 32px;
       padding-left: 30px;
       padding-right: 30px;
+    }
+
+    paper-material.container {
+      width: auto;
+      max-width: calc(98% - 46px);
     }
 
     #drawer.paper-drawer-panel > [drawer] {
