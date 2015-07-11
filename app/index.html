@@ -86,6 +86,21 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <span>Expert Area</span>
             </a>
           </template>
+          
+          <a data-route="workflow" href="/workflow">
+            <iron-icon icon="assignment"></iron-icon>
+            <span>How does it work</span>
+          </a>
+          
+          <a data-route="how-to-use" href="/how-to-use">
+            <iron-icon icon="info"></iron-icon>
+            <span>How is it used</span>
+          </a>
+          
+          <a href="https://github.com/GoogleDeveloperExperts/experts-app-web/issues" target="_blank">
+            <iron-icon icon="feedback"></iron-icon>
+            <span>Feedback/Issues</span>
+          </a>
 
           <!-- To help during development -->
           <a data-route="api-docs" href="/api-docs">
@@ -124,7 +139,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Content -->
         <div class="content">
           <iron-pages attr-for-selected="data-route" selected="{{route}}">
-
+            <!-- Fixed Content sections-->
             <section data-route="home">
               <template is="dom-if" if="[[user.isExpert]]">
                 <paper-material elevation="1">
@@ -142,7 +157,16 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-material>
               </template>
             </section>
+            
+            <section data-route="workflow">
+              TODO:workflow
+            </section>
+            
+            <section data-route="how-to-use">
+              TODO:how-to-use
+            </section>
 
+            <!--Dynamic Content sections-->
             <template is="dom-if" if="[[user.isExpert]]">
               <section data-route="my-statistics">
                 <!-- placeholder for element that will handle Expert activities -->
