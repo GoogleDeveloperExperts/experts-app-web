@@ -24,7 +24,7 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
         $rootScope.userName = currUser.display_name;
         $('#generalStatisticsForGooglers').css('display','none');	//Hide the previously shown menu
         //Show the right menu by user type
-        switch (currUser.type){
+        switch (currUser.type){//TODO maybe use category
           case 'administrator':
             console.log('You are an administrator of this app!');
             $('#generalStatisticsForGooglers')	.css('display','flex');
@@ -33,10 +33,34 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
             console.log('You are a manager of this app!');
             $('#generalStatisticsForGooglers')	.css('display','flex');
             break;
-          case 'active':
-            console.log('You are a GDE!');
+          case 'active'://TODO: maybe Remove
+          case 'gde':
+          case 'marketing':
+          case 'productstrategy':
+          case 'ux_ui':
+            console.log('You are an Expert!');
             $('#gdeStatistics')					.css('display','flex');
             $('#gdeAvatarBuilder')				.css('display','flex');
+            //Hack
+            if($rootScope.productGroups){
+              //Get the category from the Expert PGs
+              $rootScope.productGroups.some(function (item){
+                if(item.id == currUser.product_group[0]){
+                  $rootScope.userCategory = item.category;
+                  return true;
+                }
+                return false;
+              });
+              //Filter the pgs by category
+              var tmpPgs = [];
+              $rootScope.productGroups.forEach(function (item){
+                if($rootScope.userCategory == item.category){
+                  tmpPgs.push(item);
+                }
+              });
+              $rootScope.visiblePgs = tmpPgs;
+            }
+
             break;
           default:
             break;	//disabled users
