@@ -372,7 +372,7 @@ GdeTrackingApp.run(function ($rootScope)
 				}
 			);
 		},
-		'productGroupsFromApi'		: function(gdeTrackingAPI)
+		'productGroupsFromApi'		: function(gdeTrackingAPI,nextPageToken)
 		{	//Create request data object
 			var requestData		= {};
 			requestData.limit	= 100;
@@ -380,7 +380,13 @@ GdeTrackingApp.run(function ($rootScope)
 			gdeTrackingAPI.product_group.list(requestData).execute(
 				function(response)
 				{
-					$rootScope.productGroups	= response.items;
+				  if (!$rootScope.productGroups){
+				    $rootScope.productGroups = [];
+				  }
+					$rootScope.productGroups = $rootScope.productGroups.concat(response.items);
+					if (response.nextPageToken){
+					  $rootScope.utils.productGroupsFromApi(gdeTrackinglAPI,response.nextPageToken);
+					}
 				}
 			);
 		},
@@ -400,7 +406,6 @@ GdeTrackingApp.run(function ($rootScope)
 		{	//Create request data object
 			var requestData = {};
       requestData.limit=100;
-      requestData.type = 'active';
       requestData.pageToken=nextPageToken;
       //Load the GDE list once for all the application
       gdeTrackingAPI.account.list(requestData).execute(
@@ -411,7 +416,7 @@ GdeTrackingApp.run(function ($rootScope)
           }
           response.items.forEach(function(item){
             //exclude deleted
-            if (item.deleted==false){
+            if (item.deleted == false || item.type != 'deleted'){
               $rootScope.gdeList.push(item);
             }
 
