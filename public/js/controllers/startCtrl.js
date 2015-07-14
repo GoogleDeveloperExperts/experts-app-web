@@ -29,6 +29,7 @@ GdeTrackingApp.controller("startCtrl",							function($rootScope, $scope,	$http,
 
   var getPGs = function(gdeObject){
     var gdeProducts = gdeObject.product_group;
+    
     var toRet = [];
     //Obtain the Product Group object for each user PG
     if (gdeProducts){
@@ -40,7 +41,7 @@ GdeTrackingApp.controller("startCtrl",							function($rootScope, $scope,	$http,
             return true;
           }
           return false;
-        })
+        });
       });
     }else{
       console.log("GDE "+gdeObject.display_name+ " has no Product Group" + ' ' + new Date().toUTCString());
@@ -50,7 +51,7 @@ GdeTrackingApp.controller("startCtrl",							function($rootScope, $scope,	$http,
       toRet.push({id:'',description:'',image:''});
     }
     return toRet;
-  }
+  };
 
 	$scope.getGdeList			= function ()
 	{
