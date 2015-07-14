@@ -74,21 +74,6 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
 	    }
 	  }
 	};
-	
-	$scope.pushUserAccount = function(userObject){
-	  $scope.gdeTrackingAPI.account.insert(userObject).execute(
-        function(response)
-        {
-          if (response.code){
-            console.log('gdeTrackingAPI.account.insert(DATA) responded with Response Code: '+response.code + ' - '+ response.message);
-            console.log(JSON.stringify(userObject));
-            alert(response.message);
-          }else{
-            console.log('Email Updated correctly');
-          }
-    		}
-    	);
-	};
 
 	$scope.$on('event:google-plus-signin-success', function (event, authResult)
 	{	// User successfully authorized the G+ App!

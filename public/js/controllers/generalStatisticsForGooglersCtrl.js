@@ -14,6 +14,10 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
 	$scope.months				= months;
 	$scope.years				= years;
 	$scope.products     = [];
+	$scope.categories   = [{id: 'gde',description: 'Technology'},
+	                       {id: 'marketing',description: 'Marketing'},
+	                       {id: 'productstrategy',description: 'Product Strategy'},
+	                       {id: 'ux_ui',description: 'UX/UI'}];
 	$scope.includeDeleted = false;
 
 	// ------------------------------------
@@ -26,6 +30,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
   	$scope.top100activities				= [];
   	$scope.activityBy = {
   	  'GDE':{},
+  	  'Category':{},
   	  'Product':{},
   	  'Activity':{},
   	  'Region':{},
@@ -60,22 +65,44 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
 		}
 	};
 	// ------------------------------------
+	$scope.categoryFilter				= function (){
+    
+    //Update the list of available products
+    if ($scope.categorySelected){
+      //Filter the pgs by category
+      var tmpPgs = [];
+      $rootScope.productGroups.forEach(function (item){
+        if($scope.categorySelected.id == item.category){
+          tmpPgs.push(item);
+        }
+      });
+      $scope.products = tmpPgs;
+      
+      $scope.productSelected = null;
+    }else{
+      $scope.products = [];
+      $scope.products = $scope.products.concat($rootScope.productGroups);
+    }
+    //Run the product filter, this will filter by date and product/s
+    $scope.productFilter();
+	};
+	
   $scope.productFilter				= function (){
-	  // ------------------------------------
-		//		Reset local data
-		// ------------------------------------
-		$scope.initChartArrays();
-
-		if ( $scope.monthSelected && $scope.yearSelected )
+  	if ( $scope.monthSelected && $scope.yearSelected )
 		{
       $scope.dateFilter();
 		}else{
+		  // ------------------------------------
+  		//		Reset local data
+  		// ------------------------------------
+  		$scope.initChartArrays();
 		  //console.log($scope.monthSelected.value + " " + $scope.yearSelected.value);
 			loadingToast.show();
 			$('.forGooglers')	.css('display','block');
 		  $scope.getactivitiesFromGAE(null,null,null,null,null,$scope.includeDeleted);	// Get the activities
 		}
 	};
+	
 
 	var drawChart = function(prefix,key){
     var activitiesClone = [];
@@ -333,6 +360,9 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
 		//By GDE Charts
 		drawChart('GDE','name');
 
+    //By category Chart
+    drawChart('Category','category');
+    
 		//By Product Charts
 		drawChart('Product','product');
 
@@ -373,19 +403,37 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
 			{	//Everything ok, keep going
         if (response.items)	// If there is data
         {	//Add response Items to the full list
-
-          //Filter the data for product if the product is selected
-          if ($scope.productSelected){
+          
+          //Filter the data for product or category
+          if ($scope.productSelected || $scope.categorySelected){
+            
             response.items.forEach(function(item){
               if (item.product_groups){
                 item.product_groups.some(function(pg){
-                  if (pg==$scope.productSelected.tag){
-                    $scope.data.items.push(item);
+                  if($scope.productSelected) {
+                    //Single product selected
+                    if (pg==$scope.productSelected.tag){
+                      $scope.data.items.push(item);
+                      return true;
+                    }  
+                  }else{
+                    var activityAdded = false;
+                    //All products in a category
+                    $scope.products.some(function(catPg){
+                      if (pg==catPg.tag){
+                        $scope.data.items.push(item);
+                        activityAdded = true;
+                        return true;
+                      }
+                    });
+                    return activityAdded;
                   }
+                  return false;
                 });
               }
             });
           }else{
+            //No filter
             $scope.data.items = $scope.data.items.concat(response.items);
           }
         } else
@@ -428,7 +476,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
             $scope.activityBy['GDE'][name]['activities'].push(activity);
 
             //===============================================//
-            // activities by Product
+            // activities by Product and Category
             //===============================================//
             if ($scope.data.items[i].product_groups)
             {
@@ -439,14 +487,25 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                     product == '#deeplinking' || product == '#androidm'){
                   product = '#android';
                 }
+                var category;
                 //Get the Product Description
                 $rootScope.productGroups.some(function(pg){
                   if (pg.tag==product){
                     product = pg.description;
+                    category = pg.category;
                     return true;
                   }else{
                     return false;
                   }
+                });
+                
+                //Get the category description
+                $scope.categories.some(function(cat) {
+                  if (cat.id == category){
+                    category = cat.description;
+                    return true;
+                  }
+                  return false; 
                 });
 
                 if (!$scope.activityBy['Product'][product])
@@ -459,8 +518,22 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 }
 
                 $scope.utils.updateStats($scope.activityBy['Product'][product], $scope.data.items[i]);
+                
+                $scope.activityBy['Product'][product]['activities'].push(activity); 
+                
+                //Category Activities
+                if (!$scope.activityBy['Category'][category])
+                {
+                  $scope.activityBy['Category'][category] = {};	// Initialize a new JSON unordered array
 
-                $scope.activityBy['Product'][product]['activities'].push(activity);
+                  $scope.activityBy['Category'][category]['category'] = category
+
+                  $scope.activityBy['Category'][category]['activities'] = [];	// Initialize a new JSON ordered array
+                }
+
+                $scope.utils.updateStats($scope.activityBy['Category'][category], $scope.data.items[i]);
+
+                $scope.activityBy['Category'][category]['activities'].push(activity);
 
               }
 
