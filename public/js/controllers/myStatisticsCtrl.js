@@ -295,8 +295,10 @@ GdeTrackingApp.controller("myStatisticsCtrl",					function($scope,	$location,	$h
 		  }else{
 		    pgSelector.selected = false;
 		  }
-
-			$scope.currProductGroupList.push(pgSelector); // Push it as a new object in a JSON array.
+      if($rootScope.type == pgSelector.category){
+        $scope.currProductGroupList.push(pgSelector); // Push it as a new object in a JSON array.
+      }
+			
 		});
 
   };

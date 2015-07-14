@@ -23,23 +23,49 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
 	    if (currUser){
         $rootScope.userName = currUser.display_name;
         $('#generalStatisticsForGooglers').css('display','none');	//Hide the previously shown menu
+        
         //Show the right menu by user type
         switch (currUser.type){
           case 'administrator':
             console.log('You are an administrator of this app!');
-            $('#generalStatisticsForGooglers')	.css('display','flex');
+            $('#generalStatisticsForGooglers').css('display','flex');
             break;
           case 'manager':
             console.log('You are a manager of this app!');
-            $('#generalStatisticsForGooglers')	.css('display','flex');
+            $('#generalStatisticsForGooglers').css('display','flex');
             break;
-          case 'active':
-            console.log('You are a GDE!');
+          case 'active'://TODO: maybe Remove
+          case 'gde':
+          case 'marketing':
+          case 'productstrategy':
+          case 'ux_ui':
+            console.log('You are an Expert!');
             $('#gdeStatistics')					.css('display','flex');
             $('#gdeAvatarBuilder')				.css('display','flex');
+
+            $rootScope.type = currUser.type;
+
+            if($rootScope.productGroups){
+              //Filter the pgs by category
+              var tmpPgs = [];
+              $rootScope.productGroups.forEach(function (item){
+                if($rootScope.type == item.category){
+                  tmpPgs.push(item);
+                }
+              });
+              $rootScope.visiblePgs = tmpPgs;
+            }
+
             break;
           default:
             break;	//disabled users
+        }
+
+        if(!$rootScope.visiblePgs){
+          if($rootScope.productGroups){
+            $rootScope.visiblePgs = [];
+            $rootScope.visiblePgs = $rootScope.visiblePgs.concat($rootScope.productGroups);
+          }
         }
         
         $rootScope.userLoaded = true;
