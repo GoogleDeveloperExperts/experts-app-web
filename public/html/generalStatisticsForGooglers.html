@@ -11,7 +11,12 @@
   			-Select year-
   		</option>
   	</select>
-  	<select ng-model="productSelected" ng-options="product.tag for product in products"		ng-change="productFilter()" required>
+  	<select ng-model="categorySelected" ng-options="category.id for category in categories" ng-change="categoryFilter()" required>
+  		<option value="">
+  			-All Expert Categories-
+  		</option>
+  	</select>
+  	<select ng-model="productSelected" ng-options="product.tag for product in products" ng-change="productFilter()" required>
   		<option value="">
   			-All Products-
   		</option>
@@ -54,6 +59,23 @@
 	</paper-shadow>
 </div>
 
+<div class="stats forGooglers">
+	<paper-shadow z="1">
+  	<h1>General Statistics by Category</h1>
+  	<h5><i>since {{monthSince}}/{{yearSince}}</i></h5>
+  	<div class="gdesGeneralStats" id="generalStatisticsByCategory" horizontal layout wrap center-justified>
+  		<div vertical layout>
+  			<div id="Category_selector" class="Category_selector"></div>
+  			<div id="Category_activitiesSlider" class="Category_activitiesSlider"></div>
+  			<div id="Category_socialImpactSlider" class="Category_SocialImpactSlider"></div>
+  			<div id="Category_metaImpactSlider" class="Category_metaImpactSlider"></div>
+  			<div id="Category_impactSlider" class="Category_impactSlider"></div>
+  		</div>
+  		<div id="Category_TableChart"></div>
+  		<div id="Category_BarChart"></div>
+  	</div>
+	</paper-shadow>
+</div>
 <div class="stats forGooglers">
 	<paper-shadow z="1">
   	<h1>General Statistics by Product</h1>
