@@ -73,15 +73,43 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
       var tmpPgs = [];
       $rootScope.productGroups.forEach(function (item){
         if($scope.categorySelected.id == item.category){
-          tmpPgs.push(item);
+          //Check if the product.product is different from the product itself
+          if(item.product != item.id){
+            //Get the description of the product.product
+            $rootScope.productGroups.some(function(chartProduct){
+              if(chartProduct.tag == item.product){
+                tmpPgs.push(chartProduct);
+                return true;
+              }
+              return false;
+            });
+          }else{
+            tmpPgs.push(item);
+          }
         }
       });
       $scope.products = tmpPgs;
       
       $scope.productSelected = null;
     }else{
-      $scope.products = [];
-      $scope.products = $scope.products.concat($rootScope.productGroups);
+      var tmpPgs = [];
+      $rootScope.productGroups.forEach(function (item){
+        //Check if the product.product is different from the product itself
+        if(item.product != item.id){
+          //Get the description of the product.product
+          $rootScope.productGroups.some(function(chartProduct){
+            if(chartProduct.tag == item.product){
+              tmpPgs.push(chartProduct);
+              return true;
+            }
+            return false;
+          });
+          tmpPgs.push(item);
+        }
+      });
+      $scope.products = tmpPgs;
+
+      $scope.productSelected = null;
     }
     //Run the product filter, this will filter by date and product/s
     $scope.productFilter();
@@ -483,15 +511,23 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
               for (var j=0;j<$scope.data.items[i].product_groups.length;j++)
               {
                 var product = $scope.data.items[i].product_groups[j];
-                if (product == '#diagnostics' || product == '#appindexing' || 
-                    product == '#deeplinking' || product == '#androidm'){
-                  product = '#android';
-                }
-                var category;
+                var category = "";
                 //Get the Product Description
                 $rootScope.productGroups.some(function(pg){
                   if (pg.tag==product){
                     product = pg.description;
+                    //Check if the product.product is different from the product itself
+                    if(pg.product != pg.id){
+                      //Get the description of the product.product
+                      $rootScope.productGroups.some(function(chartProduct){
+                        if(chartProduct.tag == pg.product){
+                          product = chartProduct.description;
+                          return true;
+                        }
+                        return false;
+                      });
+                    }
+
                     category = pg.category;
                     return true;
                   }else{
