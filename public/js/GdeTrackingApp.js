@@ -331,6 +331,7 @@ GdeTrackingApp.run(function ($rootScope)
 			if (showGDEName){
 			  row.c.push({v:activityRecord.gde_name});
 			}
+
 			row.c.push({v:total_impact});
 			row.c.push({v:activitiesLogged});
 			row.c.push({v:social_impact});

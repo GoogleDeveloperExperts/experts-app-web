@@ -170,7 +170,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
 		{
 
 			activitiesBy.rows.push(
-				$scope.utils.chartDataRow(activitiesClone[i][key], activitiesClone[i],useCountry)
+				$scope.utils.chartDataRow(activitiesClone[i][key], activitiesClone[i],useCountry,false)
 			);
 		}
 
@@ -433,7 +433,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
         {	//Add response Items to the full list
           
           //Filter the data for product or category
-          if ($scope.productSelected || $scope.categorySelected){
+          // if ($scope.productSelected || $scope.categorySelected){
             
             response.items.forEach(function(item){
               if (item.product_groups){
@@ -441,14 +441,16 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                   if($scope.productSelected) {
                     //Single product selected
                     if (pg==$scope.productSelected.tag){
+                      item.category = pg.category;
                       $scope.data.items.push(item);
                       return true;
                     }  
                   }else{
                     var activityAdded = false;
-                    //All products in a category
+                    //All products in a category.. or all
                     $scope.products.some(function(catPg){
                       if (pg==catPg.tag){
+                        item.category = pg.category;
                         $scope.data.items.push(item);
                         activityAdded = true;
                         return true;
@@ -460,10 +462,10 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 });
               }
             });
-          }else{
-            //No filter
-            $scope.data.items = $scope.data.items.concat(response.items);
-          }
+          // }else{
+          //   //No filter
+          //   $scope.data.items = $scope.data.items.concat(response.items);
+          // }
         } else
         {
           window.alert('There are no recorded activities at the date range you selected.');
@@ -514,13 +516,13 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 var category = "";
                 //Get the Product Description
                 $rootScope.productGroups.some(function(pg){
-                  if (pg.tag==product){
+                  if (pg.tag.toLowerCase()==product.toLowerCase()){
                     product = pg.description;
                     //Check if the product.product is different from the product itself
-                    if(pg.product != pg.id){
+                    if(pg.product.toLowerCase() != pg.id.toLowerCase()){
                       //Get the description of the product.product
                       $rootScope.productGroups.some(function(chartProduct){
-                        if(chartProduct.tag == pg.product){
+                        if(chartProduct.tag.toLowerCase() == pg.product.toLowerCase()){
                           product = chartProduct.description;
                           return true;
                         }
@@ -537,7 +539,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 
                 //Get the category description
                 $scope.categories.some(function(cat) {
-                  if (cat.id == category){
+                  if (cat.id.toLowerCase() == category.toLowerCase()){
                     category = cat.description;
                     return true;
                   }
@@ -557,6 +559,8 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 
                 $scope.activityBy['Product'][product]['activities'].push(activity); 
                 
+                activity.category = category;
+
                 //Category Activities
                 if (!$scope.activityBy['Category'][category])
                 {
@@ -584,7 +588,7 @@ GdeTrackingApp.controller("generalStatisticsForGooglersCtrl",	function($rootScop
                 var activity_type = $scope.data.items[i].activity_types[j];
                 //Get Activity Type Description
                 $rootScope.activityTypes.some(function(at){
-                  if(activity_type==at.tag){
+                  if(activity_type.toLowerCase()==at.tag.toLowerCase()){
                     activity_type= at.id;
                     return true;
                   }else{
