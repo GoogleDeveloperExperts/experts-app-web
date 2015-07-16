@@ -169,7 +169,7 @@
             name: this._googleUser.name,
             image: this._googleUser.image,
             email: this._googleUser.email,
-            isExpert: (this._apiUser.type === 'active'),
+            isExpert: (this._apiUser.type != 'deleted'),
             isAdmin: isAdmin,
             isGoogler: isAdmin ||
                        (this._googleUser.email.split('@')[1] === 'google.com')
