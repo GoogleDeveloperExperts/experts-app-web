@@ -40,5 +40,29 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       drawerPanel.closeDrawer();
     }
   };
+  
+  app._filterPGByCategory = function(item){
+    //Filter if the user is logged in AND have a Category of Expertise, show only the PGs for that category
+    if (app.user && app.user.category && !app.user.isGoogler){
+      return (item.category === app.user.category);
+    }
+    return true;
+  };
+  
+  app._sortPGs = function(a,b) {
+    if(a.tag.toLowerCase() > b.tag.toLowerCase()) {
+      return 1;
+    }
+    if(a.tag.toLowerCase() < b.tag.toLowerCase()) {
+      return -1;
+    }
+    return 0;
+  };
+  
+  app._userChanged = function(newValue){
+    app.set('user', newValue.detail.value);
+    //User changed, force the PG list to be redrawn
+    app.$.pgList.render();
+  };
 
 })(document);

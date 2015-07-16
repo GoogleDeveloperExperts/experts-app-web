@@ -123,7 +123,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
 
           <!-- Toolbar icons -->
-          <expert-signin user="{{user}}" is-authorized="{{isAuthorized}}"></expert-signin>
+          <expert-signin is-authorized="{{isAuthorized}}" on-user-changed="_userChanged"></expert-signin>
 
           <!-- Application name -->
           <div class="middle paper-font-display2 app-name">
@@ -144,11 +144,6 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <template is="dom-if" if="[[user.isExpert]]">
                 <paper-material elevation="1">
                   <p class="paper-font-body2">You are an Expert!</p>
-                </paper-material>
-              </template>
-              <template is="dom-if" if="[[user.isAdmin]]">
-                <paper-material elevation="1">
-                  <p class="paper-font-body2">You are an Admin!</p>
                 </paper-material>
               </template>
               <template is="dom-if" if="[[user.isGoogler]]">
@@ -223,7 +218,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 <div class="layout horizontal wrap">
                   <paper-material class="container layout vertical">
                     <h4>Product Tags</h4>
-                    <template is="dom-repeat" items="[[pgGroups.items]]" as="pg">
+                    <template is="dom-repeat" items="[[pgGroups.items]]" as="pg" id="pgList"
+                              filter="_filterPGByCategory" sort="_sortPGs">
                       <div class="item-line layout horizontal">
                         <span class="tag self-center">[[pg.tag]]</span>
                         <span class="descr"><a href$="[[pg.url]]" target="_blank">[[pg.description]]</a></span>

@@ -161,18 +161,14 @@
             return;
           }
 
-          var isAdmin = (this._apiUser.type === 'administrator') ||
-                        (this._apiUser.type === 'manager');
-
           this._setUser({
             id: this._googleUser.id,
             name: this._googleUser.name,
             image: this._googleUser.image,
             email: this._googleUser.email,
-            isExpert: (this._apiUser.type === 'active'),
-            isAdmin: isAdmin,
-            isGoogler: isAdmin ||
-                       (this._googleUser.email.split('@')[1] === 'google.com')
+            category: this._apiUser.type,
+            isExpert: (this._apiUser.type !== 'deleted'),
+            isGoogler: (this._googleUser.email.split('@')[1] === 'google.com')
           });
         },
 
