@@ -154,22 +154,26 @@
          * Basic user information and access rights for the user
          */
         _userInfoChanged: function () {
-          if (!this._googleUser || !this._googleUser.id ||
-              !this._apiUser || !this._apiUser.id) {
-
-            this._setUser({});
+          if (!this._googleUser || !this._googleUser.id) {
+            this._setUser(undefined);
             return;
           }
 
-          this._setUser({
+          var user = {
             id: this._googleUser.id,
             name: this._googleUser.name,
             image: this._googleUser.image,
             email: this._googleUser.email,
-            category: this._apiUser.type,
-            isExpert: (this._apiUser.type !== 'deleted'),
+            token: this._googleUser.token,
             isGoogler: (this._googleUser.email.split('@')[1] === 'google.com')
-          });
+          };
+
+          if (this._apiUser && this._apiUser.type) {
+            user.category = this._apiUser.type;
+            user.isExpert = (this._apiUser.type !== 'deleted');
+          }
+
+          this._setUser(user);
         },
 
         /**
