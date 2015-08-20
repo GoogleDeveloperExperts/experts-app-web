@@ -225,7 +225,7 @@
         <!--Dynamically Change the metadata fileds by activity_type group -->
         <paper-tabs id="AGTabs">
           <paper-tab ng-repeat="ag in currActivityGroups" ng-click="selectAG(ag.tag,$event)">
-              {{ag.tag}}
+              {{ag.id}}
           </paper-tab>
         </paper-tabs>
         <core-animated-pages id="core_animated_pages" notap transitions="slide-from-right">
