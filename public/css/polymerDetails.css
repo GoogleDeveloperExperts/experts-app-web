@@ -233,7 +233,7 @@ select:hover
 .googleDevelopersLogo {
   position: relative;
   top: 35px;
-  height: 150px;
+  height: 125px;
   left: 35px;
 }
 html /deep/ .content	{
