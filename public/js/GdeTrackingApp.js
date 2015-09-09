@@ -385,6 +385,7 @@ GdeTrackingApp.run(function ($rootScope)
 				    $rootScope.productGroups = [];
 				  }
 					$rootScope.productGroups = $rootScope.productGroups.concat(response.items);
+					$rootScope.visiblePgs = $rootScope.productGroups;
 					if (response.nextPageToken){
 					  $rootScope.utils.productGroupsFromApi(gdeTrackinglAPI,response.nextPageToken);
 					}
