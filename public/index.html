@@ -158,52 +158,20 @@
 			</paper-toast>
 			<paper-action-dialog id="HowMyActivities" transition="core-transition-center "autoCloseDisabled="true">
 				<div class="content">
-					<h1>How is it used</h1>
+					<h1>How can I see my recorded activities?</h1>
 					<p>
-						The application checks all the <a href='https://developers.google.com/experts/members/' target="_blank">GDE's</a> <a href='https://plus.google.com/' target='_blank'>Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain the hashtag <a href="https://plus.google.com/explore/gde" target="_blank">#gde</a>.
+						Navigate to <a href="https://gdetracking.appspot.com/#/">https://gdetracking.appspot.com/#/</a> (to be changed to https://expertstracking.appspot.com/ when v2 is released) and sign in if you have never visited. 
+						Once you log-in the option to access your data is available with the EXPERT ACCESS option.
 					</p>
+					<div style="text-align:center">
+            <img src="/img/expert_menu.png" >  
+          </div>
 					<p>
-						To be processed by the application, other information are required, so GDE's need to add additional tags to the Google+ post they are sharing to specify the kind of content they are sharing.
+						You will then be provided with a your statistics and a list of recorded activities which you can review and edit. You are also able to create activities using the application.
 					</p>
-					<p>
-					  To properly compute the impact of an activity, the GDE is <b>strongly</b> recomended to manually input the Activity Metadata section.
-					  <br/>
-					  Activity Metadata edit is activated only on activities that has one or more activity type
-					</p>
-					<br/>
-					<p>
-						The special <strong>#</strong> tags are divided in 2 categories:
-					</p>
-					<ul>
-						<li><p>Product Tags</p></li>
-						<li><p>Activity Type Tags</p></li>
-					</ul>
-
-					<p>Following a <i>cheat sheet</i> of the Tags:</p>
-					<br/>
-					<table style="float:left;border-style: solid;height: 600px;" class='prettyTable' >
-						<tr>
-							<th colspan="2">
-								Product Tags
-							</th>
-						</tr>
-            <tr ng-repeat="pg in visiblePgs">
-              <td>{{pg.tag}}</td>
-              <td><a href='{{pg.url}}'target='_blank'>{{pg.description}}</a></td>
-            </tr>
-					</table>
-					<table style="padding-left: 10px;border-style: solid;height: 600px;"	class='prettyTable' >
-						<tr>
-							<th colspan="2">
-								Activity Type Tags
-							</th>
-						</tr>
-            <tr ng-repeat="activityType in activityTypes">
-              <td>{{activityType.tag}}</td>
-              <td>{{activityType.description}}</td>
-            </tr>
-					</table>
-
+					<div style="text-align:center">
+            <img src="/img/act_list.png" >  
+          </div>
 				</div>
 				<paper-button dismissive >
           <core-icon icon="close"></core-icon>
