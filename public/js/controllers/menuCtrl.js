@@ -10,7 +10,7 @@ GdeTrackingApp.controller("menuCtrl",							function($scope,	$location)
 		//MSO - 20140813 - Close the drawer
 		document.getElementById('drawerPanel').togglePanel();
 	};
-	$scope.showGdeStatistics				= function()	// Click detection
+	$scope.showMyStatistics				= function()	// Click detection
 	{
 //		console.log('showGdeStatistics');
 		$location.path('/myStatistics');

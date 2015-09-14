@@ -81,27 +81,35 @@
 			<core-menu	nav	ng-controller="menuCtrl">
 				<core-item class="menuButtonZone" id="generalStatisticsForGooglers">
 					<paper-button	raised class="colored red" ng-click="showGeneralStatisticsForGooglers()"	>
-					  Googlers access
+					  Googler's access
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone" id="gdeStatistics">
-					<paper-button	raised class="colored blue"		ng-click="showGdeStatistics()">
-					  GDE access
+					<paper-button	raised class="colored blue" ng-click="showMyStatistics()">
+					  Expert access
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored green"		onclick="toggleDialog('HowItsUsed')">
-					  How is it used?
+					<paper-button	raised class="colored green double-line-text" onclick="toggleDialog('HowItWorks')">
+					  How does <br>
+					  the App Work?
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored yellow"		onclick="toggleDialog('HowItWorks')">
-					  How does it work?
+					<paper-button	raised class="colored yellow double-line-text"	onclick="toggleDialog('HowMyActivities')">
+					  How can I see my<br> 
+					  recorded activities?
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored deepPurple"	onclick="toggleDialog('WhoAreTheGDEs')">
-					  Who are the GDEs?
+					<paper-button	raised class="colored red double-line-text" onclick="toggleDialog('HowUpdateData')">
+					  How do I update<br>
+					  missing data?
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored blue" onclick="window.open('https://developers.google.com/experts/about','_blank');">
+					  Who are the Experts?
 					</paper-button>
 				</core-item>
 				<div	class="gplus">
@@ -148,7 +156,7 @@
 			<paper-toast id="loading" autoCloseDisabled duration="60000" text="Loading...">
 			  <paper-spinner active></paper-spinner>
 			</paper-toast>
-			<paper-action-dialog id="HowItsUsed" transition="core-transition-center "autoCloseDisabled="true">
+			<paper-action-dialog id="HowMyActivities" transition="core-transition-center "autoCloseDisabled="true">
 				<div class="content">
 					<h1>How is it used</h1>
 					<p>
@@ -231,7 +239,7 @@
 		      Close
 				</paper-button>
 			</paper-action-dialog>
-			<paper-action-dialog	id="WhoAreTheGDEs"		transition="core-transition-center" autoCloseDisabled="true">
+			<paper-action-dialog	id="HowUpdateData"		transition="core-transition-center" autoCloseDisabled="true">
 					<div class="content">
 						<h1>Who are the Google Developer Experts?</h1>
 						<p>The Google Developer Experts (GDE) title recognizes the <strong>outstanding developers who exhibit great expertise in one or more Google technologies and share it with the developer community</strong>.</p>
