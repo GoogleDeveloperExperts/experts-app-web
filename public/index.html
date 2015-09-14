@@ -212,26 +212,58 @@
 			</paper-action-dialog>
 			<paper-action-dialog	id="HowItWorks"			transition="core-transition-center" autoCloseDisabled="true">
         <div class="content">
-          <h1>How does it Work?</h1>
-          <p> The application aims to simplify tracking activities done by GDEs.<br>
-              To do so, the backend on Google App Engine implements a series of jobs to automatically grab and update activities:
-              <ul>
-                <li>Create/Update activities from Google+</li>
-                <li>Update Impact on Youtube videos with the number of views</li>
-              </ul>
+          <h1>How does the app work?</h1>
+          <p> Are you actively involved in the developers community either through public speaking, 
+              writing sample applications & articles, 
+              mentoring fellow developers and tech startups, or other types of activities? 
+              We would like to know about them<br>
+              Everytime you share a post on your Google+ public stream (posts shared publicly or with public communities) just:
+              <ol>
+                <li>add a program category hashtag: #experts or #gde,</li>
+                <li>add a product hashtag, e.g. #Android and </li>
+                <li>add an activity hashtag, e.g. #techtalk</li>
+              </ol>
           </p>
-          <h2>Activities from Google + Stream</h2>
-          <p> A daily task is in charge of obtaining new <b>public</b> Google+ posts for each GDE, and create a new activity 
-              if the post has the proper #hashtags as explained in the "How is it used" section.<br>
-              <br>
-              In case a post has only some of the required hashtags, the activity is still created and available for the GDE to fix using this web app.
-              <br>
-              Once a week, activities generated from Google+ posts are updated with the new values of +1s, reshares and comments (Social Impact)
-          </p>
-          <h2>Youtube Videos statistics</h2>
-          <p>
-            During the weekly update of the activities, if the activity has a YouTube link attached, the impact for the #content metadata is automatically updated with the views on the video.
-          </p>
+          <p>The Experts Tracking App will automatically recognize them and add those entries to your list of activities for that month. See the example below:</p>
+          <div style="text-align:center">
+            <img src="/img/demo_post.png" >  
+          </div>
+          <p>Remember to always tag your post with at least one hashtag from each of the 3 categories:</p>
+          <table style="float:left;border-style: solid;" class='prettyTable' >
+						<tr>
+							<th>
+								Program #Tags
+							</th>
+						</tr>
+            <tr>
+              <td>#gde</td>
+            </tr>
+            <tr>
+              <td>#expert</td>
+            </tr>
+					</table>
+          <table style="float:left;padding-left: 10px;border-style: solid;height: 600px;" class='prettyTable' >
+						<tr>
+							<th colspan="2">
+								Product #Tags
+							</th>
+						</tr>
+            <tr ng-repeat="pg in visiblePgs">
+              <td>{{pg.tag}}</td>
+              <td><a href='{{pg.url}}'target='_blank'>{{pg.description}}</a></td>
+            </tr>
+					</table>
+					<table style="padding-left: 10px;border-style: solid;height: 600px;"	class='prettyTable' >
+						<tr>
+							<th colspan="2">
+								Activity Type #Tags
+							</th>
+						</tr>
+            <tr ng-repeat="activityType in activityTypes">
+              <td>{{activityType.tag}}</td>
+              <td>{{activityType.description}}</td>
+            </tr>
+					</table>
           
 				</div>
 				<paper-button dismissive >
