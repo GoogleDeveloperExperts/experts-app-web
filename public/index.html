@@ -84,11 +84,6 @@
 					  Googlers access
 					</paper-button>
 				</core-item>
-				<core-item class="menuButtonZone" id="gdeAvatarBuilder">
-					<paper-button	raised class="colored red" onclick="toggleDialog('GDEAvatarBuilder')"	>
-					  GDE Avatar Builder
-					</paper-button>
-				</core-item>
 				<core-item class="menuButtonZone" id="gdeStatistics">
 					<paper-button	raised class="colored blue"		ng-click="showGdeStatistics()">
 					  GDE access
@@ -249,24 +244,6 @@
 				</paper-button>
 			</paper-action-dialog>
 
-			<paper-action-dialog	id="GDEAvatarBuilder"		transition="core-transition-center" autoCloseDisabled="true">
-				<div class="content">
-					<h1>GDE Avatar Builder</h1>
-					<p>Fill the form below with your G+ id (eg: +SandroPaganotti) to get your GDE Avatar:</p>
-
-          <form id="avatarForm">
-            <input type="text" id="userid" value="">
-            <input type="submit">
-          </form>
-
-          <gde-badge  userid="" apikey="AIzaSyB9tHddHIErDbuiTmd6xj1_AFgTIJJDTTw" text="GDE"></gde-badge>
-
-          <paper-button dismissive >
-            <core-icon icon="close"></core-icon>
-            Close
-          </paper-button>
-				</div>
-			</paper-action-dialog>
 			<!--	---------------------------------------------------------------------	-->
 		</core-header-panel>
 	</core-drawer-panel>

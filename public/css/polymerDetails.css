@@ -181,7 +181,7 @@ select:hover
     flex-direction		: row;
     align-items			: flex-start;
 }
-#gdeStatistics,	#generalStatisticsForGooglers, #gdeAvatarBuilder	{
+#gdeStatistics,	#generalStatisticsForGooglers	{
 	display				: none;
 }
 .gplus		{
