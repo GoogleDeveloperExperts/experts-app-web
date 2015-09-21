@@ -41,7 +41,6 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
           case 'ux_ui':
             console.log('You are an Expert!');
             $('#gdeStatistics')					.css('display','flex');
-            $('#gdeAvatarBuilder')				.css('display','flex');
 
             $rootScope.type = currUser.type;
 
@@ -89,7 +88,6 @@ GdeTrackingApp.controller('plusLoginCtrl',						function($scope,	$location,	$htt
 			});
 			request.execute(function(resp)
 			{
-        $('gde-badge').get(0).updateImage(resp.image.url.replace(/\?.*$/,""));
 
 				$rootScope.$broadcast('gde:logged',resp.displayName);
 				$scope.userName = resp.displayName;

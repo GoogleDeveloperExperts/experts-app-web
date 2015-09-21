@@ -81,32 +81,35 @@
 			<core-menu	nav	ng-controller="menuCtrl">
 				<core-item class="menuButtonZone" id="generalStatisticsForGooglers">
 					<paper-button	raised class="colored red" ng-click="showGeneralStatisticsForGooglers()"	>
-					  Googlers access
-					</paper-button>
-				</core-item>
-				<core-item class="menuButtonZone" id="gdeAvatarBuilder">
-					<paper-button	raised class="colored red" onclick="toggleDialog('GDEAvatarBuilder')"	>
-					  GDE Avatar Builder
+					  Googler's access
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone" id="gdeStatistics">
-					<paper-button	raised class="colored blue"		ng-click="showGdeStatistics()">
-					  GDE access
+					<paper-button	raised class="colored blue" ng-click="showMyStatistics()">
+					  Expert access
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored green"		onclick="toggleDialog('HowItsUsed')">
-					  How is it used?
+					<paper-button	raised class="colored green double-line-text" onclick="toggleDialog('HowItWorks')">
+					  How does <br>
+					  the App Work?
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored yellow"		onclick="toggleDialog('HowItWorks')">
-					  How does it work?
+					<paper-button	raised class="colored yellow double-line-text"	onclick="toggleDialog('HowMyActivities')">
+					  How can I see my<br> 
+					  recorded activities?
 					</paper-button>
 				</core-item>
 				<core-item class="menuButtonZone">
-					<paper-button	raised class="colored deepPurple"	onclick="toggleDialog('WhoAreTheGDEs')">
-					  Who are the GDEs?
+					<paper-button	raised class="colored red double-line-text" onclick="toggleDialog('HowUpdateData')">
+					  How do I update<br>
+					  missing data?
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored blue" onclick="window.open('https://developers.google.com/experts/about','_blank');">
+					  Who are the Experts?
 					</paper-button>
 				</core-item>
 				<div	class="gplus">
@@ -153,35 +156,64 @@
 			<paper-toast id="loading" autoCloseDisabled duration="60000" text="Loading...">
 			  <paper-spinner active></paper-spinner>
 			</paper-toast>
-			<paper-action-dialog id="HowItsUsed" transition="core-transition-center "autoCloseDisabled="true">
+			<paper-action-dialog id="HowMyActivities" transition="core-transition-center "autoCloseDisabled="true">
 				<div class="content">
-					<h1>How is it used</h1>
+					<h1>How can I see my recorded activities?</h1>
 					<p>
-						The application checks all the <a href='https://developers.google.com/experts/members/' target="_blank">GDE's</a> <a href='https://plus.google.com/' target='_blank'>Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain the hashtag <a href="https://plus.google.com/explore/gde" target="_blank">#gde</a>.
+						Navigate to <a href="https://gdetracking.appspot.com/#/">https://gdetracking.appspot.com/#/</a> (to be changed to https://expertstracking.appspot.com/ when v2 is released) and sign in if you have never visited. 
+						Once you log-in the option to access your data is available with the EXPERT ACCESS option.
 					</p>
+					<div style="text-align:center">
+            <img src="/img/expert_menu.png" >  
+          </div>
 					<p>
-						To be processed by the application, other information are required, so GDE's need to add additional tags to the Google+ post they are sharing to specify the kind of content they are sharing.
+						You will then be provided with a your statistics and a list of recorded activities which you can review and edit. You are also able to create activities using the application.
 					</p>
-					<p>
-					  To properly compute the impact of an activity, the GDE is <b>strongly</b> recomended to manually input the Activity Metadata section.
-					  <br/>
-					  Activity Metadata edit is activated only on activities that has one or more activity type
-					</p>
-					<br/>
-					<p>
-						The special <strong>#</strong> tags are divided in 2 categories:
-					</p>
-					<ul>
-						<li><p>Product Tags</p></li>
-						<li><p>Activity Type Tags</p></li>
-					</ul>
-
-					<p>Following a <i>cheat sheet</i> of the Tags:</p>
-					<br/>
-					<table style="float:left;border-style: solid;height: 600px;" class='prettyTable' >
+					<div style="text-align:center">
+            <img src="/img/act_list.png" >  
+          </div>
+				</div>
+				<paper-button dismissive >
+          <core-icon icon="close"></core-icon>
+          Close
+				</paper-button>
+			</paper-action-dialog>
+			<paper-action-dialog	id="HowItWorks"			transition="core-transition-center" autoCloseDisabled="true">
+        <div class="content">
+          <h1>How does the app work?</h1>
+          <p> Are you actively involved in the developers community either through public speaking, 
+              writing sample applications & articles, 
+              mentoring fellow developers and tech startups, or other types of activities? 
+              We would like to know about them<br>
+              Everytime you share a post on your Google+ public stream (posts shared publicly or with public communities) just:
+              <ol>
+                <li>add a program category hashtag: #experts or #gde,</li>
+                <li>add a product hashtag, e.g. #Android and </li>
+                <li>add an activity hashtag, e.g. #techtalk</li>
+              </ol>
+          </p>
+          <p>The Experts Tracking App will automatically recognize them and add those entries to your list of activities for that month. See the example below:</p>
+          <div style="text-align:center">
+            <img src="/img/demo_post.png" >  
+          </div>
+          <p>Remember to always tag your post with at least one hashtag from each of the 3 categories:</p>
+          <table style="float:left;border-style: solid;" class='prettyTable' >
+						<tr>
+							<th>
+								Program #Tags
+							</th>
+						</tr>
+            <tr>
+              <td>#gde</td>
+            </tr>
+            <tr>
+              <td>#expert</td>
+            </tr>
+					</table>
+          <table style="float:left;padding-left: 10px;border-style: solid;height: 600px;" class='prettyTable' >
 						<tr>
 							<th colspan="2">
-								Product Tags
+								Product #Tags
 							</th>
 						</tr>
             <tr ng-repeat="pg in visiblePgs">
@@ -192,7 +224,7 @@
 					<table style="padding-left: 10px;border-style: solid;height: 600px;"	class='prettyTable' >
 						<tr>
 							<th colspan="2">
-								Activity Type Tags
+								Activity Type #Tags
 							</th>
 						</tr>
             <tr ng-repeat="activityType in activityTypes">
@@ -200,35 +232,6 @@
               <td>{{activityType.description}}</td>
             </tr>
 					</table>
-
-				</div>
-				<paper-button dismissive >
-          <core-icon icon="close"></core-icon>
-          Close
-				</paper-button>
-			</paper-action-dialog>
-			<paper-action-dialog	id="HowItWorks"			transition="core-transition-center" autoCloseDisabled="true">
-        <div class="content">
-          <h1>How does it Work?</h1>
-          <p> The application aims to simplify tracking activities done by GDEs.<br>
-              To do so, the backend on Google App Engine implements a series of jobs to automatically grab and update activities:
-              <ul>
-                <li>Create/Update activities from Google+</li>
-                <li>Update Impact on Youtube videos with the number of views</li>
-              </ul>
-          </p>
-          <h2>Activities from Google + Stream</h2>
-          <p> A daily task is in charge of obtaining new <b>public</b> Google+ posts for each GDE, and create a new activity 
-              if the post has the proper #hashtags as explained in the "How is it used" section.<br>
-              <br>
-              In case a post has only some of the required hashtags, the activity is still created and available for the GDE to fix using this web app.
-              <br>
-              Once a week, activities generated from Google+ posts are updated with the new values of +1s, reshares and comments (Social Impact)
-          </p>
-          <h2>Youtube Videos statistics</h2>
-          <p>
-            During the weekly update of the activities, if the activity has a YouTube link attached, the impact for the #content metadata is automatically updated with the views on the video.
-          </p>
           
 				</div>
 				<paper-button dismissive >
@@ -236,37 +239,22 @@
 		      Close
 				</paper-button>
 			</paper-action-dialog>
-			<paper-action-dialog	id="WhoAreTheGDEs"		transition="core-transition-center" autoCloseDisabled="true">
-					<div class="content">
-						<h1>Who are the Google Developer Experts?</h1>
-						<p>The Google Developer Experts (GDE) title recognizes the <strong>outstanding developers who exhibit great expertise in one or more Google technologies and share it with the developer community</strong>.</p>
-						<p>GDEs are gurus, mentors and evangelists; they create tutorials, code samples, and write books and blogs; they publish videos, drive community projects, and present at events large and small. These independent developers bring their real-world experience and knowledge working with Google technologies to developer communities worldwide.</p>
-						<p><a href="https://developers.google.com/experts/" target="_blank">More infos ...</a></p>
-					</div>
+			<paper-action-dialog	id="HowUpdateData"		transition="core-transition-center" autoCloseDisabled="true">
+				<div class="content">
+					<h1>How do I update missing data?</h1>
+					<p>
+					  By clicking on the edit icon (<paper-icon-button icon="create"></paper-icon-button>) you will be presented with a fully operational edit screen where you can edit your activities  and the associated metadata.
+					</p>
+					<div style="text-align:center">
+            <img src="/img/act_edit.png" >  
+          </div>
+				</div>
 				<paper-button dismissive >
           <core-icon icon="close"></core-icon>
 				  Close
 				</paper-button>
 			</paper-action-dialog>
 
-			<paper-action-dialog	id="GDEAvatarBuilder"		transition="core-transition-center" autoCloseDisabled="true">
-				<div class="content">
-					<h1>GDE Avatar Builder</h1>
-					<p>Fill the form below with your G+ id (eg: +SandroPaganotti) to get your GDE Avatar:</p>
-
-          <form id="avatarForm">
-            <input type="text" id="userid" value="">
-            <input type="submit">
-          </form>
-
-          <gde-badge  userid="" apikey="AIzaSyB9tHddHIErDbuiTmd6xj1_AFgTIJJDTTw" text="GDE"></gde-badge>
-
-          <paper-button dismissive >
-            <core-icon icon="close"></core-icon>
-            Close
-          </paper-button>
-				</div>
-			</paper-action-dialog>
 			<!--	---------------------------------------------------------------------	-->
 		</core-header-panel>
 	</core-drawer-panel>

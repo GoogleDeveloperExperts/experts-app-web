@@ -9,15 +9,14 @@
 						<h3 ng-repeat="product in marker.pgObjects">
               {{product.description}}&nbsp;
             </h3>
-            <img class="badge" ng-repeat="pg_filename in marker.pgObjects" ng-if ="pg_filename.image" ng-src="img/badges/{{pg_filename.image}}"></img>
 					</div>
 				</window>
 			</marker>
 		</markers>
 	</google-map>
 	<div	class="appLogo">
-		<img	class="gdeLogo"	src="img/gdeLogo_transparent.png"	alt="Google Developer Expert"></img>
-		<div	class="gdeTrackingApp_text"><strong><i>Tracking App</i></strong></br>{{gdeNumber}} around the world!</div>
+		<img	class="gdeLogo"	src="img/gdeLogo_transparent.png"	alt="Google Developer Expert"/>
+		<div	class="gdeTrackingApp_text"><strong><i>Tracking App</i></strong><br>{{gdeNumber}} around the world!</div>
 	</div>
 	<div class="countryButtons" layout horizontal flex wrap>
 		<paper-button	raised  ng-click="focusMap('World')">
@@ -60,7 +59,7 @@
 				<h3 ng-repeat="product in gde.pgObjects">
 					{{product.description}}
 				</h3>
-				<p><small>{{gde.country}}</small> <img class="flag" ng-if ="gde.ctry_filename" ng-src="img/flags/{{gde.ctry_filename}}.svg"></img></p>
+				<p><small>{{gde.country}}</small></p>
 			</a>
 		</div>
 	</div>

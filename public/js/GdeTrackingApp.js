@@ -59,16 +59,6 @@ document.addEventListener('polymer-ready', function()
 	});
 });
 
-
-// =====================================================================================================
-//											Bagde Creator
-// =====================================================================================================
-
-document.querySelector('#avatarForm').addEventListener('submit',function(evt){
-	document.querySelector('gde-badge').setAttribute('userid', document.querySelector('#userid').value);
-    evt.preventDefault();
-});
-
 // *****************************************************************************************************
 //  								Dynamic HTML navigation
 // *****************************************************************************************************

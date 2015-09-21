@@ -62,9 +62,13 @@ html /deep/ paper-shadow{
 
 paper-button {
 	margin				: 1em;
-	width				: 13em;
+	width				: 14em;
 	height				: 5em;
-	line-height			: 4.25em;
+	padding: 20px;
+}
+
+paper-button.double-line-text {
+	padding: 12px;
 }
 .colored	{
 	fill				: #fafafa;
@@ -181,7 +185,7 @@ select:hover
     flex-direction		: row;
     align-items			: flex-start;
 }
-#gdeStatistics,	#generalStatisticsForGooglers, #gdeAvatarBuilder	{
+#gdeStatistics,	#generalStatisticsForGooglers	{
 	display				: none;
 }
 .gplus		{
@@ -574,11 +578,16 @@ html /deep/ .prettyTable th
   	display				: none;
   }
   paper-button {
-    margin: 0.5em;
-    width: 13em;
-    height: 2.5em;
-    line-height: 1.25em;
+  	margin				: 1em;
+  	width				: 14em;
+  	height				: 3.5em;
+  	padding: 10px;
   }
+  
+  paper-button.double-line-text {
+  	padding: 0px;
+  }
+  
   .googleDevelopersLogo {
     position: relative;
     top: 34px;
@@ -597,11 +606,16 @@ html /deep/ .prettyTable th
 
 @media (max-height: 500px) {
   paper-button {
-    margin: 0.5em;
-    width: 13em;
-    height: 2.5em;
-    line-height: 1.25em;
+  	margin				: 0.5em;
+  	width				: 14em;
+  	height				: 3.5em;
+  	padding: 10px;
   }
+  
+  paper-button.double-line-text {
+  	padding: 0px;
+  }
+  
   .googleDevelopersLogo {
     position: relative;
     top: 5px;
