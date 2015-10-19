@@ -10,7 +10,7 @@
 	<link	rel="shortcut icon"	href="img/gdeLogo256x256.png"	sizes="256x256">
 	<link	rel="icon"		href="img/favicon.png"		type="image/x-icon"/>
 	<title>
-		GDE Tracking App
+		Experts Tracking App
 	</title>
 	<!-- ----------------------------------------------------------------------	-->
 	<!-- **********************************************************************	-->
@@ -160,15 +160,21 @@
 				<div class="content">
 					<h1>How can I see my recorded activities?</h1>
 					<p>
-						Navigate to <a href="https://gdetracking.appspot.com/#/">https://gdetracking.appspot.com/#/</a> (to be changed to https://expertstracking.appspot.com/ when v2 is released) and sign in if you have never visited. 
-						Once you log-in the option to access your data is available with the EXPERT ACCESS option.
+						Navigate to <a href="https://gdetracking.appspot.com/#/">https://gdetracking.appspot.com/#/</a> and sign in if you have never visited. 
+						Once you log-in, seect the EXPERT ACCESS option to access your data.
 					</p>
 					<div style="text-align:center">
             <img src="/img/expert_menu.png" >  
           </div>
 					<p>
-						You will then be provided with a your statistics and a list of recorded activities which you can review and edit. You are also able to create activities using the application.
+						Once in, you will be provided with your statistics and a list of recorded activities which you can review and edit. You are also able to input activities using the application.
 					</p>
+					<div style="text-align:center">
+            <img src="/img/expert_statistic.pngexpert_statistic.png" >  
+          </div>
+          <p>
+            Scroll down to discover your list of activities and the option to add an activity that was not harvested on your G+ stream.
+          </p>
 					<div style="text-align:center">
             <img src="/img/act_list.png" >  
           </div>
@@ -212,13 +218,12 @@
 					</table>
           <table style="float:left;padding-left: 10px;border-style: solid;height: 600px;" class='prettyTable' >
 						<tr>
-							<th colspan="2">
+							<th>
 								Product #Tags
 							</th>
 						</tr>
             <tr ng-repeat="pg in visiblePgs">
               <td>{{pg.tag}}</td>
-              <td><a href='{{pg.url}}'target='_blank'>{{pg.description}}</a></td>
             </tr>
 					</table>
 					<table style="padding-left: 10px;border-style: solid;height: 600px;"	class='prettyTable' >
@@ -243,11 +248,26 @@
 				<div class="content">
 					<h1>How do I update missing data?</h1>
 					<p>
-					  By clicking on the edit icon (<paper-icon-button icon="create"></paper-icon-button>) you will be presented with a fully operational edit screen where you can edit your activities  and the associated metadata.
+					  By clicking on the edit icon (<core-icon icon="create"></core-icon>) you will be presented with an edit screen where you can changes to your activities and the associated metadata.
 					</p>
+					<p>
+            Metadata is an important aspect of the reporting and enables the Expert program management to quantify and report on all the great activities that Experts participate in. The tool is able to gather some of this metadata on its own, in particular YouTube videos that are posted in Google+, but for many other such as blogpost views and event participants it’s up to the Expert to enter this data. 
+          </p>
+          <p>
+            Here are some examples of metadata impact value for popular activities.
+					</p>
+					<ul>
+            <li>add#forumpost -> N° of views [enter manually]</li>
+            <li>#community, #techtalk -> N° of attendees [enter manually]</li>
+            <li>#opensourcecode -> N° Star/Downloads [enter manually]</li>
+            <li>#video -> N° of views/copies [automatic if a youtube video link]</li>
+          </ul>
 					<div style="text-align:center">
             <img src="/img/act_edit.png" >  
           </div>
+          <p>
+            Use the action buttons on the edit screen to discard or save your changes.
+          </p>
 				</div>
 				<paper-button dismissive >
           <core-icon icon="close"></core-icon>
