@@ -47,6 +47,7 @@ html /deep/ paper-action-dialog {
 	width				: 80%;
 	min-width			: 430px;
 	min-height			: 30%;
+	max-height			: 90%;
 	margin :0px;
 }
 html /deep/ paper-action-dialog::shadow #scroller {
