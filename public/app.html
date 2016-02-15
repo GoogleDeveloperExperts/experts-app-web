@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta	charset="UTF-8" />
+	<meta	name="viewport"				content="width=device-width">
+	<meta 	name="Robots"				content="index,follow">
+	<meta	name="mobile-web-app-capable"		content="yes">
+	<meta	name="apple-mobile-web-app-capable"	content="yes">
+
+	<link	rel="shortcut icon"	href="img/gdeLogo256x256.png"	sizes="256x256">
+	<link	rel="icon"		href="img/favicon.png"		type="image/x-icon"/>
+	<title>
+		Experts Tracking App
+	</title>
+	<!-- **********************************************************************	-->
+	<!--                              Custom CSS                                -->
+	<!-- **********************************************************************	-->
+	<link	rel="stylesheet"
+		href="css/polymerDetails.css"
+		shim-shadowdom>
+	</link>
+	<!-- **********************************************************************	-->
+	<!--                          Javascript Libraries                          -->
+	<!-- **********************************************************************	-->
+	<script	src="js/resources/jquery-2.1.0.min.js">                       </script>
+	<script src="js/resources/angular.min.js">                            </script>
+	<script src="js/resources/angular-route.min.js">                      </script>
+	<script src="http://www.google.com/jsapi" >                           </script>
+	<script src='http://maps.googleapis.com/maps/api/js?sensor=false'>    </script>
+	<!-- **********************************************************************	-->
+	<!--                              Polymer                                   -->
+	<!-- **********************************************************************	-->
+	<!-- _____________________________Platform ________________________________ -->
+	<script src="bower_components/webcomponentsjs/webcomponents.min.js"></script>
+	<!-- _________________________ Core Elements ______________________________	-->
+	<link rel="import" href="bower_components/core-toolbar/core-toolbar.html">
+	<link rel="import" href="bower_components/core-menu/core-menu.html">
+	<link rel="import" href="bower_components/core-item/core-item.html">
+	<link rel="import" href="bower_components/core-header-panel/core-header-panel.html">
+	<link rel="import" href="bower_components/core-drawer-panel/core-drawer-panel.html">
+	<link rel="import" href="bower_components/core-icons/core-icons.html">
+	<link rel="import" href="bower_components/core-icons/maps-icons.html">
+
+	<link rel="import" href="bower_components/core-scroll-header-panel/core-scroll-header-panel.html">
+  <link rel="import" href="bower_components/font-roboto/roboto.html">
+	<!-- ___________________________ Paper Elements __________________________	-->
+	<link rel="import" href="bower_components/paper-button/paper-button.html" >
+	<link rel="import" href="bower_components/paper-icon-button/paper-icon-button.html" >
+	<link rel="import" href="bower_components/paper-fab/paper-fab.html" >
+	<link rel="import" href="bower_components/paper-shadow/paper-shadow.html" >
+	<link rel="import" href="bower_components/paper-dialog/paper-dialog.html" >
+	<link rel="import" href="bower_components/paper-dialog/paper-action-dialog.html" >
+	<link rel="import" href="bower_components/paper-toast/paper-toast.html">
+	<link rel="import" href="bower_components/paper-input/paper-input.html">
+	<link rel="import" href="bower_components/paper-checkbox/paper-checkbox.html">
+	<link rel="import" href="bower_components/paper-tabs/paper-tabs.html">
+	<link rel="import" href="bower_components/paper-spinner/paper-spinner.html">
+
+	<link rel="import" href="bower_components/core-animated-pages/core-animated-pages.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/hero-transition.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/cross-fade.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/slide-down.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/slide-up.html">
+	<link rel="import" href="bower_components/core-animated-pages/transitions/tile-cascade.html">
+
+	<link rel="import" href="elements/gde-badge/gde-badge.html">
+</head>
+<body unresolved>
+	<core-drawer-panel	id="drawerPanel"	responsiveWidth="1300px">
+		<core-header-panel	 aside	drawer>
+			<core-toolbar	header	id="mainheader"	class="medium-tall">
+				<div layout center center-justified flex>
+					<img	class="googleDevelopersLogo" src="img/gdeLogo256x256.png"/>
+				</div>
+			</core-toolbar>
+			<core-menu	nav	ng-controller="menuCtrl">
+				<core-item class="menuButtonZone" id="generalStatisticsForGooglers">
+					<paper-button	raised class="colored red" ng-click="showGeneralStatisticsForGooglers()"	>
+					  Googler's access
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone" id="gdeStatistics">
+					<paper-button	raised class="colored blue" ng-click="showMyStatistics()">
+					  Expert access
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored green double-line-text" onclick="toggleDialog('HowItWorks')">
+					  How does <br>
+					  the App Work?
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored yellow double-line-text"	onclick="toggleDialog('HowMyActivities')">
+					  How can I see my<br> 
+					  recorded activities?
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored red double-line-text" onclick="toggleDialog('HowUpdateData')">
+					  How do I update<br>
+					  missing data?
+					</paper-button>
+				</core-item>
+				<core-item class="menuButtonZone">
+					<paper-button	raised class="colored blue" onclick="window.open('https://developers.google.com/experts/about','_blank');">
+					  Who are the Experts?
+					</paper-button>
+				</core-item>
+				<div	class="gplus">
+					<div 	class="g-plusone"	data-href="http://gdetracking.gweb.io/#/"	data-annotation="inline"	data-width="300"></div>
+				</div>
+			</core-menu>
+		</core-header-panel>
+
+		<core-header-panel	main>
+			<core-toolbar	header 	id="mainheader"  class="medium-tall">
+				<paper-icon-button	id="navicon"	icon="menu"></paper-icon-button>
+				<span	class="bottom"	flex>
+				</span>
+				<div	ng-controller="plusLoginCtrl"	class="plusLogin bottom">
+				  <div id='authInfos' style='display:none'>
+  					<p		class=	"userName"></p>
+  					<span	id=		"userImg"></span>
+					</div>
+					<div	class=	"signinButton">
+						<google-plus-signin clientid="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1" language="en"></google-plus-signin>
+					</div>
+				</div>
+			</core-toolbar>
+			<div id='splash_screen' layout horizontal center center-justified fit>
+        <div>Loading...</div>
+      </div>
+			<article	class="scrollBar"	ng-view>
+
+      <!--	---------------------------------------------------------------------	-->
+      <!--              AngularJS templated HTML5 area              							-->
+      <!--	---------------------------------------------------------------------	-->
+      <!--	.....................................................................	-->
+      <!--	---------------------------------------------------------------------	-->
+			</article>
+      <!--	---------------------------------------------------------------------	-->
+      <!--						paper-fab & AngularJS Bind							                    -->
+      <!--	---------------------------------------------------------------------	-->
+      <div ng-controller="fabCtrl" >
+				<paper-fab	class="nav-fab"	icon="chevron-right"	id="fabLeft"></paper-fab>
+			</div>
+      <!--	---------------------------------------------------------------------	-->
+      <!--						Polymer Paper Dialogs								                        -->
+      <!--	---------------------------------------------------------------------	-->
+			<paper-toast id="loading" autoCloseDisabled duration="60000" text="Loading...">
+			  <paper-spinner active></paper-spinner>
+			</paper-toast>
+			<paper-action-dialog id="HowMyActivities" transition="core-transition-center "autoCloseDisabled="true">
+				<div class="content">
+					<h1>How can I see my recorded activities?</h1>
+					<p>
+						Navigate to <a href="https://expertstracking.appspot.com/">https://expertstracking.appspot.com/</a> and sign in if you have never visited.
+						Once you log-in, seect the EXPERT ACCESS option to access your data.
+					</p>
+					<div style="text-align:center">
+            <img src="/img/expert_menu.png" >  
+          </div>
+					<p>
+						Once in, you will be provided with your statistics and a list of recorded activities which you can review and edit. You are also able to input activities using the application.
+					</p>
+					<div style="text-align:center">
+            <img src="/img/expert_statistic.pngexpert_statistic.png" >  
+          </div>
+          <p>
+            Scroll down to discover your list of activities and the option to add an activity that was not harvested on your G+ stream.
+          </p>
+					<div style="text-align:center">
+            <img src="/img/act_list.png" >  
+          </div>
+				</div>
+				<paper-button dismissive >
+          <core-icon icon="close"></core-icon>
+          Close
+				</paper-button>
+			</paper-action-dialog>
+			<paper-action-dialog	id="HowItWorks"			transition="core-transition-center" autoCloseDisabled="true">
+        <div class="content">
+          <h1>How does the app work?</h1>
+          <p> Are you actively involved in the developers community either through public speaking, 
+              writing sample applications & articles, 
+              mentoring fellow developers and tech startups, or other types of activities? 
+              We would like to know about them<br>
+              Everytime you share a post on your Google+ public stream (posts shared publicly or with public communities) just:
+              <ol>
+                <li>add a program category hashtag: #experts or #gde,</li>
+                <li>add a product hashtag, e.g. #Android and </li>
+                <li>add an activity hashtag, e.g. #techtalk</li>
+              </ol>
+          </p>
+          <p>The Experts Tracking App will automatically recognize them and add those entries to your list of activities for that month. See the example below:</p>
+          <div style="text-align:center">
+            <img src="/img/demo_post.png" >  
+          </div>
+          <p>Remember to always tag your post with at least one hashtag from each of the 3 categories:</p>
+          <table style="float:left;border-style: solid;" class='prettyTable' >
+						<tr>
+							<th>
+								Program #Tags
+							</th>
+						</tr>
+            <tr>
+              <td>#gde</td>
+            </tr>
+            <tr>
+              <td>#expert</td>
+            </tr>
+					</table>
+          <table style="float:left;padding-left: 10px;border-style: solid;height: 600px;" class='prettyTable' >
+						<tr>
+							<th>
+								Product #Tags
+							</th>
+						</tr>
+            <tr ng-repeat="pg in visiblePgs">
+              <td>{{pg.tag}}</td>
+            </tr>
+					</table>
+					<table style="padding-left: 10px;border-style: solid;height: 600px;"	class='prettyTable' >
+						<tr>
+							<th colspan="2">
+								Activity Type #Tags
+							</th>
+						</tr>
+            <tr ng-repeat="activityType in activityTypes">
+              <td>{{activityType.tag}}</td>
+              <td>{{activityType.description}}</td>
+            </tr>
+					</table>
+          
+				</div>
+				<paper-button dismissive >
+          <core-icon icon="close"></core-icon>
+		      Close
+				</paper-button>
+			</paper-action-dialog>
+			<paper-action-dialog	id="HowUpdateData"		transition="core-transition-center" autoCloseDisabled="true">
+				<div class="content">
+					<h1>How do I update missing data?</h1>
+					<p>
+					  By clicking on the edit icon (<core-icon icon="create"></core-icon>) you will be presented with an edit screen where you can changes to your activities and the associated metadata.
+					</p>
+					<p>
+            Metadata is an important aspect of the reporting and enables the Expert program management to quantify and report on all the great activities that Experts participate in. The tool is able to gather some of this metadata on its own, in particular YouTube videos that are posted in Google+, but for many other such as blogpost views and event participants it’s up to the Expert to enter this data. 
+          </p>
+          <p>
+            Here are some examples of metadata impact value for popular activities.
+					</p>
+					<ul>
+            <li>add#forumpost -> N° of views [enter manually]</li>
+            <li>#community, #techtalk -> N° of attendees [enter manually]</li>
+            <li>#opensourcecode -> N° Star/Downloads [enter manually]</li>
+            <li>#video -> N° of views/copies [automatic if a youtube video link]</li>
+          </ul>
+					<div style="text-align:center">
+            <img src="/img/act_edit.png" >  
+          </div>
+          <p>
+            Use the action buttons on the edit screen to discard or save your changes.
+          </p>
+				</div>
+				<paper-button dismissive >
+          <core-icon icon="close"></core-icon>
+				  Close
+				</paper-button>
+			</paper-action-dialog>
+      
+		</core-header-panel>
+	</core-drawer-panel>
+	<!-- **********************************************************************	-->
+	<!--                        Additional Scripts                              -->
+	<!-- **********************************************************************	-->
+	<script src="js/google-plus-signin.js">                               </script>
+	<script src='js/resources/underscore-min.js'>                         </script>
+	<script src='js/resources/angular-google-maps.js'>                    </script>
+	<script src="js/resources/ng-polymer-elements.min.js">                </script>
+	<!-- **********************************************************************	-->
+	<!--                          GDE App Scripts                               -->
+	<!-- **********************************************************************	-->
+	<script src="js/GdeTrackingApp.js">                                   </script>
+	<script src="js/controllers/plusLoginCtrl.js">                        </script>
+	<script src="js/controllers/fabCtrl.js">                              </script>
+	<script src="js/controllers/menuCtrl.js">                             </script>
+	<script src="js/controllers/startCtrl.js">                            </script>
+	<script src="js/controllers/generalStatisticsForGooglersCtrl.js">     </script>
+	<script src="js/controllers/myStatisticsCtrl.js">                     </script>
+	<!-- ********************************************************************** -->
+</body>
+</html>
