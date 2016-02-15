@@ -59,7 +59,7 @@ GdeTrackingApp.controller("startCtrl",							function($rootScope, $scope,	$http,
 		$scope.gdeList = $rootScope.gdeList;
 
 		$scope.gdeNumber	= $scope.gdeList.length;
-
+/*  Deprecated, map GDE badges - We are now too many- TODO: Update map
 		$scope.gdeList.forEach(function(currGde){
 
       //Update the pic size to a bigger image
@@ -91,7 +91,7 @@ GdeTrackingApp.controller("startCtrl",							function($rootScope, $scope,	$http,
 		});
 
 		$scope.markers = mapMarkers;
-
+//*/
 		$scope.markerClick	= function(id)
 		{
 			var gdeId	= '#'+id;
