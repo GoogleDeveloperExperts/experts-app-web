@@ -1,0 +1,30 @@
+{
+  "name": "gdetrackingapp",
+  "version": "1.0.0",
+  "description": "Falicitates tracking and report for the GDE program",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GoogleDeveloperExperts/experts-app-web.git"
+  },
+  "keywords": [
+    "gde",
+    "tracking"
+  ],
+  "author": "GDE Tracking App Team",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GoogleDeveloperExperts/experts-app-web/issues"
+  },
+  "homepage": "https://github.com/GoogleDeveloperExperts/experts-app-web#readme",
+  "dependencies": {
+    "express": "^4.13.4"
+  },
+  "devDependencies": {
+    "vulcanize": "^1.14.5"
+  }
+}
