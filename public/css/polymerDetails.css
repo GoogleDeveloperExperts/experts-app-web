@@ -14,6 +14,7 @@ html,body {
 core-header-panel {
 	background			: white;
 	overflow			: hidden;
+    position: initial;
 }
 html /deep/ core-toolbar {
 	color				: #fafafa;
@@ -40,8 +41,8 @@ core-drawer-panel:not([narrow]) #navicon {
 #drawerPanel::shadow #main {
 	left				: 310px;
 }
-core-header-panel drawer {
-	width				: 310px;
+core-header-panel.drawer {
+    height: 100%;
 }
 html /deep/ paper-action-dialog {
 	width				: 80%;
