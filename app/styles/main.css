@@ -8,7 +8,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 */
 
 body {
-  background: #fafafa;
-  font-family: 'Roboto', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  color: #333;
+  margin: 0;
+  background-color: #eee;
+  font-family: 'Roboto', 'Noto', Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  min-height: 100vh;
 }

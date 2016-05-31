@@ -44,7 +44,7 @@ This lets you run `gulp` and `bower` from the command line.
 4)  Install the app's local `npm` and `bower` dependencies.
 
 ```sh
-cd gde-app-web && npm install && bower install
+cd app && npm install && bower install
 ```
 
 This installs the element sets (Paper, Iron, Platinum) and tools the app requires to build and serve apps.

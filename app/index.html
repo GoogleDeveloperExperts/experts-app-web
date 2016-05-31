@@ -9,15 +9,18 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 -->
 
 <!doctype html>
-<html lang="">
+<html lang="en">
 
 <head>
   <meta charset="utf-8">
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
   <meta name="generator" content="Polymer Starter Kit" />
   <title>Experts Tracking App</title>
   <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- app shortcut icon -->
+  <link rel="shortcut icon" sizes="32x32" href="/images/app-icon-32.png">
 
   <!-- Chrome for Android theme color -->
   <meta name="theme-color" content="#303F9F">
@@ -87,17 +90,17 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <span>Expert Area</span>
             </a>
           </template>
-          
+
           <a data-route="workflow" href="/workflow">
             <iron-icon icon="assignment"></iron-icon>
             <span>How does it work</span>
           </a>
-          
+
           <a data-route="how-to-use" href="/how-to-use">
             <iron-icon icon="info"></iron-icon>
             <span>How is it used</span>
           </a>
-          
+
           <a href="https://github.com/GoogleDeveloperExperts/experts-app-web/issues" target="_blank">
             <iron-icon icon="feedback"></iron-icon>
             <span>Feedback/Issues</span>
@@ -115,12 +118,12 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         <!-- Main Toolbar -->
         <paper-toolbar id="mainToolbar" class="tall big">
           <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
-          
+
           <span class="flex"></span>
 
           <div hidden$="[[!isAuthorized]]" id="user">
             <span id="userName">[[user.name]]</span>
-            <img src$="[[user.image]]">
+            <img src$="[[user.image]]" />
           </div>
 
           <!-- Toolbar icons -->
@@ -155,7 +158,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </paper-material>
               </template>
             </section>
-            
+
             <section data-route="workflow">
               <paper-material elevation="1">
                 <p> The application aims to simplify tracking activities done by Google Experts.</p>
@@ -164,10 +167,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <li>Create/Update activities from Google+</li>
                   <li>Update Impact on Youtube videos with the number of views</li>
                 </ul>
-                
+
                 <h2>Activities from Google + Stream</h2>
-                <p> 
-                  A daily task is in charge of obtaining new <b>public</b> Google+ posts for each Google Expert, and create a new activity 
+                <p>
+                  A daily task is in charge of obtaining new <b>public</b> Google+ posts for each Google Expert, and create a new activity
                   if the post has the proper #hashtags as explained in the "How is it used" section.<br>
                   <br>
                   In case a post has only some of the required hashtags, the activity is still created and available for the Expert to fix using this app.
@@ -180,7 +183,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                 </p>
               </paper-material>
             </section>
-            
+
             <section data-route="how-to-use">
               <!-- Prepare elements to access the API -->
               <discovery-api-elements
@@ -194,10 +197,10 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               <!--Load Activity Types from the API-->
               <gdetracking-activity_type-list auto limit="100" response="{{activityTypes}}"></gdetracking-activity_type-list>
               <paper-material elevation="1">
-                
+
                 <p>
-                  The application checks all the <a href='https://developers.google.com/experts/' target="_blank">Google Experts'</a> 
-                  <a href='https://plus.google.com/' target='_blank'>Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain 
+                  The application checks all the <a href="https://developers.google.com/experts/" target="_blank">Google Experts</a>
+                  <a href="https://plus.google.com/" target="_blank">Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain
                   the hashtag <a href="https://plus.google.com/explore/experts" target="_blank">#experts</a> and the area of expertise (<i>#gde, #marketing, #ProductStrategy, #ux_ui</i>).
                 </p>
                 <p>
@@ -216,7 +219,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <li>Product Tags</li>
                   <li>Activity Type Tags</li>
                 </ul>
-                
+
                 <p>Following a <i>cheat sheet</i> of the Tags:</p>
                 <div class="layout horizontal wrap">
                   <paper-material class="container layout vertical">
@@ -227,7 +230,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <span class="tag self-center">[[pg.tag]]</span>
                         <span class="descr"><a href$="[[pg.url]]" target="_blank">[[pg.description]]</a></span>
                       </div>
-                    </template>  
+                    </template>
                   </paper-material>
                   <paper-material class="container layout vertical">
                     <h4>Activity Types</h4>
@@ -236,7 +239,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                         <span class="tag self-center">[[activityType.tag]]</span>
                         <span class="descr">[[activityType.description]]</span>
                       </div>
-                    </template>  
+                    </template>
                   </paper-material>
                 </div>
               </paper-material>
