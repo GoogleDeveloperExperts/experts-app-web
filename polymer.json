@@ -1,0 +1,9 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/gtt-app.html",
+  "fragments": [
+    "src/gtt-view1.html",
+    "src/gtt-view2.html",
+    "src/gtt-view3.html"
+  ]
+}

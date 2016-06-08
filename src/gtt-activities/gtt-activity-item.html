@@ -1,0 +1,25 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<dom-module id="gtt-activity-item">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+    </style>
+  </template>
+
+  <script>
+    Polymer({ 
+      is: 'gtt-activity-item',
+      properties: {
+        /**
+         * The list of activities
+         */
+        activities: {
+          type: Array,
+        },
+      },
+    });
+  </script>
+</dom-module>

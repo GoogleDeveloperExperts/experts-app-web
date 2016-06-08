@@ -1,0 +1,32 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<dom-module id="gtt-activity-stats">
+  <template>
+    <style>
+      :host {
+        display: block;
+      }
+      .close {
+        float: right;
+      }
+      .title {
+        text-transform: uppercase;
+      }
+    </style>    
+    <div class="close"><iron-icon icon="arrow-up"></iron-icon></div>        
+    <div class="title">Stats</div>
+  </template>
+
+  <script>
+    Polymer({ 
+      is: 'gtt-activity-stats',
+      properties: {
+        /**
+         * The list of activities
+         */
+        activities: {
+          type: Array,
+        },
+      },
+    });
+  </script>
+</dom-module>
