@@ -1,24 +1,24 @@
 {
-  "name": "GDE Tracking Tool",
-  "short_name": "gde-tracking-tool",
+  "name": "GDE Tracking App",
+  "short_name": "gde-app",
     "icons": [{
-      "src": "images/app-icon-32.png",
+      "src": "images/gde-logo.svg",
       "type": "image/png",
-      "sizes": "32x32"
+      "type": "image/svg"
     }, {
-      "src": "images/app-icon.svg",
+      "src": "images/gde-logo.svg",
       "sizes": "128x128",
       "type": "image/svg"
     }, {
-      "src": "images/app-icon-144.png",
+      "src": "images/gde-logo.svg",
       "sizes": "144x144",
-      "type": "image/png"
+      "type": "image/svg"
     }, {
-      "src": "images/app-icon.svg",
+      "src": "images/gde-logo.svg",
       "sizes": "192x192",
       "type": "image/svg"
     },{
-      "src": "images/app-icon.svg",
+      "src": "images/gde-logo.svg",
       "sizes": "384x384",
       "type": "image/svg"
     }],

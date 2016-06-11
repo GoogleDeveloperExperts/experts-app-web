@@ -1,3 +1,23 @@
+<!--
+    Google Developers Experts Tracking App
+    Copyright (C) 2016  by the GDE Tracking App Team
+    
+    gdetracking.appspot.com/
+    https://github.com/GoogleDeveloperExperts/experts-app-web
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
@@ -32,9 +52,7 @@
         margin: 36px;
         padding: 16px;
         border-radius: 2px;
-        box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14),
-            0 1px 18px 0 rgba(0, 0, 0, 0.12),
-            0 3px 5px -1px rgba(0, 0, 0, 0.4);
+        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       }
       paper-material:first-of-type {
         margin-top: 72px;        
@@ -60,21 +78,17 @@
         }
       }
     </style>
-   
-   
-  
-    
     <paper-header-panel mode="cover">
       <paper-toolbar class="tall">
         <h1>My activities</h1>
       </paper-toolbar>
       
       
-      <paper-material elevation="4">  
+      <paper-material elevation="1">  
         <gtt-activity-stats activities="{{activities}}" ></gtt-activity-stats>
       </paper-material>
            
-      <paper-fab id="add_activity" icon="add"></paper-fab>
+      <paper-fab id="add_activity" icon="add" elevation="1"></paper-fab>
        
       
       <gtt-activity-list  activities="{{activities}}" ></gtt-activity-list>

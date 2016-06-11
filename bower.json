@@ -20,7 +20,8 @@
     "paper-icon-button": "PolymerElements/paper-icon-button#~1.1.1",
     "paper-material": "PolymerElements/paper-material#~1.0.6",
     "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.4",
-    "polymer": "polymer/polymer#^1.4.0"
+    "polymer": "polymer/polymer#^1.4.0",
+    "google-map": "GoogleWebComponents/google-map#^1.1.10"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
