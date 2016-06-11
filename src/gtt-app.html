@@ -1,14 +1,23 @@
 <!--
-@license MIT
-Copyright (c) 2016 Horacio "LostInBrittany" Gonzalez
+    Google Developers Experts Tracking App
+    Copyright (C) 2016  by the GDE Tracking App Team
+    
+    gdetracking.appspot.com/
+    https://github.com/GoogleDeveloperExperts/experts-app-web
 
-Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
 
-The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
@@ -22,134 +31,204 @@ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLI
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="gtt-icons.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-app">
-
   <template>
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
     <style>
-
       :host {
-        display: block;
-        --app-primary-color: black;
-        --app-secondary-color: #4285f4;
+        display             : block;
+        height              : 56px;
+        padding             : 0;
+      --app-primary-color   : black;
+      --app-secondary-color : #4285f4;
       }
-
-      app-header {
-        background-color: var(--app-primary-color);
-        color: #fff;
+      app-header ,
+      app-toolbar {
+        background-color    : var(--app-primary-color);
+        color               : #fff;
+        height              : 56px;
+        padding             : 0;
       }
       app-header paper-icon-button {
-        --paper-icon-button-ink-color: white;
+      --paper-icon-button-ink-color: white;
       }
-
+      app-header  .gde-logo {
+        width               : 35.2px;
+        height              : 36px;
+        margin              : 10px 0 10px 16px;
+        background          : url(../images/gde-logo.svg) no-repeat center center;
+        background-size     : contain;
+      }
+      app-header  user {
+        display             : flex;
+        align-items         : center;
+        padding             : 8px 0;
+      }
+      app-header  user  info {
+        display             : flex;
+        flex-direction      : column;
+      }
+      app-header  user  info  name {
+        font-size           : 14px;
+      }
+      app-header  user  info  email {
+        font-size           : 12px;
+        color               : #d8d8d8;
+      }
+      app-header  user  .avatar {
+        width               : 40px;
+        height              : 40px;
+        margin              : 0 16px 0 8px;
+        border-radius       : 50%;
+        background-color    : white;
+      }
       .drawer-list {
-        margin: 0 20px;
+        display             : flex;
+        flex                : 1;
+        align-items         : center;
+        margin              : 0 20px;
+        padding-top         : 1px;
+        height              : 100%;
       }
       .drawer-list a {
-        display: block;
-        padding: 0 16px;
-        line-height: 40px;
-        text-decoration: none;
-        color: var(--app-secondary-color);
+        display             : flex;
+        width               : 132px;
+        align-items         : center;
+        justify-content     : center;
+        text-align          : center;
+        font-size           : 14px;
+        font-weight         : 500;
+        text-decoration     : none;
+        color               : #eee;
+        height              : 100%;
+        transition          : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
       }
       .drawer-list a.iron-selected {
-        color: black;
-        font-weight: bold;
+        color               : #fff;
+        font-weight         : bold;
+        box-shadow          : inset 0 -3px #fff;
       }
       .drawer-list a.subroute {
-        padding-left: 32px;
+        padding-left        : 32px;
       }
-
-      app-toolbar .gde-logo {
-        width: 100px;
-        height: 62px;
-        background: url(../images/gde-logo.svg) no-repeat center center;
-        background-size: contain;
-      }
-
       iron-pages {
-        height: 100%;
+        height              : 100%;
       }
     </style>
-
-    <app-location route="{{route}}"></app-location>
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
+    <app-location 
+      route = "{{route}}">
+    </app-location>
     <app-route
-        route="{{route}}"
-        pattern="/:page"
-        data="{{routeData}}"
-        tail="{{subroute}}"></app-route>
-
-    <app-drawer-layout fullbleed>
-
-      <!-- Drawer content -->
-      <app-drawer>
-        <app-toolbar>Menu</app-toolbar>
-        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
-          <a name="activities" href="/activities">Activities</a>
-          <a name="profile" href="/profile">Profile</a>
-          <a name="map" href="/map">Map</a>
-          <a name="help" href="/help">Help</a>
-        </iron-selector>
-      </app-drawer>
-
-      <!-- Main content -->
-      <app-header-layout has-scrolling-region>
-
-        <app-header condenses reveals effects="waterfall" class="fit">
+        route   = "{{route}}"
+        pattern = "/:page"
+        data    = "{{routeData}}"
+        tail    = "{{subroute}}"></app-route>
+    <app-drawer-layout 
+      fullbleed>
+      <app-header-layout 
+        has-scrolling-region>
+        <app-header
+          effects = "waterfall" 
+          class   = "fit"
+          condenses 
+          reveals>
           <app-toolbar>
-            <paper-icon-button icon="menu" drawer-toggle></paper-icon-button>
+            <paper-icon-button
+              icon  = "menu"
+              drawer-toggle>
+            </paper-icon-button>
             <a class="toolbar-badge gde-logo" href="/"></a>
-            <div title>GDE Tracking Tool</div>
+            <iron-selector 
+              selected          = "[[page]]" 
+              attr-for-selected = "name" 
+              class             = "drawer-list" 
+              role              = "navigation">
+              <a name = "activities" href = "/activities">Activities</a>
+              <a name = "profile"    href = "/profile"   >Profile</a>
+              <a name = "map"        href = "/map"       >Map</a>
+              <a name = "help"       href = "/help"      >Help</a>
+            </iron-selector>
+            <user>
+              <info>
+                <name>
+                  {{user.name}}
+                </name>
+                <email>
+                  {{user.email}}
+                </email>
+              </info>
+              <img
+                class = "avatar"
+                src   = "{{user.avatar}}"/>
+            </user>
           </app-toolbar>
         </app-header>
-
-        <iron-pages role="main" selected="[[page]]" attr-for-selected="name">
-          <gtt-activities name="activities"></gtt-activities>
-          <gtt-profile name="profile"></gtt-profile>
-          <gtt-view3 name="view3"></gtt-view3>
+        <iron-pages 
+          role              = "main" 
+          selected          = "[[page]]" 
+          attr-for-selected = "name">
+          <gtt-activities 
+            name  = "activities">
+          </gtt-activities>
+          <gtt-profile 
+            name  = "profile">
+          </gtt-profile>
+          <gtt-view3 
+            name="view3">
+          </gtt-view3>
         </iron-pages>
-
       </app-header-layout>
-
     </app-drawer-layout>
-
   </template>
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
-
     Polymer({
-
-      is: 'gtt-app',
-
-      properties: {
-
-        page: {
-          type: String,
-          reflectToAttribute: true,
-          observer: '_pageChanged'
+      is : 'gtt-app',
+      properties : {
+        page : {
+          type : String,
+          observer : '_pageChanged',
+          reflectToAttribute : true
         },
-
+        user : {
+          type : Object,
+          value       : function() {
+            return {
+              'name'    : 'Cesar Anton',
+              'email'   : 'reicek@gmail.com',
+              'avatar'  : 'https://secure.gravatar.com/avatar/f35f16285ad3235d467bb472771d62b0',
+            };
+          }
+        },
       },
-
-      observers: [
+      observers : [
         '_routePageChanged(routeData.page)'
       ],
-
-      _routePageChanged: function(page) {
+      _routePageChanged : function(page) {
         this.page = page || 'activities';
       },
-
-      _pageChanged: function(page) {
-        // load page import on demand.
+      _pageChanged : function(page) {
         this.importHref(
           this.resolveUrl('gtt-' + page + '.html'), null, null, true);
       }
-
     });
-
   </script>
-
 </dom-module>
-  
-  
