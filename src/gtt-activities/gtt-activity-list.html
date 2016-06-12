@@ -1,23 +1,56 @@
+<!--
+    Google Developers Experts Tracking App
+    Copyright (C) 2016  by the GDE Tracking App Team
+
+    gdetracking.appspot.com/
+    https://github.com/GoogleDeveloperExperts/experts-app-web
+
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="./gtt-activity-item.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-activity-list">
   <template>
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     <style is="custom-style">
       :host {
-        display: block;  
-        background: white;
-        box-sizing: border-box;
-        margin: 36px;
-        border-radius: 2px;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        display           : block;  
+        background        : white;
+        box-sizing        : border-box;
+        margin            : 0 auto 17px;
+        border-radius     : 2px;
+        font-family       : Roboto;
+        box-shadow        : 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
             
-        --paper-checkbox-checked-color: var(--paper-blue-500);
-        --paper-checkbox-checked-ink-color: var(--paper-blue-500);
-        --paper-checkbox-unchecked-color: var(--paper-grey-500);
-        --paper-checkbox-unchecked-ink-color: var(--paper-grey-500);            
+        --paper-checkbox-checked-color        : var(--paper-blue-500);
+        --paper-checkbox-checked-ink-color    : var(--paper-blue-500);
+        --paper-checkbox-unchecked-color      : var(--paper-grey-500);
+        --paper-checkbox-unchecked-ink-color  : var(--paper-grey-500);            
+      }
+      [hidden] {
+        display           : none !important;
       }
       .table    { display: table }
       .tr       { display: table-row }
@@ -85,8 +118,12 @@
           display: table-cell;
         }
       }
-    </style>    
-    
+    </style>
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
     <div class="table">
       <div class="thead">        
         <div class="th col0"></div>
@@ -113,10 +150,12 @@
         </template>  
       </div>
     </div>
-    
-
   </template>
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
     Polymer({ 
       is: 'gtt-activity-list',
@@ -128,7 +167,6 @@
           type: Array,
         },
       },
-      
       _serializeList: function(list) {
         var serializedList = ''
         for (var i in list) {

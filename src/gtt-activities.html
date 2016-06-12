@@ -1,7 +1,7 @@
 <!--
     Google Developers Experts Tracking App
     Copyright (C) 2016  by the GDE Tracking App Team
-    
+
     gdetracking.appspot.com/
     https://github.com/GoogleDeveloperExperts/experts-app-web
 
@@ -26,77 +26,112 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="./gtt-activities/gtt-activity-stats.html">
 <link rel="import" href="./gtt-activities/gtt-activity-list.html">
-
 <link rel="import" href="./gtt-activities/gtt-sample-activity-data.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-activities">
   <template>
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     <style is="custom-style">
       :host {
-        display: block;
-        height: 100%;
-        --paper-toolbar-background: var(--google-blue-500); 
+        display           : block;
+        height            : 100%;
+        font-family       : Roboto;
+        
+        --paper-toolbar-background  : var(--google-blue-500);
+        --paper-toolbar-tall        : {
+          height            : 240px
+        };
+      }
+      [hidden] {
+        display           : none !important;
       }
       .cover {
-        margin: 60px;
+        margin            : 60px;
       }
       paper-header-panel h1 {
-        font-size: 34px;
-        font-weight: 400;
-        letter-spacing: -.01em;
-        line-height: 40px;
+        font-size         : 24px;
+        font-weight       : 300;
+        position          : absolute;
+        top               : 84px;
+        left              : 15%;
+        margin            : 0;
       }
       paper-material {
-        background: white;
-        box-sizing: border-box;
-        margin: 36px;
-        padding: 16px;
-        border-radius: 2px;
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        background        : white;
+        box-sizing        : border-box;
+        margin            : 36px;
+        padding           : 16px;
+        border-radius     : 2px;
+        box-shadow        : 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
       }
-      paper-material:first-of-type {
-        margin-top: 72px;        
+      paper-material.stats {
+        margin            : 128px auto 17px;
       }
       #add_activity {
-        float: right;
-        margin-right: 36px;   
-        margin-bottom: 36px;         
-      }
-      
-      gtt-activity-list, paper-material {        
-        max-width: 840px;  
+        position          : absolute;
+        right             : 1.5%;
+        top               : 212px;
+        color             : #4285f4;
+        background-color  : #fff;
+        box-shadow        : 0 4px 8px 0 rgba(0, 0, 0, 0.24);        
+      }      
+      gtt-activity-list , 
+      paper-material {        
+        max-width         : 78%; 
       }
       @media (min-width: 1280px ) {
         gtt-activity-list, paper-material {
-          margin-left:auto;
-          margin-right: auto;
+          margin-left       :auto;
+          margin-right      : auto;
         }
       }
       @media (max-width: 1280px ) {
         gtt-activity-list, paper-material {  
-          clear: both;
+          clear             : both;
         }
       }
     </style>
-    <paper-header-panel mode="cover">
-      <paper-toolbar class="tall">
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
+    <paper-header-panel 
+      mode="cover">
+      <paper-toolbar 
+        class = "tall">
         <h1>My activities</h1>
       </paper-toolbar>
-      
-      
-      <paper-material elevation="1">  
-        <gtt-activity-stats activities="{{activities}}" ></gtt-activity-stats>
+      <paper-material
+        class     = "stats"
+        elevation = "1">  
+        <gtt-activity-stats 
+          activities = "{{activities}}" >
+        </gtt-activity-stats>
       </paper-material>
-           
-      <paper-fab id="add_activity" icon="add" elevation="1"></paper-fab>
-       
-      
-      <gtt-activity-list  activities="{{activities}}" ></gtt-activity-list>
-        
+      <paper-fab 
+        id        = "add_activity" 
+        icon      = "add"
+        elevation = "1">
+      </paper-fab>
+      <gtt-activity-list
+        activities = "{{activities}}">
+      </gtt-activity-list>
     </paper-header-panel>
-
   </template>
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
     Polymer({ 
       is: 'gtt-activities',

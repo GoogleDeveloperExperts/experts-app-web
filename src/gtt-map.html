@@ -13,6 +13,11 @@
     This program is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -20,7 +25,11 @@
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/google-map/google-map.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-map">
   <template>
     <style>
@@ -31,13 +40,14 @@
         margin            : 0;
         height            : 100%;
         width             : 100%;
+        font-family       : Roboto;
       }
       [hidden] {
         display           : none !important;
       }
       h1 {
         font-size         : 24px;;
-        padding           : 13px 16px;
+        padding           : 8px 16px;
         margin            : 0;
         color             : #979797;
         font-weight       : normal;
@@ -75,6 +85,11 @@
         flex              : 1;
       }
     </style>
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
     <zones
       hidden  = "{{wideLayout}}">
       <zone
@@ -120,6 +135,11 @@
       query-matches = "{{!wideLayout}}">
     </iron-media-query>
   </template>
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
     Polymer({
       is            : 'gtt-map',

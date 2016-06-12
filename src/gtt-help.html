@@ -19,15 +19,23 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-help">
-
   <template>
-
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     <style>
       :host {
-        display: block;
-        padding: 10px;
+        display           : block;
+        padding           : 10px;
+        font-family       : Roboto;
       }
       .card {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
@@ -54,24 +62,26 @@
         color: #212121;
       }
     </style>
-
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
     <div class="card">
       <div class="circle">3</div>
       <h1>View Three</h1>
       <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
       <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
     </div>
-
   </template>
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
-
     Polymer({
-
       is: 'gtt-help'
-
     });
-
   </script>
-
 </dom-module>

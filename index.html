@@ -1,31 +1,40 @@
 <!--
-@license
-Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
-This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
-The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
-The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
-Code distributed by Google as part of the polymer project is also
-subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
--->
+    Google Developers Experts Tracking App
+    Copyright (C) 2016  by the GDE Tracking App Team
+    
+    gdetracking.appspot.com/
+    https://github.com/GoogleDeveloperExperts/experts-app-web
 
+    This program is free software: you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
 <!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-
   <title>GDE Tracking Tool</title>
-
-  <link rel="shortcut icon" sizes="32x32" href="/images/gde-logo.svg">
-
   <meta name="theme-color" content="#fff">
+  <link rel="shortcut icon" sizes="32x32" href="/images/gde-logo.svg">
   <link rel="manifest" href="/manifest.json">
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
-
     // setup Polymer options
     window.Polymer = {lazyRegister: true, dom: 'shadow'};
-
     // load webcomponents polyfills
     (function() {
       if ('registerElement' in document
@@ -39,35 +48,36 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
         document.head.appendChild(e);
       }
     })();
-
     // load pre-caching service worker
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', function() {
         navigator.serviceWorker.register('/service-worker.js');
       });
     }
-
   </script>
-
   <link rel="import" href="/src/gtt-app.html">
-
   <style>
-
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     body {
-      margin: 0;
-      font-size: 12px;
-      font-family: 'Roboto', 'Noto', sans-serif;
-      line-height: 1.5;
-      min-height: 100vh;
-      background-color: #eee;
+      margin            : 0;
+      font-size         : 12px;
+      font-family       : Roboto;
+      line-height       : 1.5em;
+      min-height        : 100vh;
+      background-color  : #eee;
     }
-
   </style>
-
 </head>
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
 <body>
-
   <gtt-app></gtt-app>
-
 </body>
 </html>

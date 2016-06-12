@@ -20,15 +20,23 @@
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
-
+<!--  
+    ====================================
+                  Shady DOM  
+    ====================================
+-->
 <dom-module id="gtt-profile">
-
   <template>
-
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
     <style>
       :host {
-        display: block;
-        padding: 10px;
+        display           : block;
+        padding           : 10px;
+        font-family       : Roboto;
       }
       .card {
         box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
@@ -55,28 +63,30 @@
         color: #212121;
       }
     </style>
-
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
     <div class="card">
       <div class="circle">1</div>
       <h1>View One</h1>
       <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
       <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
     </div>
-
     <paper-material elevation="2">          
       <h1>Stats here</h1>        
       <h1>Activities here</h1>
     </paper-material>  
   </template>
-
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
   <script>
-
     Polymer({
-
       is: 'gtt-profile'
-
     });
-
   </script>
-
 </dom-module>
