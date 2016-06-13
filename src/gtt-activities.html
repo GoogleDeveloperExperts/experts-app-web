@@ -32,7 +32,8 @@
                   Shady DOM  
     ====================================
 -->
-<dom-module id="gtt-activities">
+<dom-module 
+  id = "gtt-activities">
   <template>
 <!--
     ====================================
@@ -70,19 +71,34 @@
         margin            : 36px;
         padding           : 16px;
         border-radius     : 2px;
-        box-shadow        : 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
+      paper-material:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      } 
       paper-material.stats {
         margin            : 128px auto 17px;
       }
+      gtt-activity-list {
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      gtt-activity-list:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      } 
       #add_activity {
         position          : absolute;
         right             : 1.5%;
         top               : 212px;
         color             : #4285f4;
         background-color  : #fff;
-        box-shadow        : 0 4px 8px 0 rgba(0, 0, 0, 0.24);        
-      }      
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);        
+      }
+      #add_activity:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      } 
       gtt-activity-list , 
       paper-material {        
         max-width         : 78%; 
@@ -111,16 +127,14 @@
         <h1>My activities</h1>
       </paper-toolbar>
       <paper-material
-        class     = "stats"
-        elevation = "1">  
+        class     = "stats">
         <gtt-activity-stats 
           activities = "{{activities}}" >
         </gtt-activity-stats>
       </paper-material>
-      <paper-fab 
+      <paper-fab
         id        = "add_activity" 
-        icon      = "add"
-        elevation = "1">
+        icon      = "add">
       </paper-fab>
       <gtt-activity-list
         activities = "{{activities}}">

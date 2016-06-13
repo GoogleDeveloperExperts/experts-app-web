@@ -21,7 +21,8 @@
     "paper-material": "PolymerElements/paper-material#~1.0.6",
     "paper-toolbar": "PolymerElements/paper-toolbar#~1.1.4",
     "polymer": "polymer/polymer#^1.4.0",
-    "google-map": "GoogleWebComponents/google-map#^1.1.10"
+    "google-map": "GoogleWebComponents/google-map#^1.1.10",
+    "paper-button": "PolymerElements/paper-button#^1.0.12"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
