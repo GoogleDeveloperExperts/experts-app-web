@@ -19,6 +19,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <!--  
     ====================================
                   Shady DOM  
@@ -34,32 +38,55 @@
     <style>
       :host {
         display           : block;
-        padding           : 10px;
+        height            : 100%;
         font-family       : Roboto;
+        
+        --paper-toolbar-background  :  var(--google-cyan-500);
+        --paper-toolbar-tall        : {
+          height            : 240px
+        };
       }
-      .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        margin: 24px;
-        border-radius: 5px;
-        background-color: #fff;
-        color: #757575;
+      [hidden] {
+        display           : none !important;
       }
-      .circle {
-        display: inline-block;
-        height: 64px;
-        width: 64px;
-        border-radius: 50%;
-        background: #ddd;
-        line-height: 64px;
-        font-size: 30px;
-        color: #555;
-        text-align: center;
+      paper-header-panel h1 {
+        font-size         : 24px;
+        font-weight       : 300;
+        position          : absolute;
+        top               : 84px;
+        left              : 15vw;
+        margin            : 0;
       }
-      h1 {
-        font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
+      paper-button  {
+        position          : absolute;
+        top               : 80px;
+        right             : 15vw;
+        width             : 116px;
+        height            : 40px;
+        color             : #ff2179;
+        background-color  : #fff;
+        z-index           : 9;
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      paper-button:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      }
+      paper-material {
+        display           : flex;
+        flex-direction    : row;
+        background        : white;
+        box-sizing        : border-box;
+        width             : 70vw;
+        min-height        : 30vh;
+        padding           : 32px;
+        border-radius     : 2px;
+        margin            : 128px auto 17px;
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      paper-material:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       }
     </style>
 <!--  
@@ -67,12 +94,16 @@
                    HTML
     ====================================
 -->
-    <div class="card">
-      <div class="circle">3</div>
-      <h1>View Three</h1>
-      <p>Modus commodo minimum eum te, vero utinam assueverit per eu.</p>
-      <p>Ea duis bonorum nec, falli paulo aliquid ei eum.Has at minim mucius aliquam, est id tempor laoreet.Pro saepe pertinax ei, ad pri animal labores suscipiantur.</p>
-    </div>
+    <paper-header-panel 
+      mode = "cover">
+      <paper-toolbar 
+        class = "tall">
+        <h1>Help</h1>
+      </paper-toolbar>
+      <paper-material>
+        <p>Hang in there...</p>
+      </paper-material>
+    </paper-header-panel>
   </template>
 <!--
     ====================================

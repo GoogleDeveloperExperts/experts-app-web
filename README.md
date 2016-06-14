@@ -6,38 +6,38 @@ A Progressive Web App built with Polymer.
 
 [Version 2.0.0 Requirements](https://docs.google.com/document/d/1bZIIR9yUOMI8dZzmPRyIGVPUO9Ov85Xq31FWbpRHnHQ/edit)
 
-## How?
+### Setup
 
-This MVP uses the [Polymer App Toolbox](https://www.polymer-project.org/1.0/toolbox/) introduzed in Google I/O 2016. Take with a grain of salt (or two), apply code as needed.
+##### Prerequisites
 
-* [What are progressive web apps?](https://developers.google.com/web/progressive-web-apps?hl=en)
-* [Build an app with App Toolbox](https://www.polymer-project.org/1.0/start/toolbox/set-up)
-* [Case study: the Shop ](https://www.polymer-project.org/1.0/toolbox/case-study)
-* [Shop demo](https://shop.polymer-project.org/)
-* [Responsive app layout](https://www.polymer-project.org/1.0/toolbox/app-layout)
+You need NodeJS and NPM installed.
 
-## Setup
+https://nodejs.org/en/download/
 
-This app requires the [Polymer CLI](https://www.polymer-project.org/1.0/start/toolbox/set-up).
+Run the following commands from you console.
 
+    npm install -g polymer-cli
+    bower install
 
-### Install the Polymer CLI
+##### New to Polymer progressive web apps?
 
-1. Install the LTS version (4.x) of Node.js. The current version (6.x) should work, but is not officially supported. Versions below LTS are not supported.
+This MVP uses the [Polymer App Toolbox](https://www.polymer-project.org/1.0/toolbox/) introduced in Google I/O 2016.
 
-1. Install the Polymer CLI
+This tutorial  will familiarize you with all the technology on this project.
 
-```
-npm install -g polymer-cli
-```
+https://www.polymer-project.org/1.0/start/toolbox/set-up
 
+### Start the development server
 
-### Serve the project
+This command serves the app at `http://localhost:8080` and provides basic URL
+routing for the app:
 
-You can serve the application using the Polymer CLI, and file changes you make will be immediately visible by refreshing your browser.
+    polymer serve
 
-```
-polymer serve --open
-```
+### Build for production
 
-The task above automatically opens up your default web browser and fetches the locally-hosted application (at http://localhost:8080).
+This command performs HTML, CSS, and JS minification on the application
+dependencies, and generates a service-worker.js file with code to pre-cache the
+dependencies based on the entrypoint and fragments specified in `polymer.json`.
+
+    polymer build

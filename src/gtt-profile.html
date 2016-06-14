@@ -19,7 +19,10 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <!--  
     ====================================
                   Shady DOM  
@@ -35,32 +38,77 @@
     <style>
       :host {
         display           : block;
-        padding           : 10px;
+        height            : 100%;
         font-family       : Roboto;
+        
+        --paper-toolbar-background  : #ff2179;
+        --paper-toolbar-tall        : {
+          height            : 240px
+        };
       }
-      .card {
-        box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
-        padding: 16px;
-        margin: 24px;
-        border-radius: 5px;
-        background-color: #fff;
-        color: #757575;
+      [hidden] {
+        display           : none !important;
       }
-      .circle {
-        display: inline-block;
-        height: 64px;
-        width: 64px;
-        border-radius: 50%;
-        background: #ddd;
-        line-height: 64px;
-        font-size: 30px;
-        color: #555;
-        text-align: center;
+      paper-header-panel h1 {
+        font-size         : 24px;
+        font-weight       : 300;
+        position          : absolute;
+        top               : 84px;
+        left              : 15vw;
+        margin            : 0;
       }
-      h1 {
-        font-size: 22px;
-        margin: 16px 0;
-        color: #212121;
+      paper-button  {
+        position          : absolute;
+        top               : 80px;
+        right             : 15vw;
+        width             : 116px;
+        height            : 40px;
+        color             : #ff2179;
+        background-color  : #fff;
+        z-index           : 9;
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      paper-button:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      }
+      paper-material {
+        display           : flex;
+        flex-direction    : row;
+        background        : white;
+        box-sizing        : border-box;
+        width             : 70vw;
+        min-height        : 70vh;
+        padding           : 32px;
+        border-radius     : 2px;
+        margin            : 128px auto 17px;
+        transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+      }
+      paper-material:hover {
+        box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
+      }
+      user-avatar {
+        display           : block;
+        flex              : 1;;
+      }
+      user-avatar  img {
+        border-radius     : 50%;
+        background-color  : #eee;
+        height            : 80px;
+        width             : 80px;
+      }
+      user-info {
+        flex              : 4;
+        color             : #282828;
+        font-weight       : 300;
+      }
+      user-info  h2 {
+        font-size         : 24px;
+        margin            : 0;
+      }
+      user-info  p {
+        font-size         : 14px;
       }
     </style>
 <!--  
@@ -68,16 +116,32 @@
                    HTML
     ====================================
 -->
-    <div class="card">
-      <div class="circle">1</div>
-      <h1>View One</h1>
-      <p>Ut labores minimum atomorum pro. Laudem tibique ut has.
-      <p>Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Lorem ipsum dolor sit amet, per in nusquam nominavi periculis, sit elit oportere ea.Cu mei vide viris gloriatur, at populo eripuit sit.</p>
-    </div>
-    <paper-material elevation="2">          
-      <h1>Stats here</h1>        
-      <h1>Activities here</h1>
-    </paper-material>  
+    <paper-header-panel 
+      mode = "cover">
+      <paper-toolbar 
+        class = "tall">
+        <h1>My profile</h1>
+        <paper-button>
+          Save
+        </paper-button>
+      </paper-toolbar>
+      <paper-material>
+        <user-avatar>
+          <img 
+            alt = "Avatar"
+            src = "{{user.avatar}}"/>
+        </user-avatar>
+        <user-info>
+          <h2>{{user.name}}</h2>
+          <p>{{user.title}}</p>
+          <p>{{user.location}}</p>
+          <h2>Skills</h2>
+          <p>{{user.skills}}</p>
+          <h2>Biography</h2>
+          <p>{{user.biography}}</p>
+        </user-info>
+      </paper-material>
+    </paper-header-panel>
   </template>
 <!--
     ====================================
@@ -86,7 +150,23 @@
 -->
   <script>
     Polymer({
-      is: 'gtt-profile'
+      is: 'gtt-profile',
+      properties : {
+        user : {
+          type : Object,
+          value       : function() {
+            return {
+              'name'      : 'Cesar Anton',
+              'email'     : 'reicek@gmail.com',
+              'avatar'    : 'https://secure.gravatar.com/avatar/f35f16285ad3235d467bb472771d62b0',
+              'title'     : 'Google Apps & Drive GDE',
+              'skills'    : ['Firebase', 'Polymer', 'Angular', 'React', 'HTML5', 'JS', 'CSS3', 'NodeJS'],
+              'location'  : 'New York, NY, United States',
+              'biography' : "Cesar is a front-end developer and technical writer who's been a Google Drive Developer Expert since 2013. In his free time he enjoys writing about web technologies; reading about science; and attending tech events as a mentor, judge and conferencist. Cesar is experienced at implementing modern web technologies and standards, and enjoys mentoring new startups about how to find the best stack for their product. In the past, he worked for eight years as an IT consultant, and currently works as a semi-full stack developer in an education startup. Cesar studied Computer Systems Engineering at the Universidad del Valle de México. He lives in Bogotá, Colombia, and speaks English and Spanish."
+            };
+          }
+        },
+      },
     });
   </script>
 </dom-module>
