@@ -1,8 +1,12 @@
-# GDE Tracking minimal viable product, Progressive Web App edition
+![App Screenshot](https://developers.google.com/experts/img/experts-logo.png)
+Google Experts tracking app
+===========================
+###### built with <3 by the GE Tracking App Team
+![App Screenshot](http://s32.postimg.org/4y3nsfx91/preview.jpg)
 
-A Progressive Web App built with Polymer.
+## Requirements
 
-## What?
+All requirements were done in a collaboration between Googlers and volunteers from the [Google Experts](https://developers.google.com/experts/) program.
 
 [Version 2.0.0 Requirements](https://docs.google.com/document/d/1bZIIR9yUOMI8dZzmPRyIGVPUO9Ov85Xq31FWbpRHnHQ/edit)
 
@@ -21,9 +25,9 @@ Run the following commands from you console.
 
 ##### New to Polymer progressive web apps?
 
-This MVP uses the [Polymer App Toolbox](https://www.polymer-project.org/1.0/toolbox/) introduced in Google I/O 2016.
+This software uses the [Polymer App Toolbox](https://www.polymer-project.org/1.0/toolbox/) introduced in Google I/O 2016.
 
-This tutorial  will familiarize you with all the technology on this project.
+This tutorial  will familiarize you with the core frontend technology on this project.
 
 https://www.polymer-project.org/1.0/start/toolbox/set-up
 
