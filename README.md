@@ -1,4 +1,4 @@
-![App Screenshot](https://developers.google.com/experts/img/experts-logo.png)
+![App Screenshot](http://s32.postimg.org/x11aap2px/rsz_experts_at_io_compressed.jpg)
 Google Experts tracking app
 ===========================
 ###### built with <3 by the GE Tracking App Team
