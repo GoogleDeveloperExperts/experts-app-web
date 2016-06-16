@@ -26,7 +26,8 @@
     "paper-dialog": "PolymerElements/paper-dialog#^1.0.4",
     "neon-animation": "PolymerElements/neon-animation#^1.2.3",
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^1.8.0",
-    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^1.2.6"
+    "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^1.2.6",
+    "firebase": "^3.0.5"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

@@ -32,6 +32,7 @@
 <link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="gtt-icons.html">
+<script src="../bower_components/firebase/firebase.js"></script>
 <!--  
     ====================================
                   Shady DOM  
@@ -295,6 +296,10 @@
       query         = "min-width: 800px" 
       query-matches = "{{wideLayout}}">
     </iron-media-query>
+    <firebase-collection
+      location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
+      data     = "{{cache}}">
+    </firebase-collection>
   </template>
 <!--
     ====================================
@@ -303,6 +308,13 @@
 -->
   <script>
     "use strict";
+    var config = {
+      apiKey        : "AIzaSyB9tHddHIErDbuiTmd6xj1_AFgTIJJDTTw",
+      authDomain    : "gooogle-experts-tracking-app.firebaseapp.com",
+      databaseURL   : "https://google-experts-tracking-app.firebaseio.com/",
+      storageBucket : "gooogle-experts-tracking-app.firebaseapp.com",
+    };
+//    var firebaseApp  = firebase.initializeApp(config, 'gtt-app');   // Initialize Firebase
     Polymer({
       is : 'gtt-app',
       properties : {
