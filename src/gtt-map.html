@@ -259,7 +259,10 @@
           type        : 'Object',
           notify      : true,
           value       : function() {
-            return {'zoom':2,'latitude':30,'longitude':-30};
+            return {
+              'zoom'      : 2,
+              'latitude'  : 30,
+              'longitude' : -30 };
           }
         }
       },
@@ -270,12 +273,50 @@
         this.$.presentation.open();;
       },
       selectThis      : function(e) {
-//      var id        = e.target.id;
-        var selectors = this.$.zones.children;
+        var selected  = e.target.id,
+            selectors = this.$.zones.children;
         for (var i=0, total=selectors.length; i<total; i++){
           selectors[i].removeAttribute('selected');
         }
         e.target.setAttribute('selected','true');
+        switch (selected){
+          case ('africa') :
+            this.set('map.zoom'      , 3);
+            this.set('map.latitude'  , 6.140554782450104);
+            this.set('map.longitude' , 23.601562499999996);
+            break;
+          case ('asia')     :
+            this.set('map.zoom'      , 3);
+            this.set('map.latitude'  , 28.767659105690974);
+            this.set('map.longitude' , 91.453125);
+            break;
+          case ('europe')   :
+            this.set('map.zoom'      , 3);
+            this.set('map.latitude'  , 58.35563036280954);
+            this.set('map.longitude' , 19.910156249999996);
+            break;
+          case ('nAmerica') :
+            this.set('map.zoom'      , 3);
+            this.set('map.latitude'  , 49.610709938074166);
+            this.set('map.longitude' , -100.67578125);
+            break;
+          case ('sAmerica') :
+            this.set('map.zoom'      , 3);
+            this.set('map.latitude'  , -21.616579336740593);
+            this.set('map.longitude' , -60.0703125);
+            break;
+          case ('oceania')  :
+            this.set('map.zoom'      , 4);
+            this.set('map.latitude'  , -23.725011735951973);
+            this.set('map.longitude' , 129.59765625);
+            break;
+          default :
+            this.set('map.zoom'      , 2);
+            this.set('map.latitude'  , 30);
+            this.set('map.longitude' , -30);
+            break;
+        }
+        console.info(this.map);
       }
     });
   </script>
