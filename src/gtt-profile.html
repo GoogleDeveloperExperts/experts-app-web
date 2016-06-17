@@ -49,6 +49,11 @@
       [hidden] {
         display           : none !important;
       }
+      paper-header-panel {
+        --paper-header-panel-body  : {
+          background-color  : #eee;
+        }
+      }
       paper-header-panel h1 {
         font-size         : 24px;
         font-weight       : 300;
@@ -62,6 +67,7 @@
         top               : 80px;
         right             : 15vw;
         width             : 116px;
+        margin            : 0;
         height            : 40px;
         color             : #ff2179;
         background-color  : #fff;
@@ -78,9 +84,9 @@
         box-sizing        : border-box;
         width             : 70vw;
         min-height        : 70vh;
-        padding           : 48px;
+        padding           : 48px 103px 48px 48px;
         border-radius     : 2px;
-        margin            : 128px auto 17px;
+        margin            : 128px 15vw 17px;
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }

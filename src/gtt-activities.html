@@ -61,6 +61,11 @@
       [hidden] {
         display           : none !important;
       }
+      paper-header-panel {
+        --paper-header-panel-body  : {
+          background-color  : #eee;
+        }
+      }
       paper-header-panel h1 {
         font-size         : 24px;
         font-weight       : 300;
@@ -93,9 +98,9 @@
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       } 
       #add_activity {
-        position          : absolute;
-        right             : 1.5%;
-        top               : 212px;
+        position          : fixed;
+        right             : 32px;
+        top               : 268px;
         color             : #4285f4;
         background-color  : #fff;
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
@@ -184,6 +189,16 @@
       @media (max-width: 1280px ) {
         gtt-activity-list, paper-material {  
           clear             : both;
+        }
+      }
+      @media (max-width: 800px ) {
+        #add_activity {
+          right             : 16px;
+        }
+      }
+      @media (max-width: 700px ) {
+        #add_activity {
+          top               : 90vh;
         }
       }
     </style>
