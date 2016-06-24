@@ -18,20 +18,21 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
+<link rel="import" href="gtt-icons.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
 <link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
 <link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="gtt-icons.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <script src="../bower_components/firebase/firebase.js"></script>
 <!--  
     ====================================
@@ -63,6 +64,10 @@
         color               : #fff;
         height              : 56px;
         padding             : 0;
+      }
+      app-drawer  app-toolbar {
+        background-color    : #fff;
+        color               : #000;
       }
       app-header  paper-icon-button {
       --paper-icon-button-ink-color: white;
@@ -116,47 +121,59 @@
         margin              : 0 20px 0 0;
         height              : 100%;
       }
-      .drawer-list  a {
+      .drawer-list  paper-button {
         display             : flex;
         width               : 132px;
         align-items         : center;
         justify-content     : center;
         text-align          : center;
+        border-radius       : 0;
+        margin              : 0;
         font-size           : 14px;
-        font-weight         : 500;
-        text-decoration     : none;
-        color               : #eee;
         height              : 100%;
         transition          : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
       } 
-      .drawer-list  a.iron-selected {
-        color               : #fff;
-        font-weight         : bold;
+      .drawer-list  paper-button.iron-selected {
         box-shadow          : inset 0 -2px #fff;
       }
-      .drawer-list  a.subroute {
+      .drawer-list  paper-button.iron-selected a {
+        color               : #fff;
+        font-weight         : bold;
+      }
+      .drawer-list  paper-button a {
+        font-weight         : 500;
+        text-decoration     : none;
+        color               : #eee;
+      }
+      .drawer-list  paper-button.subroute {
         padding-left        : 32px;
       }
       app-drawer  .drawer-list {
         flex-direction      : column;
         margin              : 0;
       }
-      app-drawer  .drawer-list a {
+      app-drawer  .drawer-list paper-button {
+        margin              : 0;
         height              : 48px;
-        width               : 95%;
-        color               : #979797;
+        width               : 100%;
+        border-radius       : 0;
         justify-content     : flex-start;
         padding-left        : 5%;
         transition          : all 0.3s cubic-bezier(.25,.8,.25,1);
       }
-      app-drawer  .drawer-list  a.iron-selected {
-        color               : #000;
+      app-drawer  .drawer-list paper-button a {
+        color               : #979797;
+      }
+      app-drawer  .drawer-list  paper-button.iron-selected {
         background-color    : rgba(0, 0, 0, 0.1);
         box-shadow          : none;
-        width               : 93%;
+        width               : 100%;
         padding-left        : 7%;
       }
-      app-drawer .drawer-list  a.subroute {
+      app-drawer  .drawer-list  paper-button.iron-selected  a {
+        color               : #000;
+      }
+      app-drawer .drawer-list  paper-button.subroute {
         padding-left        : 32px;
       }
       iron-pages {
@@ -191,26 +208,34 @@
           class             = "drawer-list" 
           role              = "navigation"
           attr-for-selected = "name">
-          <a 
-            name = "activities" 
-            href = "/activities">
-            Activities
-          </a>
-          <a 
-            name = "profile" 
-            href = "/profile">
-            Profile
-          </a>
-          <a 
-            name = "map" 
-            href = "/map">
-            Map
-          </a>
-          <a 
-            name = "help" 
-            href = "/help">
-            Help
-          </a>
+          <paper-button
+            name = "activities">
+            <a 
+              href = "/activities">
+              Activities
+            </a>
+          </paper-button>
+          <paper-button
+            name = "profile">
+            <a 
+              href = "/profile">
+              Profile
+            </a>
+          </paper-button>
+          <paper-button
+            name = "map">
+            <a 
+              href = "/map">
+              Map
+            </a>
+          </paper-button>
+          <paper-button
+            name = "help">
+            <a 
+              href = "/help">
+              Help
+            </a>
+          </paper-button>
         </iron-selector>
       </app-drawer>
       <app-header-layout 
@@ -237,26 +262,34 @@
               class             = "drawer-list" 
               role              = "navigation"
               hidden            = "{{!wideLayout}}">
-              <a 
-                name = "activities"
-                href = "/activities">
-                Activities
-              </a>
-              <a 
-                name = "profile"
-                href = "/profile">
-                Profile
-              </a>
-              <a 
-                name = "map"
-                href = "/map">
-                Map
-              </a>
-              <a 
-                name = "help"
-                href = "/help">
-                Help
-              </a>
+              <paper-button
+                name = "activities">
+                <a 
+                  href = "/activities">
+                  Activities
+                </a>
+              </paper-button>
+              <paper-button
+                name = "profile">
+                <a 
+                  href = "/profile">
+                  Profile
+                </a>
+              </paper-button>
+              <paper-button
+                name = "map">
+                <a 
+                  href = "/map">
+                  Map
+                </a>
+              </paper-button>
+              <paper-button
+                name = "help">
+                <a 
+                  href = "/help">
+                  Help
+                </a>
+              </paper-button>
             </iron-selector>
             <user>
               <info>

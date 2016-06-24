@@ -25,8 +25,8 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
-<link rel="import" href="../bower_components/neon-animation/animations/scale-up-animation.html">
-<link rel="import" href="../bower_components/neon-animation/animations/fade-out-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-up-animation.html">
+<link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 <!--  
     ====================================
                   Shady DOM  
@@ -56,18 +56,14 @@
       a {
         color             : #4285f4;
         text-decoration   : none;
+        font-size         : 14px;
       }
       a:visited {
         color             : #4285f4;
       }
-      h1 {
-        font-size         : 24px;;
-        padding           : 8px 16px;
-        margin            : 0;
-        color             : #979797;
-        font-weight       : normal;
+      gray-area {
+        height            : 100%;
         background-color  : #eee;
-        cursor            : pointer;
       }
       zones {
         display           : flex;
@@ -102,17 +98,20 @@
       google-map {
         display           : flex;
         flex              : 1;
+        max-height        : 500px;
+        min-height        : 500px;
       }
       #presentation {
         font-size         : 20px;
         position          : absolute;
-        bottom            : 1em;
+        bottom            : 0;
         left              : var(--gtt-presentation-position);
-        width             : 80vw;
-        min-height        : 50vh;
+        width             : 90vw;
+        height            : 461px;
         background-color  : #fff;
         border-radius     : 2px;
-        padding           : 1em;
+        margin            : 0;
+        padding           : 13px 0 0;
         transition        : all 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
@@ -128,6 +127,7 @@
       }
       #presentation  #main {
         color             : #4285f4;
+        margin-top        : 48px;
       }
       #presentation  #extra {
         color             : #aaa;
@@ -136,6 +136,7 @@
         float             : right;
       }
       #presentation  paper-button {
+        margin-top        : 30px;
         color             : #4285f4;
         text-transform    : uppercase;
       }
@@ -152,7 +153,8 @@
 -->
     <zones
       hidden  = "{{!wideLayout}}"
-      id      = "zones">
+      id      = "zones"
+      on-tap  = "hideInfo">
       <paper-button
         class    = "selector"
         id       = "world"
@@ -204,18 +206,17 @@
       zoom      = "{{map.zoom}}"
       disable-default-ui>
     </google-map>
-    <h1
-      on-tap = "showInfo">
-      Google Experts
-    </h1>
+    <gray-area>
+    </gray-area>
     <iron-media-query 
       query         = "min-width: 570px" 
       query-matches = "{{wideLayout}}">
     </iron-media-query>
     <paper-dialog 
       id              = "presentation"
-      exit-animation  = "fade-out-animation"
-      entry-animation = "scale-up-animation">
+      exit-animation  = "slide-down-animation"
+      entry-animation = "slide-from-bottom-animation"
+      no-cancel-on-outside-click>
       <p
         id  = "title">
         Google Experts
@@ -230,11 +231,13 @@
       </p>
       <section
         class     = "buttons">
+<!--  
         <paper-button
           id      = "dismiss"
           dialog-confirm>
           Dismiss
         </paper-button>
+-->
         <paper-button>
           <a
             href    = "https://developers.google.com/experts/"
@@ -271,6 +274,9 @@
       },
       showInfo        : function() {
         this.$.presentation.open();;
+      },
+      hideInfo        : function() {
+        this.$.presentation.close();;
       },
       selectThis      : function(e) {
         var selected  = e.target.id,

@@ -60,13 +60,19 @@
         flex              : 1;
         align-items       : flex-end;
         margin            : auto 0.5em 0;
+        min-height        : 20px;
       }
       charts  chart  tag {
+        display           : flex;
+        align-items       : center;
+        justify-content   : center;
         flex              : 1;
         text-align        : center;
+        text-overflow     : ellipsis;
         font-size         : 12px;
         color             : #fff;
         padding           : 5px 0;
+        height            : 30px;
       }
       charts  chart#loggedActivities {
         background-color  : #4285f4;
@@ -91,6 +97,16 @@
       }
       charts  chart#trained  tag {
         background-color  : #239040;
+      }
+      @media all and (max-width: 630px) {
+        charts  chart  tag {
+          font-size         : 9px;
+        }
+      }
+      @media all and (max-width: 500px) {
+        charts  chart  tag { 
+          display           : none;
+        }
       }
     </style>
 <!--  
