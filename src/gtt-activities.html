@@ -21,6 +21,7 @@
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
@@ -119,9 +120,8 @@
         justify-content   : space-between;
         position          : fixed;
         top               : 20vh;
-        right             : 20vw;
-        width             : 60vw;
-        height            : 60vh;
+        left              : 11vw;
+        width             : 70vw;
         overflow          : auto;
         border-radius     : 2px;
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
@@ -146,14 +146,58 @@
         color             : #4285f4;
         font-size         : 16px;
         font-weight       : 500;
-        margin            : 20px 0 0 16px !important;
+      }
+      paper-dialog  > h2 {
+        margin            : 20px 0 0 21px !important;
       }
       paper-dialog  h2  iron-icon {
         margin-right      : 10px;
       }
       paper-dialog  section {
         flex              : 1;
-        margin-left       : 56px !important;  
+        margin            : 0 56px !important;
+      }
+      paper-dialog  section  article {
+        display           : flex;
+        justify-content   : center;
+        flex-wrap         : wrap;
+      }
+      paper-dialog  section#details {
+        display           : flex;
+        flex-wrap         : wrap;
+      }
+      paper-dialog  section#details  #activityLink {
+        width             : 100%;
+      }
+      paper-dialog  section#details  #plusOnes {
+        width             : 30%;
+      }
+      paper-dialog  section#details  #reshares {
+        width             : 30%;
+        margin            : 0 auto;
+      }
+      paper-dialog  section#details  #comments {
+        width             : 30%;
+      }
+      paper-dialog  section#details  #atendees {
+        width             : 30%;
+      }
+      paper-dialog  section#details  #location {
+        margin            : 0 auto;
+        width             : 30%;
+      }
+      paper-dialog  section#details  #eventLink {
+        width             : 30%;
+      }
+      paper-dialog  section  article  paper-button {
+        transition        : all 0.3s cubic-bezier(.25,.8,.25,1);
+        margin            : 5px;
+        font-weight       : normal !important;
+      }
+      paper-dialog  section  article  paper-button[active] {
+        background-color  : #34a853;
+        color             : #fff;
+        margin            : 5px;
       }
       paper-dialog  footer {
         display           : flex;
@@ -264,6 +308,18 @@
         </paper-button>
         <section>
           <p>Fill in the details below to add and track your activity.</p>
+          <paper-input
+            id    = "title"
+            type  = "text"
+            label = "Activity Title"
+            value = "{{ newActivity.title }}">
+          </paper-input>
+          <paper-input
+            id    = "description"
+            type  = "text"
+            label = "Description"
+            value = "{{ newActivity.description }}">
+          </paper-input>
         </section>
         <footer>
           <paper-button 
@@ -294,7 +350,7 @@
         if = "{{ progress.2 }}">
         <h2>
           <iron-icon 
-            icon = "arrow-back"
+            icon   = "arrow-back"
             on-tap = "goFirst">
           </iron-icon>
           Activity Types
@@ -308,7 +364,147 @@
           </iron-icon>
         </paper-button>
         <section>
-          <p></p>
+          <article
+            id     = "types"
+            on-tap = "checkTypes">
+            <paper-button
+              id  = "blogpost"
+              toggles
+              raised>
+              #blogpost
+            </paper-button>
+            <paper-button
+              id     = "article"
+              toggles
+              raised>
+              #article
+            </paper-button>
+            <paper-button
+              id = "forumpost"
+              toggles
+              raised>
+              #forumpost
+            </paper-button>
+            <paper-button
+              id = "video"
+              toggles
+              raised>
+              #video
+            </paper-button>
+            <paper-button
+              id = "book"
+              toggles
+              raised>
+              #book
+            </paper-button>
+            <paper-button
+              id = "translation"
+              toggles
+              raised>
+              #translation
+            </paper-button>
+            <paper-button
+              id = "techdocs"
+              toggles
+              raised>
+              #techdocs
+            </paper-button>
+            <paper-button
+              id = "OpenSourceCode "
+              toggles
+              raised>
+              #OpenSourceCode 
+            </paper-button>
+            <paper-button
+              id = "sampleapp"
+              toggles
+              raised>
+              #sampleapp
+            </paper-button>
+            <paper-button
+              id = "bugreport"
+              toggles
+              raised>
+              #bugreport
+            </paper-button>
+            <paper-button
+              id = "launchpadweek"
+              toggles
+              raised>
+              #launchpadweek
+            </paper-button>
+            <paper-button
+              id = "uxreview"
+              toggles
+              raised>
+              #uxreview
+            </paper-button>
+            <paper-button
+              id = "mentoring"
+              toggles
+              raised>
+              #mentoring
+            </paper-button>
+            <paper-button
+              id = "designsprint"
+              toggles
+              raised>
+              #designsprint
+            </paper-button>
+            <paper-button
+              id = "speedlab"
+              toggles
+              raised>
+              #speedlab
+            </paper-button>
+            <paper-button
+              id = "interviews"
+              toggles
+              raised>
+              #interviews
+            </paper-button>
+            <paper-button
+              id = "tools"
+              toggles
+              raised>
+              #tools
+            </paper-button>
+            <paper-button
+              id = "techtalks"
+              toggles
+              raised>
+              #techtalks
+            </paper-button>
+          </article>
+          <h2>Products</h2>
+          <article
+            id     = "types"
+            on-tap = "checkProducts">
+            <paper-button
+              id  = "technology"
+              toggles
+              raised>
+              #technology
+            </paper-button>
+            <paper-button
+              id  = "marketing"
+              toggles
+              raised>
+              #marketing
+            </paper-button>
+            <paper-button
+              id  = "marketing"
+              toggles
+              raised>
+              #ux/ui
+            </paper-button>
+            <paper-button
+              id  = "productStrategy"
+              toggles
+              raised>
+              #productStrategy
+            </paper-button>
+          </article>
         </section>
         <footer>
           <paper-button 
@@ -339,7 +535,8 @@
         if = "{{ progress.3 }}">
         <h2>
           <iron-icon 
-            icon = "arrow-back">
+            icon   = "arrow-back" 
+            on-tap = "goSecond">
           </iron-icon>
           Details
         </h2>
@@ -351,8 +548,51 @@
             icon = "close">
           </iron-icon>
         </paper-button>
-        <section>
-          <p></p>
+        <section
+          id  = "details">
+          <paper-input
+            id    = "activityLink"
+            type  = "text"
+            label = "Activity Link"
+            value = "{{ newActivity.activityLink }}">
+          </paper-input>
+          <paper-input
+            id    = "plusOnes"
+            type  = "number"
+            label = "+1s"
+            value = "{{ newActivity.plusOnes }}">
+          </paper-input>
+          <paper-input
+            id    = "reshares"
+            type  = "number"
+            label = "Reshares"
+            value = "{{ newActivity.reshares }}">
+          </paper-input>
+          <paper-input
+            id    = "comments"
+            type  = "number"
+            label = "Comments"
+            value = "{{ newActivity.comments }}">
+          </paper-input>
+          <paper-input
+            id    = "atendees"
+            type  = "number"
+            label = "Number of atendees"
+            value = "{{ newActivity.atendees }}">
+          </paper-input>
+          <paper-input
+            id    = "location"
+            type  = "text"
+            label = "Location"
+            value = "{{ newActivity.location }}">
+          </paper-input>
+          <paper-input
+            id    = "eventLink"
+            type  = "text"
+            label = "Event link"
+            value = "{{ newActivity.eventLink }}">
+          </paper-input>
+          <p>This activity can be shared publicly</p>
         </section>
         <footer>
           <paper-button 
@@ -396,13 +636,23 @@
         activities  : {
           type        : 'Array',
         },
+        newActivity : {
+          type        : 'Object',
+          notify      : true,
+          value       : function() {
+            return {
+              'title'       : '',
+              'description' : ''
+            };
+          }
+        },
         progress    : {
           type        : 'Object',
           notify      : true,
           value       : function() {
             return {1:true,2:false,3:false};
           }
-        }
+        },
       },
       openDialog  : function(){
         this.$.modal.open();
@@ -420,9 +670,25 @@
         this.set('progress',progress);
       },
       finish      : function(){
-        var progress = {1:true,2:false,3:false};
-        this.set('progress',progress);
         this.$.modal.close();
+        this.goFirst();
+        console.log(this.newActivity);
+      },
+      checkTypes  : function(e){
+        var selectors = e.path[1].children;
+        var selected  = [];
+        for (var i = 0, total = selectors.length; i<total; i++) {
+          if (selectors[i].active) selected.push(selectors[i].id); 
+        }
+        console.log('Selected activity types:',selected);
+      },
+      checkProducts : function(e){
+        var selectors = e.path[1].children;
+        var selected  = [];
+        for (var i = 0, total = selectors.length; i<total; i++) {
+          if (selectors[i].active) selected.push(selectors[i].id); 
+        }
+        console.log('Selected products:',selected);
       },
     });
   </script>
