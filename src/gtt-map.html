@@ -1,7 +1,7 @@
 <!--
     Google Developers Experts Tracking App
     Copyright (C) 2016  by the GDE Tracking App Team
-    
+
     gdetracking.appspot.com/
     https://github.com/GoogleDeveloperExperts/experts-app-web
 
@@ -27,16 +27,16 @@
 <link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-up-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
-<!--  
+<!--
     ====================================
-                  Shady DOM  
+                  Shady DOM
     ====================================
 -->
 <dom-module id="gtt-map">
   <template>
 <!--
     ====================================
-                     CSS 
+                     CSS
     ====================================
 -->
     <style>
@@ -47,7 +47,7 @@
         margin            : 0;
         height            : 100%;
         width             : 100%;
-        font-family       : Roboto;
+        font-family       : Roboto, sans-serif;
         --gtt-presentation-position : 5vw;
       }
       [hidden] {
@@ -124,13 +124,18 @@
       #presentation  #title {
         font-size         : 24px;
         margin-top        : 0;
+        font-family       : 'Open Sans', sans-serif;
+        color             : #282828;
       }
       #presentation  #main {
         color             : #4285f4;
         margin-top        : 48px;
+        font-size         : 25px;
+        line-height       : 35px; 
       }
       #presentation  #extra {
         color             : #aaa;
+        font-size         : 14px;
       }
       #presentation  .buttons {
         float             : right;
@@ -146,7 +151,7 @@
         }
       }
     </style>
-<!--  
+<!--
     ====================================
                    HTML
     ====================================
@@ -200,19 +205,19 @@
       </paper-button>
     </zones>
     <google-map
-      api-key   = "AIzaSyB9tHddHIErDbuiTmd6xj1_AFgTIJJDTTw" 
-      latitude  = "{{map.latitude}}" 
+      api-key   = "AIzaSyB9tHddHIErDbuiTmd6xj1_AFgTIJJDTTw"
+      latitude  = "{{map.latitude}}"
       longitude = "{{map.longitude}}"
       zoom      = "{{map.zoom}}"
       disable-default-ui>
     </google-map>
     <gray-area>
     </gray-area>
-    <iron-media-query 
-      query         = "min-width: 570px" 
+    <iron-media-query
+      query         = "min-width: 570px"
       query-matches = "{{wideLayout}}">
     </iron-media-query>
-    <paper-dialog 
+    <paper-dialog
       id              = "presentation"
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
@@ -231,7 +236,7 @@
       </p>
       <section
         class     = "buttons">
-<!--  
+<!--
         <paper-button
           id      = "dismiss"
           dialog-confirm>
