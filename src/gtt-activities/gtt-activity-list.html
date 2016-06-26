@@ -22,9 +22,9 @@
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="./gtt-activity-item.html">
-<!--  
+<!--
     ====================================
-                  Shady DOM  
+                  Shady DOM
     ====================================
 -->
 <dom-module
@@ -32,23 +32,24 @@
   <template>
 <!--
     ====================================
-                     CSS 
+                     CSS
     ====================================
 -->
     <style is="custom-style">
       :host {
-        display           : block;  
+        display           : block;
         background        : white;
         box-sizing        : border-box;
         width             : 80vw;
         margin            : 0 auto 17px;
         border-radius     : 2px;
         font-family       : Roboto;
-            
+
         --paper-checkbox-checked-color        : var(--paper-blue-500);
         --paper-checkbox-checked-ink-color    : var(--paper-blue-500);
         --paper-checkbox-unchecked-color      : var(--paper-grey-500);
-        --paper-checkbox-unchecked-ink-color  : var(--paper-grey-500);            
+        --paper-checkbox-unchecked-ink-color  : var(--paper-grey-500);
+        --paper-checkbox-label-spacing        : 0;
       }
       [hidden] {
         display           : none !important;
@@ -66,11 +67,12 @@
         table-layout: fixed;
       }
       .thead    {
-        text-transform: uppercase; 
-        background-color  : var(--google-blue-500); 
+        text-transform: uppercase;
+        background-color  : var(--google-blue-500);
         color             : white;
+        font-weight       : 500;
       }
-      .tr {  
+      .tr {
       }
       .th, .td {
         font-size         : 12px;
@@ -78,51 +80,54 @@
         text-align        : center;
         vertical-align    : middle;
       }
-      
-      .th.col0 {
-        width: 20px;
-      } 
+
       .th.col1  {
         width: 200px;
-      }       
+      }
       .th.col2,  .th.col3, .th.col4, .th.col5, .th.col6 {
         width: 100px;
-      } 
+      }
       .th.col7, .td.col7  {
         width: 50px;
-      } 
-            
-      .td {
-        border-bottom: solid 1px var(--google-grey-300);   
       }
-      
-      .td.col1 {        
+
+      .td {
+        border-bottom: solid 1px #eee;
+      }
+
+      .td.col0 {
+        width: 48px;
+        padding: 0;
+        text-align: center;
+      }
+
+      .td.col1 {
         text-align: justify;
         overflow: hidden;
         text-overflow: ellipsis;
       }
-      
+
       .td.col3, .td.col7 {
         color: var(--google-grey-500);
-      } 
-         
+      }
+
       @media (max-width: 940px) {
         .th, .td {
           display: none;
-        }     
+        }
         .th.col0, .th.col1, .th.col2, .th.col3,
         .td.col0,.td.col1, .td.col2, .td.col3 {
           display: table-cell;
         }
       }
     </style>
-<!--  
+<!--
     ====================================
                    HTML
     ====================================
 -->
     <div class="table">
-      <div class="thead">        
+      <div class="thead">
         <div class="th col0"></div>
         <div class="th col1">Activity name</div>
         <div class="th col2">Date</div>
@@ -142,9 +147,9 @@
             <div class="td col4">{{activity.directReach}}</div>
             <div class="td col5">{{activity.indirectReach}}</div>
             <div class="td col6">{{activity.trained}}</div>
-            <div class="td col7"><iron-icon icon="more-vert"></div>            
-          </div>  
-        </template>  
+            <div class="td col7"><iron-icon icon="more-vert"></div>
+          </div>
+        </template>
       </div>
     </div>
   </template>
@@ -154,7 +159,7 @@
     ====================================
 -->
   <script>
-    Polymer({ 
+    Polymer({
       is: 'gtt-activity-list',
       properties: {
         /**
@@ -168,7 +173,7 @@
         var serializedList = ''
         for (var i in list) {
           serializedList += list[i];
-          
+
           if (i < list.length-1) {
             serializedList += ', '
           }
