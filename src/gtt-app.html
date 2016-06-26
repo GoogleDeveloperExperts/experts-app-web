@@ -1,7 +1,7 @@
 <!--
     Google Developers Experts Tracking App
     Copyright (C) 2016  by the GDE Tracking App Team
-    
+
     gdetracking.appspot.com/
     https://github.com/GoogleDeveloperExperts/experts-app-web
 
@@ -34,16 +34,16 @@
 <link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
 <link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
 <script src="../bower_components/firebase/firebase.js"></script>
-<!--  
+<!--
     ====================================
-                  Shady DOM  
+                  Shady DOM
     ====================================
 -->
 <dom-module id="gtt-app">
   <template>
 <!--
     ====================================
-                     CSS 
+                     CSS
     ====================================
 -->
     <style>
@@ -96,6 +96,7 @@
       app-header  user  info {
         display             : flex;
         flex-direction      : column;
+        text-align          : right;
       }
       app-header  user  info  name {
         font-size           : 14px;
@@ -132,7 +133,7 @@
         font-size           : 14px;
         height              : 100%;
         transition          : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
-      } 
+      }
       .drawer-list  paper-button.iron-selected {
         box-shadow          : inset 0 -2px #fff;
       }
@@ -180,12 +181,12 @@
         height              : 100%;
       }
     </style>
-<!--  
+<!--
     ====================================
                    HTML
     ====================================
 -->
-    <app-location 
+    <app-location
       route = "{{route}}">
     </app-location>
     <app-route
@@ -198,52 +199,52 @@
       fullbleed>
       <app-drawer>
         <app-toolbar>
-          <a 
-            class = "toolbar-badge gde-logo" 
+          <a
+            class = "toolbar-badge gde-logo"
             href  = "/">
           </a> Google Experts
         </app-toolbar>
-        <iron-selector 
-          selected          = "[[page]]" 
-          class             = "drawer-list" 
+        <iron-selector
+          selected          = "[[page]]"
+          class             = "drawer-list"
           role              = "navigation"
           attr-for-selected = "name">
           <paper-button
             name = "activities">
-            <a 
+            <a
               href = "/activities">
               Activities
             </a>
           </paper-button>
           <paper-button
             name = "profile">
-            <a 
+            <a
               href = "/profile">
               Profile
             </a>
           </paper-button>
           <paper-button
             name = "map">
-            <a 
+            <a
               href = "/map">
               Map
             </a>
           </paper-button>
           <paper-button
             name = "help">
-            <a 
+            <a
               href = "/help">
               Help
             </a>
           </paper-button>
         </iron-selector>
       </app-drawer>
-      <app-header-layout 
+      <app-header-layout
         has-scrolling-region>
         <app-header
-          effects = "waterfall" 
+          effects = "waterfall"
           class   = "fit"
-          condenses 
+          condenses
           reveals>
           <app-toolbar>
             <paper-icon-button
@@ -251,41 +252,41 @@
               hidden  = "{{wideLayout}}"
               drawer-toggle>
             </paper-icon-button>
-            <a 
-              class   = "toolbar-badge gde-logo" 
+            <a
+              class   = "toolbar-badge gde-logo"
               href    = "/"
               hidden  = "{{!wideLayout}}">
             </a>
-            <iron-selector 
-              selected          = "[[page]]" 
-              attr-for-selected = "name" 
-              class             = "drawer-list" 
+            <iron-selector
+              selected          = "[[page]]"
+              attr-for-selected = "name"
+              class             = "drawer-list"
               role              = "navigation"
               hidden            = "{{!wideLayout}}">
               <paper-button
                 name = "activities">
-                <a 
+                <a
                   href = "/activities">
                   Activities
                 </a>
               </paper-button>
               <paper-button
                 name = "profile">
-                <a 
+                <a
                   href = "/profile">
                   Profile
                 </a>
               </paper-button>
               <paper-button
                 name = "map">
-                <a 
+                <a
                   href = "/map">
                   Map
                 </a>
               </paper-button>
               <paper-button
                 name = "help">
-                <a 
+                <a
                   href = "/help">
                   Help
                 </a>
@@ -306,14 +307,14 @@
             </user>
           </app-toolbar>
         </app-header>
-        <iron-pages 
-          role              = "main" 
-          selected          = "[[page]]" 
+        <iron-pages
+          role              = "main"
+          selected          = "[[page]]"
           attr-for-selected = "name">
-          <gtt-activities 
+          <gtt-activities
             name  = "activities">
           </gtt-activities>
-          <gtt-profile 
+          <gtt-profile
             name  = "profile">
           </gtt-profile>
           <gtt-map
@@ -325,8 +326,8 @@
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
-    <iron-media-query 
-      query         = "min-width: 800px" 
+    <iron-media-query
+      query         = "min-width: 800px"
       query-matches = "{{wideLayout}}">
     </iron-media-query>
     <firebase-collection
