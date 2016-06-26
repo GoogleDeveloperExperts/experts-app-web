@@ -1,0 +1,188 @@
+<!--
+  Sign-in component hooked up to the Google Experts Tracking Backend
+  to retrieve relevant user information like access rights.
+
+  Exposes a `user` property that can be used to enable/disable
+  features in the app via data-binding
+-->
+
+<dom-module id="expert-signin">
+  <template>
+    <!-- Prepare elements to access the API -->
+    <discovery-api-elements
+      name="gdetracking"
+      version="v1.0b2"
+      app-id="omega-keep-406"
+      no-client
+      ></discovery-api-elements>
+
+    <!-- Fetch information about currently signed-in User -->
+    <gdetracking-account-get
+      id="[[_googleUser.id]]"
+      auto$="[[_isAuthorized]]"
+      response="{{_apiUser}}"></gdetracking-account-get>
+
+    <google-signin
+      client-id="66416776373-3k5goi8hn9d5rih68t8km57iliithohb.apps.googleusercontent.com"
+      scope="email profile"
+      on-google-signin-aware-success="_signedIn"
+      on-google-signed-out="_signedOut"></google-signin>
+
+    <iron-localstorage
+      name="current-user"
+      value="{{_localUser}}"
+      on-iron-localstorage-load="_localUserLoaded"
+      on-iron-localstorage-load-empty="_initLocalUser"></iron-localstorage>
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'expert-signin',
+        properties: {
+          /**
+           * All relevant information about the authenticated user
+           */
+          user: {
+            type: Object,
+            notify: true,
+            readOnly: true
+          },
+
+          /**
+           * User is authorized and all data has been retrieved
+           */
+          isAuthorized: {
+            type: Boolean,
+            readOnly: true,
+            notify: true,
+            value: false,
+            computed: '_computeAuthorized(user)'
+          },
+
+          /**
+           * User information from Google authentication
+           */
+          _googleUser: {
+            type: Object,
+            observer: '_userInfoChanged'
+          },
+
+          /**
+           * User information from the Experts Tracking App backend
+           */
+          _apiUser: {
+            type: Object,
+            observer: '_userInfoChanged'
+          },
+
+          /**
+           * User information from local storage
+           */
+          _localUser: Object,
+
+          /**
+           * User has granted Google authorization
+           */
+          _isAuthorized: {
+            type: Boolean,
+            value: false
+          }
+        },
+
+        /**
+         * User signed in, retrieve user information from Google authentication
+         */
+        _signedIn: function () {
+          var profile = gapi.auth2.getAuthInstance()
+                          .currentUser.get().getBasicProfile();
+
+          var authResponse = gapi.auth2.getAuthInstance()
+                            .currentUser.get().getAuthResponse();
+
+          this._googleUser = {
+            id: profile.getId(),
+            name: profile.getName(),
+            image: profile.getImageUrl(),
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
+          };
+          this._isAuthorized = true;
+          this._localUser = {
+            id: profile.getId(),
+            name: profile.getName(),
+            image: profile.getImageUrl(),
+            email: profile.getEmail(),
+            token: authResponse.access_token || authResponse.id_token
+          };
+        },
+
+        /**
+         * User signed out, remove all user information
+         */
+        _signedOut: function () {
+          this._googleUser = undefined;
+          this._apiUser = undefined;
+          this._localUser = {};
+          this._isAuthorized = false;
+        },
+
+        /**
+         * Initialize User in local storage
+         */
+        _initLocalUser: function () {
+          this._localUser = {};
+        },
+
+        /**
+         * User information available in local storage
+         */
+        _localUserLoaded: function () {
+          if (this._localUser && this._localUser.id) {
+            this._googleUser = {
+              id: this._localUser.id,
+              name: this._localUser.name,
+              image: this._localUser.image,
+              email: this._localUser.email,
+              token: this._localUser.token
+            };
+            this._isAuthorized = true;
+          }
+        },
+
+        /**
+         * Basic user information and access rights for the user
+         */
+        _userInfoChanged: function () {
+          if (!this._googleUser || !this._googleUser.id) {
+            this._setUser(undefined);
+            return;
+          }
+
+          var user = {
+            id: this._googleUser.id,
+            name: this._googleUser.name,
+            image: this._googleUser.image,
+            email: this._googleUser.email,
+            token: this._googleUser.token,
+            isGoogler: (this._googleUser.email.split('@')[1] === 'google.com')
+          };
+
+          if (this._apiUser && this._apiUser.type) {
+            user.category = this._apiUser.type;
+            user.isExpert = (this._apiUser.type !== 'deleted');
+          }
+
+          this._setUser(user);
+        },
+
+        /**
+         * Check if user data is initialized correctly
+         */
+        _computeAuthorized: function (user) {
+          return (!!user && !!user.id);
+        }
+      });
+    })();
+  </script>
+</dom-module>

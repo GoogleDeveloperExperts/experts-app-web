@@ -1,5 +1,14 @@
+<<<<<<< HEAD
 bower_components
 dist
 node_modules
 build
 npm-debug.log
+=======
+node_modules
+dist
+test/temp
+bower_components
+.tmp
+test/bower_components/
+>>>>>>> daacb796bd494a2d870c297db776902a04aa4a70

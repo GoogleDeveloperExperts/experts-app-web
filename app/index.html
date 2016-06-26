@@ -1,0 +1,306 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="">
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
+  <meta name="generator" content="Polymer Starter Kit" />
+  <title>Experts Tracking App</title>
+  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+  <!-- app shortcut icon -->
+  <link rel="shortcut icon" sizes="32x32" href="/images/app-icon-32.png">
+
+  <!-- Chrome for Android theme color -->
+  <meta name="theme-color" content="#303F9F">
+
+  <!-- Web Application Manifest -->
+  <link rel="manifest" href="manifest.json">
+
+  <!-- Tile color for Win8 -->
+  <meta name="msapplication-TileColor" content="#3372DF">
+
+  <!-- Add to homescreen for Chrome on Android -->
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="application-name" content="Polymer Starter Kit">
+  <link rel="icon" sizes="192x192" href="images/touch/chrome-touch-icon-192x192.png">
+
+  <!-- Add to homescreen for Safari on iOS -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="Polymer Starter Kit">
+  <link rel="apple-touch-icon" href="images/touch/apple-touch-icon.png">
+
+  <!-- Tile icon for Win8 (144x144) -->
+  <meta name="msapplication-TileImage" content="images/touch/ms-touch-icon-144x144-precomposed.png">
+
+  <!-- build:css styles/main.css -->
+  <link rel="stylesheet" href="styles/main.css">
+  <!-- endbuild-->
+
+  <!-- build:js bower_components/webcomponentsjs/webcomponents-lite.min.js -->
+  <script src="bower_components/webcomponentsjs/webcomponents-lite.js"></script>
+  <!-- endbuild -->
+
+  <!-- will be replaced with elements/elements.vulcanized.html -->
+  <link rel="import" href="elements/elements.html">
+  <!-- endreplace-->
+</head>
+
+<body unresolved class="fullbleed layout vertical">
+  <span id="browser-sync-binding"></span>
+  <template is="dom-bind" id="app">
+    <paper-drawer-panel id="paperDrawerPanel">
+      <!-- Drawer Scroll Header Panel -->
+      <paper-scroll-header-panel drawer fixed>
+
+        <!-- Drawer Toolbar -->
+        <paper-toolbar id="drawerToolbar">
+          <span class="paper-font-title">Menu</span>
+        </paper-toolbar>
+
+        <!-- Drawer Content -->
+        <paper-menu class="list" attr-for-selected="data-route" selected="{{route}}" on-iron-select="onMenuSelect">
+          <a data-route="home" href="/">
+            <iron-icon icon="home"></iron-icon>
+            <span>Home</span>
+          </a>
+
+          <template is="dom-if" if="[[user.isGoogler]]">
+            <a data-route="general-statistics" href="/general-statistics">
+              <iron-icon icon="trending-up"></iron-icon>
+              <span>Googler Access</span>
+            </a>
+          </template>
+
+          <template is="dom-if" if="[[user.isExpert]]">
+            <a data-route="my-activities" href="/my-activities">
+              <iron-icon icon="face"></iron-icon>
+              <span>Expert Area</span>
+            </a>
+          </template>
+
+          <a data-route="workflow" href="/workflow">
+            <iron-icon icon="assignment"></iron-icon>
+            <span>How does it work</span>
+          </a>
+
+          <a data-route="how-to-use" href="/how-to-use">
+            <iron-icon icon="info"></iron-icon>
+            <span>How is it used</span>
+          </a>
+
+          <a href="https://github.com/GoogleDeveloperExperts/experts-app-web/issues" target="_blank">
+            <iron-icon icon="feedback"></iron-icon>
+            <span>Feedback/Issues</span>
+          </a>
+
+          <!-- To help during development -->
+          <a data-route="api-docs" href="/api-docs">
+            <iron-icon icon="settings"></iron-icon>
+            <span>API Element Docs</span>
+          </a>
+        </paper-menu>
+      </paper-scroll-header-panel>
+      <paper-scroll-header-panel main condenses keep-condensed-header>
+
+        <!-- Main Toolbar -->
+        <paper-toolbar id="mainToolbar" class="tall big">
+          <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
+
+          <span class="flex"></span>
+
+          <div hidden$="[[!isAuthorized]]" id="user">
+            <span id="userName">[[user.name]]</span>
+            <img src$="[[user.image]]" />
+          </div>
+
+          <!-- Toolbar icons -->
+          <expert-signin is-authorized="{{isAuthorized}}" on-user-changed="_userChanged"></expert-signin>
+
+          <!-- Application name -->
+          <div class="middle middle-container center horizontal layout">
+            <div class="app-name">
+              <img src="images/experts_logo_no_text_48x48.png">
+              <span>[[title]]</span>
+            </div>
+          </div>
+
+          <!-- Application sub title -->
+          <div class="bottom bottom-container center horizontal layout"></div>
+
+        </paper-toolbar>
+
+        <!-- Main Content -->
+        <div class="content">
+          <iron-pages attr-for-selected="data-route" selected="{{route}}">
+            <!-- Fixed Content sections-->
+            <section data-route="home">
+              <template is="dom-if" if="[[user.isExpert]]">
+                <paper-material elevation="1">
+                  <p class="paper-font-body2">You are an Expert!</p>
+                </paper-material>
+              </template>
+              <template is="dom-if" if="[[user.isGoogler]]">
+                <paper-material elevation="1">
+                  <p class="paper-font-body2">You are a Googler!</p>
+                </paper-material>
+              </template>
+            </section>
+
+            <section data-route="workflow">
+              <paper-material elevation="1">
+                <p> The application aims to simplify tracking activities done by Google Experts.</p>
+                <p>To do so, the backend on Google App Engine implements a series of jobs to automatically grab and update activities:</p>
+                <ul>
+                  <li>Create/Update activities from Google+</li>
+                  <li>Update Impact on Youtube videos with the number of views</li>
+                </ul>
+
+                <h2>Activities from Google + Stream</h2>
+                <p>
+                  A daily task is in charge of obtaining new <b>public</b> Google+ posts for each Google Expert, and create a new activity
+                  if the post has the proper #hashtags as explained in the "How is it used" section.<br>
+                  <br>
+                  In case a post has only some of the required hashtags, the activity is still created and available for the Expert to fix using this app.
+                  <br>
+                  Once a week, activities generated from Google+ posts are updated with the new values of +1s, reshares and comments (Social Impact)
+                </p>
+                <h2>Youtube Videos statistics</h2>
+                <p>
+                  During the weekly update of the activities, if the activity has a YouTube link attached, the impact for the #content metadata is automatically updated with the views on the video.
+                </p>
+              </paper-material>
+            </section>
+
+            <section data-route="how-to-use">
+              <!-- Prepare elements to access the API -->
+              <discovery-api-elements
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"
+                no-client
+                ></discovery-api-elements>
+              <!--Load Product Groups from the API-->
+              <gdetracking-product_group-list auto limit="100" response="{{pgGroups}}"></gdetracking-product_group-list>
+              <!--Load Activity Types from the API-->
+              <gdetracking-activity_type-list auto limit="100" response="{{activityTypes}}"></gdetracking-activity_type-list>
+              <paper-material elevation="1">
+
+                <p>
+                  The application checks all the <a href="https://developers.google.com/experts/" target="_blank">Google Experts</a>
+                  <a href="https://plus.google.com/" target="_blank">Google+</a> <strong>public stream</strong> (posts shared Public or with public Communities) searching for posts that contain
+                  the hashtag <a href="https://plus.google.com/explore/experts" target="_blank">#experts</a> and the area of expertise (<i>#gde, #marketing, #ProductStrategy, #ux_ui</i>).
+                </p>
+                <p>
+                  To be processed by the application, other information are required, so Experts need to add other tags to the Google+ post they are sharing to specify the kind of content they are sharing.
+                </p>
+                <p>
+                  To properly compute the impact of an activity, Experts are <b>strongly</b> recommended to manually input the Activity Metadata section.
+                  <br/>
+                  Activity Metadata edit is activated only on activities that has one or more Activity Type
+                </p>
+                <br/>
+                <p>
+                  The special <b>#</b>tags are divided in 2 categories:
+                </p>
+                <ul>
+                  <li>Product Tags</li>
+                  <li>Activity Type Tags</li>
+                </ul>
+
+                <p>Following a <i>cheat sheet</i> of the Tags:</p>
+                <div class="layout horizontal wrap">
+                  <paper-material class="container layout vertical">
+                    <h4>Product Tags</h4>
+                    <template is="dom-repeat" items="[[pgGroups.items]]" as="pg" id="pgList"
+                              filter="_filterPGByCategory" sort="_sortPGs">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[pg.tag]]</span>
+                        <span class="descr"><a href$="[[pg.url]]" target="_blank">[[pg.description]]</a></span>
+                      </div>
+                    </template>
+                  </paper-material>
+                  <paper-material class="container layout vertical">
+                    <h4>Activity Types</h4>
+                    <template is="dom-repeat" items="[[activityTypes.items]]" as="activityType">
+                      <div class="item-line layout horizontal">
+                        <span class="tag self-center">[[activityType.tag]]</span>
+                        <span class="descr">[[activityType.description]]</span>
+                      </div>
+                    </template>
+                  </paper-material>
+                </div>
+              </paper-material>
+            </section>
+
+            <!--Dynamic Content sections-->
+            <template is="dom-if" if="[[user.isExpert]]">
+              <section data-route="my-activities">
+                <!-- placeholder for element that will handle Expert activities -->
+                <paper-material elevation="1">
+                  <p>Expert Area</p>
+                  <activity-list user-id="[[user.id]]"></activity-list>
+                </paper-material>
+              </section>
+
+              <section data-route="activity">
+                Activity: <span>[[params.activityId]]</span>
+              </section>
+            </template>
+
+            <template is="dom-if" if="[[user.isGoogler]]">
+              <section data-route="general-statistics">
+                <!-- placeholder for element that will handle statistics for Googlers -->
+                <paper-material elevation="1">
+                  <p>Googler Area</p>
+                </paper-material>
+              </section>
+            </template>
+
+            <section data-route="api-docs">
+              <!-- To help during development -->
+              <discovery-api-docs
+                name="gdetracking"
+                version="v1.0b2"
+                app-id="omega-keep-406"
+                no-client></discovery-api-docs>
+            </section>
+
+          </iron-pages>
+        </div>
+      </paper-scroll-header-panel>
+    </paper-drawer-panel>
+
+    <paper-toast id="cachingComplete"
+                 duration="6000"
+                 text="Caching complete! This app will work offline.">
+    </paper-toast>
+
+    <platinum-sw-register auto-register
+                          clients-claim
+                          skip-waiting
+                          on-service-worker-installed="displayInstalledToast">
+      <platinum-sw-cache default-cache-strategy="networkFirst"
+                         precache-file="precache.json">
+      </platinum-sw-cache>
+    </platinum-sw-register>
+  </template>
+
+  <!-- build:js scripts/app.js -->
+  <script src="scripts/app.js"></script>
+  <!-- endbuild-->
+</body>
+
+</html>

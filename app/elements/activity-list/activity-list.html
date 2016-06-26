@@ -1,0 +1,39 @@
+<dom-module id="activity-list">
+
+  <template>
+    <!-- Prepare elements to access the API -->
+    <discovery-api-elements
+      name="gdetracking"
+      version="v1.0b2"
+      app-id="omega-keep-406"
+      no-client
+      ></discovery-api-elements>
+
+    <!-- Fetch information about currently signed-in User -->
+    <gdetracking-activity_record-list
+      gplus_id="[[userId]]"
+      auto$="[[_hasUserId(userId)]]"
+      response="{{apiRecords}}"></gdetracking-activity_record-list>
+
+    <template is="dom-repeat" items="[[apiRecords.items]]">
+      <a href="[[_editUrl(item.id)]]">[[item.activity_title]]</a><br>
+    </template>
+  </template>
+
+  <script>
+    (function() {
+      Polymer({
+        is: 'activity-list',
+        properties: {
+          userId: String,
+        },
+        _hasUserId: function (userId) {
+          return !!userId;
+        },
+        _editUrl: function (id) {
+          return '/activity/' + id;
+        }
+      });
+    })();
+  </script>
+</dom-module>
