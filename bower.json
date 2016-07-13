@@ -1,5 +1,4 @@
 {
-<<<<<<< HEAD
   "name": "gde-tracking-tool",
   "authors": [
     "Web Technologies GDE"
@@ -33,21 +32,5 @@
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
-=======
-  "name": "Experts Tracking App",
-  "private": true,
-  "dependencies": {
-    "iron-elements": "PolymerElements/iron-elements#1.0.0",
-    "paper-elements": "PolymerElements/paper-elements#1.0.1",
-    "platinum-elements": "PolymerElements/platinum-elements#1.0.1",
-    "neon-elements": "PolymerElements/neon-elements#1.0.0",
-    "page": "visionmedia/page.js#~1.6.3",
-    "google-signin": "GoogleWebComponents/google-signin#^1.0.2",
-    "discovery-api-elements": "Scarygami/discovery-api-elements#^0.3.1"
-  },
-  "devDependencies": {
-    "web-component-tester": "*",
-    "test-fixture": "PolymerElements/test-fixture#^1.0.0"
->>>>>>> daacb796bd494a2d870c297db776902a04aa4a70
   }
 }

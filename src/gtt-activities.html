@@ -115,9 +115,7 @@
         max-width         : 78%; 
       }
       paper-dialog {
-        display           : flex;
-        flex-direction    : column;
-        justify-content   : space-between;
+        display           : block;
         position          : fixed;
         top               : 20vh;
         left              : 11vw;
@@ -146,12 +144,14 @@
         color             : #4285f4;
         font-size         : 16px;
         font-weight       : 500;
+        min-height        : 56px;
       }
       paper-dialog  > h2 {
-        margin            : 20px 0 0 21px !important;
+        margin            : 0 0 0 21px !important;
       }
       paper-dialog  h2  iron-icon {
         margin-right      : 10px;
+        color             : #9b9b9b;
       }
       paper-dialog  section {
         flex              : 1;
@@ -166,28 +166,8 @@
         display           : flex;
         flex-wrap         : wrap;
       }
-      paper-dialog  section#details  #activityLink {
+      paper-dialog  section#details  paper-input {
         width             : 100%;
-      }
-      paper-dialog  section#details  #plusOnes {
-        width             : 30%;
-      }
-      paper-dialog  section#details  #reshares {
-        width             : 30%;
-        margin            : 0 auto;
-      }
-      paper-dialog  section#details  #comments {
-        width             : 30%;
-      }
-      paper-dialog  section#details  #atendees {
-        width             : 30%;
-      }
-      paper-dialog  section#details  #location {
-        margin            : 0 auto;
-        width             : 30%;
-      }
-      paper-dialog  section#details  #eventLink {
-        width             : 30%;
       }
       paper-dialog  section  article  paper-button {
         transition        : all 0.3s cubic-bezier(.25,.8,.25,1);
@@ -217,13 +197,14 @@
         display           : flex;
         flex-direction    : row;
         justify-content   : center;
-        align-items       : items;
+        align-items       : center;
+        height            : 48px;
       }
       paper-dialog  footer  .progress  .indicator {
         border-radius     : 50%;
         width             : 8px;
         height            : 8px;
-        margin            : 22px 3px 0;
+        margin            : 0 3px 0;
         background-color  : #d8d8d8;
       }
       paper-dialog  footer  .progress  .indicator#first[active] {
@@ -368,141 +349,64 @@
             id     = "types"
             on-tap = "checkTypes">
             <paper-button
+              id  = "article"
+              toggles
+              raised>
+              #article
+            </paper-button>
+            <paper-button
               id  = "blogpost"
               toggles
               raised>
               #blogpost
             </paper-button>
             <paper-button
-              id     = "article"
-              toggles
-              raised>
-              #article
-            </paper-button>
-            <paper-button
-              id = "forumpost"
-              toggles
-              raised>
-              #forumpost
-            </paper-button>
-            <paper-button
-              id = "video"
-              toggles
-              raised>
-              #video
-            </paper-button>
-            <paper-button
-              id = "book"
+              id  = "book"
               toggles
               raised>
               #book
             </paper-button>
             <paper-button
-              id = "translation"
-              toggles
-              raised>
-              #translation
-            </paper-button>
-            <paper-button
-              id = "techdocs"
-              toggles
-              raised>
-              #techdocs
-            </paper-button>
-            <paper-button
-              id = "OpenSourceCode "
-              toggles
-              raised>
-              #OpenSourceCode 
-            </paper-button>
-            <paper-button
-              id = "sampleapp"
-              toggles
-              raised>
-              #sampleapp
-            </paper-button>
-            <paper-button
-              id = "bugreport"
+              id  = "bugreport"
               toggles
               raised>
               #bugreport
             </paper-button>
             <paper-button
-              id = "launchpadweek"
+              id  = "community"
               toggles
               raised>
-              #launchpadweek
+              #community
             </paper-button>
             <paper-button
-              id = "uxreview"
-              toggles
-              raised>
-              #uxreview
-            </paper-button>
-            <paper-button
-              id = "mentoring"
-              toggles
-              raised>
-              #mentoring
-            </paper-button>
-            <paper-button
-              id = "designsprint"
+              id  = "designsprint"
               toggles
               raised>
               #designsprint
             </paper-button>
             <paper-button
-              id = "speedlab"
+              id  = "forumpost"
               toggles
               raised>
-              #speedlab
+              #forumpost
             </paper-button>
             <paper-button
-              id = "interviews"
+              id  = "experts"
               toggles
               raised>
-              #interviews
+              #experts
             </paper-button>
             <paper-button
-              id = "tools"
+              id  = "interview"
               toggles
               raised>
-              #tools
+              #interview
             </paper-button>
             <paper-button
-              id = "techtalks"
+              id  = "launchpadweek"
               toggles
               raised>
-              #techtalks
-            </paper-button>
-          </article>
-          <h2>Products</h2>
-          <article
-            id     = "types"
-            on-tap = "checkProducts">
-            <paper-button
-              id  = "technology"
-              toggles
-              raised>
-              #technology
-            </paper-button>
-            <paper-button
-              id  = "marketing"
-              toggles
-              raised>
-              #marketing
-            </paper-button>
-            <paper-button
-              id  = "marketing"
-              toggles
-              raised>
-              #ux/ui
-            </paper-button>
-            <paper-button
-              id  = "productStrategy"
-              toggles
-              raised>
-              #productStrategy
+              #launchpadweek
             </paper-button>
           </article>
         </section>
@@ -551,48 +455,23 @@
         <section
           id  = "details">
           <paper-input
-            id    = "activityLink"
+            id    = "date"
+            type  = "date"
+            label = "When it happened?"
+            value = "{{ newActivity.date }}">
+          </paper-input>
+          <paper-input
+            id    = "city"
             type  = "text"
-            label = "Activity Link"
-            value = "{{ newActivity.activityLink }}">
+            label = "Which city?"
+            value = "{{ newActivity.city }}">
           </paper-input>
           <paper-input
-            id    = "plusOnes"
-            type  = "number"
-            label = "+1s"
-            value = "{{ newActivity.plusOnes }}">
-          </paper-input>
-          <paper-input
-            id    = "reshares"
-            type  = "number"
-            label = "Reshares"
-            value = "{{ newActivity.reshares }}">
-          </paper-input>
-          <paper-input
-            id    = "comments"
-            type  = "number"
-            label = "Comments"
-            value = "{{ newActivity.comments }}">
-          </paper-input>
-          <paper-input
-            id    = "atendees"
-            type  = "number"
-            label = "Number of atendees"
-            value = "{{ newActivity.atendees }}">
-          </paper-input>
-          <paper-input
-            id    = "location"
+            id    = "country"
             type  = "text"
-            label = "Location"
-            value = "{{ newActivity.location }}">
+            label = "Which country?"
+            value = "{{ newActivity.country }}">
           </paper-input>
-          <paper-input
-            id    = "eventLink"
-            type  = "text"
-            label = "Event link"
-            value = "{{ newActivity.eventLink }}">
-          </paper-input>
-          <p>This activity can be shared publicly</p>
         </section>
         <footer>
           <paper-button 
