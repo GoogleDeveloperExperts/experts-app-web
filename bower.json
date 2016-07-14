@@ -1,5 +1,5 @@
 {
-  "name": "Experts Tracking App",
+  "name": "experts-tracking-app",
   "private": true,
   "dependencies": {
     "iron-elements": "PolymerElements/iron-elements#1.0.0",
@@ -8,7 +8,8 @@
     "neon-elements": "PolymerElements/neon-elements#1.0.0",
     "page": "visionmedia/page.js#~1.6.3",
     "google-signin": "GoogleWebComponents/google-signin#^1.0.2",
-    "discovery-api-elements": "Scarygami/discovery-api-elements#^0.3.1"
+    "discovery-api-elements": "Scarygami/discovery-api-elements#0.5.0",
+    "discovery-api-docs": "Scarygami/discovery-api-docs#0.5.0"
   },
   "devDependencies": {
     "web-component-tester": "*",
