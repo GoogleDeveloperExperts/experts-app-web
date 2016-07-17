@@ -27,6 +27,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+<link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
@@ -124,7 +125,11 @@
         width             : 70vw;
         overflow          : auto;
         border-radius     : 2px;
-        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+        transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+      paper-dialog:hover {
+        box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
       paper-dialog > * {
         padding           : 0 !important;
@@ -135,7 +140,11 @@
         right             : 16px;
         top               : 16px;
         margin            : 0;
+        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
         color             : #e5e5e5;
+      }
+      paper-dialog #closeModal:hover {
+        color             : #aaa;
       }
       paper-dialog  #continue {
         margin            : 0 auto;
@@ -153,7 +162,12 @@
       }
       paper-dialog  h2  iron-icon {
         margin-right      : 10px;
-        color             : #9b9b9b;
+        color             : #e5e5e5;
+        cursor            : pointer;
+        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
+      }
+      paper-dialog  h2  iron-icon:hover {
+        color             : #aaa;
       }
       paper-dialog  section {
         flex              : 1;
@@ -172,9 +186,9 @@
         width             : 100%;
       }
       paper-dialog  section  article  paper-button {
-        transition        : all 0.3s cubic-bezier(.25,.8,.25,1);
         margin            : 5px;
         font-weight       : normal !important;
+        cursor            : pointer;
       }
       paper-dialog  section  article  paper-button[active] {
         background-color  : #34a853;
@@ -213,10 +227,13 @@
         background-color  : #4285f4;
       }
       paper-dialog  footer  .progress  .indicator#second[active] {
-        background-color  : #ea4235;
+        background-color  : #ea4335;
       }
       paper-dialog  footer  .progress  .indicator#third[active] {
-        background-color  : #fabd05;
+        background-color  : #fbbc05;
+      }
+      paper-dialog  footer  .progress  .indicator#fourth[active] {
+        background-color  : #34a853;
       }
       @media (min-width: 1280px ) {
         gtt-activity-list, paper-material {
@@ -325,7 +342,11 @@
               class = "indicator"
               id    = "third">
             </div>
-          </progress>
+            <div
+              class = "indicator"
+              id    = "fourth">
+            </div>
+          </div>
         </footer>
       </template>
       <template 
@@ -348,17 +369,25 @@
         </paper-button>
         <section>
           <article
-            id     = "types"
-            on-tap = "checkTypes">
+            id     = "types">
             <template 
                is    = "dom-repeat" 
                items = "[[activityTypes]]">
                <paper-button
-                  id  = "{{item.id}}"
+                  on-tap = "selectActivityType"
+                  class  = "activityType"
+                  id     = "{{item.id}}"
                   toggles
                   raised>
                  {{item.tag}}
                </paper-button>
+<!--
+               <paper-tooltip 
+                  for      = "{{item.tooltip}}"
+                  position = "right">
+                  Tooltip text
+               </paper-tooltip>
+-->
             </template>
           </article>
         </section>
@@ -383,7 +412,11 @@
               class = "indicator"
               id    = "third">
             </div>
-          </progress>
+            <div
+              class = "indicator"
+              id    = "fourth">
+            </div>
+          </div>
         </footer>
       </template>
       <template 
@@ -407,12 +440,6 @@
         <section
           id  = "details">
           <paper-input
-            id    = "date"
-            type  = "date"
-            label = "When it happened?"
-            value = "{{ newActivity.date }}">
-          </paper-input>
-          <paper-input
             id    = "city"
             type  = "text"
             label = "Which city?"
@@ -423,6 +450,74 @@
             type  = "text"
             label = "Which country?"
             value = "{{ newActivity.country }}">
+          </paper-input>
+          <paper-input
+            id    = "date"
+            type  = "date"
+            label = "When it happened?"
+            value = "{{ newActivity.date }}">
+          </paper-input>
+        </section>
+        <footer>
+          <paper-button 
+            id     = "continue" 
+            on-tap = "goFourth">
+            Continue
+          </paper-button>
+          <div
+            class = "progress">
+            <div 
+              class = "indicator"
+              id    = "first">
+            </div>
+            <div
+              class = "indicator"
+              id    = "second">
+            </div>
+            <div
+              class = "indicator"
+              id    = "third"
+              active>
+            </div>
+            <div
+              class = "indicator"
+              id    = "fourth">
+            </div>
+          </div>
+        </footer>
+      </template>
+      
+      <template 
+        is = "dom-if"
+        if = "{{ progress.4 }}">
+        <h2>
+          <iron-icon 
+            icon   = "arrow-back" 
+            on-tap = "goThird">
+          </iron-icon>
+          Details
+        </h2>
+        <paper-button
+          id = "closeModal"
+          dialog-confirm
+          autofocus>
+          <iron-icon 
+            icon = "close">
+          </iron-icon>
+        </paper-button>
+        <section
+          id  = "details">
+          <paper-input
+            id    = "url"
+            type  = "text"
+            label = "A link for this?"
+            value = "{{ newActivity.url }}">
+          </paper-input>
+          <paper-input
+            id    = "metric_reached"
+            type  = "number"
+            label = "How many people?"
+            value = "{{ newActivity.metric_reached }}">
           </paper-input>
         </section>
         <footer>
@@ -443,10 +538,14 @@
             </div>
             <div
               class = "indicator"
-              id    = "third"
+              id    = "third">
+            </div>
+            <div
+              class = "indicator"
+              id    = "fourth"
               active>
             </div>
-          </progress>
+          </div>
         </footer>
       </template>
     </paper-dialog>
@@ -480,6 +579,16 @@
             } 
           ],
         },
+        selectedActivityTypes : {
+          type             : 'array',
+          notify           : true,
+          value            : [
+            {
+               'id'  : '',
+               'tag' : '#'
+            } 
+          ],
+        },
         newActivity     : {
           type             : 'Object',
           notify           : true,
@@ -502,15 +611,19 @@
         this.$.modal.open();
       },
       goFirst     : function(){
-        var progress = {1:true,2:false,3:false};
+        var progress = {1:true,2:false,3:false,4:false};
         this.set('progress',progress);
       },
       goSecond    : function(){
-        var progress = {1:false,2:true,3:false};
+        var progress = {1:false,2:true,3:false,4:false};
         this.set('progress',progress);
       },
       goThird     : function(){
-        var progress = {1:false,2:false,3:true};
+        var progress = {1:false,2:false,3:true,4:false};
+        this.set('progress',progress);
+      },
+      goFourth    : function(){
+        var progress = {1:false,2:false,3:false,4:true};
         this.set('progress',progress);
       },
       finish      : function(){
@@ -518,36 +631,43 @@
         this.goFirst();
         console.log(this.newActivity);
       },
-      checkTypes  : function(e){
-        var selectors = e.path[1].children;
-        var selected  = [];
-        for (var i = 0, total = selectors.length; i<total; i++) {
-          if (selectors[i].active) selected.push(selectors[i].id); 
-        }
-        console.log('Selected activity types:',selected);
+      selectActivityType : function(e){
+         var 
+         activityTypeSelectors = e.path[1].children,
+         selectedActivityType  = e.path[0].id;
+         this.newActivity.type = selectedActivityType;
+         for (var i=0,total=activityTypeSelectors.length; i<total; i++) {
+            if (activityTypeSelectors[i].id != selectedActivityType)
+               activityTypeSelectors[i].active = false;
+         }
       },
-      checkProducts : function(e){
-        var selectors = e.path[1].children;
-        var selected  = [];
-        for (var i = 0, total = selectors.length; i<total; i++) {
-          if (selectors[i].active) selected.push(selectors[i].id); 
-        }
-        console.log('Selected products:',selected);
-      },
-      addActivityType: function(newActivityType) {
+      pushActivityType : function(newActivityType) {
          this.push('activityTypes', newActivityType);
+      },
+      clearSelectedActivityTypes : function(){
+         var vm = this;
+         this.activityTypes.forEach(function(){
+            vm.pop('activityTypes');
+         });
+      },
+      pushSelectedActivityType : function(newActivityTypes){
+         this.clearSelectedActivityTypes();
+         newActivityTypes.forEach(function(newActivityType){
+            this.push('selectedActivityTypes', newActivityType);
+         });
       },
       ready : function() {
          var vm = this;
-         $.get( "https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityType", function( data ) {
+         $.get( "https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityGroup", function( data ) {
             console.info('Activity types:',data.items);
             data.items.forEach(function(newActivityType){
-               vm.addActivityType({
-                  id  : newActivityType.id,
-                  tag : newActivityType.tag
+               vm.pushActivityType({
+                  id          : newActivityType.id,
+                  tag         : newActivityType.tag,
+                  types       : newActivityType.types,
                });
             });
-            vm.splice('activityTypes', 0, 1); // Remove initialization item
+            vm.shift('activityTypes'); // Remove initialization item
          });
       },
     });
