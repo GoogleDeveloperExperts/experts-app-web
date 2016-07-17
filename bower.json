@@ -28,7 +28,9 @@
     "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^1.8.0",
     "paper-dialog-behavior": "PolymerElements/paper-dialog-behavior#^1.2.6",
     "firebase": "^3.0.5",
-    "paper-input": "PolymerElements/paper-input#^1.1.13"
+    "paper-input": "PolymerElements/paper-input#^1.1.13",
+    "iron-ajax": "PolymerElements/iron-ajax#^1.4.0",
+    "jquery": "^3.1.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"

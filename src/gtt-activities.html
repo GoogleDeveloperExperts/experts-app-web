@@ -18,7 +18,9 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
+<script src="../bower_components/jquery/dist/jquery.min.js"></script>
 <link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
@@ -348,66 +350,16 @@
           <article
             id     = "types"
             on-tap = "checkTypes">
-            <paper-button
-              id  = "article"
-              toggles
-              raised>
-              #article
-            </paper-button>
-            <paper-button
-              id  = "blogpost"
-              toggles
-              raised>
-              #blogpost
-            </paper-button>
-            <paper-button
-              id  = "book"
-              toggles
-              raised>
-              #book
-            </paper-button>
-            <paper-button
-              id  = "bugreport"
-              toggles
-              raised>
-              #bugreport
-            </paper-button>
-            <paper-button
-              id  = "community"
-              toggles
-              raised>
-              #community
-            </paper-button>
-            <paper-button
-              id  = "designsprint"
-              toggles
-              raised>
-              #designsprint
-            </paper-button>
-            <paper-button
-              id  = "forumpost"
-              toggles
-              raised>
-              #forumpost
-            </paper-button>
-            <paper-button
-              id  = "experts"
-              toggles
-              raised>
-              #experts
-            </paper-button>
-            <paper-button
-              id  = "interview"
-              toggles
-              raised>
-              #interview
-            </paper-button>
-            <paper-button
-              id  = "launchpadweek"
-              toggles
-              raised>
-              #launchpadweek
-            </paper-button>
+            <template 
+               is    = "dom-repeat" 
+               items = "[[activityTypes]]">
+               <paper-button
+                  id  = "{{item.id}}"
+                  toggles
+                  raised>
+                 {{item.tag}}
+               </paper-button>
+            </template>
           </article>
         </section>
         <footer>
@@ -499,6 +451,11 @@
       </template>
     </paper-dialog>
   </template>
+  
+  <iron-ajax auto handle-as="json"
+    url="https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityType"
+    last-response="{{activityTypes}}">
+  </iron-ajax>
 <!--
     ====================================
                     JS
@@ -509,26 +466,34 @@
       is          : 'gtt-activities',
       behaviors   : [ GttSampleActivityData ],
       properties  : {
-/**
- * The list of activities
- */
-        activities  : {
-          type        : 'Array',
+        activities      : {
+          type             : 'Object',
+          notify           : true,
         },
-        newActivity : {
-          type        : 'Object',
-          notify      : true,
-          value       : function() {
+        activityTypes   : {
+          type             : 'array',
+          notify           : true,
+          value            : [
+            {
+               'id'  : '',
+               'tag' : '#'
+            } 
+          ],
+        },
+        newActivity     : {
+          type             : 'Object',
+          notify           : true,
+          value            : function() {
             return {
               'title'       : '',
               'description' : ''
             };
           }
         },
-        progress    : {
-          type        : 'Object',
-          notify      : true,
-          value       : function() {
+        progress     : {
+          type          : 'Object',
+          notify        : true,
+          value         : function() {
             return {1:true,2:false,3:false};
           }
         },
@@ -568,6 +533,22 @@
           if (selectors[i].active) selected.push(selectors[i].id); 
         }
         console.log('Selected products:',selected);
+      },
+      addActivityType: function(newActivityType) {
+         this.push('activityTypes', newActivityType);
+      },
+      ready : function() {
+         var vm = this;
+         $.get( "https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityType", function( data ) {
+            console.info('Activity types:',data.items);
+            data.items.forEach(function(newActivityType){
+               vm.addActivityType({
+                  id  : newActivityType.id,
+                  tag : newActivityType.tag
+               });
+            });
+            vm.splice('activityTypes', 0, 1); // Remove initialization item
+         });
       },
     });
   </script>
