@@ -8,9 +8,6 @@ The GDE App aims to help Google Experts track their activities and give Googlers
 
 ## Requirements
 
-
-## Requirements
-
 All requirements were done in a collaboration between Googlers and volunteers from the [Google Experts](https://developers.google.com/experts/) program.
 
 [Version 2.0.0 Requirements](https://docs.google.com/document/d/1bZIIR9yUOMI8dZzmPRyIGVPUO9Ov85Xq31FWbpRHnHQ/edit)
