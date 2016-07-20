@@ -18,26 +18,32 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
+
 <script src="../bower_components/jquery/dist/jquery.min.js"></script>
+
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
+<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-<link rel="import" href="../bower_components/paper-material/paper-material.html">
+
+
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
-<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
-<link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
-<link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-down-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
+
 <link rel="import" href="./gtt-activities/gtt-activity-list.html">
 <link rel="import" href="./gtt-activities/gtt-activity-stats.html">
 <link rel="import" href="./gtt-activities/gtt-sample-activity-data.html">
+<link rel="import" href="./gtt-activities/gtt-create-activity.html">
 <!--  
     ====================================
                   Shady DOM  
@@ -117,124 +123,7 @@
       paper-material {        
         max-width         : 78%; 
       }
-      paper-dialog {
-        display           : block;
-        position          : fixed;
-        top               : 20vh;
-        left              : 11vw;
-        width             : 70vw;
-        overflow          : auto;
-        border-radius     : 2px;
-        transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-      }
-      paper-dialog:hover {
-        box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-      }
-      paper-dialog > * {
-        padding           : 0 !important;
-      }
-      paper-dialog  #closeCreateActivity {
-        position          : absolute;
-        justify-content   : flex-end;
-        right             : 16px;
-        top               : 16px;
-        margin            : 0;
-        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
-        color             : #e5e5e5;
-      }
-      paper-dialog #closeCreateActivity:hover {
-        color             : #aaa;
-      }
-      paper-dialog  #continue {
-        margin            : 0 auto;
-      }
-      paper-dialog  h2 {
-        display           : flex;
-        align-items       : center;
-        color             : #4285f4;
-        font-size         : 16px;
-        font-weight       : 500;
-        min-height        : 56px;
-      }
-      paper-dialog  > h2 {
-        margin            : 0 0 0 21px !important;
-      }
-      paper-dialog  h2  iron-icon {
-        margin-right      : 10px;
-        color             : #e5e5e5;
-        cursor            : pointer;
-        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
-      }
-      paper-dialog  h2  iron-icon:hover {
-        color             : #aaa;
-      }
-      paper-dialog  section {
-        flex              : 1;
-        margin            : 0 56px !important;
-      }
-      paper-dialog  section  article {
-        display           : flex;
-        justify-content   : center;
-        flex-wrap         : wrap;
-      }
-      paper-dialog  section#details {
-        display           : flex;
-        flex-wrap         : wrap;
-      }
-      paper-dialog  section#details  paper-input {
-        width             : 100%;
-      }
-      paper-dialog  section  article  paper-button {
-        margin            : 5px;
-        font-weight       : normal !important;
-        cursor            : pointer;
-      }
-      paper-dialog  section  article  paper-button[active] {
-        background-color  : #34a853;
-        color             : #fff;
-        margin            : 5px;
-      }
-      paper-dialog  footer {
-        display           : flex;
-        flex-direction    : column;
-        align-items       : center;
-        justify-content   : center;
-        height            : 100px;
-      }
-      paper-dialog  footer  paper-button {
-        color             : #fff;
-        background-color  : #4285f4;
-        border-radius     : 2px;
-        padding           : 14px 30px;
-        font-size         : 14px;
-      }
-      paper-dialog  footer  .progress {
-        display           : flex;
-        flex-direction    : row;
-        justify-content   : center;
-        align-items       : center;
-        height            : 48px;
-      }
-      paper-dialog  footer  .progress  .indicator {
-        border-radius     : 50%;
-        width             : 8px;
-        height            : 8px;
-        margin            : 0 3px 0;
-        background-color  : #d8d8d8;
-      }
-      paper-dialog  footer  .progress  .indicator#first[active] {
-        background-color  : #4285f4;
-      }
-      paper-dialog  footer  .progress  .indicator#second[active] {
-        background-color  : #ea4335;
-      }
-      paper-dialog  footer  .progress  .indicator#third[active] {
-        background-color  : #fbbc05;
-      }
-      paper-dialog  footer  .progress  .indicator#fourth[active] {
-        background-color  : #34a853;
-      }
+ 
       @media (min-width: 1280px ) {
         gtt-activity-list, paper-material {
           margin-left       : auto;
@@ -284,272 +173,16 @@
         activities = "{{activities}}">
       </gtt-activity-list>
     </paper-header-panel>
-    <paper-dialog 
+
+    <gtt-create-activity 
       id              = "createActivity"
       modal
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
+      activity-types= "{{activityTypes}}"
       no-cancel-on-outside-click>
-      <template 
-        is = "dom-if"
-        if = "{{ progress.1 }}">
-        <h2>
-          <iron-icon 
-            icon = "add-circle">
-          </iron-icon>
-          Add an activity
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section>
-          <p>Fill in the details below to add and track your activity.</p>
-          <paper-input
-            id    = "title"
-            type  = "text"
-            label = "Activity Title"
-            value = "{{ newActivity.title }}">
-          </paper-input>
-          <paper-input
-            id    = "description"
-            type  = "text"
-            label = "Description"
-            value = "{{ newActivity.description }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goSecond">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "second">
-            </div>
-            <div
-              class = "indicator"
-              id    = "third">
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
-      <template 
-        is = "dom-if"
-        if = "{{ progress.2 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back"
-            on-tap = "goFirst">
-          </iron-icon>
-          Activity Types
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section>
-          <article
-            id     = "types">
-            <template 
-               is    = "dom-repeat" 
-               items = "[[activityTypes]]">
-               <paper-button
-                  on-tap = "selectActivityType"
-                  class  = "activityType"
-                  id     = "{{item.id}}"
-                  toggles
-                  raised>
-                 {{item.tag}}
-               </paper-button>
-<!--
-               <paper-tooltip 
-                  for      = "{{item.tooltip}}"
-                  position = "right">
-                  Tooltip text
-               </paper-tooltip>
--->
-            </template>
-          </article>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goThird">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
-            <div
-              class = "indicator"
-              id    = "second"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "third">
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
-      <template 
-        is = "dom-if"
-        if = "{{ progress.3 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back" 
-            on-tap = "goSecond">
-          </iron-icon>
-          Details
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section
-          id  = "details">
-          <paper-input
-            id    = "city"
-            type  = "text"
-            label = "Which city?"
-            value = "{{ newActivity.city }}">
-          </paper-input>
-          <paper-input
-            id    = "country"
-            type  = "text"
-            label = "Which country?"
-            value = "{{ newActivity.country }}">
-          </paper-input>
-          <paper-input
-            id    = "date"
-            type  = "date"
-            label = "When it happened?"
-            value = "{{ newActivity.date }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goFourth">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
-            <div
-              class = "indicator"
-              id    = "second">
-            </div>
-            <div
-              class = "indicator"
-              id    = "third"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
-      
-      <template 
-        is = "dom-if"
-        if = "{{ progress.4 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back" 
-            on-tap = "goThird">
-          </iron-icon>
-          Details
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section
-          id  = "details">
-          <paper-input
-            id    = "url"
-            type  = "text"
-            label = "A link for this?"
-            value = "{{ newActivity.url }}">
-          </paper-input>
-          <paper-input
-            id    = "metric_reached"
-            type  = "number"
-            label = "How many people?"
-            value = "{{ newActivity.metric_reached }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "finish">
-            Finish
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
-            <div
-              class = "indicator"
-              id    = "second">
-            </div>
-            <div
-              class = "indicator"
-              id    = "third">
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth"
-              active>
-            </div>
-          </div>
-        </footer>
-      </template>
-    </paper-dialog>
+    </gtt-create-activity>
+
   </template>
   
   <iron-ajax auto handle-as="json"
@@ -590,57 +223,10 @@
             } 
           ],
         },
-        newActivity     : {
-          type             : 'Object',
-          notify           : true,
-          value            : function() {
-            return {
-              'title'       : '',
-              'description' : ''
-            };
-          }
-        },
-        progress     : {
-          type          : 'Object',
-          notify        : true,
-          value         : function() {
-            return {1:true,2:false,3:false};
-          }
-        },
+
       },
       openDialog  : function(){
         this.createActivity.open();
-      },
-      goFirst     : function(){
-        var progress = {1:true,2:false,3:false,4:false};
-        this.set('progress',progress);
-      },
-      goSecond    : function(){
-        var progress = {1:false,2:true,3:false,4:false};
-        this.set('progress',progress);
-      },
-      goThird     : function(){
-        var progress = {1:false,2:false,3:true,4:false};
-        this.set('progress',progress);
-      },
-      goFourth    : function(){
-        var progress = {1:false,2:false,3:false,4:true};
-        this.set('progress',progress);
-      },
-      finish      : function(){
-        this.createActivity.close();
-        this.goFirst();
-        console.log(this.newActivity);
-      },
-      selectActivityType : function(e){
-         var 
-         activityTypeSelectors = e.path[1].children,
-         selectedActivityType  = e.path[0].id;
-         this.newActivity.type = selectedActivityType;
-         for (var i=0,total=activityTypeSelectors.length; i<total; i++) {
-            if (activityTypeSelectors[i].id != selectedActivityType)
-               activityTypeSelectors[i].active = false;
-         }
       },
       pushActivityType : function(newActivityType) {
          this.push('activityTypes', newActivityType);
