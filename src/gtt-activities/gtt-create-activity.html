@@ -175,7 +175,7 @@
       
       <paper-button
         id = "closeCreateActivity"
-        dialog-confirm
+        on-tap = "cancel"
         autofocus>
         <iron-icon 
           icon = "close">
@@ -423,10 +423,25 @@
       },      
       
       finish: function(){        
-        this.$.ironpages.selected = 0;
+        this._currentStep = 0;
         console.log("[gtt-create-activity] finish - Activity: ",this.newActivity);
+        this._initNewActivity();
         this.close();
       },
+      cancel: function(){        
+        this._currentStep = 0;
+        this._initNewActivity();
+        console.log("[gtt-create-activity] close");
+        this.close();
+      },
+      
+      _initNewActivity: function() {
+        this.newActivity = {
+          'title'       : '',
+          'description' : ''
+        };
+      },
+      
       selectActivityType : function(e){
          var 
          activityTypeSelectors = e.path[1].children,
