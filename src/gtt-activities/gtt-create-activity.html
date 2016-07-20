@@ -338,11 +338,6 @@
         </div>
       </footer>
 
-
-      
-
-
-
   </template>
 <!--
     ====================================
@@ -382,8 +377,7 @@
                'tag' : '#'
             } 
           ],
-        },
-        
+        },        
         
         _currentStep : {
           type: Number,
@@ -403,11 +397,11 @@
       ],
 
       _isLastStep: function() {
-       console.debug("[gtt-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
+       // console.debug("[gtt-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
        return (this._currentStep == this._numberOfSteps -1);
       },
       _isCurrentStep: function(step) {
-        console.debug("[gtt-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
+        // console.debug("[gtt-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
       },
       back: function() {
@@ -416,7 +410,7 @@
         }
       },      
       next: function() {
-        console.debug("[gtt-create-activity] next - current tab: ", this._currentStep );
+        // console.debug("[gtt-create-activity] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
@@ -424,14 +418,14 @@
       
       finish: function(){        
         this._currentStep = 0;
-        console.log("[gtt-create-activity] finish - Activity: ",this.newActivity);
+        // console.debug("[gtt-create-activity] finish - Activity: ",this.newActivity);
         this._initNewActivity();
         this.close();
       },
       cancel: function(){        
         this._currentStep = 0;
         this._initNewActivity();
-        console.log("[gtt-create-activity] close");
+        // console.debug("[gtt-create-activity] close");
         this.close();
       },
       

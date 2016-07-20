@@ -19,8 +19,6 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 
-<script src="../bower_components/jquery/dist/jquery.min.js"></script>
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -183,12 +181,12 @@
       no-cancel-on-outside-click>
     </gtt-create-activity>
 
+    
+    <iron-ajax auto handle-as="json" 
+      url="https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityGroup"
+      on-response="_handleActivityGroup" >
+    </iron-ajax>
   </template>
-  
-  <iron-ajax auto handle-as="json"
-    url="https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityType"
-    last-response="{{activityTypes}}">
-  </iron-ajax>
 <!--
     ====================================
                     JS
@@ -243,26 +241,20 @@
             this.push('selectedActivityTypes', newActivityType);
          });
       },
+      
       ready : function() {
-         var vm = this;
-         $.get( "https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityGroup", function( data ) {
-            console.info('Activity types:',data.items);
-            data.items.forEach(function(newActivityType){
-               vm.pushActivityType({
-                  id          : newActivityType.id,
-                  tag         : newActivityType.tag,
-                  types       : newActivityType.types,
-               });
-            });
-            vm.shift('activityTypes'); // Remove initialization item
-         });
-         
          // Attachuing dialog to main body to make it live over the gray div 
          // Bug that will be corrected 
          // https://github.com/PolymerElements/polymer-starter-kit/issues/154
          // https://github.com/PolymerElements/paper-dialog/issues/7
          this.createActivity = this.$.createActivity        
          document.querySelector('body').appendChild(this.createActivity);
+      },
+      
+      _handleActivityGroup : function(evt, ironRequest) {
+        evt.stopPropagation();
+        this.activityTypes = ironRequest.response.items;
+        console.debug('Activity groups', this.activityTypes);
       },
     });
   </script>
