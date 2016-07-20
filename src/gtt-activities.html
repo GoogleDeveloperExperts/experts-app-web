@@ -286,6 +286,7 @@
     </paper-header-panel>
     <paper-dialog 
       id              = "modal"
+      modal
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
       no-cancel-on-outside-click>
@@ -608,7 +609,7 @@
         },
       },
       openDialog  : function(){
-        this.$.modal.open();
+        this.modal.open();
       },
       goFirst     : function(){
         var progress = {1:true,2:false,3:false,4:false};
@@ -627,7 +628,7 @@
         this.set('progress',progress);
       },
       finish      : function(){
-        this.$.modal.close();
+        this.modal.close();
         this.goFirst();
         console.log(this.newActivity);
       },
@@ -669,6 +670,13 @@
             });
             vm.shift('activityTypes'); // Remove initialization item
          });
+         
+         // Attachuing dialog to main body to make it live over the gray div 
+         // Bug that will be corrected 
+         // https://github.com/PolymerElements/polymer-starter-kit/issues/154
+         // https://github.com/PolymerElements/paper-dialog/issues/7
+         this.modal = this.$.modal        
+         document.querySelector('body').appendChild(this.modal);
       },
     });
   </script>
