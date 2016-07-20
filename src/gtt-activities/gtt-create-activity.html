@@ -207,33 +207,6 @@
               value = "{{ newActivity.description }}">
             </paper-input>
           </section>
-          <footer>
-            <paper-button 
-              id     = "continue" 
-              on-tap = "next">
-              Continue
-            </paper-button>
-            <div
-              class = "progress">
-              <div 
-                class = "indicator"
-                id    = "first"
-                active>
-              </div>
-              <div
-                class = "indicator"
-                id    = "second">
-              </div>
-              <div
-                class = "indicator"
-                id    = "third">
-              </div>
-              <div
-                class = "indicator"
-                id    = "fourth">
-              </div>
-            </div>
-          </footer>
         </div>  
         
         <!-- Tab 1 -->
@@ -263,33 +236,6 @@
               </template>
             </article>
           </section>
-          <footer>
-            <paper-button 
-              id     = "continue" 
-              on-tap = "next">
-              Continue
-            </paper-button>
-            <div
-              class = "progress">
-              <div 
-                class = "indicator"
-                id    = "first">
-              </div>
-              <div
-                class = "indicator"
-                id    = "second"
-                active>
-              </div>
-              <div
-                class = "indicator"
-                id    = "third">
-              </div>
-              <div
-                class = "indicator"
-                id    = "fourth">
-              </div>
-            </div>
-          </footer>
         </div>
         
         <!-- Tab 2 -->
@@ -322,33 +268,6 @@
               value = "{{ newActivity.date }}">
             </paper-input>
           </section>
-          <footer>
-            <paper-button 
-              id     = "continue" 
-              on-tap = "next">
-              Continue
-            </paper-button>
-            <div
-              class = "progress">
-              <div 
-                class = "indicator"
-                id    = "first">
-              </div>
-              <div
-                class = "indicator"
-                id    = "second">
-              </div>
-              <div
-                class = "indicator"
-                id    = "third"
-                active>
-              </div>
-              <div
-                class = "indicator"
-                id    = "fourth">
-              </div>
-            </div>
-          </footer>
         </div>
         
         <!-- Tab 3 -->
@@ -374,37 +293,50 @@
               label = "How many people?"
               value = "{{ newActivity.metric_reached }}">
             </paper-input>
-          </section>
-          <footer>
-            <paper-button 
-              id     = "continue" 
-              on-tap = "finish">
-              Finish
-            </paper-button>
-            <div
-              class = "progress">
-              <div 
-                class = "indicator"
-                id    = "first">
-              </div>
-              <div
-                class = "indicator"
-                id    = "second">
-              </div>
-              <div
-                class = "indicator"
-                id    = "third">
-              </div>
-              <div
-                class = "indicator"
-                id    = "fourth"
-                active>
-              </div>
-            </div>
-          </footer>          
+          </section>        
         </div>        
       </iron-pages>  
+      
 
+      <footer>
+        <template is="dom-if"" if="{{!_lastStep}}">
+          <paper-button 
+            id     = "continue" 
+            on-tap = "next">
+            Continue
+          </paper-button>
+        </template>
+        <template is="dom-if"" if="{{_lastStep}}">        
+          <paper-button 
+            id     = "continue" 
+            on-tap = "finish">
+            Finish
+          </paper-button>
+        </template>
+        <div
+          class = "progress">
+          <div 
+            class = "indicator"
+            id    = "first"
+            active$="{{_isCurrentStep(0, _currentStep)}}">
+          </div>
+          <div
+            class = "indicator"
+            id    = "second"
+            active$="{{_isCurrentStep(1,_currentStep)}}">
+          </div>
+          <div
+            class = "indicator"
+            id    = "third"
+            active$="{{_isCurrentStep(2, _currentStep)}}">
+          </div>
+          <div
+            class = "indicator"
+            id    = "fourth"
+            active$="{{_isCurrentStep(3, _currentStep)}}">
+          </div>
+        </div>
+      </footer>
 
 
       
@@ -461,11 +393,23 @@
           type: Number,
           value: 4
         },
+        _lastStep: {
+          type: Boolean,
+          computed: "_isLastStep(_currentStep,_numberOfSteps)"
+        },
       },
       behaviors: [
         Polymer.PaperDialogBehavior
       ],
 
+      _isLastStep: function() {
+       console.debug("[gtt-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
+       return (this._currentStep == this._numberOfSteps -1);
+      },
+      _isCurrentStep: function(step) {
+        console.debug("[gtt-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
+        return (this._currentStep == step);
+      },
       back: function() {
         if (this._currentStep > 0) {
           this._currentStep -= 1;
@@ -478,8 +422,7 @@
         }
       },      
       
-      finish: function(){
-        
+      finish: function(){        
         this.$.ironpages.selected = 0;
         console.log("[gtt-create-activity] finish - Activity: ",this.newActivity);
         this.close();
