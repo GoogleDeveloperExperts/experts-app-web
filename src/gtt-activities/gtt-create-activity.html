@@ -23,6 +23,7 @@
 
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html"
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
@@ -171,259 +172,243 @@
     ====================================
 -->
 
-      <template 
-        is = "dom-if"
-        if = "{{ progress.1 }}">
-        <h2>
-          <iron-icon 
-            icon = "add-circle">
-          </iron-icon>
-          Add an activity
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section>
-          <p>Fill in the details below to add and track your activity.</p>
-          <paper-input
-            id    = "title"
-            type  = "text"
-            label = "Activity Title"
-            value = "{{ newActivity.title }}">
-          </paper-input>
-          <paper-input
-            id    = "description"
-            type  = "text"
-            label = "Description"
-            value = "{{ newActivity.description }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goSecond">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "second">
-            </div>
-            <div
-              class = "indicator"
-              id    = "third">
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
-      <template 
-        is = "dom-if"
-        if = "{{ progress.2 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back"
-            on-tap = "goFirst">
-          </iron-icon>
-          Activity Types
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section>
-          <article
-            id     = "types">
-            <template 
-               is    = "dom-repeat" 
-               items = "[[activityTypes]]">
-               <paper-button
-                  on-tap = "selectActivityType"
-                  class  = "activityType"
-                  id     = "{{item.id}}"
-                  toggles
-                  raised>
-                 {{item.tag}}
-               </paper-button>
-
-            </template>
-          </article>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goThird">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
-            <div
-              class = "indicator"
-              id    = "second"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "third">
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
-      <template 
-        is = "dom-if"
-        if = "{{ progress.3 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back" 
-            on-tap = "goSecond">
-          </iron-icon>
-          Details
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section
-          id  = "details">
-          <paper-input
-            id    = "city"
-            type  = "text"
-            label = "Which city?"
-            value = "{{ newActivity.city }}">
-          </paper-input>
-          <paper-input
-            id    = "country"
-            type  = "text"
-            label = "Which country?"
-            value = "{{ newActivity.country }}">
-          </paper-input>
-          <paper-input
-            id    = "date"
-            type  = "date"
-            label = "When it happened?"
-            value = "{{ newActivity.date }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "goFourth">
-            Continue
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
-            <div
-              class = "indicator"
-              id    = "second">
-            </div>
-            <div
-              class = "indicator"
-              id    = "third"
-              active>
-            </div>
-            <div
-              class = "indicator"
-              id    = "fourth">
-            </div>
-          </div>
-        </footer>
-      </template>
       
-      <template 
-        is = "dom-if"
-        if = "{{ progress.4 }}">
-        <h2>
-          <iron-icon 
-            icon   = "arrow-back" 
-            on-tap = "goThird">
-          </iron-icon>
-          Details
-        </h2>
-        <paper-button
-          id = "closeCreateActivity"
-          dialog-confirm
-          autofocus>
-          <iron-icon 
-            icon = "close">
-          </iron-icon>
-        </paper-button>
-        <section
-          id  = "details">
-          <paper-input
-            id    = "url"
-            type  = "text"
-            label = "A link for this?"
-            value = "{{ newActivity.url }}">
-          </paper-input>
-          <paper-input
-            id    = "metric_reached"
-            type  = "number"
-            label = "How many people?"
-            value = "{{ newActivity.metric_reached }}">
-          </paper-input>
-        </section>
-        <footer>
-          <paper-button 
-            id     = "continue" 
-            on-tap = "finish">
-            Finish
-          </paper-button>
-          <div
-            class = "progress">
-            <div 
-              class = "indicator"
-              id    = "first">
-            </div>
+      <paper-button
+        id = "closeCreateActivity"
+        dialog-confirm
+        autofocus>
+        <iron-icon 
+          icon = "close">
+        </iron-icon>
+      </paper-button>
+
+      <iron-pages id="ironpages" selected="{{_currentStep}}">
+        
+        <!-- Tab 0 -->
+        <div>
+          <h2>
+            <iron-icon 
+              icon = "add-circle">
+            </iron-icon>
+            Add an activity
+          </h2>
+          <section>
+            <p>Fill in the details below to add and track your activity.</p>
+            <paper-input
+              id    = "title"
+              type  = "text"
+              label = "Activity Title"
+              value = "{{ newActivity.title }}">
+            </paper-input>
+            <paper-input
+              id    = "description"
+              type  = "text"
+              label = "Description"
+              value = "{{ newActivity.description }}">
+            </paper-input>
+          </section>
+          <footer>
+            <paper-button 
+              id     = "continue" 
+              on-tap = "next">
+              Continue
+            </paper-button>
             <div
-              class = "indicator"
-              id    = "second">
+              class = "progress">
+              <div 
+                class = "indicator"
+                id    = "first"
+                active>
+              </div>
+              <div
+                class = "indicator"
+                id    = "second">
+              </div>
+              <div
+                class = "indicator"
+                id    = "third">
+              </div>
+              <div
+                class = "indicator"
+                id    = "fourth">
+              </div>
             </div>
+          </footer>
+        </div>  
+        
+        <!-- Tab 1 -->
+        <div>
+          <h2>
+            <iron-icon 
+              icon   = "arrow-back"
+              on-tap = "back">
+            </iron-icon>
+            Activity Types
+          </h2>
+          <section>
+            <article
+              id     = "types">
+              <template 
+                is    = "dom-repeat" 
+                items = "[[activityTypes]]">
+                <paper-button
+                    on-tap = "selectActivityType"
+                    class  = "activityType"
+                    id     = "{{item.id}}"
+                    toggles
+                    raised>
+                  {{item.tag}}
+                </paper-button>
+
+              </template>
+            </article>
+          </section>
+          <footer>
+            <paper-button 
+              id     = "continue" 
+              on-tap = "next">
+              Continue
+            </paper-button>
             <div
-              class = "indicator"
-              id    = "third">
+              class = "progress">
+              <div 
+                class = "indicator"
+                id    = "first">
+              </div>
+              <div
+                class = "indicator"
+                id    = "second"
+                active>
+              </div>
+              <div
+                class = "indicator"
+                id    = "third">
+              </div>
+              <div
+                class = "indicator"
+                id    = "fourth">
+              </div>
             </div>
+          </footer>
+        </div>
+        
+        <!-- Tab 2 -->
+        <div>
+          <h2>
+            <iron-icon 
+              icon   = "arrow-back" 
+              on-tap = "back">
+            </iron-icon>
+            Details
+          </h2>
+          <section
+            id  = "details">
+            <paper-input
+              id    = "city"
+              type  = "text"
+              label = "Which city?"
+              value = "{{ newActivity.city }}">
+            </paper-input>
+            <paper-input
+              id    = "country"
+              type  = "text"
+              label = "Which country?"
+              value = "{{ newActivity.country }}">
+            </paper-input>
+            <paper-input
+              id    = "date"
+              type  = "date"
+              label = "When it happened?"
+              value = "{{ newActivity.date }}">
+            </paper-input>
+          </section>
+          <footer>
+            <paper-button 
+              id     = "continue" 
+              on-tap = "next">
+              Continue
+            </paper-button>
             <div
-              class = "indicator"
-              id    = "fourth"
-              active>
+              class = "progress">
+              <div 
+                class = "indicator"
+                id    = "first">
+              </div>
+              <div
+                class = "indicator"
+                id    = "second">
+              </div>
+              <div
+                class = "indicator"
+                id    = "third"
+                active>
+              </div>
+              <div
+                class = "indicator"
+                id    = "fourth">
+              </div>
             </div>
-          </div>
-        </footer>
-      </template>
+          </footer>
+        </div>
+        
+        <!-- Tab 3 -->
+        <div>
+          <h2>
+            <iron-icon 
+              icon   = "arrow-back" 
+              on-tap = "back">
+            </iron-icon>
+            Details
+          </h2>
+          <section
+            id  = "details">
+            <paper-input
+              id    = "url"
+              type  = "text"
+              label = "A link for this?"
+              value = "{{ newActivity.url }}">
+            </paper-input>
+            <paper-input
+              id    = "metric_reached"
+              type  = "number"
+              label = "How many people?"
+              value = "{{ newActivity.metric_reached }}">
+            </paper-input>
+          </section>
+          <footer>
+            <paper-button 
+              id     = "continue" 
+              on-tap = "finish">
+              Finish
+            </paper-button>
+            <div
+              class = "progress">
+              <div 
+                class = "indicator"
+                id    = "first">
+              </div>
+              <div
+                class = "indicator"
+                id    = "second">
+              </div>
+              <div
+                class = "indicator"
+                id    = "third">
+              </div>
+              <div
+                class = "indicator"
+                id    = "fourth"
+                active>
+              </div>
+            </div>
+          </footer>          
+        </div>        
+      </iron-pages>  
+
+
+
+      
+
 
 
   </template>
@@ -451,16 +436,6 @@
           }
         },
         
-        /**
-         * Progress indicator for dialog
-         */
-        progress     : {
-          type          : 'Object',
-          notify        : true,
-          value         : function() {
-            return {1:true,2:false,3:false};
-          }
-        }, 
         
         /**
          * The allowed activity types 
@@ -476,32 +451,38 @@
             } 
           ],
         },
+        
+        
+        _currentStep : {
+          type: Number,
+          value: 0
+        },
+        _numberOfSteps: {
+          type: Number,
+          value: 4
+        },
       },
       behaviors: [
         Polymer.PaperDialogBehavior
       ],
+
+      back: function() {
+        if (this._currentStep > 0) {
+          this._currentStep -= 1;
+        }
+      },      
+      next: function() {
+        console.debug("[gtt-create-activity] next - current tab: ", this._currentStep );
+        if (this._currentStep < this._numberOfSteps -1) {
+          this._currentStep += 1;
+        }
+      },      
       
-      
-      goFirst     : function(){
-        var progress = {1:true,2:false,3:false,4:false};
-        this.set('progress',progress);
-      },
-      goSecond    : function(){
-        var progress = {1:false,2:true,3:false,4:false};
-        this.set('progress',progress);
-      },
-      goThird     : function(){
-        var progress = {1:false,2:false,3:true,4:false};
-        this.set('progress',progress);
-      },
-      goFourth    : function(){
-        var progress = {1:false,2:false,3:false,4:true};
-        this.set('progress',progress);
-      },
-      finish      : function(){
-        this.createActivity.close();
-        this.goFirst();
-        console.log(this.newActivity);
+      finish: function(){
+        
+        this.$.ironpages.selected = 0;
+        console.log("[gtt-create-activity] finish - Activity: ",this.newActivity);
+        this.close();
       },
       selectActivityType : function(e){
          var 
