@@ -1,31 +1,29 @@
 <!--
-    Google Developers Experts Tracking App
-    Copyright (C) 2016  by the GDE Tracking App Team
+  Google Developers Experts Tracking App
+  Copyright (C) 2016  by the GDE Tracking App Team
 
-    gdetracking.appspot.com/
-    https://github.com/GoogleDeveloperExperts/experts-app-web
+  gdetracking.appspot.com/
+  https://github.com/GoogleDeveloperExperts/experts-app-web
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
-
-
 
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
-<link rel="import" href="../../bower_components/paper-button/paper-button.html"
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 
@@ -171,10 +169,8 @@
                    HTML
     ====================================
 -->
-
-      
       <paper-button
-        id = "closeCreateActivity"
+        id     = "closeCreateActivity"
         on-tap = "cancel"
         autofocus>
         <iron-icon 
@@ -182,7 +178,9 @@
         </iron-icon>
       </paper-button>
 
-      <iron-pages id="ironpages" selected="{{_currentStep}}">
+      <iron-pages 
+        id       = "ironpages" 
+        selected = "{{_currentStep}}">
         
         <!-- Tab 0 -->
         <div>
@@ -299,14 +297,18 @@
       
 
       <footer>
-        <template is="dom-if"" if="{{!_lastStep}}">
+        <template 
+          is = "dom-if"" 
+          if = "{{!_lastStep}}">
           <paper-button 
             id     = "continue" 
             on-tap = "next">
             Continue
           </paper-button>
         </template>
-        <template is="dom-if"" if="{{_lastStep}}">        
+        <template 
+          is = "dom-if"" 
+          if = "{{_lastStep}}">        
           <paper-button 
             id     = "continue" 
             on-tap = "finish">
@@ -316,24 +318,24 @@
         <div
           class = "progress">
           <div 
-            class = "indicator"
-            id    = "first"
-            active$="{{_isCurrentStep(0, _currentStep)}}">
+            class   = "indicator"
+            id      = "first"
+            active$ = "{{_isCurrentStep(0, _currentStep)}}">
           </div>
           <div
-            class = "indicator"
-            id    = "second"
-            active$="{{_isCurrentStep(1,_currentStep)}}">
+            class   = "indicator"
+            id      = "second"
+            active$ = "{{_isCurrentStep(1,_currentStep)}}">
           </div>
           <div
-            class = "indicator"
-            id    = "third"
-            active$="{{_isCurrentStep(2, _currentStep)}}">
+            class   = "indicator"
+            id      = "third"
+            active$ = "{{_isCurrentStep(2, _currentStep)}}">
           </div>
           <div
-            class = "indicator"
-            id    = "fourth"
-            active$="{{_isCurrentStep(3, _currentStep)}}">
+            class   = "indicator"
+            id      = "fourth"
+            active$ = "{{_isCurrentStep(3, _currentStep)}}">
           </div>
         </div>
       </footer>
@@ -346,108 +348,102 @@
 -->
   <script>
     Polymer({ 
-      is: 'gtt-create-activity',
-      properties: {
-        
-        /**
-         * The new activity
-         */
-        newActivity     : {
-          type             : 'Object',
-          notify           : true,
-          value            : function() {
+      is         : 'gtt-create-activity',
+      properties : {
+/**
+ * The new activity
+ */
+        newActivity : {
+          type        : 'Object',
+          notify      : true,
+          value       : function() {
             return {
               'title'       : '',
               'description' : ''
             };
           }
-        },
-        
-        
-        /**
-         * The allowed activity types 
-         */     
-        
-        activityTypes   : {
-          type             : 'array',
-          notify           : true,
-          value            : [
+        },        
+/**
+ * The allowed activity types 
+ */  
+        activityTypes : {
+          type          : 'array',
+          notify        : true,
+          value         : [
             {
-               'id'  : '',
-               'tag' : '#'
+              'id'        : '',
+              'tag'       : '#'
             } 
           ],
         },        
         
-        _currentStep : {
-          type: Number,
-          value: 0
+        _currentStep    : {
+          type            : Number,
+          value           : 0
         },
-        _numberOfSteps: {
-          type: Number,
-          value: 4
+        _numberOfSteps  : {
+          type            : Number,
+          value           : 4
         },
-        _lastStep: {
-          type: Boolean,
-          computed: "_isLastStep(_currentStep,_numberOfSteps)"
+        _lastStep       : {
+          type            : Boolean,
+          computed        : "_isLastStep(_currentStep,_numberOfSteps)"
         },
       },
-      behaviors: [
+      behaviors         : [
         Polymer.PaperDialogBehavior
       ],
 
-      _isLastStep: function() {
+      _isLastStep       : function() {
        // console.debug("[gtt-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
        return (this._currentStep == this._numberOfSteps -1);
       },
-      _isCurrentStep: function(step) {
+      _isCurrentStep    : function(step) {
         // console.debug("[gtt-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
       },
-      back: function() {
+      back              : function() {
         if (this._currentStep > 0) {
           this._currentStep -= 1;
         }
       },      
-      next: function() {
+      next              : function() {
         // console.debug("[gtt-create-activity] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
       },      
       
-      finish: function(){        
+      finish            : function(){        
         this._currentStep = 0;
         // console.debug("[gtt-create-activity] finish - Activity: ",this.newActivity);
         this._initNewActivity();
         this.close();
       },
-      cancel: function(){        
+      cancel            : function(){        
         this._currentStep = 0;
         this._initNewActivity();
         // console.debug("[gtt-create-activity] close");
         this.close();
       },
       
-      _initNewActivity: function() {
-        this.newActivity = {
-          'title'       : '',
-          'description' : ''
+      _initNewActivity  : function() {
+        this.newActivity  = {
+          'title'           : '',
+          'description'     : ''
         };
       },
       
       selectActivityType : function(e){
-         var 
-         activityTypeSelectors = e.path[1].children,
-         selectedActivityType  = e.path[0].id;
-         this.newActivity.type = selectedActivityType;
-         for (var i=0,total=activityTypeSelectors.length; i<total; i++) {
-            if (activityTypeSelectors[i].id != selectedActivityType)
-               activityTypeSelectors[i].active = false;
-         }
+        var 
+        activityTypeSelectors = e.path[1].children,
+        selectedActivityType  = e.path[0].id;
+        this.newActivity.type = selectedActivityType;
+        for (var i=0,total=activityTypeSelectors.length; i<total; i++) {
+          if (activityTypeSelectors[i].id != selectedActivityType)
+            activityTypeSelectors[i].active = false;
+        }
       },
     });
   </script>
 </dom-module>
-  
-  

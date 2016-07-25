@@ -1,24 +1,23 @@
 <!--
-    Google Developers Experts Tracking App
-    Copyright (C) 2016  by the GDE Tracking App Team
+  Google Developers Experts Tracking App
+  Copyright (C) 2016  by the GDE Tracking App Team
 
-    gdetracking.appspot.com/
-    https://github.com/GoogleDeveloperExperts/experts-app-web
+  gdetracking.appspot.com/
+  https://github.com/GoogleDeveloperExperts/experts-app-web
 
-    This program is free software: you can redistribute it and/or modify
-    it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 3 of the License, or
-    (at your option) any later version.
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
 
-    This program is distributed in the hope that it will be useful,
-    but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-    GNU General Public License for more details.
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
 
-    You should have received a copy of the GNU General Public License
-    along with this program.  If not, see <http://www.gnu.org/licenses/>
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
-
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
@@ -156,7 +155,7 @@
         <h1>My activities</h1>
       </paper-toolbar>
       <paper-material
-        class     = "stats">
+        class = "stats">
         <gtt-activity-stats 
           activities = "{{activities}}" >
         </gtt-activity-stats>
@@ -174,17 +173,19 @@
 
     <gtt-create-activity 
       id              = "createActivity"
-      modal
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
-      activity-types= "{{activityTypes}}"
-      no-cancel-on-outside-click>
+      activity-types  = "{{activityTypes}}"
+      no-cancel-on-outside-click
+      modal>
     </gtt-create-activity>
 
     
-    <iron-ajax auto handle-as="json" 
-      url="https://elite-firefly-737.appspot.com/_ah/api/gdetracking/v1.0b2/activityGroup"
-      on-response="_handleActivityGroup" >
+    <iron-ajax 
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v1/activityGroup"
+      handle-as   = "json"
+      on-response = "_handleActivityGroup"
+      auto>
     </iron-ajax>
   </template>
 <!--
@@ -206,49 +207,50 @@
           notify           : true,
           value            : [
             {
-               'id'  : '',
-               'tag' : '#'
+              'id'  : '',
+              'tag' : '#'
             } 
           ],
         },
         selectedActivityTypes : {
-          type             : 'array',
-          notify           : true,
-          value            : [
+          type    : 'array',
+          notify  : true,
+          value   : [
             {
-               'id'  : '',
-               'tag' : '#'
+             'id'   : '',
+             'tag'  : '#'
             } 
           ],
         },
-
       },
       openDialog  : function(){
         this.createActivity.open();
       },
       pushActivityType : function(newActivityType) {
-         this.push('activityTypes', newActivityType);
+        this.push('activityTypes', newActivityType);
       },
       clearSelectedActivityTypes : function(){
-         var vm = this;
-         this.activityTypes.forEach(function(){
-            vm.pop('activityTypes');
-         });
+        var vm = this;
+        this.activityTypes.forEach(function(){
+          vm.pop('activityTypes');
+        });
       },
       pushSelectedActivityType : function(newActivityTypes){
-         this.clearSelectedActivityTypes();
-         newActivityTypes.forEach(function(newActivityType){
-            this.push('selectedActivityTypes', newActivityType);
-         });
+        this.clearSelectedActivityTypes();
+        newActivityTypes.forEach(function(newActivityType){
+          this.push('selectedActivityTypes', newActivityType);
+        });
       },
       
       ready : function() {
-         // Attachuing dialog to main body to make it live over the gray div 
-         // Bug that will be corrected 
-         // https://github.com/PolymerElements/polymer-starter-kit/issues/154
-         // https://github.com/PolymerElements/paper-dialog/issues/7
-         this.createActivity = this.$.createActivity        
-         document.querySelector('body').appendChild(this.createActivity);
+/**
+ * Attaching dialog to main body to make it live over the gray div 
+ * Bug that will be corrected 
+ * https://github.com/PolymerElements/polymer-starter-kit/issues/154
+ * https://github.com/PolymerElements/paper-dialog/issues/7
+ */
+        this.createActivity = this.$.createActivity        
+        document.querySelector('body').appendChild(this.createActivity);
       },
       
       _handleActivityGroup : function(evt, ironRequest) {
