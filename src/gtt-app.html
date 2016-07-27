@@ -19,6 +19,7 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="gtt-icons.html">
+<link rel="import" href="gtt-signin.html">
 <link rel="import" href="../bower_components/polymer/polymer.html">
 <link rel="import" href="../bower_components/app-route/app-route.html">
 <link rel="import" href="../bower_components/iron-pages/iron-pages.html">
@@ -292,19 +293,29 @@
                 </a>
               </paper-button>
             </iron-selector>
-            <user>
-              <info>
-                <name>
-                  {{user.name}}
-                </name>
-                <email>
-                  {{user.email}}
-                </email>
-              </info>
-              <img
-                class = "avatar"
-                src   = "{{user.avatar}}"/>
-            </user>
+            <template is="dom-if" if="{{user}}">
+              <user on-click="_userClicked" >
+                <info>
+                  <name>
+                    {{user.name}}
+                  </name>
+                  <email>
+                    {{user.email}}
+                  </email>
+                </info>
+                <img
+                  class = "avatar"
+                  src   = "{{user.image}}"/>
+              </user>
+              <template is="dom-if" if="{{_userSelected}}">
+                <div class="user_details">
+                  <gtt-signin user="{{user}}"></gtt-signin>
+                </div>
+              </template>
+            </template>
+            <template is="dom-if" if="{{!user}}"> 
+              <gtt-signin user="{{user}}"></gtt-signin>
+            </template> 
           </app-toolbar>
         </app-header>
         <iron-pages
@@ -334,6 +345,7 @@
       location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
       data     = "{{cache}}">
     </firebase-collection>
+
   </template>
 <!--
     ====================================
@@ -359,6 +371,7 @@
         },
         user : {
           type : Object,
+          /*
           value       : function() {
             return {
               'name'    : 'Cesar Anton',
@@ -366,6 +379,12 @@
               'avatar'  : 'https://secure.gravatar.com/avatar/f35f16285ad3235d467bb472771d62b0',
             };
           }
+          */
+          value: null
+        },
+        _userSelected: {
+          type: Boolean,
+          value: false
         },
       },
       observers : [
@@ -377,6 +396,9 @@
       _pageChanged : function(page) {
         this.importHref(
           this.resolveUrl('gtt-' + page + '.html'), null, null, true);
+      },
+      _userClicked: function() {
+        this._userSelected = !this._userSelected;
       },
       ready : function() {
         this.$.drawer.forceNarrow = true;
