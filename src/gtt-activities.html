@@ -175,7 +175,7 @@
       id              = "createActivity"
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
-      activity-types  = "{{activityTypes}}"
+      activity-groups  = "{{activityGroups}}"
       no-cancel-on-outside-click
       modal>
     </gtt-create-activity>
@@ -212,33 +212,47 @@
             } 
           ],
         },
-        selectedActivityTypes : {
-          type    : 'array',
-          notify  : true,
-          value   : [
-            {
-             'id'   : '',
-             'tag'  : '#'
-            } 
-          ],
-        },
+/**
+ * The allowed activity groups 
+ */  
+        activityGroups : {
+          type          : 'array',
+          notify        : true,
+          value         : function(){ 
+            return [
+              {
+                "impact"            : '',
+                "description"       : '',
+                "title"             : '',
+                "us_approx_amount"  : '',
+                "google_expensed"   : '',
+                "other_link1"       : '',
+                "other_link2"       : '',
+                "tag"               : '',
+                "link"              : '',
+                "id"  	            : '',
+                "types"             : [],
+              } 
+            ]
+          },
+        },  
       },
       openDialog  : function(){
         this.createActivity.open();
       },
-      pushActivityType : function(newActivityType) {
-        this.push('activityTypes', newActivityType);
+      pushActivityGroup : function(newActivityGroup) {
+        this.push('activityGroups', newActivityGroup);
       },
-      clearSelectedActivityTypes : function(){
+      clearSelectedActivityGroups : function(){
         var vm = this;
-        this.activityTypes.forEach(function(){
-          vm.pop('activityTypes');
+        this.activityGroups.forEach(function(){
+          vm.pop('activityGroups');
         });
       },
-      pushSelectedActivityType : function(newActivityTypes){
-        this.clearSelectedActivityTypes();
-        newActivityTypes.forEach(function(newActivityType){
-          this.push('selectedActivityTypes', newActivityType);
+      pushSelectedActivityGroups : function(newActivityGroups){
+        this.clearSelectedActivityGroups();
+        newActivityGroups.forEach(function(newActivityGroup){
+          this.push('selectedActivityGroups', newActivityGroup);
         });
       },
       
@@ -255,8 +269,8 @@
       
       _handleActivityGroup : function(evt, ironRequest) {
         evt.stopPropagation();
-        this.activityTypes = ironRequest.response.items;
-        console.debug('Activity groups', this.activityTypes);
+        this.activityGroups = ironRequest.response.items;
+        console.debug('Activity groups', this.activityGroups);
       },
     });
   </script>

@@ -117,8 +117,13 @@
         font-weight       : normal !important;
         cursor            : pointer;
       }
-      :host  section  article  paper-button[active] {
+      :host  section  article  paper-button.activityGroup[active] {
         background-color  : #34a853;
+        color             : #fff;
+        margin            : 5px;
+      }
+      :host  section  article  paper-button.activityType[active] {
+        background-color  : #ff9e07;
         color             : #fff;
         margin            : 5px;
       }
@@ -214,21 +219,40 @@
               icon   = "arrow-back"
               on-tap = "back">
             </iron-icon>
-            Activity Types
+            Activity Groups
           </h2>
           <section>
             <article
-              id     = "types">
+              id     = "groups">
               <template 
                 is    = "dom-repeat" 
-                items = "[[activityTypes]]">
+                items = "[[activityGroups]]">
+                <paper-button
+                    on-tap = "selectActivityGroup"
+                    class  = "activityGroup"
+                    id     = "{{item.id}}"
+                    toggles
+                    active = "{{item.active}}"
+                    raised>
+                  {{item.tag}}
+                </paper-button>
+              </template>
+            </article>
+            <h2>Activity types</h2>
+            <article
+              id     = "types">
+              <template
+                is    = "dom-repeat" 
+                items = "[[_activityTypes]]"
+                as    = "type">
                 <paper-button
                     on-tap = "selectActivityType"
                     class  = "activityType"
-                    id     = "{{item.id}}"
+                    id     = "{{type.tag}}"
                     toggles
+                    active = "{{type.active}}"
                     raised>
-                  {{item.tag}}
+                  {{type.tag}}
                 </paper-button>
 
               </template>
@@ -359,24 +383,42 @@
           value       : function() {
             return {
               'title'       : '',
-              'description' : ''
+              'description' : '',
+              'types'       : []
             };
           }
         },        
 /**
- * The allowed activity types 
+ * The allowed activity groups 
  */  
-        activityTypes : {
+        activityGroups : {
           type          : 'array',
           notify        : true,
-          value         : [
-            {
-              'id'        : '',
-              'tag'       : '#'
-            } 
-          ],
+          value         : function(){ 
+            return [
+              {
+                "impact"            : '',
+                "description"       : '',
+                "title"             : '',
+                "us_approx_amount"  : '',
+                "google_expensed"   : '',
+                "other_link1"       : '',
+                "other_link2"       : '',
+                "tag"               : '',
+                "link"              : '',
+                "id"  	            : '',
+                "types"             : [],
+              } 
+            ]
+          },
         },        
-        
+
+        _activityTypes  : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },        
         _currentStep    : {
           type            : Number,
           value           : 0
@@ -434,15 +476,53 @@
         };
       },
       
-      selectActivityType : function(e){
-        var 
-        activityTypeSelectors = e.path[1].children,
-        selectedActivityType  = e.path[0].id;
-        this.newActivity.type = selectedActivityType;
-        for (var i=0,total=activityTypeSelectors.length; i<total; i++) {
-          if (activityTypeSelectors[i].id != selectedActivityType)
-            activityTypeSelectors[i].active = false;
+      selectActivityGroup : function(e){
+
+        var _activityTypes = [];
+        
+        for (var i in this.activityGroups) {
+          if (this.activityGroups[i].active) {
+            for (var j in this.activityGroups[i].types) {
+              var already = false;
+              for (var k in _activityTypes) {
+                if (_activityTypes[k] == this.activityGroups[i].types[j]) {
+                  already = true;
+                  break;
+                }
+              }
+              if (!already) {
+                var type = { 
+                  tag: this.activityGroups[i].types[j] 
+                };
+                if (this.newActivity.types.indexOf(this.activityGroups[i].types[j]) >= 0) {
+                  // The type was already selected, we activate it
+                  type.active = true;
+                }
+                _activityTypes.push(type);
+              }  
+            }
+          }
         }
+        this._activityTypes = _activityTypes.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        });
+        console.debug("[gtt-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
+      },
+
+      selectActivityType: function(e){
+
+        var _selectedActivityTypes = [];
+        
+        for (var i in this._activityTypes) {
+          if (this._activityTypes[i].active) {
+            _selectedActivityTypes.push(this._activityTypes[i].tag);
+          }
+        } 
+
+        this.newActivity.types = _selectedActivityTypes.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        });
+        console.debug("[gtt-create-activity] selectActivityType - selected activity types", this.newActivity.types);
       },
     });
   </script>
