@@ -135,7 +135,7 @@
     <iron-ajax 
       id          = "activityListRequest"
       method      = "GET"
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v1/activityRecord/activityRecord"
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord/activityRecord"
       handle-as   = "json"
       on-response = "_handleActivityList">
     </iron-ajax>
@@ -206,7 +206,7 @@
       generateActivityListRequest: function() {
         var request = this.$.activityListRequest;
         request.params = {
-          gplus_id: this.user.id
+          email: this.user.email
         }
         request.generateRequest();
       },

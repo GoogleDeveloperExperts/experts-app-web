@@ -176,13 +176,19 @@
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
       activity-groups  = "{{activityGroups}}"
+      product-groups  = "{{productGroups}}"
       no-cancel-on-outside-click
       modal>
     </gtt-create-activity>
 
-    
     <iron-ajax 
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v1/activityGroup"
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup"
+      handle-as   = "json"
+      on-response = "_handleProductGroup"
+      auto>
+    </iron-ajax>    
+    <iron-ajax 
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityGroup"
       handle-as   = "json"
       on-response = "_handleActivityGroup"
       auto>
@@ -267,6 +273,12 @@
         document.querySelector('body').appendChild(this.createActivity);
       },
       
+      _handleProductGroup : function(evt, ironRequest) {
+        evt.stopPropagation();
+        this.productGroups = ironRequest.response.items;
+        console.debug('Product groups', this.productGroups);
+      },
+
       _handleActivityGroup : function(evt, ironRequest) {
         evt.stopPropagation();
         this.activityGroups = ironRequest.response.items;
