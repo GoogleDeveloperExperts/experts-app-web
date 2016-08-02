@@ -22,6 +22,7 @@
 
 <link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-fab/paper-fab.html">
@@ -37,10 +38,14 @@
 <link rel="import" href="../bower_components/neon-animation/animations/slide-down-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 
+<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
+
 <link rel="import" href="./gtt-activities/gtt-activity-list.html">
 <link rel="import" href="./gtt-activities/gtt-activity-stats.html">
 <link rel="import" href="./gtt-activities/gtt-sample-activity-data.html">
 <link rel="import" href="./gtt-activities/gtt-create-activity.html">
+
+
 <!--  
     ====================================
                   Shady DOM  
@@ -167,6 +172,7 @@
         on-tap      = "openDialog">
       </paper-fab>
       <gtt-activity-list
+        id = "activityList"
         activities = "{{activities}}">
       </gtt-activity-list>
     </paper-header-panel>
@@ -178,9 +184,14 @@
       activity-groups  = "{{activityGroups}}"
       product-groups  = "{{productGroups}}"
       no-cancel-on-outside-click
+      on-activity-created = "_doCreateActivity"
       modal>
     </gtt-create-activity>
 
+    <iron-localstorage
+      name="current-user"
+      value="{{user}}">
+    </iron-localstorage>
     <iron-ajax 
       url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup"
       handle-as   = "json"
@@ -188,11 +199,33 @@
       auto>
     </iron-ajax>    
     <iron-ajax 
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityGroup"
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityType?limit=100"
       handle-as   = "json"
-      on-response = "_handleActivityGroup"
+      on-response = "_handleActivityType"
       auto>
     </iron-ajax>
+
+    <discovery-api-elements
+      name="expertstracking"
+      version="v2.0"
+      app-id="elite-firefly-737"
+      no-client
+      ></discovery-api-elements>
+
+    <!-- Fetch information about currently signed-in User -->
+    <expertstracking-activity_record-insert
+      on-success="_handleActivityCreated">
+    </expertstracking-activity_record-insert>     
+    
+    <iron-ajax 
+      id          = "createActivityRequest"
+      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
+      method      = "POST"
+      handle-as   = "json"
+      headers     = '{"Content-Type" : "application/json"}'
+      on-response = "_handleActivityCreated"
+    >
+    </iron-ajax>    
   </template>
 <!--
     ====================================
@@ -272,7 +305,21 @@
         this.createActivity = this.$.createActivity        
         document.querySelector('body').appendChild(this.createActivity);
       },
-      
+      _doCreateActivity: function(evt, activity) {
+        console.debug("[gtt-activities] _doCreateActivity - activity", activity);
+        console.debug("[gtt-activities] _doCreateActivity - user", this.user);
+        activity.email = this.user.email;
+
+        var request = this.$$("expertstracking-activity_record-insert");
+        request.accessToken = this.user.token;
+        request.body = activity;
+        request.go();
+      },
+      _handleActivityCreated: function(evt, gapiResponse) {
+        evt.stopPropagation();
+        console.debug('Activity created', gapiResponse);
+        this.$.activityList.generateActivityListRequest();
+      },
       _handleProductGroup : function(evt, ironRequest) {
         evt.stopPropagation();
         this.productGroups = ironRequest.response.items;
@@ -283,6 +330,26 @@
         evt.stopPropagation();
         this.activityGroups = ironRequest.response.items;
         console.debug('Activity groups', this.activityGroups);
+      },
+
+      _handleActivityType : function(evt, ironRequest) {
+        evt.stopPropagation();
+        this.activityTypes = ironRequest.response.items;
+        console.debug('Activity types', this.activityTypes);
+
+        var activityGroups = {};
+        this.activityTypes.forEach(function(activityType){
+          if (!activityGroups[activityType.group]) {
+            activityGroups[activityType.group] = {
+              tag: activityType.group,
+              types: []
+            };  
+          }
+          activityGroups[activityType.group].types.push(activityType.tag);
+        });
+        this.activityGroups = Object.keys(activityGroups).map(function (key) {return activityGroups[key]});
+        console.debug('Activity groups', this.activityGroups);
+
       },
     });
   </script>

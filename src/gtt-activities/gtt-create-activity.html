@@ -189,6 +189,8 @@
         
         <!-- Tab 0 -->
         <div>
+          <!-- Temp button to allow express activity creation, for credentials test -->
+          <paper-fab style="float:right; margin-right: 15px;" icon="exit-to-app" on-click="_createExpress"></paper-fab>
           <h2>
             <iron-icon 
               icon = "add-circle">
@@ -309,11 +311,24 @@
               label = "A link for this?"
               value = "{{ newActivity.url }}">
             </paper-input>
+            <div>Some metrics</div>
             <paper-input
               id    = "metric_reached"
               type  = "number"
-              label = "How many people?"
+              label = "How many people directly reached?"
               value = "{{ newActivity.metric_reached }}">
+            </paper-input>
+            <paper-input
+              id    = "metric_reached"
+              type  = "number"
+              label = "How many people trained?"
+              value = "{{ newActivity.metric_trained }}">
+            </paper-input>
+            <paper-input
+              id    = "metric_reached"
+              type  = "number"
+              label = "How many people indirectly reached?"
+              value = "{{ newActivity.metric_indirect }}">
             </paper-input>
           </section>
         </div>        
@@ -384,7 +399,7 @@
             return {
               'title'       : '',
               'description' : '',
-              'types'       : []
+              'activity_types'       : []
             };
           }
         },        
@@ -397,16 +412,7 @@
           value         : function(){ 
             return [
               {
-                "impact"            : '',
-                "description"       : '',
-                "title"             : '',
-                "us_approx_amount"  : '',
-                "google_expensed"   : '',
-                "other_link1"       : '',
-                "other_link2"       : '',
                 "tag"               : '',
-                "link"              : '',
-                "id"  	            : '',
                 "types"             : [],
               } 
             ]
@@ -456,10 +462,14 @@
         }
       },      
       
+      _createExpress    : function() {
+        this.newActivity = {"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
+        this.finish();
+      },
       finish            : function(){        
         this._currentStep = 0;
         // console.debug("[gtt-create-activity] finish - Activity: ",this.newActivity);
-        this._initNewActivity();
+        this._finishNewActivity();
         this.close();
       },
       cancel            : function(){        
@@ -474,6 +484,11 @@
           'title'           : '',
           'description'     : ''
         };
+      },
+      _finishNewActivity  : function() {
+        console.debug("[gtt-create-activity] _finishNewActivity ", this.newActivity);
+        this.fire('activity-created', this.newActivity);
+        this._initNewActivity();
       },
       
       selectActivityGroup : function(e){
@@ -494,7 +509,7 @@
                 var type = { 
                   tag: this.activityGroups[i].types[j] 
                 };
-                if (this.newActivity.types.indexOf(this.activityGroups[i].types[j]) >= 0) {
+                if (this.newActivity.activity_types.indexOf(this.activityGroups[i].types[j]) >= 0) {
                   // The type was already selected, we activate it
                   type.active = true;
                 }
@@ -519,10 +534,10 @@
           }
         } 
 
-        this.newActivity.types = _selectedActivityTypes.sort(function(a, b) {
+        this.newActivity.activity_types = _selectedActivityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[gtt-create-activity] selectActivityType - selected activity types", this.newActivity.types);
+        console.debug("[gtt-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
       },
     });
   </script>
