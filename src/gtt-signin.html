@@ -2,6 +2,8 @@
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
+<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
+
 <!--
   Sign-in component hooked up to the Google Experts Tracking Backend
   to retrieve relevant user information like access rights.
@@ -14,14 +16,22 @@
   <template>
     <!-- Prepare elements to access the API -->
     <discovery-api-elements
-      name="gdetracking"
-      version="v1.0b2"
-      app-id="omega-keep-406"
+      name="expertstracking"
+      version="v2.0"
+      app-id="elite-firefly-737"
       no-client
       ></discovery-api-elements>
 
-    <google-signin
+    <!-- Fetch information about currently signed-in User -->
+    <expertstracking-account-get
+      id="[[_googleUser.email]]"
+      auto$="[[_isAuthorized]]"
+      response="{{_apiUser}}"></gdetracking-account-get>      
+      <!-- 
       client-id="854118353094-lnvlrs78qe1vlnrpd6nbgbaskteki0h4.apps.googleusercontent.com"
+      -->
+    <google-signin
+        client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
       scope="email profile"  brand="google" theme="dark"
       on-google-signin-aware-success="_signedIn"
       on-google-signed-out="_signedOut"></google-signin>
@@ -113,6 +123,7 @@
             email: profile.getEmail(),
             token: authResponse.access_token || authResponse.id_token
           };
+          console.debug("[gtt-signin] _signedIn",this._googleUser);
         },
 
         /**
@@ -178,7 +189,7 @@
          * Check if user data is initialized correctly
          */
         _computeAuthorized: function (user) {
-          return (!!user && !!user.id);
+          return (!!user && !!user.email);
         }
       });
     })();
