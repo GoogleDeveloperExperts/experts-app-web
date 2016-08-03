@@ -13,21 +13,6 @@
 
 <dom-module id="gtt-signin">
   <template>
-    <!-- Prepare elements to access the API 
-    <discovery-api-elements
-      name="expertstracking"
-      version="v2.0"
-      app-id="elite-firefly-737"
-      no-client
-      ></discovery-api-elements>
-
-    <!-- Fetch information about currently signed-in User 
-    <expertstracking-account-get
-      id="[[_googleUser.email]]"
-      auto$="[[_isAuthorized]]"
-      response="{{_apiUser}}"></gdetracking-account-get>      
-      <!--  client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
-      -->
     <google-signin
       client-id="854118353094-lnvlrs78qe1vlnrpd6nbgbaskteki0h4.apps.googleusercontent.com"
        
@@ -177,16 +162,6 @@
             isGoogler: (this._googleUser.email.split('@')[1] === 'google.com')
           };
 
-          if (this._apiUser && this._apiUser.type) {
-            user.category = this._apiUser.type;
-            user.isExpert = (this._apiUser.type !== 'deleted');
-            user.skills = this._apiUser.skills;
-            user.biography = this._apiUser.biography;
-            user.city = this._apiUser.city;
-            user.country = this._apiUser.country;
-            user.avatar = this._apiUser.pic_url;
-            user.product_group = this._apiUser.product_group;
-          }
 
           console.debug("[gtt-sign-in] _userInfoChanged", user);
           this._setUser(user);
