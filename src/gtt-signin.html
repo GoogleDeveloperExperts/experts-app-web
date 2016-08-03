@@ -2,7 +2,6 @@
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 <link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 
-<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
 
 <!--
   Sign-in component hooked up to the Google Experts Tracking Backend
@@ -14,7 +13,7 @@
 
 <dom-module id="gtt-signin">
   <template>
-    <!-- Prepare elements to access the API -->
+    <!-- Prepare elements to access the API 
     <discovery-api-elements
       name="expertstracking"
       version="v2.0"
@@ -22,22 +21,23 @@
       no-client
       ></discovery-api-elements>
 
-    <!-- Fetch information about currently signed-in User -->
+    <!-- Fetch information about currently signed-in User 
     <expertstracking-account-get
       id="[[_googleUser.email]]"
       auto$="[[_isAuthorized]]"
       response="{{_apiUser}}"></gdetracking-account-get>      
-      <!-- 
-      client-id="854118353094-lnvlrs78qe1vlnrpd6nbgbaskteki0h4.apps.googleusercontent.com"
+      <!--  client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
       -->
     <google-signin
-        client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
+      client-id="854118353094-lnvlrs78qe1vlnrpd6nbgbaskteki0h4.apps.googleusercontent.com"
+       
       scope="email profile"  brand="google" theme="dark"
       on-google-signin-aware-success="_signedIn"
       on-google-signed-out="_signedOut"></google-signin>
 
     <iron-localstorage
-      name="current-user"
+      id="currentUser"
+      name="currentUser"
       value="{{_localUser}}"
       on-iron-localstorage-load="_localUserLoaded"
       on-iron-localstorage-load-empty="_initLocalUser"></iron-localstorage>
@@ -180,8 +180,15 @@
           if (this._apiUser && this._apiUser.type) {
             user.category = this._apiUser.type;
             user.isExpert = (this._apiUser.type !== 'deleted');
+            user.skills = this._apiUser.skills;
+            user.biography = this._apiUser.biography;
+            user.city = this._apiUser.city;
+            user.country = this._apiUser.country;
+            user.avatar = this._apiUser.pic_url;
+            user.product_group = this._apiUser.product_group;
           }
 
+          console.debug("[gtt-sign-in] _userInfoChanged", user);
           this._setUser(user);
         },
 

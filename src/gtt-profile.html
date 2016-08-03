@@ -23,6 +23,8 @@
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+
+<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
 <!--  
     ====================================
                   Shady DOM  
@@ -123,31 +125,61 @@
         background-color  : #282828;
         margin            : 0 0 46px;
       }
+      user-info .biography {
+        white-space       : pre-line;
+      }
     </style>
 <!--  
     ====================================
                    HTML
     ====================================
 -->
+
+    <iron-localstorage
+      name="current-user"
+      value="{{user}}"
+      on-iron-localstorage-load="_userLoaded">
+    </iron-localstorage>
+
+    <!-- Prepare elements to access the API -->
+    <discovery-api-elements
+      name="expertstracking"
+      version="v2.0"
+      app-id="elite-firefly-737"
+      no-client
+      ></discovery-api-elements>
+
+    <!-- Fetch information about currently signed-in User -->
+    <expertstracking-account-get
+      id="[[user.email]]"
+      response="{{_apiUser}}"
+      on-success="_handleAccountGet"
+      auto$="{{user}}"></expertstracking-account-get>      
+      <!--  client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
+      -->
+
     <paper-header-panel 
       mode = "cover">
       <paper-toolbar 
         class = "tall">
         <h1>My profile</h1>
         <paper-button>
-          Save
+          Edit
         </paper-button>
       </paper-toolbar>
       <paper-material>
         <user-avatar>
           <img 
             alt = "Avatar"
-            src = "{{user.avatar}}"/>
+            src = "{{user.image}}"/>
         </user-avatar>
         <user-info>
           <h2>{{user.name}}</h2>
-          <p>{{user.title}}</p>
-          <p>{{user.location}}</p>
+          <p>{{_userTitle}}</p>
+          <p>
+            <template is="dom-if" if="{{user.city}}">{{user.city}}, </template>
+            {{user.country}}
+          </p>
           <div
             class = "line">
           </div>
@@ -161,7 +193,7 @@
             class = "line">
           </div>
           <h2>Biography</h2>
-          <p>{{user.biography}}</p>
+          <p class="biography">{{user.biography}}</p>
         </user-info>
       </paper-material>
     </paper-header-panel>
@@ -178,17 +210,49 @@
         user : {
           type : Object,
           value       : function() {
-            return {
-              'name'      : 'Cesar Anton',
-              'email'     : 'reicek@gmail.com',
-              'avatar'    : 'https://secure.gravatar.com/avatar/f35f16285ad3235d467bb472771d62b0',
-              'title'     : 'Google Apps & Drive GDE',
-              'skills'    : ['Firebase', 'Polymer', 'Angular', 'React', 'HTML5', 'JS', 'CSS3', 'NodeJS'],
-              'location'  : 'New York, NY, United States',
-              'biography' : "Cesar is a front-end developer and technical writer who's been a Google Drive Developer Expert since 2013. In his free time he enjoys writing about web technologies; reading about science; and attending tech events as a mentor, judge and conferencist. Cesar is experienced at implementing modern web technologies and standards, and enjoys mentoring new startups about how to find the best stack for their product. In the past, he worked for eight years as an IT consultant, and currently works as a semi-full stack developer in an education startup. Cesar studied Computer Systems Engineering at the Universidad del Valle de México. He lives in Bogotá, Colombia, and speaks English and Spanish."
-            };
-          }
+              return {};            
+          },           
         },
+        _userTitle: {
+          type      : String,
+          computed  : "_getUserTitle(user)"
+        }
+      },
+
+      _getUserTitle: function() {
+        var title = "";
+        if (!this.user.product_group) {
+          return "GDE";
+        }
+        if (this.user.product_group.length === 1) {
+          title = this.user.product_group[0];
+        } else if (this.user.product_group.length === 2) {
+            //joins all with "&" but no commas
+            title = this.user.product_group.join(' & ');
+        } else if (this.user.product_group.length > 2) {
+            //joins all with commas, but last one gets " & "
+            title = this.user.product_group.slice(0, -1).join(', ') + ' & ' + this.user.product_group.slice(-1);
+        }
+        return title + ' GDE';
+      },
+
+      _userLoaded: function() {
+        console.debug("[gtt-profile] _userLoaded", this.user);
+      },
+      _handleAccountGet: function() {
+
+        if (this._apiUser && this._apiUser.type) {
+          this.set('user.category', this._apiUser.type);
+          this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
+          this.set('user.skills', this._apiUser.skills);
+          this.set('user.biography', this._apiUser.biography);
+          this.set('user.city', this._apiUser.city);
+          this.set('user.country', this._apiUser.country);
+          this.set('user.image', this._apiUser.pic_url);
+          this.set('user.product_group', this._apiUser.product_group);
+        }
+
+        console.debug("[gtt-profile] _handleAccountGet", this.user);
       },
     });
   </script>
