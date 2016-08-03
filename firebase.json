@@ -3,10 +3,12 @@
     "rules": "database.rules.json"
   },
   "hosting": {
-    "public": "build/bundled"
-  },
-  "rewrites": [ {
-    "source": "**/!{*.*}",
-    "destination": "/index.html"
-  } ]
+    "public": "build/bundled",
+    "rewrites": [
+      {
+        "source": "**/!{*.*}",
+        "destination": "/index.html"
+      }
+    ]
+  }
 }
