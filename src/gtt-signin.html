@@ -1,7 +1,7 @@
+<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
+<link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
-<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
-
 
 <!--
   Sign-in component hooked up to the Google Experts Tracking Backend
@@ -101,14 +101,21 @@
             token: authResponse.access_token || authResponse.id_token
           };
           this._isAuthorized = true;
-          this._localUser = {
-            id: profile.getId(),
-            name: profile.getName(),
-            image: profile.getImageUrl(),
-            email: profile.getEmail(),
-            token: authResponse.access_token || authResponse.id_token
-          };
+
+          
+          console.debug("[gtt-signin] _signedIn - localUser before",this._localUser);
+          
+          this.set("_localUser.id", profile.getId());
+          this.set("_localUser.name", profile.getName());
+          this.set("_localUser.image", profile.getImageUrl());
+          this.set("_localUser.email", profile.getEmail());
+          this.set("_localUser.token", authResponse.access_token || authResponse.id_token);
+          this.$.currentUser.save();
+          this.$.currentUser.reload();
+          console.debug("[gtt-signin] _signedIn - localUser updated",this._localUser);
           console.debug("[gtt-signin] _signedIn",this._googleUser);
+
+          this.fire('iron-signal', {name: 'user', data: this._googleUser} )
         },
 
         /**
@@ -117,8 +124,10 @@
         _signedOut: function () {
           this._googleUser = undefined;
           this._apiUser = undefined;
-          this._localUser = {};
+          // this._localUser = {};
+          this.set("_localUser", {});
           this._isAuthorized = false;
+          this.fire('iron-signal', {name: 'user', data: null} )
         },
 
         /**
@@ -132,6 +141,7 @@
          * User information available in local storage
          */
         _localUserLoaded: function () {
+          console.debug("[gtt-signin] _localUserLoaded", this._localUser);
           if (this._localUser && this._localUser.id) {
             this._googleUser = {
               id: this._localUser.id,

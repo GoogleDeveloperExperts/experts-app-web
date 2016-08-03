@@ -18,22 +18,28 @@
   You should have received a copy of the GNU General Public License
   along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/iron-signals/iron-signals.html">
+
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+
 <link rel="import" href="gtt-icons.html">
 <link rel="import" href="gtt-signin.html">
-<link rel="import" href="../bower_components/polymer/polymer.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
-<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
-<link rel="import" href="../bower_components/iron-media-query/iron-media-query.html">
-<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
-<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
-<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
-<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+
 <script src="../bower_components/firebase/firebase.js"></script>
 <!--
     ====================================
@@ -187,6 +193,9 @@
                    HTML
     ====================================
 -->
+
+    <iron-signals on-iron-signal-user="_userChanged"></iron-signals> 
+
     <app-location
       route = "{{route}}"
       use-hash-as-path>
@@ -196,6 +205,7 @@
         pattern = "/:page"
         data    = "{{routeData}}"
         tail    = "{{subroute}}"></app-route>
+
     <app-drawer-layout
       id = "drawer"
       fullbleed>
@@ -324,10 +334,10 @@
           selected          = "[[page]]"
           attr-for-selected = "name">
           <gtt-activities
-            name  = "activities">
+            name  = "activities" user="{{user}}">
           </gtt-activities>
           <gtt-profile
-            name  = "profile">
+            name  = "profile" user="{{user}}">
           </gtt-profile>
           <gtt-map
             name="map">
@@ -338,10 +348,12 @@
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
+
     <iron-media-query
       query         = "min-width: 800px"
       query-matches = "{{wideLayout}}">
     </iron-media-query>
+
     <firebase-collection
       location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
       data     = "{{cache}}">
@@ -391,6 +403,15 @@
       observers : [
         '_routePageChanged(routeData.page)'
       ],
+      _userChanged: function(evt, user){
+        console.debug("[gtt-app] _userChanged ", user);
+        if (!user || !user.email) {
+          this.user = {};
+          return;
+        }
+
+        this.user = user;
+      },
       _routePageChanged : function(page) {
         this.page = page || 'map';
       },

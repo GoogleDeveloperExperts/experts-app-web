@@ -19,6 +19,8 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
+
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
@@ -135,11 +137,7 @@
     ====================================
 -->
 
-    <iron-localstorage
-      name="current-user"
-      value="{{user}}"
-      on-iron-localstorage-load="_userLoaded">
-    </iron-localstorage>
+
 
     <!-- Prepare elements to access the API -->
     <discovery-api-elements
@@ -162,7 +160,7 @@
       mode = "cover">
       <paper-toolbar 
         class = "tall">
-        <h1>My profile</h1>
+        <h1>My profile - {{_apiUser.email}}</h1>
         <paper-button>
           Edit
         </paper-button>
@@ -208,10 +206,9 @@
       is: 'gtt-profile',
       properties : {
         user : {
-          type : Object,
-          value       : function() {
-              return {};            
-          },           
+          type: Object,
+          observer: "_userChanged",  
+          value: null,         
         },
         _userTitle: {
           type      : String,
@@ -236,9 +233,14 @@
         return title + ' GDE';
       },
 
-      _userLoaded: function() {
-        console.debug("[gtt-profile] _userLoaded", this.user);
+      _userChanged: function(){
+        console.debug("[gtt-activity-list] _userChanged ", this.user);
+        if (!user || !user.email) {
+          this._apiUser = {};
+          return;
+        }
       },
+
       _handleAccountGet: function() {
 
         if (this._apiUser && this._apiUser.type) {

@@ -173,6 +173,7 @@
       </paper-fab>
       <gtt-activity-list
         id = "activityList"
+        user = "{{user}}"
         activities = "{{activities}}">
       </gtt-activity-list>
     </paper-header-panel>
@@ -188,10 +189,7 @@
       modal>
     </gtt-create-activity>
 
-    <iron-localstorage
-      name="current-user"
-      value="{{user}}">
-    </iron-localstorage>
+
     <iron-ajax 
       url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup"
       handle-as   = "json"
@@ -216,16 +214,7 @@
     <expertstracking-activity_record-insert
       on-success="_handleActivityCreated">
     </expertstracking-activity_record-insert>     
-    
-    <iron-ajax 
-      id          = "createActivityRequest"
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
-      method      = "POST"
-      handle-as   = "json"
-      headers     = '{"Content-Type" : "application/json"}'
-      on-response = "_handleActivityCreated"
-    >
-    </iron-ajax>    
+      
   </template>
 <!--
     ====================================
@@ -235,29 +224,43 @@
   <script>
     Polymer({ 
       is          : 'gtt-activities',
+
       behaviors   : [ ],
+
       properties  : {
-        activities      : {
-          type             : 'Object',
-          notify           : true,
+        /**
+         * The user
+          */
+        user: {
+          type: Object,
+          value: null
         },
-        activityTypes   : {
-          type             : 'array',
-          notify           : true,
-          value            : [
-            {
-              'id'  : '',
-              'tag' : '#'
-            } 
-          ],
+        
+        activities: {
+          type: 'Object',
+          notify: true,
         },
-/**
- * The allowed activity groups 
- */  
+
+        activityTypes: {
+          type: 'array',
+          notify: true,
+          value: function(){ return 
+            [
+              {
+                'id': '',
+                'tag': '#'
+              } 
+            ]
+          },
+        },
+
+        /**
+         * The allowed activity groups 
+         */  
         activityGroups : {
-          type          : 'array',
-          notify        : true,
-          value         : function(){ 
+          type: 'array',
+          notify: true,
+          value: function(){ 
             return [
               {
                 "impact"            : '',
@@ -276,6 +279,7 @@
           },
         },  
       },
+
       openDialog  : function(){
         this.createActivity.open();
       },

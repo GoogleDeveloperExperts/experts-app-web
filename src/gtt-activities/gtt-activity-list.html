@@ -20,7 +20,6 @@
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
-<link rel="import" href="../../bower_components/iron-localstorage/iron-localstorage.html">
 
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
@@ -151,13 +150,6 @@
     </iron-ajax>
 
 
-    <iron-localstorage
-      name="current-user"
-      value="{{user}}"
-      on-iron-localstorage-load="_userChanged"
-      on-iron-localstorage-load-empty="_userEmptied">
-    </iron-localstorage>
-
 
     <div class="table">
       <div class="thead">
@@ -201,15 +193,27 @@
         activities: {
           type: Array,
         },
+/**
+ * The user
+ */
+        user: {
+          type: Object,
+          observer: "_userChanged",
+          value: null
+        },
       },
 
       _userChanged: function(){
+        console.debug("[gtt-activity-list] _userChanged ", this.user);
+        if (!this.user || !this.user.email) {
+          this.activities = [];
+          return;
+        }
+
         this.generateActivityListRequest();
       },
 
-      _userEmptied: function() {
-        // To-do: Something intelligent when we arrive here without a user...
-      },
+
 /**
  * Calls the activity list service with the current `user` as parameter
  */
