@@ -22,7 +22,7 @@
       "sizes": "384x384",
       "type": "image/svg"
     }],
-  "start_url": "/map",
+  "start_url": "/#/map",
   "display": "standalone",
   "background_color": "#3f51b5",
   "theme_color": "#3f51b5"
