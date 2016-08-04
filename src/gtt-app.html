@@ -275,34 +275,37 @@
               class             = "drawer-list"
               role              = "navigation"
               hidden            = "{{!wideLayout}}">
-              <paper-button
-                name = "activities">
-                <a
-                  href = "#/activities">
-                  Activities
-                </a>
-              </paper-button>
-              <paper-button
-                name = "profile">
-                <a
-                  href = "#/profile">
-                  Profile
-                </a>
-              </paper-button>
-              <paper-button
-                name = "map">
-                <a
-                  href = "#/map">
-                  Map
-                </a>
-              </paper-button>
-              <paper-button
-                name = "help">
-                <a
-                  href = "#/help">
-                  Help
-                </a>
-              </paper-button>
+              
+              <template is="dom-if" if="{{user}}">
+                <paper-button
+                  name = "activities">
+                  <a
+                    href = "#/activities">
+                    Activities
+                  </a>
+                </paper-button>
+                <paper-button
+                  name = "profile">
+                  <a
+                    href = "#/profile">
+                    Profile
+                  </a>
+                </paper-button>
+                <paper-button
+                  name = "map">
+                  <a
+                    href = "#/map">
+                    Map
+                  </a>
+                </paper-button>
+                <paper-button
+                  name = "help">
+                  <a
+                    href = "#/help">
+                    Help
+                  </a>
+                </paper-button>                
+              </template>
             </iron-selector>
             <template is="dom-if" if="{{user}}">
               <user on-click="_userClicked" >
