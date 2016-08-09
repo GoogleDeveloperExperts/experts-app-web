@@ -14,7 +14,7 @@
 <dom-module id="gtt-signin">
   <template>
     <google-signin
-      client-id="854118353094-lnvlrs78qe1vlnrpd6nbgbaskteki0h4.apps.googleusercontent.com"
+      client-id="66416776373-3k5goi8hn9d5rih68t8km57iliithohb.apps.googleusercontent.com"
        
       scope="email profile"  brand="google" theme="dark"
       on-google-signin-aware-success="_signedIn"
@@ -94,7 +94,7 @@
                             .currentUser.get().getAuthResponse();
 
           this._googleUser = {
-            id: profile.getId(),
+            id: profile.getEmail(),
             name: profile.getName(),
             image: profile.getImageUrl(),
             email: profile.getEmail(),
@@ -105,7 +105,7 @@
           
           console.debug("[gtt-signin] _signedIn - localUser before",this._localUser);
           
-          this.set("_localUser.id", profile.getId());
+          this.set("_localUser.id", profile.getEmail());
           this.set("_localUser.name", profile.getName());
           this.set("_localUser.image", profile.getImageUrl());
           this.set("_localUser.email", profile.getEmail());

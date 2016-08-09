@@ -189,7 +189,8 @@
 
     <expertstracking-account-insert 
       id="[[user.email]]"
-      on-success="_handleUserInserted"></expertstracking-account-get>   
+      response="{{_apiUser}}"
+      on-success="_handleAccountGet"></expertstracking-account-get>   
 
     <paper-header-panel 
       mode = "cover">
@@ -301,14 +302,13 @@
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.city = this._city;
         userToUpdate.country = this._country;
-
-        delete userToUpdate.token;
         console.debug("[gtt-profile] _submitLocation", userToUpdate)
         var request = this.$$("expertstracking-account-insert");
         request.accessToken = this.user.token;
         request.body = userToUpdate;
         console.debug("[gtt-profile] _submitLocation", request)
         request.go();     
+        this._isEditingLocation = false;
       },
 
 
@@ -340,7 +340,6 @@
       },
 
       _handleAccountGet: function() {
-
         if (this._apiUser && this._apiUser.type) {
           this.set('user.category', this._apiUser.type);
           this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
