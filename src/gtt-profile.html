@@ -138,12 +138,13 @@
         margin-left: 15px;
         color: var(--google-blue-500);;
       }      
-      iron-icon.submit  {
+      iron-icon.submit,
+      iron-icon.add {
         cursor: pointer;
-        margin-left: 15px;
         color: var(--google-green-500);
       }
-      iron-icon.close {
+      iron-icon.close, iron-icon.delete {
+        cursor: pointer;
         color: var(--google-red-500);
       }
       
@@ -151,14 +152,15 @@
         color: var(--google-grey-500) !important;
       }
 
-      user-info .item_value {
+      user-info .item {
         font-size         : 14px;
         font-weight       : 300;
+        line-height       : 30px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
       }     
-      user-info .item_value paper-input,
-      user-info .item_value span {
+      user-info .item paper-input,
+      user-info .item span {
         margin-right: 15px;
       }       
     </style>
@@ -207,10 +209,15 @@
             alt = "Avatar"
             src = "{{user.image}}"/>
         </user-avatar>
-        <user-info>
-          <h2>{{user.name}}</h2>
-          <p>{{_userTitle}}</p>
-          <div class="item_value">
+        <user-info>   
+
+          <div class="item">
+            <h2>{{user.name}}</h2>
+          </div>
+          
+          <div class="item">{{_userTitle}}</div>
+          
+          <div class="item">
             <template is="dom-if" if="{{!_isEditingLocation}}">
               <template is="dom-if" if="{{user.city}}">
                 <span>{{user.city}},</span>
@@ -219,7 +226,7 @@
               <iron-icon 
                 class="edit" 
                 icon="create"
-                disabled$="{{_disableEditLocation}}"
+                disabled$="{{_disableEdit}}"
                 on-click="_editLocation"
               ></iron-icon>
             </template>
@@ -247,12 +254,44 @@
           <div
             class = "line">
           </div>
-          <h2>Skills</h2>
+          
+          <div class="item">
+            <h2>Skills</h2>
+          </div>
+
           <template 
             is    = "dom-repeat" 
             items = "{{user.skills}}">
-            <p>{{item}}</p>
+            <div class="item">
+              <span>{{item}}</span> 
+              <iron-icon 
+                class="delete"
+                icon="cancel" on-click="_deleteSkill" ></iron-icon>
+            </div>
           </template>
+          <div class="item">
+            <template is="dom-if" if="{{!_isAddingSkill}}">
+              <iron-icon 
+                class="add" disabled$="{{_disableEdit}}"
+                icon="add-circle" on-click="_addSkill" ></iron-icon> 
+            </template>
+            <template is="dom-if" if="{{_isAddingSkill}}">
+              <paper-input 
+                auto-validate 
+                name="skill" id="inputSkill" label="A skill" 
+                type="text" value="{{_skill}}"  
+                required maxlength="64" 
+                invalid={{_invalidSkill}}></paper-input>
+              <iron-icon 
+                class="submit" disabled$="{{_invalidSkill}}"
+                icon="done" on-click="_submitSkill" ></iron-icon>    
+              <iron-icon 
+                class="close"
+                icon="clear" on-click="_closeAddSkill" ></iron-icon>              
+            </template>
+          </div>
+
+
           <div
             class = "line">
           </div>
@@ -284,12 +323,16 @@
           type: Boolean,
           value: false
         },
+        _isAddingSkill: {
+          type: Boolean,
+          value: false
+        },
 
       },
 
       /*
-      * Location edit functions 
-      */
+       * Location edit functions 
+       */
       _editLocation: function() {
         this._city = this.user.city;
         this._country = this.user.country;     
@@ -302,17 +345,44 @@
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.city = this._city;
         userToUpdate.country = this._country;
-        console.debug("[gtt-profile] _submitLocation", userToUpdate)
-        var request = this.$$("expertstracking-account-insert");
-        request.accessToken = this.user.token;
-        request.body = userToUpdate;
-        console.debug("[gtt-profile] _submitLocation", request)
-        request.go();     
-        this._isEditingLocation = false;
+        this._submitProfileChanges(userToUpdate);
+        this._closeEditLocation();     
       },
 
+      /*
+       * Skill editing functions
+       */
+      _addSkill: function() {
+        this._isAddingSkill = true;
+      },
+      _closeAddSkill: function() {
+        this._skill = "";
+        this._isAddingSkill = false;
+      },
+      _submitSkill: function(evt) {
+        console.debug("[gtt-profile] _submitSkill", this._skill);
+        var userToUpdate = JSON.parse(JSON.stringify(this.user));
+        userToUpdate.skills.push(this._skill);
+        this._submitProfileChanges(userToUpdate);
+        this._closeAddSkill();
+      },
+      _deleteSkill: function(evt) {
+        var skillToDelete = evt.model;
+        console.debug("[gtt-profile] _deleteSkill", evt.model);
 
+        var userToUpdate = JSON.parse(JSON.stringify(this.user));
+        userToUpdate.skills.splice(skillToDelete.index,1);
+        this._submitProfileChanges(userToUpdate);
+      },
 
+      _submitProfileChanges: function(user) {
+        console.debug("[gtt-profile] _submitProfileChanges", user);
+        var request = this.$$("expertstracking-account-insert");
+        request.accessToken = user.token;
+        request.body = user;
+        console.debug("[gtt-profile] _submitLocation", request)
+        request.go();        
+      },
 
       _getUserTitle: function() {
         var title = "";
