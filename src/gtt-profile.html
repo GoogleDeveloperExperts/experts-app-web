@@ -20,11 +20,14 @@
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
+<link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-<link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
+<link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+<link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 
 <link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
 <!--  
@@ -125,11 +128,39 @@
         width             : 192px;
         height            : 1px;
         background-color  : #282828;
-        margin            : 0 0 46px;
+        margin            : 23px 0;
       }
       user-info .biography {
         white-space       : pre-line;
+      }     
+      iron-icon.edit {
+        cursor: pointer;
+        margin-left: 15px;
+        color: var(--google-blue-500);;
+      }      
+      iron-icon.submit  {
+        cursor: pointer;
+        margin-left: 15px;
+        color: var(--google-green-500);
       }
+      iron-icon.close {
+        color: var(--google-red-500);
+      }
+      
+      iron-icon[disabled] {
+        color: var(--google-grey-500) !important;
+      }
+
+      user-info .item_value {
+        font-size         : 14px;
+        font-weight       : 300;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }     
+      user-info .item_value paper-input,
+      user-info .item_value span {
+        margin-right: 15px;
+      }       
     </style>
 <!--  
     ====================================
@@ -156,6 +187,10 @@
       <!--  client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
       -->
 
+    <expertstracking-account-insert 
+      id="[[user.email]]"
+      on-success="_handleUserInserted"></expertstracking-account-get>   
+
     <paper-header-panel 
       mode = "cover">
       <paper-toolbar 
@@ -174,10 +209,40 @@
         <user-info>
           <h2>{{user.name}}</h2>
           <p>{{_userTitle}}</p>
-          <p>
-            <template is="dom-if" if="{{user.city}}">{{user.city}}, </template>
-            {{user.country}}
-          </p>
+          <div class="item_value">
+            <template is="dom-if" if="{{!_isEditingLocation}}">
+              <template is="dom-if" if="{{user.city}}">
+                <span>{{user.city}},</span>
+              </template>
+              <span>{{user.country}}</span>
+              <iron-icon 
+                class="edit" 
+                icon="create"
+                disabled$="{{_disableEditLocation}}"
+                on-click="_editLocation"
+              ></iron-icon>
+            </template>
+            <template is="dom-if" if="{{_isEditingLocation}}">
+              <paper-input 
+                auto-validate 
+                name="city" id="inputCity" label="City" 
+                type="text" value="{{_city}}"  
+                required maxlength="64" 
+                invalid={{_invalidCity}}></paper-input>
+              <paper-input 
+                auto-validate 
+                name="country" id="inputCountry" label="Country" 
+                type="text" value="{{_country}}"  
+                required maxlength="64" 
+                invalid={{_invalidCountry}}></paper-input>
+              <iron-icon 
+                class="submit" disabled$="{{_invalidLocation}}"
+                icon="done" on-click="_submitLocation" ></iron-icon>    
+              <iron-icon 
+                class="close"
+                icon="clear" on-click="_closeEditLocation" ></iron-icon>
+            </template>
+          </div>
           <div
             class = "line">
           </div>
@@ -213,8 +278,41 @@
         _userTitle: {
           type      : String,
           computed  : "_getUserTitle(user)"
-        }
+        },
+        _isEditingLocation: {
+          type: Boolean,
+          value: false
+        },
+
       },
+
+      /*
+      * Location edit functions 
+      */
+      _editLocation: function() {
+        this._city = this.user.city;
+        this._country = this.user.country;     
+        this._isEditingLocation = true;
+      },
+      _closeEditLocation: function() {
+        this._isEditingLocation = false;
+      },
+      _submitLocation: function() {
+        var userToUpdate = JSON.parse(JSON.stringify(this.user));
+        userToUpdate.city = this._city;
+        userToUpdate.country = this._country;
+
+        delete userToUpdate.token;
+        console.debug("[gtt-profile] _submitLocation", userToUpdate)
+        var request = this.$$("expertstracking-account-insert");
+        request.accessToken = this.user.token;
+        request.body = userToUpdate;
+        console.debug("[gtt-profile] _submitLocation", request)
+        request.go();     
+      },
+
+
+
 
       _getUserTitle: function() {
         var title = "";
@@ -235,7 +333,7 @@
 
       _userChanged: function(){
         console.debug("[gtt-activity-list] _userChanged ", this.user);
-        if (!user || !user.email) {
+        if (!this.user || !this.user.email) {
           this._apiUser = {};
           return;
         }
@@ -253,7 +351,6 @@
           this.set('user.image', this._apiUser.pic_url);
           this.set('user.product_group', this._apiUser.product_group);
         }
-
         console.debug("[gtt-profile] _handleAccountGet", this.user);
       },
     });
