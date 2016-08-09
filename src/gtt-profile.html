@@ -26,6 +26,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-header-panel/paper-header-panel.html">
 <link rel="import" href="../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 
@@ -162,7 +163,17 @@
       user-info .item paper-input,
       user-info .item span {
         margin-right: 15px;
-      }       
+      }     
+
+      user-info .header {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        margin-bottom: 15px;
+      }
+
+      user-info paper-textarea{
+        background-color: var(--google-blue-100);;
+      }  
     </style>
 <!--  
     ====================================
@@ -198,10 +209,7 @@
       mode = "cover">
       <paper-toolbar 
         class = "tall">
-        <h1>My profile - {{_apiUser.email}}</h1>
-        <paper-button>
-          Edit
-        </paper-button>
+        <h1>My profile</h1>
       </paper-toolbar>
       <paper-material>
         <user-avatar>
@@ -211,7 +219,7 @@
         </user-avatar>
         <user-info>   
 
-          <div class="item">
+          <div class="header">
             <h2>{{user.name}}</h2>
           </div>
           
@@ -255,7 +263,7 @@
             class = "line">
           </div>
           
-          <div class="item">
+          <div class="header">
             <h2>Skills</h2>
           </div>
 
@@ -295,8 +303,39 @@
           <div
             class = "line">
           </div>
-          <h2>Biography</h2>
-          <p class="biography">{{user.biography}}</p>
+
+          <div class="header">
+            <span><h2>Biography</h2></span>
+            <template is="dom-if" if="{{!_isEditingBio}}">
+              <iron-icon 
+                class="edit" 
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-click="_editBio"
+              ></iron-icon>            
+            </template>
+            <template is="dom-if" if="{{_isEditingBio}}">
+              <iron-icon 
+                class="submit"
+                icon="done" 
+                on-click="_submitBio" ></iron-icon> 
+              <iron-icon 
+                class="close"
+                icon="clear"
+                on-click="_closeEditBio"
+              ></iron-icon>            
+            </template>
+          </div>
+
+          <template is="dom-if" if="{{!_isEditingBio}}">
+            <div class="biography">{{user.biography}}</div>
+          </template>
+          <template is="dom-if" if="{{_isEditingBio}}">
+            <paper-textarea 
+              value="{{_bio}}"></paper-textarea>
+          </template>
+
+
         </user-info>
       </paper-material>
     </paper-header-panel>
@@ -324,6 +363,10 @@
           value: false
         },
         _isAddingSkill: {
+          type: Boolean,
+          value: false
+        },
+        _isEditingBio: {
           type: Boolean,
           value: false
         },
@@ -373,6 +416,26 @@
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.skills.splice(skillToDelete.index,1);
         this._submitProfileChanges(userToUpdate);
+        this._closeAddSkill();
+      },
+
+      /*
+       * Biography edit functions 
+       */
+      _editBio: function() {
+        this._bio = this.user.biography;
+        this._isEditingBio = true;
+      },
+      _closeEditBio: function() {
+        this._isEditingBio = false;
+      },
+      _submitBio: function() {
+        console.debug("[gtt-profile] _submitBio", this._bio);
+
+        var userToUpdate = JSON.parse(JSON.stringify(this.user));
+        userToUpdate.biography = this._bio;
+        this._submitProfileChanges(userToUpdate);
+        this._closeEditBio();
       },
 
       _submitProfileChanges: function(user) {
