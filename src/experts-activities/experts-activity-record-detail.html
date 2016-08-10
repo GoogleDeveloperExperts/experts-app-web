@@ -53,6 +53,7 @@
         background: white;
         transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        padding           : 15px;
       }
      :host:hover {
         box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -60,7 +61,7 @@
       :host > * {
         padding           : 0 !important;
       }
-      :host  #closeActivityDetail {
+      #closeActivityDetail {
         position          : absolute;
         justify-content   : flex-end;
         right             : 16px;
@@ -69,9 +70,44 @@
         transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
         color             : #e5e5e5;
       }
-      :host #closeActivityDetail:hover {
+      #closeActivityDetail:hover {
         color             : #aaa;
       }
+      .item_list {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-wrap);
+      }
+      .item_list .item:not(:first-child)  {
+        margin-left: 15px;
+      }
+      .item_list .item:not(:last-child)  {
+        margin-right: 15px;
+      }
+      
+      .item {
+        margin-top: 15px;
+        margin-bottom: 15px;
+      }
+
+      .item_name {
+        color: var(--paper-grey-600);   
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        font-size: 12px;
+        font-weight: 400;
+        letter-spacing: 0.011em;
+        line-height: 20px;
+      }
+
+      .item_value {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }    
+
     </style>
 <!--  
     ====================================
@@ -86,6 +122,59 @@
           icon = "close">
         </iron-icon>
       </paper-button>
+
+      <div class="item">
+        <div class="item_value">
+          <h2 class="activityTitle">{{activity.title}}</h2>
+        </div>
+      </div>
+
+      <div class="item">
+        <div class="item_name">Description</div>
+        <div class="item_value activityDescription">{{activity.description}}</div>
+      </div>   
+
+      <div class="item_list">
+        <div class="item">
+          <div class="item_name">Type</div>
+          <div class="item_value activityType">{{_serializeList(activity.activity_types)}}</div>
+        </div> 
+        <div class="item">
+          <div class="item_name">Products</div>
+          <div class="item_value activityType">{{_serializeList(activity.product_groups, "#")}}</div>
+        </div>
+      </div> 
+
+
+      <div class="item_list">
+        <div class="item">
+          <div class="item_name">Date</div>
+          <div class="item_value activityDate">{{activity.date}}</div>
+        </div>  
+        <div class="item">
+          <div class="item_name">City</div>
+          <div class="item_value activityCity">{{activity.city}}</div>
+        </div>  
+        <div class="item">
+          <div class="item_name">Country</div>
+          <div class="item_value activityCountry">{{activity.country}}</div>
+        </div>  
+      </div>
+
+      <div class="item_list">
+        <div class="item">
+          <div class="item_name">Direct reach</div>
+          <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+        </div>         
+        <div class="item">
+          <div class="item_name">Indirect reach</div>
+          <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
+        </div>  
+        <div class="item">
+          <div class="item_name">Trained reach</div>
+          <div class="item_value activityMetric">{{activity.metric_trained}}</div>
+        </div>  
+      </div>
   </template>
 <!--
     ====================================
@@ -95,8 +184,28 @@
   <script>
     Polymer({ 
       is         : 'experts-activity-record-detail',
-      properties : {      
+      properties : {     
+         activity: {
+           type: Object,
+           value: null
+         },
       },
+      behaviors         : [
+        Polymer.PaperDialogBehavior
+      ],
+
+      _serializeList: function(list, prefix) {
+        prefix = prefix || "";
+        var serializedList = ''
+        for (var i in list) {
+          serializedList += prefix + list[i];
+
+          if (i < list.length-1) {
+            serializedList += ', '
+          }
+        }
+        return serializedList;
+      },      
     });
   </script>
 </dom-module>        

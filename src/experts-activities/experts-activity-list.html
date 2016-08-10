@@ -25,6 +25,7 @@
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
 <link rel="import" href="./experts-activity-item.html">
+<link rel="import" href="./experts-activity-record-detail.html">
 <!--
     ====================================
                   Shady DOM
@@ -133,6 +134,10 @@
           display: table-cell;
         }
       }
+
+      .action {
+        cursor: pointer;
+      }
     </style>
 <!--
     ====================================
@@ -146,10 +151,14 @@
       method      = "GET"
       url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord/activityRecord"
       handle-as   = "json"
-      on-response = "_handleActivityList">
-    </iron-ajax>
+      on-response = "_handleActivityList"></iron-ajax>
 
-
+    <experts-activity-record-detail 
+      id              = "activityDetail"
+      exit-animation  = "slide-down-animation"
+      entry-animation = "slide-from-bottom-animation"
+      no-cancel-on-outside-click
+      modal></experts-activity-record-detail>
 
     <div class="table">
       <div class="thead">
@@ -166,7 +175,7 @@
         <template is="dom-repeat" items="{{activities}}" as="activity">
           <div class="tr">
             <div class="td col0"><paper-checkbox></paper-checkbox></div>
-            <div class="td col1">{{activity.title}}</div>
+            <div class="td col1 action" on-click="_doActivityDetail">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{_serializeList(activity.activity_types)}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
@@ -213,6 +222,16 @@
         this.generateActivityListRequest();
       },
 
+      ready : function() {
+/**
+ * Attaching dialog to main body to make it live over the gray div 
+ * Bug that will be corrected 
+ * https://github.com/PolymerElements/polymer-starter-kit/issues/154
+ * https://github.com/PolymerElements/paper-dialog/issues/7
+ */
+        this.activityDetail = this.$.activityDetail        
+        document.querySelector('body').appendChild(this.activityDetail);
+      },
 
 /**
  * Calls the activity list service with the current `user` as parameter
@@ -249,7 +268,13 @@
           }
         }
         return serializedList;
-      }
+      },
+
+      _doActivityDetail: function(evt) {
+        console.debug("[experts-activities] _doActivityDetail", evt.model.activity);
+        this.activityDetail.activity = evt.model.activity;
+        this.activityDetail.open();
+      },
     });
   </script>
 </dom-module>
