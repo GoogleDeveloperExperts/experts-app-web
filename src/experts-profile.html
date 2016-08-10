@@ -36,7 +36,7 @@
                   Shady DOM  
     ====================================
 -->
-<dom-module id="gtt-profile">
+<dom-module id="experts-profile">
   <template>
 <!--
     ====================================
@@ -347,7 +347,7 @@
 -->
   <script>
     Polymer({
-      is: 'gtt-profile',
+      is: 'experts-profile',
       properties : {
         user : {
           type: Object,
@@ -403,7 +403,7 @@
         this._isAddingSkill = false;
       },
       _submitSkill: function(evt) {
-        console.debug("[gtt-profile] _submitSkill", this._skill);
+        console.debug("[experts-profile] _submitSkill", this._skill);
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.skills.push(this._skill);
         this._submitProfileChanges(userToUpdate);
@@ -411,7 +411,7 @@
       },
       _deleteSkill: function(evt) {
         var skillToDelete = evt.model;
-        console.debug("[gtt-profile] _deleteSkill", evt.model);
+        console.debug("[experts-profile] _deleteSkill", evt.model);
 
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.skills.splice(skillToDelete.index,1);
@@ -430,7 +430,7 @@
         this._isEditingBio = false;
       },
       _submitBio: function() {
-        console.debug("[gtt-profile] _submitBio", this._bio);
+        console.debug("[experts-profile] _submitBio", this._bio);
 
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
         userToUpdate.biography = this._bio;
@@ -439,11 +439,11 @@
       },
 
       _submitProfileChanges: function(user) {
-        console.debug("[gtt-profile] _submitProfileChanges", user);
+        console.debug("[experts-profile] _submitProfileChanges", user);
         var request = this.$$("expertstracking-account-insert");
         request.accessToken = user.token;
         request.body = user;
-        console.debug("[gtt-profile] _submitLocation", request)
+        console.debug("[experts-profile] _submitLocation", request)
         request.go();        
       },
 
@@ -465,7 +465,7 @@
       },
 
       _userChanged: function(){
-        console.debug("[gtt-activity-list] _userChanged ", this.user);
+        console.debug("[experts-activity-list] _userChanged ", this.user);
         if (!this.user || !this.user.email) {
           this._apiUser = {};
           return;
@@ -483,7 +483,7 @@
           this.set('user.image', this._apiUser.pic_url);
           this.set('user.product_group', this._apiUser.product_group);
         }
-        console.debug("[gtt-profile] _handleAccountGet", this.user);
+        console.debug("[experts-profile] _handleAccountGet", this.user);
       },
     });
   </script>

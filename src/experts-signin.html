@@ -11,7 +11,7 @@
   features in the app via data-binding
 -->
 
-<dom-module id="gtt-signin">
+<dom-module id="experts-signin">
   <template>
     <google-signin
       client-id="66416776373-3k5goi8hn9d5rih68t8km57iliithohb.apps.googleusercontent.com"
@@ -31,7 +31,7 @@
   <script>
     (function() {
       Polymer({
-        is: 'gtt-signin',
+        is: 'experts-signin',
         properties: {
           /**
            * All relevant information about the authenticated user
@@ -103,7 +103,7 @@
           this._isAuthorized = true;
 
           
-          console.debug("[gtt-signin] _signedIn - localUser before",this._localUser);
+          console.debug("[experts-signin] _signedIn - localUser before",this._localUser);
           
           this.set("_localUser.id", profile.getEmail());
           this.set("_localUser.name", profile.getName());
@@ -112,8 +112,8 @@
           this.set("_localUser.token", authResponse.access_token || authResponse.id_token);
           this.$.currentUser.save();
           this.$.currentUser.reload();
-          console.debug("[gtt-signin] _signedIn - localUser updated",this._localUser);
-          console.debug("[gtt-signin] _signedIn",this._googleUser);
+          console.debug("[experts-signin] _signedIn - localUser updated",this._localUser);
+          console.debug("[experts-signin] _signedIn",this._googleUser);
 
           this.fire('iron-signal', {name: 'user', data: this._googleUser} )
         },
@@ -141,7 +141,7 @@
          * User information available in local storage
          */
         _localUserLoaded: function () {
-          console.debug("[gtt-signin] _localUserLoaded", this._localUser);
+          console.debug("[experts-signin] _localUserLoaded", this._localUser);
           if (this._localUser && this._localUser.id) {
             this._googleUser = {
               id: this._localUser.id,
@@ -173,7 +173,7 @@
           };
 
 
-          console.debug("[gtt-sign-in] _userInfoChanged", user);
+          console.debug("[experts-sign-in] _userInfoChanged", user);
           this._setUser(user);
         },
 

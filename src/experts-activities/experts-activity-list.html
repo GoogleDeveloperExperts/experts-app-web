@@ -24,14 +24,14 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
-<link rel="import" href="./gtt-activity-item.html">
+<link rel="import" href="./experts-activity-item.html">
 <!--
     ====================================
                   Shady DOM
     ====================================
 -->
 <dom-module
-  id = "gtt-activity-list">
+  id = "experts-activity-list">
   <template>
 <!--
     ====================================
@@ -185,7 +185,7 @@
 -->
   <script>
     Polymer({
-      is: 'gtt-activity-list',
+      is: 'experts-activity-list',
       properties: {
 /**
  * The list of activities
@@ -204,7 +204,7 @@
       },
 
       _userChanged: function(){
-        console.debug("[gtt-activity-list] _userChanged ", this.user);
+        console.debug("[experts-activity-list] _userChanged ", this.user);
         if (!this.user || !this.user.email) {
           this.activities = [];
           return;
@@ -234,7 +234,7 @@
           // No activity found, what should we do?
           return;
         }
-        console.debug("[gtt-activity-list] _handleActivityList",response.items);
+        console.debug("[experts-activity-list] _handleActivityList",response.items);
         this.activities = response.items;
 
       },

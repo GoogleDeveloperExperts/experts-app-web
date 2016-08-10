@@ -1,0 +1,102 @@
+<!--
+  Google Developers Experts Tracking App
+  Copyright (C) 2016  by the GDE Tracking App Team
+
+  gdetracking.appspot.com/
+  https://github.com/GoogleDeveloperExperts/experts-app-web
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+
+<!--
+    ====================================
+                  Shady DOM
+    ====================================
+-->
+<dom-module 
+  id = "experts-activity-record-detail">
+  <template>
+    
+<!--
+    ====================================
+                     CSS 
+    ====================================
+-->
+    <style>
+      :host {
+        display           : block;
+        position          : fixed;
+        top               : 20vh;
+        left              : 11vw;
+        width             : 70vw;
+        overflow          : auto;
+        border-radius     : 2px;    
+        background: white;
+        transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      }
+     :host:hover {
+        box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+      }
+      :host > * {
+        padding           : 0 !important;
+      }
+      :host  #closeActivityDetail {
+        position          : absolute;
+        justify-content   : flex-end;
+        right             : 16px;
+        top               : 16px;
+        margin            : 0;
+        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
+        color             : #e5e5e5;
+      }
+      :host #closeActivityDetail:hover {
+        color             : #aaa;
+      }
+    </style>
+<!--  
+    ====================================
+                   HTML
+    ====================================
+-->
+      <paper-button
+        id     = "closeActivityDetail"
+        on-tap = "cancel"
+        autofocus>
+        <iron-icon 
+          icon = "close">
+        </iron-icon>
+      </paper-button>
+  </template>
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
+  <script>
+    Polymer({ 
+      is         : 'experts-activity-record-detail',
+      properties : {      
+      },
+    });
+  </script>
+</dom-module>        

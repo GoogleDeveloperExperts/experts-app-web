@@ -32,7 +32,7 @@
                   Shady DOM
     ====================================
 -->
-<dom-module id="gtt-map">
+<dom-module id="experts-map">
   <template>
 <!--
     ====================================
@@ -48,7 +48,7 @@
         height            : 100%;
         width             : 100%;
         font-family       : Roboto, sans-serif;
-        --gtt-presentation-position : 5vw;
+        --experts-presentation-position : 5vw;
       }
       [hidden] {
         display           : none !important;
@@ -105,7 +105,7 @@
         font-size         : 20px;
         position          : absolute;
         bottom            : 0;
-        left              : var(--gtt-presentation-position);
+        left              : var(--experts-presentation-position);
         width             : 90vw;
         height            : 461px;
         background-color  : #fff;
@@ -261,7 +261,7 @@
 -->
   <script>
     Polymer({
-      is            : 'gtt-map',
+      is            : 'experts-map',
       properties  : {
         map         : {
           type        : 'Object',

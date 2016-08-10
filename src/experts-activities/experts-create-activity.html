@@ -34,7 +34,7 @@
 -->
 
 <dom-module 
-  id = "gtt-create-activity">
+  id = "experts-create-activity">
   <template>
     
 <!--
@@ -387,7 +387,7 @@
 -->
   <script>
     Polymer({ 
-      is         : 'gtt-create-activity',
+      is         : 'experts-create-activity',
       properties : {
 /**
  * The new activity
@@ -443,11 +443,11 @@
       ],
 
       _isLastStep       : function() {
-       // console.debug("[gtt-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
+       // console.debug("[experts-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
        return (this._currentStep == this._numberOfSteps -1);
       },
       _isCurrentStep    : function(step) {
-        // console.debug("[gtt-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
+        // console.debug("[experts-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
       },
       back              : function() {
@@ -456,7 +456,7 @@
         }
       },      
       next              : function() {
-        // console.debug("[gtt-create-activity] next - current tab: ", this._currentStep );
+        // console.debug("[experts-create-activity] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
@@ -468,14 +468,14 @@
       },
       finish            : function(){        
         this._currentStep = 0;
-        // console.debug("[gtt-create-activity] finish - Activity: ",this.newActivity);
+        // console.debug("[experts-create-activity] finish - Activity: ",this.newActivity);
         this._finishNewActivity();
         this.close();
       },
       cancel            : function(){        
         this._currentStep = 0;
         this._initNewActivity();
-        // console.debug("[gtt-create-activity] close");
+        // console.debug("[experts-create-activity] close");
         this.close();
       },
       
@@ -486,7 +486,7 @@
         };
       },
       _finishNewActivity  : function() {
-        console.debug("[gtt-create-activity] _finishNewActivity ", this.newActivity);
+        console.debug("[experts-create-activity] _finishNewActivity ", this.newActivity);
         this.fire('activity-created', this.newActivity);
         this._initNewActivity();
       },
@@ -521,7 +521,7 @@
         this._activityTypes = _activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[gtt-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
       },
 
       selectActivityType: function(e){
@@ -537,7 +537,7 @@
         this.newActivity.activity_types = _selectedActivityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[gtt-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
+        console.debug("[experts-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
       },
     });
   </script>

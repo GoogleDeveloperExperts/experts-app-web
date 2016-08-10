@@ -1,11 +1,11 @@
 {
   "entrypoint"  : "index.html",
-  "shell"       : "src/gtt-app.html",
+  "shell"       : "src/experts-app.html",
   "fragments"   : [
-    "src/gtt-map.html",
-    "src/gtt-help.html",
-    "src/gtt-icons.html",
-    "src/gtt-profile.html",
-    "src/gtt-activities.html"
+    "src/experts-map.html",
+    "src/experts-help.html",
+    "src/experts-icons.html",
+    "src/experts-profile.html",
+    "src/experts-activities.html"
   ]
 }

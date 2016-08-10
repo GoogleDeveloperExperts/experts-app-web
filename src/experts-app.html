@@ -37,8 +37,8 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 
-<link rel="import" href="gtt-icons.html">
-<link rel="import" href="gtt-signin.html">
+<link rel="import" href="experts-icons.html">
+<link rel="import" href="experts-signin.html">
 
 <script src="../bower_components/firebase/firebase.js"></script>
 <!--
@@ -46,7 +46,7 @@
                   Shady DOM
     ====================================
 -->
-<dom-module id="gtt-app">
+<dom-module id="experts-app">
   <template>
 <!--
     ====================================
@@ -323,12 +323,12 @@
               </user>
               <template is="dom-if" if="{{_userSelected}}">
                 <div class="user_details">
-                  <gtt-signin user="{{user}}"></gtt-signin>
+                  <experts-signin user="{{user}}"></experts-signin>
                 </div>
               </template>
             </template>
             <template is="dom-if" if="{{!user}}"> 
-              <gtt-signin user="{{user}}"></gtt-signin>
+              <experts-signin user="{{user}}"></experts-signin>
             </template> 
           </app-toolbar>
         </app-header>
@@ -336,18 +336,18 @@
           role              = "main"
           selected          = "[[page]]"
           attr-for-selected = "name">
-          <gtt-activities
+          <experts-activities
             name  = "activities" user="{{user}}">
-          </gtt-activities>
-          <gtt-profile
+          </experts-activities>
+          <experts-profile
             name  = "profile" user="{{user}}">
-          </gtt-profile>
-          <gtt-map
+          </experts-profile>
+          <experts-map
             name="map">
-          </gtt-map>
-          <gtt-help
+          </experts-map>
+          <experts-help
             name="help">
-          </gtt-help>
+          </experts-help>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>
@@ -376,9 +376,9 @@
       databaseURL   : "https://project-6518932152437646681.firebaseapp.com",
       storageBucket : "project-6518932152437646681.firebaseapp.com",
     };
-//    var firebaseApp  = firebase.initializeApp(config, 'gtt-app');   // Initialize Firebase
+//    var firebaseApp  = firebase.initializeApp(config, 'experts-app');   // Initialize Firebase
     Polymer({
-      is : 'gtt-app',
+      is : 'experts-app',
       properties : {
         page : {
           type : String,
@@ -407,7 +407,7 @@
         '_routePageChanged(routeData.page)'
       ],
       _userChanged: function(evt, user){
-        console.debug("[gtt-app] _userChanged ", user);
+        console.debug("[experts-app] _userChanged ", user);
         if (!user || !user.email) {
           this.user = {};
           return;
@@ -420,7 +420,7 @@
       },
       _pageChanged : function(page) {
         this.importHref(
-          this.resolveUrl('gtt-' + page + '.html'), null, null, true);
+          this.resolveUrl('experts-' + page + '.html'), null, null, true);
       },
       _userClicked: function() {
         this._userSelected = !this._userSelected;
