@@ -235,7 +235,7 @@
                 class="edit" 
                 icon="create"
                 disabled$="{{_disableEdit}}"
-                on-click="_editLocation"
+                on-tap="_editLocation"
               ></iron-icon>
             </template>
             <template is="dom-if" if="{{_isEditingLocation}}">
@@ -253,10 +253,10 @@
                 invalid={{_invalidCountry}}></paper-input>
               <iron-icon 
                 class="submit" disabled$="{{_invalidLocation}}"
-                icon="done" on-click="_submitLocation" ></iron-icon>    
+                icon="done" on-tap="_submitLocation" ></iron-icon>    
               <iron-icon 
                 class="close"
-                icon="clear" on-click="_closeEditLocation" ></iron-icon>
+                icon="clear" on-tap="_closeEditLocation" ></iron-icon>
             </template>
           </div>
           <div
@@ -274,14 +274,14 @@
               <span>{{item}}</span> 
               <iron-icon 
                 class="delete"
-                icon="cancel" on-click="_deleteSkill" ></iron-icon>
+                icon="cancel" on-tap="_deleteSkill" ></iron-icon>
             </div>
           </template>
           <div class="item">
             <template is="dom-if" if="{{!_isAddingSkill}}">
               <iron-icon 
                 class="add" disabled$="{{_disableEdit}}"
-                icon="add-circle" on-click="_addSkill" ></iron-icon> 
+                icon="add-circle" on-tap="_addSkill" ></iron-icon> 
             </template>
             <template is="dom-if" if="{{_isAddingSkill}}">
               <paper-input 
@@ -292,10 +292,10 @@
                 invalid={{_invalidSkill}}></paper-input>
               <iron-icon 
                 class="submit" disabled$="{{_invalidSkill}}"
-                icon="done" on-click="_submitSkill" ></iron-icon>    
+                icon="done" on-tap="_submitSkill" ></iron-icon>    
               <iron-icon 
                 class="close"
-                icon="clear" on-click="_closeAddSkill" ></iron-icon>              
+                icon="clear" on-tap="_closeAddSkill" ></iron-icon>              
             </template>
           </div>
 
@@ -311,18 +311,18 @@
                 class="edit" 
                 icon="create"
                 disabled$="{{_disableEdit}}"
-                on-click="_editBio"
+                on-tap="_editBio"
               ></iron-icon>            
             </template>
             <template is="dom-if" if="{{_isEditingBio}}">
               <iron-icon 
                 class="submit"
                 icon="done" 
-                on-click="_submitBio" ></iron-icon> 
+                on-tap="_submitBio" ></iron-icon> 
               <iron-icon 
                 class="close"
                 icon="clear"
-                on-click="_closeEditBio"
+                on-tap="_closeEditBio"
               ></iron-icon>            
             </template>
           </div>

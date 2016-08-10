@@ -25,6 +25,7 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 
 <!--
@@ -106,8 +107,31 @@
       .item_value {
         @apply(--layout-horizontal);
         @apply(--layout-center);
-      }    
+      } 
 
+      iron-icon.edit {
+        cursor: pointer;
+        color: var(--google-blue-500);;
+      }    
+      iron-icon.add {
+        cursor: pointer;
+        color: var(--google-green-500);
+      }  
+      iron-icon.delete {
+      }
+      .edit_label {
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 5px;
+        color: white;
+        background-color:  var(--google-blue-500);
+      }
+      .item_list .edit_label:not(:first-child)  {
+        margin-left: 15px;
+      }
+      .item_list .edit_label:not(:last-child)  {
+        margin-right: 15px;
+      }      
     </style>
 <!--  
     ====================================
@@ -123,58 +147,170 @@
         </iron-icon>
       </paper-button>
 
-      <div class="item">
-        <div class="item_value">
-          <h2 class="activityTitle">{{activity.title}}</h2>
+
+      <template is="dom-if" if="{{!_editActivity}}">
+
+
+        <div class="item_list">
+          <div class="item">
+            <div class="item_value">
+              <h2 class="activityTitle">{{activity.title}}</h2>
+            </div>
+          </div>
+          <paper-button
+            id     = "editActivity"
+            on-tap = "_doEditActivity">
+            <iron-icon 
+              icon = "create" 
+              class="edit"></iron-icon>
+          </paper-button>
         </div>
-      </div>
 
-      <div class="item">
-        <div class="item_name">Description</div>
-        <div class="item_value activityDescription">{{activity.description}}</div>
-      </div>   
+        <div class="item">
+          <div class="item_name">Description</div>
+          <div class="item_value activityDescription">{{activity.description}}</div>
+        </div>   
 
-      <div class="item_list">
+        <div class="item_list">
+          <div class="item">
+            <div class="item_name">Type</div>
+            <div class="item_value activityType">{{_serializeList(activity.activity_types)}}</div>
+          </div> 
+          <div class="item">
+            <div class="item_name">Products</div>
+            <div class="item_value activityProductGroups">{{_serializeList(activity.product_groups, "#")}}</div>
+          </div>
+        </div> 
+
+
+        <div class="item_list">
+          <div class="item">
+            <div class="item_name">Date</div>
+            <div class="item_value activityDate">{{activity.date}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">City</div>
+            <div class="item_value activityCity">{{activity.city}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">Country</div>
+            <div class="item_value activityCountry">{{activity.country}}</div>
+          </div>  
+        </div>
+
+        <div class="item_list">
+          <div class="item">
+            <div class="item_name">Direct reach</div>
+            <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+          </div>         
+          <div class="item">
+            <div class="item_name">Indirect reach</div>
+            <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">Trained reach</div>
+            <div class="item_value activityMetric">{{activity.metric_trained}}</div>
+          </div>  
+        </div>
+      </template>
+
+
+
+      <template is="dom-if" if="{{_editActivity}}">
+        <div class="item_list">
+          <paper-input 
+            auto-validate 
+            name="title" id="inputTitle" label="Title" 
+            type="text" value="{{activity.title}}"  
+            required maxlength="128"></paper-input>
+        </div>
+
+        <div class="item">
+          <paper-textarea 
+            auto-validate 
+            name="description" id="inputDescription" label="Description" 
+            type="text" value="{{activity.description}}"  
+            required></paper-textarea>
+        </div>   
+
+
         <div class="item">
           <div class="item_name">Type</div>
-          <div class="item_value activityType">{{_serializeList(activity.activity_types)}}</div>
+          <div class="item_list activityType">
+            <template is="dom-repeat" items="{{activity.activity_types}}" as="type">
+              <div class="edit_label" on-tap="_deleteType" >
+                <iron-icon 
+                  class="delete"
+                  icon="cancel" ></iron-icon>
+                {{type}}
+              </div>
+            </template>
+            <template is="dom-if" if="{{!_isAddingType}}">
+              <iron-icon 
+                class="add" 
+                icon="add-circle" 
+                on-tap="_addType" ></iron-icon> 
+            </template>
+            <template is="dom-if" if="{{_isAddingType}}">           
+            </template>
+          </div>
         </div> 
+
         <div class="item">
           <div class="item_name">Products</div>
-          <div class="item_value activityType">{{_serializeList(activity.product_groups, "#")}}</div>
-        </div>
-      </div> 
-
-
-      <div class="item_list">
-        <div class="item">
-          <div class="item_name">Date</div>
-          <div class="item_value activityDate">{{activity.date}}</div>
-        </div>  
-        <div class="item">
-          <div class="item_name">City</div>
-          <div class="item_value activityCity">{{activity.city}}</div>
-        </div>  
-        <div class="item">
-          <div class="item_name">Country</div>
-          <div class="item_value activityCountry">{{activity.country}}</div>
-        </div>  
-      </div>
-
-      <div class="item_list">
-        <div class="item">
-          <div class="item_name">Direct reach</div>
-          <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+          <div class="item_list activityProductGroups">
+            <template is="dom-repeat" items="{{activity.product_groups}}" as="productGroup">
+              <div class="edit_label" on-tap="_deleteProductGroup" >
+                <iron-icon 
+                  class="delete"
+                  icon="cancel" ></iron-icon>
+                #{{productGroup}}
+              </div>
+            </template>
+            <template is="dom-if" if="{{!_isAddingProductGroup}}">
+              <iron-icon 
+                class="add" 
+                icon="add-circle" 
+              on-tap="_addProductGroup" ></iron-icon> 
+            </template>
+            <template is="dom-if" if="{{_isAddingType}}">           
+            </template>
+          </div>
         </div>         
-        <div class="item">
-          <div class="item_name">Indirect reach</div>
-          <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
-        </div>  
-        <div class="item">
-          <div class="item_name">Trained reach</div>
-          <div class="item_value activityMetric">{{activity.metric_trained}}</div>
-        </div>  
-      </div>
+
+
+        <div class="item_list">
+          <div class="item">
+            <div class="item_name">Date</div>
+            <div class="item_value activityDate">{{activity.date}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">City</div>
+            <div class="item_value activityCity">{{activity.city}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">Country</div>
+            <div class="item_value activityCountry">{{activity.country}}</div>
+          </div>  
+        </div>
+
+        <div class="item_list">
+          <div class="item">
+            <div class="item_name">Direct reach</div>
+            <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+          </div>         
+          <div class="item">
+            <div class="item_name">Indirect reach</div>
+            <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
+          </div>  
+          <div class="item">
+            <div class="item_name">Trained reach</div>
+            <div class="item_value activityMetric">{{activity.metric_trained}}</div>
+          </div>  
+        </div>        
+      </template>
+
+
   </template>
 <!--
     ====================================
@@ -185,15 +321,74 @@
     Polymer({ 
       is         : 'experts-activity-record-detail',
       properties : {     
-         activity: {
-           type: Object,
-           value: null
-         },
+        activity: {
+          type: Object,
+          value: null
+        },
+        productGroups : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },        
+        activityGroups : {
+          type          : 'array',
+          notify        : true,
+          value         : function(){ 
+            return [
+              {
+                "tag"               : '',
+                "types"             : [],
+              } 
+            ]
+          },
+        },        
+
+        _activityTypes  : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },  
+        _editActivity: {
+          type: Boolean,
+          value: false
+        },
+        _isAddingType: {
+          type: Boolean,
+          value: false
+        },
+        _isAddingProductGroup: {
+          type: Boolean,
+          value: false
+        },
       },
       behaviors         : [
         Polymer.PaperDialogBehavior
       ],
+      observers: [
+        "_paramsChanged(activity, activityGroups,  productGroups)"
+      ],
 
+      _paramsChanged: function() {
+        if (!this.activity || !this.activity.activityTypes) {
+          return;
+        } 
+        for (var i in this.activity.activityTypes) {
+
+        }
+        for (var i in this.activity.productGroups) {
+          for (var j in this.productGroups) {
+            if (this.activity.productGroups[i] == this.productGroups[j].tag) {
+              this.productGroups[j].active = true;
+            }
+          }
+        }        
+      },
+
+      _doEditActivity: function() {
+        this._editActivity = true;
+      },
       _serializeList: function(list, prefix) {
         prefix = prefix || "";
         var serializedList = ''
@@ -206,6 +401,20 @@
         }
         return serializedList;
       },      
+      _deleteType: function(evt){
+        console.debug("[experts-activity-record-detail] _deleteType", evt.model.type);
+        this.splice('activity.activity_types', evt.model.index, 1);
+      },  
+      _addType: function() {
+        this._isAddingType = true;
+      },    
+      _deleteProductGroup: function(evt){
+        console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
+        this.splice('activity.product_groups', evt.model.index, 1);
+      },
+      _addProductGroup: function() {
+        this._isAddingProductGroup = true;
+      },
     });
   </script>
 </dom-module>        

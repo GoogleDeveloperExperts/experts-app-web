@@ -157,6 +157,8 @@
       id              = "activityDetail"
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
+      activity-groups  = "{{activityGroups}}"
+      product-groups  = "{{productGroups}}"
       no-cancel-on-outside-click
       modal></experts-activity-record-detail>
 
@@ -210,6 +212,32 @@
           observer: "_userChanged",
           value: null
         },
+        
+        productGroups : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },        
+        activityGroups : {
+          type          : 'array',
+          notify        : true,
+          value         : function(){ 
+            return [
+              {
+                "tag"               : '',
+                "types"             : [],
+              } 
+            ]
+          },
+        },        
+
+        _activityTypes  : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },         
       },
 
       _userChanged: function(){

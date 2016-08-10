@@ -406,8 +406,14 @@
 /**
  * The allowed activity groups 
  */  
+        productGroups : {
+          type            : Array,
+          value           : function() {
+            return [];
+          }
+        },
         activityGroups : {
-          type          : 'array',
+          type            : Array,
           notify        : true,
           value         : function(){ 
             return [
