@@ -187,6 +187,10 @@
       iron-pages {
         height              : 100%;
       }
+      .page {
+        display           : block;
+        height            : 100%;
+      }
     </style>
 <!--
     ====================================
@@ -194,7 +198,7 @@
     ====================================
 -->
 
-    <iron-signals on-iron-signal-user="_userChanged"></iron-signals> 
+    <iron-signals on-iron-signal-user="_userChanged"></iron-signals>
 
     <app-location
       route = "{{route}}"
@@ -221,33 +225,17 @@
           class             = "drawer-list"
           role              = "navigation"
           attr-for-selected = "name">
-          <paper-button
-            name = "activities">
-            <a
-              href = "#/activities">
-              Activities
-            </a>
+          <paper-button name="activities" on-click="_goToPage">
+             Activities
           </paper-button>
-          <paper-button
-            name = "profile">
-            <a
-              href = "#/profile">
-              Profile
-            </a>
+          <paper-button name="profile" on-click="_goToPage">
+            Profile
           </paper-button>
-          <paper-button
-            name = "map">
-            <a
-              href = "#/map">
-              Map
-            </a>
+          <paper-button name="map" on-click="_goToPage">
+            Map
           </paper-button>
-          <paper-button
-            name = "help">
-            <a
-              href = "#/help">
-              Help
-            </a>
+          <paper-button name="help" on-click="_goToPage">
+            Help
           </paper-button>
         </iron-selector>
       </app-drawer>
@@ -275,36 +263,20 @@
               class             = "drawer-list"
               role              = "navigation"
               hidden            = "{{!wideLayout}}">
-              
+
               <template is="dom-if" if="{{user}}">
-                <paper-button
-                  name = "activities">
-                  <a
-                    href = "#/activities">
-                    Activities
-                  </a>
+                <paper-button name="activities" on-click="_goToPage">
+                   Activities
                 </paper-button>
-                <paper-button
-                  name = "profile">
-                  <a
-                    href = "#/profile">
-                    Profile
-                  </a>
+                <paper-button name="profile" on-click="_goToPage">
+                  Profile
                 </paper-button>
-                <paper-button
-                  name = "map">
-                  <a
-                    href = "#/map">
-                    Map
-                  </a>
+                <paper-button name="map" on-click="_goToPage">
+                  Map
                 </paper-button>
-                <paper-button
-                  name = "help">
-                  <a
-                    href = "#/help">
-                    Help
-                  </a>
-                </paper-button>                
+                <paper-button name="help" on-click="_goToPage">
+                  Help
+                </paper-button>
               </template>
             </iron-selector>
             <template is="dom-if" if="{{user}}">
@@ -327,21 +299,25 @@
                 </div>
               </template>
             </template>
-            <template is="dom-if" if="{{!user}}"> 
+            <template is="dom-if" if="{{!user}}">
               <experts-signin user="{{user}}"></experts-signin>
-            </template> 
+            </template>
           </app-toolbar>
         </app-header>
         <iron-pages
           role              = "main"
           selected          = "[[page]]"
           attr-for-selected = "name">
-          <experts-activities
-            name  = "activities" user="{{user}}">
-          </experts-activities>
-          <experts-profile
-            name  = "profile" user="{{user}}">
-          </experts-profile>
+          <div class="page" name="activities">
+            <template is="dom-if" if="{{user}}">
+              <experts-activities user="{{user}}"></experts-activities>
+            </template>
+          </div>
+          <div class="page" name="profile">
+            <template is="dom-if" if="{{user}}">
+              <experts-profile user="{{user}}"></experts-profile>
+            </template>
+          </div>
           <experts-map
             name="map">
           </experts-map>
@@ -424,6 +400,12 @@
       },
       _userClicked: function() {
         this._userSelected = !this._userSelected;
+      },
+      _goToPage: function(evt) {
+          var pageId = evt.srcElement.getAttribute('name');
+          this.set('route.path',  "/"+pageId);
+          window.location.hash = "/"+pageId;
+          console.debug("[experts-app] route", this.route);
       },
       ready : function() {
         this.$.drawer.forceNarrow = true;
