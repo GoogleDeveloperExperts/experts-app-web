@@ -1,7 +1,7 @@
 <!--
     Google Developers Experts Tracking App
     Copyright (C) 2016  by the GDE Tracking App Team
-    
+
     gdetracking.appspot.com/
     https://github.com/GoogleDeveloperExperts/experts-app-web
 
@@ -20,6 +20,7 @@
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../bower_components/iron-flex-layout/iron-flex-layout.html">
 <link rel="import" href="../bower_components/iron-icons/iron-icons.html">
 
@@ -29,18 +30,16 @@
 <link rel="import" href="../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
-
-<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
-<!--  
+<!--
     ====================================
-                  Shady DOM  
+                  Shady DOM
     ====================================
 -->
 <dom-module id="experts-profile">
   <template>
 <!--
     ====================================
-                     CSS 
+                     CSS
     ====================================
 -->
     <style>
@@ -48,7 +47,7 @@
         display           : block;
         height            : 100%;
         font-family       : Roboto;
-        
+
         --paper-toolbar-background  : #ff2179;
         --paper-toolbar-tall        : {
           height            : 240px
@@ -133,12 +132,12 @@
       }
       user-info .biography {
         white-space       : pre-line;
-      }     
+      }
       iron-icon.edit {
         cursor: pointer;
         margin-left: 15px;
         color: var(--google-blue-500);;
-      }      
+      }
       iron-icon.submit,
       iron-icon.add {
         cursor: pointer;
@@ -148,7 +147,7 @@
         cursor: pointer;
         color: var(--google-red-500);
       }
-      
+
       iron-icon[disabled] {
         color: var(--google-grey-500) !important;
       }
@@ -159,11 +158,11 @@
         line-height       : 30px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
-      }     
+      }
       user-info .item paper-input,
       user-info .item span {
         margin-right: 15px;
-      }     
+      }
 
       user-info .header {
         @apply(--layout-horizontal);
@@ -173,88 +172,87 @@
 
       user-info paper-textarea{
         background-color: var(--google-blue-100);;
-      }  
+      }
     </style>
-<!--  
+<!--
     ====================================
                    HTML
     ====================================
 -->
 
+      <iron-ajax
+        id = "getAccountRequest"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/account/{{user.email}}"
+        method = "GET"
+        content-type = "application/json"
+        handle-as = "json"
+        last-response = "{{_apiUser}}"
+        on-response = "_handleAccountInfo"
+        auto>
+      </iron-ajax>
 
 
-    <!-- Prepare elements to access the API -->
-    <discovery-api-elements
-      name="expertstracking"
-      version="v2.0"
-      app-id="elite-firefly-737"
-      no-client
-      ></discovery-api-elements>
+      <iron-ajax
+        id = "modifyAccountRequest"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/account/{{user.email}}"
+        method = "POST"
+        content-type = "application/json"
+        handle-as = "json"
+        last-response = "{{_apiUser}}"
+        on-response = "_handleAccountInfo">
+      </iron-ajax>
 
-    <!-- Fetch information about currently signed-in User -->
-    <expertstracking-account-get
-      id="[[user.email]]"
-      response="{{_apiUser}}"
-      on-success="_handleAccountGet"
-      auto$="{{user}}"></expertstracking-account-get>      
-      <!--  client-id="47242318878-dik3r14d8jc528h1ao35f8ehqa7tmpe1.apps.googleusercontent.com" 
-      -->
 
-    <expertstracking-account-insert 
-      id="[[user.email]]"
-      response="{{_apiUser}}"
-      on-success="_handleAccountGet"></expertstracking-account-get>   
-
-    <paper-header-panel 
+    <paper-header-panel
       mode = "cover">
-      <paper-toolbar 
+      <paper-toolbar
         class = "tall">
         <h1>My profile</h1>
       </paper-toolbar>
       <paper-material>
         <user-avatar>
-          <img 
+          <img
             alt = "Avatar"
             src = "{{user.image}}"/>
         </user-avatar>
-        <user-info>   
+        <user-info>
 
           <div class="header">
             <h2>{{user.name}}</h2>
           </div>
-          
+
           <div class="item">{{_userTitle}}</div>
-          
+
           <div class="item">
             <template is="dom-if" if="{{!_isEditingLocation}}">
               <template is="dom-if" if="{{user.city}}">
                 <span>{{user.city}},</span>
               </template>
               <span>{{user.country}}</span>
-              <iron-icon 
-                class="edit" 
+              <iron-icon
+                class="edit"
                 icon="create"
                 disabled$="{{_disableEdit}}"
                 on-tap="_editLocation"
               ></iron-icon>
             </template>
             <template is="dom-if" if="{{_isEditingLocation}}">
-              <paper-input 
-                auto-validate 
-                name="city" id="inputCity" label="City" 
-                type="text" value="{{_city}}"  
-                required maxlength="64" 
+              <paper-input
+                auto-validate
+                name="city" id="inputCity" label="City"
+                type="text" value="{{_city}}"
+                required maxlength="64"
                 invalid={{_invalidCity}}></paper-input>
-              <paper-input 
-                auto-validate 
-                name="country" id="inputCountry" label="Country" 
-                type="text" value="{{_country}}"  
-                required maxlength="64" 
+              <paper-input
+                auto-validate
+                name="country" id="inputCountry" label="Country"
+                type="text" value="{{_country}}"
+                required maxlength="64"
                 invalid={{_invalidCountry}}></paper-input>
-              <iron-icon 
+              <iron-icon
                 class="submit" disabled$="{{_invalidLocation}}"
-                icon="done" on-tap="_submitLocation" ></iron-icon>    
-              <iron-icon 
+                icon="done" on-tap="_submitLocation" ></iron-icon>
+              <iron-icon
                 class="close"
                 icon="clear" on-tap="_closeEditLocation" ></iron-icon>
             </template>
@@ -262,40 +260,40 @@
           <div
             class = "line">
           </div>
-          
+
           <div class="header">
             <h2>Skills</h2>
           </div>
 
-          <template 
-            is    = "dom-repeat" 
+          <template
+            is    = "dom-repeat"
             items = "{{user.skills}}">
             <div class="item">
-              <span>{{item}}</span> 
-              <iron-icon 
+              <span>{{item}}</span>
+              <iron-icon
                 class="delete"
                 icon="cancel" on-tap="_deleteSkill" ></iron-icon>
             </div>
           </template>
           <div class="item">
             <template is="dom-if" if="{{!_isAddingSkill}}">
-              <iron-icon 
+              <iron-icon
                 class="add" disabled$="{{_disableEdit}}"
-                icon="add-circle" on-tap="_addSkill" ></iron-icon> 
+                icon="add-circle" on-tap="_addSkill" ></iron-icon>
             </template>
             <template is="dom-if" if="{{_isAddingSkill}}">
-              <paper-input 
-                auto-validate 
-                name="skill" id="inputSkill" label="A skill" 
-                type="text" value="{{_skill}}"  
-                required maxlength="64" 
+              <paper-input
+                auto-validate
+                name="skill" id="inputSkill" label="A skill"
+                type="text" value="{{_skill}}"
+                required maxlength="64"
                 invalid={{_invalidSkill}}></paper-input>
-              <iron-icon 
+              <iron-icon
                 class="submit" disabled$="{{_invalidSkill}}"
-                icon="done" on-tap="_submitSkill" ></iron-icon>    
-              <iron-icon 
+                icon="done" on-tap="_submitSkill" ></iron-icon>
+              <iron-icon
                 class="close"
-                icon="clear" on-tap="_closeAddSkill" ></iron-icon>              
+                icon="clear" on-tap="_closeAddSkill" ></iron-icon>
             </template>
           </div>
 
@@ -307,23 +305,23 @@
           <div class="header">
             <span><h2>Biography</h2></span>
             <template is="dom-if" if="{{!_isEditingBio}}">
-              <iron-icon 
-                class="edit" 
+              <iron-icon
+                class="edit"
                 icon="create"
                 disabled$="{{_disableEdit}}"
                 on-tap="_editBio"
-              ></iron-icon>            
+              ></iron-icon>
             </template>
             <template is="dom-if" if="{{_isEditingBio}}">
-              <iron-icon 
+              <iron-icon
                 class="submit"
-                icon="done" 
-                on-tap="_submitBio" ></iron-icon> 
-              <iron-icon 
+                icon="done"
+                on-tap="_submitBio" ></iron-icon>
+              <iron-icon
                 class="close"
                 icon="clear"
                 on-tap="_closeEditBio"
-              ></iron-icon>            
+              ></iron-icon>
             </template>
           </div>
 
@@ -331,7 +329,7 @@
             <div class="biography">{{user.biography}}</div>
           </template>
           <template is="dom-if" if="{{_isEditingBio}}">
-            <paper-textarea 
+            <paper-textarea
               value="{{_bio}}"></paper-textarea>
           </template>
 
@@ -351,8 +349,8 @@
       properties : {
         user : {
           type: Object,
-          observer: "_userChanged",  
-          value: null,         
+          observer: "_userChanged",
+          value: null,
         },
         _userTitle: {
           type      : String,
@@ -374,11 +372,11 @@
       },
 
       /*
-       * Location edit functions 
+       * Location edit functions
        */
       _editLocation: function() {
         this._city = this.user.city;
-        this._country = this.user.country;     
+        this._country = this.user.country;
         this._isEditingLocation = true;
       },
       _closeEditLocation: function() {
@@ -389,7 +387,7 @@
         userToUpdate.city = this._city;
         userToUpdate.country = this._country;
         this._submitProfileChanges(userToUpdate);
-        this._closeEditLocation();     
+        this._closeEditLocation();
       },
 
       /*
@@ -420,7 +418,7 @@
       },
 
       /*
-       * Biography edit functions 
+       * Biography edit functions
        */
       _editBio: function() {
         this._bio = this.user.biography;
@@ -440,11 +438,19 @@
 
       _submitProfileChanges: function(user) {
         console.debug("[experts-profile] _submitProfileChanges", user);
+        /*
         var request = this.$$("expertstracking-account-insert");
         request.accessToken = user.token;
         request.body = user;
         console.debug("[experts-profile] _submitLocation", request)
-        request.go();        
+        request.go();
+        */
+        var request = this.$.modifyAccountRequest;
+        request.body = JSON.stringify(user);
+        request.headers = {
+          Authorization : "Bearer "+ user.token
+        }
+        request.generateRequest();
       },
 
       _getUserTitle: function() {
@@ -472,7 +478,7 @@
         }
       },
 
-      _handleAccountGet: function() {
+      _handleAccountInfo: function() {
         if (this._apiUser && this._apiUser.type) {
           this.set('user.category', this._apiUser.type);
           this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
@@ -483,7 +489,7 @@
           this.set('user.image', this._apiUser.pic_url);
           this.set('user.product_group', this._apiUser.product_group);
         }
-        console.debug("[experts-profile] _handleAccountGet", this.user);
+        console.debug("[experts-profile] _handleAccountInfo", this.user);
       },
     });
   </script>
