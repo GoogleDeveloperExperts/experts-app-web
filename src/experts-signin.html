@@ -1,4 +1,3 @@
-<link rel="import" href="../bower_components/iron-localstorage/iron-localstorage.html">
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
@@ -15,17 +14,11 @@
   <template>
     <google-signin
       client-id="66416776373-3k5goi8hn9d5rih68t8km57iliithohb.apps.googleusercontent.com"
-       
+      is-authorized="{{_isAuthorized}}"
       scope="email profile"  brand="google" theme="dark"
       on-google-signin-aware-success="_signedIn"
       on-google-signed-out="_signedOut"></google-signin>
 
-    <iron-localstorage
-      id="currentUser"
-      name="currentUser"
-      value="{{_localUser}}"
-      on-iron-localstorage-load="_localUserLoaded"
-      on-iron-localstorage-load-empty="_initLocalUser"></iron-localstorage>
   </template>
 
   <script>
@@ -62,14 +55,6 @@
           },
 
           /**
-           * User information from the Experts Tracking App backend
-           */
-          _apiUser: {
-            type: Object,
-            observer: '_userInfoChanged'
-          },
-
-          /**
            * User information from local storage
            */
           _localUser: Object,
@@ -79,7 +64,8 @@
            */
           _isAuthorized: {
             type: Boolean,
-            value: false
+            // value: false
+            observer: "_isAuthorizedChanged"
           }
         },
 
@@ -100,19 +86,8 @@
             email: profile.getEmail(),
             token: authResponse.access_token || authResponse.id_token
           };
-          this._isAuthorized = true;
+          // this._isAuthorized = true;
 
-          
-          console.debug("[experts-signin] _signedIn - localUser before",this._localUser);
-          
-          this.set("_localUser.id", profile.getEmail());
-          this.set("_localUser.name", profile.getName());
-          this.set("_localUser.image", profile.getImageUrl());
-          this.set("_localUser.email", profile.getEmail());
-          this.set("_localUser.token", authResponse.access_token || authResponse.id_token);
-          this.$.currentUser.save();
-          this.$.currentUser.reload();
-          console.debug("[experts-signin] _signedIn - localUser updated",this._localUser);
           console.debug("[experts-signin] _signedIn",this._googleUser);
 
           this.fire('iron-signal', {name: 'user', data: this._googleUser} )
@@ -123,42 +98,21 @@
          */
         _signedOut: function () {
           this._googleUser = undefined;
-          this._apiUser = undefined;
-          // this._localUser = {};
-          this.set("_localUser", {});
-          this._isAuthorized = false;
+          this._apiUser = undefined;;
+          // this._isAuthorized = false;
           this.fire('iron-signal', {name: 'user', data: null} )
         },
 
-        /**
-         * Initialize User in local storage
-         */
-        _initLocalUser: function () {
-          this._localUser = {};
-        },
 
-        /**
-         * User information available in local storage
-         */
-        _localUserLoaded: function () {
-          console.debug("[experts-signin] _localUserLoaded", this._localUser);
-          if (this._localUser && this._localUser.id) {
-            this._googleUser = {
-              id: this._localUser.id,
-              name: this._localUser.name,
-              image: this._localUser.image,
-              email: this._localUser.email,
-              token: this._localUser.token
-            };
-            this._isAuthorized = true;
-          }
+        _isAuthorizedChanged: function() {
+          console.debug("[experts-signin] _isAuthorizedChanged", this._isAuthorized);
         },
 
         /**
          * Basic user information and access rights for the user
          */
         _userInfoChanged: function () {
-          if (!this._googleUser || !this._googleUser.id) {
+          if (!this._googleUser || !this._googleUser.email) {
             this._setUser(undefined);
             return;
           }
