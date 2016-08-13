@@ -132,6 +132,7 @@
       }
       user-info .biography {
         white-space       : pre-line;
+        text-align        : justify;
       }
       iron-icon.edit {
         cursor: pointer;
@@ -155,7 +156,9 @@
       user-info .item {
         font-size         : 14px;
         font-weight       : 300;
-        line-height       : 30px;
+        line-height       : 20px;
+        padding-top       : 5px;
+        padding-bottom    : 5px;
         @apply(--layout-horizontal);
         @apply(--layout-center);
       }
@@ -326,7 +329,7 @@
           </div>
 
           <template is="dom-if" if="{{!_isEditingBio}}">
-            <div class="biography">{{user.biography}}</div>
+            <div class="item biography">{{user.biography}}</div>
           </template>
           <template is="dom-if" if="{{_isEditingBio}}">
             <paper-textarea
