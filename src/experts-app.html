@@ -225,18 +225,26 @@
           class             = "drawer-list"
           role              = "navigation"
           attr-for-selected = "name">
-          <paper-button name="activities" on-click="_goToPage">
-             Activities
-          </paper-button>
-          <paper-button name="profile" on-click="_goToPage">
-            Profile
-          </paper-button>
+
+          <template is="dom-if" if="{{user}}">
+            <paper-button name="activities" on-click="_goToPage">
+                Activities
+            </paper-button>
+            <paper-button name="profile" on-click="_goToPage">
+              Profile
+            </paper-button>
+          </template>
+        
           <paper-button name="map" on-click="_goToPage">
             Map
           </paper-button>
-          <paper-button name="help" on-click="_goToPage">
-            Help
-          </paper-button>
+
+          <template is="dom-if" if="{{user}}">
+            <paper-button name="help" on-click="_goToPage">
+              Help
+            </paper-button>
+          </template>        
+
         </iron-selector>
       </app-drawer>
       <app-header-layout
@@ -271,13 +279,18 @@
                 <paper-button name="profile" on-click="_goToPage">
                   Profile
                 </paper-button>
-                <paper-button name="map" on-click="_goToPage">
-                  Map
-                </paper-button>
+              </template>
+            
+              <paper-button name="map" on-click="_goToPage">
+                Map
+              </paper-button>
+
+              <template is="dom-if" if="{{user}}">
                 <paper-button name="help" on-click="_goToPage">
                   Help
                 </paper-button>
               </template>
+
             </iron-selector>
             <template is="dom-if" if="{{user}}">
               <user on-click="_userClicked" >
@@ -318,12 +331,12 @@
               <experts-profile user="{{user}}"></experts-profile>
             </template>
           </div>
-          <experts-map
-            name="map">
-          </experts-map>
-          <experts-help
-            name="help">
-          </experts-help>
+          <div class="page" name="map">
+            <experts-map user="{{user}}"></experts-map>
+          </div>
+          <div class="page" name="help">
+            <experts-help user="{{user}}"></experts-help>
+          </div>
         </iron-pages>
       </app-header-layout>
     </app-drawer-layout>

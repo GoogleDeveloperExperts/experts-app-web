@@ -19,12 +19,15 @@
   along with this program.  If not, see <http://www.gnu.org/licenses/>
 -->
 <link rel="import" href="../bower_components/polymer/polymer.html">
+
 <link rel="import" href="../bower_components/google-map/google-map.html">
+
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-dialog/paper-dialog.html">
-<link rel="import" href="../bower_components/paper-material/paper-material.html">
-<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../bower_components/paper-material/paper-material.html">
+
+<link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-up-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 <!--
@@ -236,13 +239,6 @@
       </p>
       <section
         class     = "buttons">
-<!--
-        <paper-button
-          id      = "dismiss"
-          dialog-confirm>
-          Dismiss
-        </paper-button>
--->
         <paper-button>
           <a
             href    = "https://developers.google.com/experts/"
@@ -261,29 +257,43 @@
 -->
   <script>
     Polymer({
-      is            : 'experts-map',
-      properties  : {
-        map         : {
-          type        : 'Object',
-          notify      : true,
-          value       : function() {
+      is : 'experts-map',
+      properties : {
+        map : {
+          type : Object,
+          notify : true,
+          value : function() {
             return {
-              'zoom'      : 2,
-              'latitude'  : 30,
+              'zoom' : 2,
+              'latitude' : 30,
               'longitude' : -30 };
           }
+        },
+        user : {
+          type : Object,
+          observer : '_userChanged'
         }
       },
-      ready           : function() {
-        this.$.presentation.open();;
+      ready : function() {
       },
-      showInfo        : function() {
-        this.$.presentation.open();;
+
+      _userChanged : function() {
+        if (!this.user || !this.user.email) {
+          this.showInfo();
+        }
+        else {
+          this.$.presentation.close();
+        }
       },
-      hideInfo        : function() {
-        this.$.presentation.close();;
+
+      showInfo : function() {
+        this.$.presentation.open();
       },
-      selectThis      : function(e) {
+      hideInfo : function() {
+        this.$.presentation.close();
+      },
+
+      selectThis : function(e) {
         var selected  = e.target.id,
             selectors = this.$.zones.children;
         for (var i=0, total=selectors.length; i<total; i++){
