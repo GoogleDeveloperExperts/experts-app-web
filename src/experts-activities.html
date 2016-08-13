@@ -40,7 +40,6 @@
 
 <link rel="import" href="./experts-activities/experts-activity-list.html">
 <link rel="import" href="./experts-activities/experts-activity-stats.html">
-<link rel="import" href="./experts-activities/experts-sample-activity-data.html">
 <link rel="import" href="./experts-activities/experts-create-activity.html">
 
 
@@ -239,13 +238,8 @@
         activityTypes: {
           type: 'array',
           notify: true,
-          value: function(){ return 
-            [
-              {
-                'id': '',
-                'tag': '#'
-              } 
-            ]
+          value: function(){ 
+            return [];
           },
         },
 
@@ -256,21 +250,7 @@
           type: 'array',
           notify: true,
           value: function(){ 
-            return [
-              {
-                "impact"            : '',
-                "description"       : '',
-                "title"             : '',
-                "us_approx_amount"  : '',
-                "google_expensed"   : '',
-                "other_link1"       : '',
-                "other_link2"       : '',
-                "tag"               : '',
-                "link"              : '',
-                "id"  	            : '',
-                "types"             : [],
-              } 
-            ]
+            return [];
           },
         },  
       },
@@ -324,7 +304,7 @@
       },
       _handleActivityRecordInsert: function(evt, ironRequest) {
         evt.stopPropagation();
-        console.debug('Activity created', _apiActivityRecord);
+        console.debug('Activity created', this._apiActivityRecord);
         this.$.activityList.generateActivityListRequest();
       },
       _handleProductGroup : function(evt, ironRequest) {
