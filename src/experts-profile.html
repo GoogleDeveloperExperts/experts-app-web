@@ -187,7 +187,6 @@
         id = "getAccountRequest"
         url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/account/{{user.email}}"
         method = "GET"
-        content-type = "application/json"
         handle-as = "json"
         last-response = "{{_apiUser}}"
         on-response = "_handleAccountInfo"
@@ -441,13 +440,7 @@
 
       _submitProfileChanges: function(user) {
         console.debug("[experts-profile] _submitProfileChanges", user);
-        /*
-        var request = this.$$("expertstracking-account-insert");
-        request.accessToken = user.token;
-        request.body = user;
-        console.debug("[experts-profile] _submitLocation", request)
-        request.go();
-        */
+
         var request = this.$.modifyAccountRequest;
         request.body = JSON.stringify(user);
         request.headers = {
@@ -481,7 +474,8 @@
         }
       },
 
-      _handleAccountInfo: function() {
+      _handleAccountInfo: function(evt, ironRequest) {
+        evt.stopPropagation();
         if (this._apiUser && this._apiUser.type) {
           this.set('user.category', this._apiUser.type);
           this.set('user.isExpert', (this._apiUser.type !== 'deleted'));

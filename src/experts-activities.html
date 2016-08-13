@@ -38,8 +38,6 @@
 <link rel="import" href="../bower_components/neon-animation/animations/slide-down-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 
-<link rel="import" href="../bower_components/discovery-api-elements/discovery-api-elements.html">
-
 <link rel="import" href="./experts-activities/experts-activity-list.html">
 <link rel="import" href="./experts-activities/experts-activity-stats.html">
 <link rel="import" href="./experts-activities/experts-sample-activity-data.html">
@@ -196,27 +194,22 @@
       url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup?limit=100"
       handle-as   = "json"
       on-response = "_handleProductGroup"
-      auto>
-    </iron-ajax>    
+      auto></iron-ajax>
+
     <iron-ajax 
       url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityType?limit=100"
       handle-as   = "json"
       on-response = "_handleActivityType"
-      auto>
-    </iron-ajax>
+      auto></iron-ajax>
 
-    <discovery-api-elements
-      name="expertstracking"
-      version="v2.0"
-      app-id="elite-firefly-737"
-      no-client
-      ></discovery-api-elements>
-
-    <!-- Fetch information about currently signed-in User -->
-    <expertstracking-activity_record-insert
-      on-success="_handleActivityCreated">
-    </expertstracking-activity_record-insert>     
-      
+      <iron-ajax
+        id = "insertActivityRecord"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
+        method = "POST"
+        content-type = "application/json"
+        handle-as = "json"
+        last-response = "{{_apiActivityRecord}}"
+        on-response = "_handleActivityRecordInsert"></iron-ajax>
   </template>
 <!--
     ====================================
@@ -315,15 +308,23 @@
         console.debug("[experts-activities] _doCreateActivity - activity", activity);
         console.debug("[experts-activities] _doCreateActivity - user", this.user);
         activity.email = this.user.email;
-
+        /*
         var request = this.$$("expertstracking-activity_record-insert");
         request.accessToken = this.user.token;
         request.body = activity;
         request.go();
+        */
+        var request = this.$.insertActivityRecord;
+        request.body = JSON.stringify(activity);
+
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
       },
-      _handleActivityCreated: function(evt, gapiResponse) {
+      _handleActivityRecordInsert: function(evt, ironRequest) {
         evt.stopPropagation();
-        console.debug('Activity created', gapiResponse);
+        console.debug('Activity created', _apiActivityRecord);
         this.$.activityList.generateActivityListRequest();
       },
       _handleProductGroup : function(evt, ironRequest) {
