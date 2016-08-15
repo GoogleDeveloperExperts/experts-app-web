@@ -316,19 +316,22 @@
               id    = "metric_reached"
               type  = "number"
               label = "How many people directly reached?"
-              value = "{{ newActivity.metric_reached }}">
+              value = "{{ newActivity.metric_reached }}"
+              min   = "0">
             </paper-input>
             <paper-input
               id    = "metric_reached"
               type  = "number"
               label = "How many people trained?"
-              value = "{{ newActivity.metric_trained }}">
+              value = "{{ newActivity.metric_trained }}"
+              min   = "0">
             </paper-input>
             <paper-input
               id    = "metric_reached"
               type  = "number"
               label = "How many people indirectly reached?"
-              value = "{{ newActivity.metric_indirect }}">
+              value = "{{ newActivity.metric_indirect }}"
+              min   = "0">
             </paper-input>
           </section>
         </div>        
