@@ -31,7 +31,7 @@
     ====================================
 -->
 <dom-module
-  id = "experts-activity-list">
+  id = "experts-activity-record-list">
   <template>
 <!--
     ====================================
@@ -154,6 +154,8 @@
 
     <experts-activity-record-detail 
       id              = "activityDetail"
+      activity-groups  = "{{activityGroups}}"
+      product-groups  = "{{productGroups}}"
       exit-animation  = "slide-down-animation"
       entry-animation = "slide-from-bottom-animation"
       activity-groups  = "{{activityGroups}}"
@@ -195,7 +197,7 @@
 -->
   <script>
     Polymer({
-      is: 'experts-activity-list',
+      is: 'experts-activity-record-list',
       properties: {
 /**
  * The list of activities
@@ -222,12 +224,7 @@
           type          : 'array',
           notify        : true,
           value         : function(){ 
-            return [
-              {
-                "tag"               : '',
-                "types"             : [],
-              } 
-            ]
+            return [];
           },
         },        
 
@@ -240,7 +237,7 @@
       },
 
       _userChanged: function(){
-        console.debug("[experts-activity-list] _userChanged ", this.user);
+        console.debug("[experts-activity-record-list] _userChanged ", this.user);
         if (!this.user || !this.user.email) {
           this.activities = [];
           return;
@@ -280,7 +277,7 @@
           // No activity found, what should we do?
           return;
         }
-        console.debug("[experts-activity-list] _handleActivityList",response.items);
+        console.debug("[experts-activity-record-list] _handleActivityList",response.items);
         this.activities = response.items;
 
       },

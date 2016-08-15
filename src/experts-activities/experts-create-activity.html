@@ -24,8 +24,9 @@
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
-<link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
 
 <!--
     ====================================
@@ -61,7 +62,7 @@
       :host > * {
         padding           : 0 !important;
       }
-      :host  #closeCreateActivity {
+      #closeCreateActivity {
         position          : absolute;
         justify-content   : flex-end;
         right             : 16px;
@@ -70,13 +71,13 @@
         transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
         color             : #e5e5e5;
       }
-      :host #closeCreateActivity:hover {
+       #closeCreateActivity:hover {
         color             : #aaa;
       }
-      :host  #continue {
+      #continue {
         margin            : 0 auto;
       }
-      :host  h2 {
+       h2 {
         display           : flex;
         align-items       : center;
         color             : #4285f4;
@@ -87,84 +88,84 @@
       :host  > h2 {
         margin            : 0 0 0 21px !important;
       }
-      :host  h2  iron-icon {
+      h2  iron-icon {
         margin-right      : 10px;
         color             : #e5e5e5;
         cursor            : pointer;
         transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
       }
-      :host  h2  iron-icon:hover {
+       h2  iron-icon:hover {
         color             : #aaa;
       }
-      :host  section {
+      section {
         flex              : 1;
         margin            : 0 56px !important;
       }
-      :host  section  article {
+      section  article {
         display           : flex;
         justify-content   : center;
         flex-wrap         : wrap;
       }
-      :host  section#details {
+      section#details {
         display           : flex;
         flex-wrap         : wrap;
       }
-      :host  section#details  paper-input {
+      section#details  paper-input {
         width             : 100%;
       }
-      :host  section  article  paper-button {
+      section  article  paper-button {
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
       }
-      :host  section  article  paper-button.activityGroup[active] {
+      section  article  paper-button.activityGroup[active] {
         background-color  : #34a853;
         color             : #fff;
         margin            : 5px;
       }
-      :host  section  article  paper-button.activityType[active] {
+      section  article  paper-button.activityType[active] {
         background-color  : #ff9e07;
         color             : #fff;
         margin            : 5px;
       }
-      :host  footer {
+      footer {
         display           : flex;
         flex-direction    : column;
         align-items       : center;
         justify-content   : center;
         height            : 100px;
       }
-      :host  footer  paper-button {
+      footer  paper-button {
         color             : #fff;
         background-color  : #4285f4;
         border-radius     : 2px;
         padding           : 14px 30px;
         font-size         : 14px;
       }
-      :host  footer  .progress {
+      footer  .progress {
         display           : flex;
         flex-direction    : row;
         justify-content   : center;
         align-items       : center;
         height            : 48px;
       }
-      :host  footer  .progress  .indicator {
+      footer  .progress  .indicator {
         border-radius     : 50%;
         width             : 8px;
         height            : 8px;
         margin            : 0 3px 0;
         background-color  : #d8d8d8;
       }
-      :host  footer  .progress  .indicator#first[active] {
+      footer  .progress  .indicator#first[active] {
         background-color  : #4285f4;
       }
-      :host  footer  .progress  .indicator#second[active] {
+      footer  .progress  .indicator#second[active] {
         background-color  : #ea4335;
       }
-      :host  footer  .progress  .indicator#third[active] {
+      footer  .progress  .indicator#third[active] {
         background-color  : #fbbc05;
       }
-      :host  footer  .progress  .indicator#fourth[active] {
+      footer  .progress  .indicator#fourth[active] {
         background-color  : #34a853;
       }      
       

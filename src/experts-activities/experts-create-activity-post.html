@@ -1,0 +1,380 @@
+<!--
+  Google Developers Experts Tracking App
+  Copyright (C) 2016  by the GDE Tracking App Team
+
+  gdetracking.appspot.com/ 
+  https://github.com/GoogleDeveloperExperts/experts-app-web 
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
+<link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
+
+<link rel="import" href="../../bower_components/paper-button/paper-button.html">
+<link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+
+<!--
+   ==================================== 
+                  Shady DOM 
+   ==================================== 
+-->
+
+<dom-module  
+  id="experts-create-activity-post">
+  <template> 
+     
+<!--
+   ==================================== 
+                     CSS  
+   ==================================== 
+-->
+    <style> 
+     : host { 
+        position: fixed; 
+        top: 0; 
+        left: 0; 
+        width: 100%; 
+        height: 100%; 
+        background-color: rgba(64,64,64,0.6); 
+      } 
+       
+      .container { 
+        display: block;
+        position: fixed;
+        top: 20vh;
+        left: 11vw;
+        width: 70vw;
+        overflow: auto;
+        border-radius: 2px;    
+        background: white; 
+        transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+      } 
+      .container:hover { 
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+      } 
+      .content { 
+        padding: 15px;  
+      } 
+      #closeCreateActivityPost { 
+        position: absolute;
+        justify-content: flex-end;
+        right: 16px;
+        top: 16px;
+        margin: 0;
+        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
+        color: #e5e5e5;
+      } 
+       #closeCreateActivityPost:hover { 
+        color: #aaa;
+      }  
+      .groups paper-button, 
+      .types paper-button {
+        margin: 5px;
+        font-weight: normal !important;
+        cursor: pointer;
+      } 
+      .groups paper-button[active] {
+        background-color: #34a853;
+        color: #fff;
+        margin: 5px;
+      } 
+      .types paper-button.selected {
+        background-color: #ff9e07;
+        color: #fff;
+        margin: 5px;
+      }  
+      .item_list { 
+        @apply(--layout-horizontal); 
+        @apply(--layout-center); 
+        @apply(--layout-wrap); 
+      } 
+      .item_list .item:not(:first-child) {
+        margin-left: 15px; 
+      } 
+      .item_list .item:not(:last-child) {
+        margin-right: 15px; 
+      } 
+       
+      .item { 
+        margin-top: 15px; 
+        margin-bottom: 15px; 
+      } 
+
+      .item_name { 
+        color: var(--paper-grey-600); 
+        font-family: 'Roboto', 'Noto', sans-serif;
+        -webkit-font-smoothing: antialiased; 
+        white-space: nowrap; 
+        overflow: hidden; 
+        text-overflow: ellipsis; 
+        font-size: 12px; 
+        font-weight: 400; 
+        letter-spacing: 0.011em; 
+        line-height: 20px; 
+      } 
+
+      .item_value { 
+        @apply(--layout-horizontal); 
+        @apply(--layout-center); 
+        @apply(--layout-wrap); 
+      }  
+      .item_value.types { 
+        @apply(--layout-center-justified); 
+        min-height: 50px; 
+      } 
+      .item_value.metric paper-input {
+        width: 100%; 
+      } 
+      .item_value.submit { 
+        @apply(--layout-center-justified); 
+      } 
+      #submit { 
+        background-color: var(--paper-blue-500);
+        color: white;
+        margin: 5px;
+      } 
+    </style> 
+<!--  
+   ==================================== 
+                   HTML 
+   ==================================== 
+-->
+    <div class="container"> 
+      <paper-button 
+        id="closeCreateActivityPost"
+        on-tap="cancel"
+        autofocus> 
+        <iron-icon  
+          icon="close">
+        </iron-icon> 
+      </paper-button>  
+
+      <div class="content"> 
+        <h2>Add activity post</h2>
+
+        <div class="item"> 
+          <paper-input  
+            auto-validate  
+            name="url" 
+            id="inputUrl" 
+            label="URL" 
+            type="text" 
+            value="{{post.url}}"
+            maxlength="256"
+            invalid="{{urlInvalid}}" 
+            required></paper-input> 
+        </div> 
+
+        <div class="item"> 
+          <div class="item_name">Activity Groups</div>
+          <div class="groups item_value">
+            <template  
+              is="dom-repeat" 
+              items="[[activityGroups]]">
+              <paper-button 
+                  on-tap="_selectActivityGroup" 
+                  class="group" 
+                  id="{{item.id}}" 
+                  name="{{item.tag}}" 
+                  active="{{item.active}}" 
+                  toggles 
+                  raised> 
+                {{item.tag}} 
+              </paper-button> 
+            </template> 
+          </div> 
+        </div> 
+        <div class="item"> 
+          <div class="item_name">Activity type (only one allowed)</div>
+          <div class="types item_value">
+            <template 
+              is="dom-repeat" 
+              items="[[_activityTypes]]"
+              as="type">
+              <paper-button 
+                  on-tap="_selectActivityType" 
+                  class$="type {{type.selected}} yeah"
+                  id="{{type.tag}}" 
+                  name="{{type.tag}}" 
+                  raised> 
+                {{type.tag}} 
+              </paper-button> 
+            </template> 
+          </div>  
+        </div> 
+
+        <div class="item"> 
+          <div class="item_name">Activity metrics</div>
+          <div class="item_value metric">
+            <paper-input 
+              id="metric_reached" 
+              type="number" 
+              label="How many people directly reached?"
+              value="{{ post.metric_reached }}"
+              min="0"> 
+            </paper-input> 
+          </div> 
+          <div class="item_value metric">
+            <paper-input 
+              id="metric_reached" 
+              type="number" 
+              label="How many people trained?"
+              value="{{ post.metric_trained }}"
+              min="0"> 
+            </paper-input> 
+          </div> 
+          <div class="item_value metric">
+            <paper-input 
+              id="metric_reached"
+              type="number"
+              label="How many people indirectly reached?"
+              value="{{ post.metric_indirect }}"
+              min="0">
+            </paper-input> 
+          </div> 
+      </div> 
+      <div class="item"> 
+        <div class="item_value submit">     
+          <paper-button  
+            id="submit" 
+            on-tap="_submitActivityPost"
+            disabled="_submitDisabled"
+            raised> 
+            Submit 
+          </paper-button> 
+        </div> 
+      </div> 
+    </div> 
+  </template> 
+<!--
+   ==================================== 
+                    JS 
+   ==================================== 
+-->
+  <script> 
+    Polymer({  
+      is: 'experts-create-activity-post', 
+      properties: { 
+
+        /** 
+          * The new activity
+        */ 
+        post: { 
+          type 'Object', 
+          notify: true, 
+          value: function() {
+            return {}; 
+          }, 
+        }, 
+
+        activityGroups: { 
+          type: Array, 
+          value: function(){ 
+            return []; 
+          }, 
+        },  
+
+        _activityTypes: { 
+          type: Array, 
+          value: function() {
+            return []; 
+          } 
+        }, 
+
+        _submitDisabled: {
+          type: Boolean,
+          computed: "_isSubmitDisabled(_urlInvalid, _typeInvalid)"
+        }, 
+         
+        _typeInvalid: {
+          type: Boolean,
+          computed: "_isTypeInvalid(post.type)"
+        },  
+      }, 
+
+      behaviors: [ 
+        Polymer.PaperDialogBehavior 
+      ], 
+
+      _selectActivityGroup: function(e){ 
+
+        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);
+
+        var _activityTypes = [];
+        if (!this.post.type) {
+          this.post.type="";
+        } else {
+          var type = { 
+            tag: this.post.type, 
+            selected: "selected" 
+          }; 
+          _activityTypes.push(type); 
+        } 
+        for (var i in this.activityGroups) {
+          if (this.activityGroups[i].active) {
+            for (var j in this.activityGroups[i].types) {
+              var already = false;
+              for (var k in _activityTypes) {
+                if (_activityTypes[k].tag == this.activityGroups[i].types[j]) {
+                  already=true;
+                  break; 
+                } 
+              } 
+              if (!already) {
+                var type = { 
+                  tag: this.activityGroups[i].types[j], 
+                  selected: "" 
+                }; 
+                _activityTypes.push(type); 
+              }  
+            } 
+          } 
+        } 
+        this._activityTypes=_activityTypes.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        }); 
+        console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
+      }, 
+
+      _selectActivityType: function(e){ 
+
+        var tag = e.model.type.tag;
+
+        console.debug("[experts-create-activity] selectActivityType", tag);
+         
+        for (var i in this._activityTypes) {
+          if (this._activityTypes[i].tag == tag) {
+            this.set(['_activityTypes',i,'selected'],"selected");  
+          } 
+          if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
+            console.debug("Let's delete ", this._activityTypes[i])
+            this.set(['_activityTypes',i,'selected'],""); 
+          } 
+        }  
+        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+
+        this.post.type=tag;
+
+        console.debug("[experts-create-activity] selectActivityType - selected activity types", this.post.type);
+      }, 
+    }); 
+
+  </script> 
+</dom-module>
+     

@@ -1,0 +1,238 @@
+<!--
+  Google Developers Experts Tracking App
+  Copyright (C) 2016  by the GDE Tracking App Team
+
+  gdetracking.appspot.com/
+  https://github.com/GoogleDeveloperExperts/experts-app-web
+
+  This program is free software: you can redistribute it and/or modify
+  it under the terms of the GNU General Public License as published by
+  the Free Software Foundation, either version 3 of the License, or
+  (at your option) any later version.
+
+  This program is distributed in the hope that it will be useful,
+  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  GNU General Public License for more details.
+
+  You should have received a copy of the GNU General Public License
+  along with this program.  If not, see <http://www.gnu.org/licenses/>
+-->
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../../bower_components/paper-styles/color.html">
+
+<!--
+    ====================================
+                  Shady DOM
+    ====================================
+-->
+<dom-module
+  id = "experts-activity-post-list">
+  <template>
+<!--
+    ====================================
+                     CSS
+    ====================================
+-->
+    <style is="custom-style">
+      :host {
+        display           : block;
+        background        : white;
+        box-sizing        : border-box;
+        width             : 100%;
+        margin            : 0 auto 17px;
+        border-radius     : 2px;
+        font-family       : Roboto;
+
+        --paper-checkbox-checked-color        : var(--paper-blue-500);
+        --paper-checkbox-checked-ink-color    : var(--paper-blue-500);
+        --paper-checkbox-unchecked-color      : var(--paper-grey-500);
+        --paper-checkbox-unchecked-ink-color  : var(--paper-grey-500);
+        --paper-checkbox-label-spacing        : 0;
+      }
+      [hidden] {
+        display           : none !important;
+      }
+      .table    { 
+        display: table; 
+        width: 100%; }
+      .tr       { display: table-row; }
+      .thead    { display: table-header-group; }
+      .tbody    { display: table-row-group; }
+      .tfoot    { display: table-footer-group; }
+      .col      { display: table-column; }
+      .colgroup { display: table-column-group; }
+      .td, .th  { display: table-cell; }
+      .caption  { display: table-caption; }
+      .table {
+        table-layout: fixed;
+      }
+      .thead    {
+        text-transform: uppercase;
+        background-color  : var(--google-blue-500);
+        color             : white;
+        font-weight       : 500;
+      }
+      .tr {
+      }
+      .th, .td {
+        font-size         : 12px;
+        padding           : 0.75em 0.25em 0.75em;
+        text-align        : center;
+        vertical-align    : middle;
+      }
+
+      .th.col0  {
+        width: 60px;
+      }
+
+      .th.col1  {
+        width: 100px;
+      }
+      .th.col2,  .th.col3, .th.col4 {
+        width: 60px;
+      }
+      .th.col5, .td.col5  {
+        width: 60px;
+      }
+
+      .td {
+        border-bottom: solid 1px #eee;
+        word-wrap: break-word;
+      }
+
+      .td.col0 {
+        width: 48px;
+        padding: 0;
+        text-align: center;
+      }
+
+      .td.col1 {
+        text-align: justify;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .td.col3, .td.col7 {
+        color: var(--google-grey-500);
+      }
+
+      @media (max-width: 940px) {
+        .th, .td {
+          display: none;
+        }
+        .th.col0, .th.col1, .th.col7,
+        .td.col0,.td.col1, .td.col1  {
+          display: table-cell;
+        }
+      }
+
+      .action {
+        cursor: pointer;
+      }
+      iron-icon.edit, 
+      iron-icon.delete {
+        cursor: pointer;
+        color: var(--google-blue-500);;
+      }
+    </style>
+<!--
+    ====================================
+                   HTML
+    ====================================
+-->
+
+
+    <div class="table">
+      <div class="thead">
+        <div class="th col0">Type</div>
+        <div class="th col1">URL</div>
+        <div class="th col2">Direct reach</div>
+        <div class="th col3">Indirect reach</div>
+        <div class="th col4">Trained</div>
+        <template is="dom-if" if="{{editMode}}">
+          <div class="th col5"></div>
+        </template>
+      </div>
+      <div class="tbody">
+        <template is="dom-repeat" items="{{activities}}" as="activity">
+          <div class="tr">
+            <div class="td col0">{{post.type}}</div>
+            <div class="td col1">{{post.url}}</div>
+            <div class="td col2">{{post.metric_reached}}</div>
+            <div class="td col3">{{post.metric_indirect}}</div>
+            <div class="td col4">{{post.metric_trained}}</div>
+            <template is="dom-if" if="{{editMode}}">
+              <div class="td col7">
+                <iron-icon 
+                  class="edit" 
+                  icon="create"
+                  on-tap="_editActivityPost"></iron-icon>  
+                <iron-icon 
+                  class="delete" 
+                  icon="delete"
+                  on-tap="_deleteActivityPost"></iron-icon>                 
+              </div>            
+            </div>
+            </template>
+        </template>
+      </div>
+    </div>
+  </template>
+
+<!--
+    ====================================
+                    JS
+    ====================================
+-->
+  <script>
+    Polymer({
+      is: 'experts-activity-post-list',
+      properties: {
+
+        /**
+         * The connected user
+         */
+        user: {
+          type: Object,
+          value: function() {
+            return {};
+          }
+        },
+
+        /**
+         * The activity record parent to this activity post list
+         */
+        recordId: {
+          type: String
+        },
+
+        /**
+         * The activity post list
+         */
+        postList: {
+          type: Array,
+          value: function() {
+            return [];
+          }
+        },
+
+        editMode: {
+          type: Boolean,
+          value: false
+        },
+      },
+
+      _editActivityPost: function() {
+
+      },
+      _deleteActivityPost: function() {
+
+      },
+    });
+
+  </script>
+</dom-module>
+
+
