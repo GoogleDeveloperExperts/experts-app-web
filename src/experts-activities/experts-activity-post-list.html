@@ -84,7 +84,7 @@
       }
 
       .th.col0  {
-        width: 60px;
+        width: 70px;
       }
 
       .th.col1  {
@@ -172,6 +172,7 @@
                 <iron-icon 
                   class="delete" 
                   icon="delete"
+                  post$="{{post.id}}"
                   on-tap="_deleteActivityPost"></iron-icon>                 
               </div>            
             </div>
@@ -225,11 +226,15 @@
         },
       },
 
-      _editActivityPost: function() {
-
+      _editActivityPost: function(evt) {
+        var post =  evt.model.post;
+        console.debug("[experts-activity-post-list] _editActivityPost", post.id);
+        this.fire('edit-activity-post', post.id);
       },
-      _deleteActivityPost: function() {
-
+      _deleteActivityPost: function(evt) {
+        var post =  evt.model.post;
+        console.debug("[experts-activity-post-list] _deleteActivityPost", post.id);
+        this.fire('delecte-activity-post', post.id);
       },
       _postListChanged: function() {
         console.debug("[experts-activity-post-list] _postListChanged", this.postList);
