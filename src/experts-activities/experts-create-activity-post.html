@@ -20,6 +20,7 @@
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
@@ -59,6 +60,7 @@
         top: 20vh;
         left: 11vw;
         width: 70vw;
+        bottom: 2vw;
         overflow: auto;
         border-radius: 2px;    
         background: white; 
@@ -138,12 +140,18 @@
         @apply(--layout-center-justified); 
         min-height: 50px; 
       } 
+      .item_value.types[invalid] {
+        border-bottom: solid 2px var(--paper-deep-orange-a700);
+      }
       .item_value.metric paper-input {
         width: 100%; 
       } 
       .item_value.submit { 
         @apply(--layout-center-justified); 
       } 
+      #submit[disabled] {
+        background-color: var(--paper-grey-500);
+      }
       #submit { 
         background-color: var(--paper-blue-500);
         color: white;
@@ -177,7 +185,7 @@
             type="text" 
             value="{{post.url}}"
             maxlength="256"
-            invalid="{{urlInvalid}}" 
+            invalid="{{_urlInvalid}}" 
             required></paper-input> 
         </div> 
 
@@ -202,7 +210,9 @@
         </div> 
         <div class="item"> 
           <div class="item_name">Activity type (only one allowed)</div>
-          <div class="types item_value">
+          <div 
+            class="types item_value"
+            invalid$="{{_typeInvalid}}">
             <template 
               is="dom-repeat" 
               items="[[_activityTypes]]"
@@ -254,13 +264,22 @@
           <paper-button  
             id="submit" 
             on-tap="_submitActivityPost"
-            disabled="_submitDisabled"
+            disabled$="{{_submitDisabled}}"
             raised> 
             Submit 
           </paper-button> 
         </div> 
       </div> 
     </div> 
+
+    <iron-ajax
+      id = "insertActivityPost"
+      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost"
+      method = "POST"
+      content-type = "application/json"
+      handle-as = "json"
+      last-response = "{{_apiActivityPost}}"
+      on-response = "_handleActivityPostInsert"></iron-ajax>
   </template> 
 <!--
    ==================================== 
@@ -276,7 +295,7 @@
           * The new activity
         */ 
         post: { 
-          type 'Object', 
+          type: Object, 
           notify: true, 
           value: function() {
             return {}; 
@@ -289,6 +308,11 @@
             return []; 
           }, 
         },  
+
+        user: {
+          type: Object,
+          value: null
+        },
 
         _activityTypes: { 
           type: Array, 
@@ -312,9 +336,18 @@
         Polymer.PaperDialogBehavior 
       ], 
 
+      _isTypeInvalid: function(){
+        console.debug("[experts-create-activity-post] _isTypeInvalid", this.post.type)
+        return(!this.post.type);
+      },
+      _isSubmitDisabled: function() {
+        console.debug("[experts-create-activity-post] _isSubmitDisabled",{typeInvalid: this._typeInvalid, urlInvalid: this._urlInvalid });
+        return(this._typeInvalid || this._urlInvalid);
+      },
+
       _selectActivityGroup: function(e){ 
 
-        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);
+        console.debug("[experts-create-activity-post] _selectActivityGroup ", this.activityGroups);
 
         var _activityTypes = [];
         if (!this.post.type) {
@@ -369,9 +402,36 @@
         }  
         console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
 
-        this.post.type=tag;
+        this.set("post.type",tag);
 
         console.debug("[experts-create-activity] selectActivityType - selected activity types", this.post.type);
+      },
+      _initNewActivityPost: function() {
+        this.post = {};
+      },
+      _submitActivityPost: function() {
+        this.post.email = this.user.email;
+        console.debug("[experts-create-activity-post] _submitActivityPost ", this.post);
+
+        var request = this.$.insertActivityPost;
+        request.body = JSON.stringify(this.post);
+
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+
+        request.generateRequest();
+
+      },
+      _handleActivityPostInsert: function() {
+        this.fire('activity-post-created', this.post);
+        this._initNewActivityPost();
+        this.close();
+      },
+      cancel: function(){        
+        this._currentStep=0;
+        this._initNewActivityPost();
+        this.close();
       }, 
     }); 
 

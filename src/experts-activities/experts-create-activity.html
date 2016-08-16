@@ -29,164 +29,164 @@
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
 <!--
-    ====================================
+   ====================================
                   Shady DOM
-    ====================================
+   ====================================
 -->
 
 <dom-module 
-  id = "experts-create-activity">
+  id="experts-create-activity">
   <template>
     
 <!--
-    ====================================
+   ====================================
                      CSS 
-    ====================================
+   ====================================
 -->
     <style>
-      :host {
-        display           : block;
-        position          : fixed;
-        top               : 20vh;
-        left              : 11vw;
-        width             : 70vw;
-        overflow          : auto;
-        border-radius     : 2px;    
+     :host {
+        display: block;
+        position: fixed;
+        top: 20vh;
+        left: 11vw;
+        width: 70vw;
+        overflow: auto;
+        border-radius: 2px;    
         background: white;
-        transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
       }
-     :host:hover {
-        box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    :host:hover {
+        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
-      :host > * {
-        padding           : 0 !important;
+     :host > * {
+        padding: 0 !important;
       }
       #closeCreateActivity {
-        position          : absolute;
-        justify-content   : flex-end;
-        right             : 16px;
-        top               : 16px;
-        margin            : 0;
-        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
-        color             : #e5e5e5;
+        position: absolute;
+        justify-content: flex-end;
+        right: 16px;
+        top: 16px;
+        margin: 0;
+        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
+        color: #e5e5e5;
       }
-       #closeCreateActivity:hover {
-        color             : #aaa;
+      #closeCreateActivity:hover {
+        color: #aaa;
       }
       #continue {
-        margin            : 0 auto;
+        margin: 0 auto;
       }
-       h2 {
-        display           : flex;
-        align-items       : center;
-        color             : #4285f4;
-        font-size         : 16px;
-        font-weight       : 500;
-        min-height        : 56px;
+      h2 {
+        display: flex;
+        align-items: center;
+        color: #4285f4;
+        font-size: 16px;
+        font-weight: 500;
+        min-height: 56px;
       }
-      :host  > h2 {
-        margin            : 0 0 0 21px !important;
+     :host  > h2 {
+        margin: 0 0 0 21px !important;
       }
       h2  iron-icon {
-        margin-right      : 10px;
-        color             : #e5e5e5;
-        cursor            : pointer;
-        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
+        margin-right: 10px;
+        color: #e5e5e5;
+        cursor: pointer;
+        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
       }
        h2  iron-icon:hover {
-        color             : #aaa;
+        color: #aaa;
       }
       section {
-        flex              : 1;
-        margin            : 0 56px !important;
+        flex: 1;
+        margin: 0 56px !important;
       }
       section  article {
-        display           : flex;
-        justify-content   : center;
-        flex-wrap         : wrap;
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
       }
       section#details {
-        display           : flex;
-        flex-wrap         : wrap;
+        display: flex;
+        flex-wrap: wrap;
       }
       section#details  paper-input {
-        width             : 100%;
+        width: 100%;
       }
       section  article  paper-button {
-        margin            : 5px;
-        font-weight       : normal !important;
-        cursor            : pointer;
+        margin: 5px;
+        font-weight: normal !important;
+        cursor: pointer;
       }
       section  article  paper-button.activityGroup[active] {
-        background-color  : #34a853;
-        color             : #fff;
-        margin            : 5px;
+        background-color: #34a853;
+        color: #fff;
+        margin: 5px;
       }
       section  article  paper-button.activityType[active] {
-        background-color  : #ff9e07;
-        color             : #fff;
-        margin            : 5px;
+        background-color: #ff9e07;
+        color: #fff;
+        margin: 5px;
       }
       footer {
-        display           : flex;
-        flex-direction    : column;
-        align-items       : center;
-        justify-content   : center;
-        height            : 100px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100px;
       }
       footer  paper-button {
-        color             : #fff;
-        background-color  : #4285f4;
-        border-radius     : 2px;
-        padding           : 14px 30px;
-        font-size         : 14px;
+        color: #fff;
+        background-color: #4285f4;
+        border-radius: 2px;
+        padding: 14px 30px;
+        font-size: 14px;
       }
       footer  .progress {
-        display           : flex;
-        flex-direction    : row;
-        justify-content   : center;
-        align-items       : center;
-        height            : 48px;
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        height: 48px;
       }
       footer  .progress  .indicator {
-        border-radius     : 50%;
-        width             : 8px;
-        height            : 8px;
-        margin            : 0 3px 0;
-        background-color  : #d8d8d8;
+        border-radius: 50%;
+        width: 8px;
+        height: 8px;
+        margin: 0 3px 0;
+        background-color: #d8d8d8;
       }
       footer  .progress  .indicator#first[active] {
-        background-color  : #4285f4;
+        background-color: #4285f4;
       }
       footer  .progress  .indicator#second[active] {
-        background-color  : #ea4335;
+        background-color: #ea4335;
       }
       footer  .progress  .indicator#third[active] {
-        background-color  : #fbbc05;
+        background-color: #fbbc05;
       }
       footer  .progress  .indicator#fourth[active] {
-        background-color  : #34a853;
+        background-color: #34a853;
       }      
       
     </style>
 <!--  
-    ====================================
+   ====================================
                    HTML
-    ====================================
+   ====================================
 -->
       <paper-button
-        id     = "closeCreateActivity"
-        on-tap = "cancel"
+        id="closeCreateActivity"
+        on-tap="cancel"
         autofocus>
         <iron-icon 
-          icon = "close">
+          icon="close">
         </iron-icon>
       </paper-button>
 
       <iron-pages 
-        id       = "ironpages" 
-        selected = "{{_currentStep}}">
+        id="ironpages" 
+        selected="{{_currentStep}}">
         
         <!-- Tab 0 -->
         <div>
@@ -194,23 +194,23 @@
           <paper-fab style="float:right; margin-right: 15px;" icon="exit-to-app" on-click="_createExpress"></paper-fab>
           <h2>
             <iron-icon 
-              icon = "add-circle">
+              icon="add-circle">
             </iron-icon>
             Add an activity
           </h2>
           <section>
             <p>Fill in the details below to add and track your activity.</p>
             <paper-input
-              id    = "title"
-              type  = "text"
-              label = "Activity Title"
-              value = "{{ newActivity.title }}">
+              id="title"
+              type="text"
+              label="Activity Title"
+              value="{{ newActivity.title }}">
             </paper-input>
             <paper-input
-              id    = "description"
-              type  = "text"
-              label = "Description"
-              value = "{{ newActivity.description }}">
+              id="description"
+              type="text"
+              label="Description"
+              value="{{ newActivity.description }}">
             </paper-input>
           </section>
         </div>  
@@ -219,23 +219,23 @@
         <div>
           <h2>
             <iron-icon 
-              icon   = "arrow-back"
-              on-tap = "back">
+              icon="arrow-back"
+              on-tap="back">
             </iron-icon>
             Activity Groups
           </h2>
           <section>
             <article
-              id     = "groups">
+              id="groups">
               <template 
-                is    = "dom-repeat" 
-                items = "[[activityGroups]]">
+                is="dom-repeat" 
+                items="[[activityGroups]]">
                 <paper-button
-                    on-tap = "selectActivityGroup"
-                    class  = "activityGroup"
-                    id     = "{{item.id}}"
+                    on-tap="selectActivityGroup"
+                    class="activityGroup"
+                    id="{{item.id}}"
                     toggles
-                    active = "{{item.active}}"
+                    active="{{item.active}}"
                     raised>
                   {{item.tag}}
                 </paper-button>
@@ -243,17 +243,17 @@
             </article>
             <h2>Activity types</h2>
             <article
-              id     = "types">
+              id="types">
               <template
-                is    = "dom-repeat" 
-                items = "[[_activityTypes]]"
-                as    = "type">
+                is="dom-repeat" 
+                items="[[_activityTypes]]"
+                as="type">
                 <paper-button
-                    on-tap = "selectActivityType"
-                    class  = "activityType"
-                    id     = "{{type.tag}}"
+                    on-tap="selectActivityType"
+                    class="activityType"
+                    id="{{type.tag}}"
                     toggles
-                    active = "{{type.active}}"
+                    active="{{type.active}}"
                     raised>
                   {{type.tag}}
                 </paper-button>
@@ -267,30 +267,30 @@
         <div>
           <h2>
             <iron-icon 
-              icon   = "arrow-back" 
-              on-tap = "back">
+              icon="arrow-back" 
+              on-tap="back">
             </iron-icon>
             Details
           </h2>
           <section
-            id  = "details">
+            id="details">
             <paper-input
-              id    = "city"
-              type  = "text"
-              label = "Which city?"
-              value = "{{ newActivity.city }}">
+              id="city"
+              type="text"
+              label="Which city?"
+              value="{{ newActivity.city }}">
             </paper-input>
             <paper-input
-              id    = "country"
-              type  = "text"
-              label = "Which country?"
-              value = "{{ newActivity.country }}">
+              id="country"
+              type="text"
+              label="Which country?"
+              value="{{ newActivity.country }}">
             </paper-input>
             <paper-input
-              id    = "date"
-              type  = "date"
-              label = "When it happened?"
-              value = "{{ newActivity.date }}">
+              id="date"
+              type="date"
+              label="When it happened?"
+              value="{{ newActivity.date }}">
             </paper-input>
           </section>
         </div>
@@ -299,40 +299,40 @@
         <div>
           <h2>
             <iron-icon 
-              icon   = "arrow-back" 
-              on-tap = "back">
+              icon="arrow-back" 
+              on-tap="back">
             </iron-icon>
             Details
           </h2>
           <section
-            id  = "details">
+            id="details">
             <paper-input
-              id    = "url"
-              type  = "text"
-              label = "A link for this?"
-              value = "{{ newActivity.url }}">
+              id="url"
+              type="text"
+              label="A link for this?"
+              value="{{ newActivity.url }}">
             </paper-input>
             <div>Some metrics</div>
             <paper-input
-              id    = "metric_reached"
-              type  = "number"
-              label = "How many people directly reached?"
-              value = "{{ newActivity.metric_reached }}"
-              min   = "0">
+              id="metric_reached"
+              type="number"
+              label="How many people directly reached?"
+              value="{{ newActivity.metric_reached }}"
+              min="0">
             </paper-input>
             <paper-input
-              id    = "metric_reached"
-              type  = "number"
-              label = "How many people trained?"
-              value = "{{ newActivity.metric_trained }}"
-              min   = "0">
+              id="metric_reached"
+              type="number"
+              label="How many people trained?"
+              value="{{ newActivity.metric_trained }}"
+              min="0">
             </paper-input>
             <paper-input
-              id    = "metric_reached"
-              type  = "number"
-              label = "How many people indirectly reached?"
-              value = "{{ newActivity.metric_indirect }}"
-              min   = "0">
+              id="metric_reached"
+              type="number"
+              label="How many people indirectly reached?"
+              value="{{ newActivity.metric_indirect }}"
+              min="0">
             </paper-input>
           </section>
         </div>        
@@ -341,162 +341,162 @@
 
       <footer>
         <template 
-          is = "dom-if"
-          if = "{{!_lastStep}}">
+          is="dom-if"
+          if="{{!_lastStep}}">
           <paper-button 
-            id     = "continue" 
-            on-tap = "next">
+            id="continue" 
+            on-tap="next">
             Continue
           </paper-button>
         </template>
         <template 
-          is = "dom-if"
-          if = "{{_lastStep}}">        
+          is="dom-if"
+          if="{{_lastStep}}">        
           <paper-button 
-            id     = "continue" 
-            on-tap = "finish">
+            id="continue" 
+            on-tap="finish">
             Finish
           </paper-button>
         </template>
         <div
-          class = "progress">
+          class="progress">
           <div 
-            class   = "indicator"
-            id      = "first"
-            active$ = "{{_isCurrentStep(0, _currentStep)}}">
+            class="indicator"
+            id="first"
+            active$="{{_isCurrentStep(0, _currentStep)}}">
           </div>
           <div
-            class   = "indicator"
-            id      = "second"
-            active$ = "{{_isCurrentStep(1,_currentStep)}}">
+            class="indicator"
+            id="second"
+            active$="{{_isCurrentStep(1,_currentStep)}}">
           </div>
           <div
-            class   = "indicator"
-            id      = "third"
-            active$ = "{{_isCurrentStep(2, _currentStep)}}">
+            class="indicator"
+            id="third"
+            active$="{{_isCurrentStep(2, _currentStep)}}">
           </div>
           <div
-            class   = "indicator"
-            id      = "fourth"
-            active$ = "{{_isCurrentStep(3, _currentStep)}}">
+            class="indicator"
+            id="fourth"
+            active$="{{_isCurrentStep(3, _currentStep)}}">
           </div>
         </div>
       </footer>
 
   </template>
 <!--
-    ====================================
+   ====================================
                     JS
-    ====================================
+   ====================================
 -->
   <script>
     Polymer({ 
-      is         : 'experts-create-activity',
-      properties : {
+      is: 'experts-create-activity',
+      properties: {
 /**
  * The new activity
  */
-        newActivity : {
-          type        : 'Object',
-          notify      : true,
-          value       : function() {
+        newActivity: {
+          type: Object,
+          notify: true,
+          value: function() {
             return {
-              'title'       : '',
-              'description' : '',
-              'activity_types'       : []
+              'title': '',
+              'description': '',
+              'activity_types': []
             };
           }
         },        
 /**
  * The allowed activity groups 
  */  
-        productGroups : {
-          type            : Array,
-          value           : function() {
+        productGroups: {
+          type: Array,
+          value: function() {
             return [];
           }
         },
-        activityGroups : {
-          type            : Array,
-          notify        : true,
-          value         : function(){ 
+        activityGroups: {
+          type: Array,
+          notify: true,
+          value: function(){ 
             return [];
           },
         },        
 
-        _activityTypes  : {
-          type            : Array,
-          value           : function() {
+        _activityTypes: {
+          type: Array,
+          value: function() {
             return [];
           }
         },        
-        _currentStep    : {
-          type            : Number,
-          value           : 0
+        _currentStep: {
+          type: Number,
+          value: 0
         },
-        _numberOfSteps  : {
-          type            : Number,
-          value           : 4
+        _numberOfSteps: {
+          type: Number,
+          value: 4
         },
-        _lastStep       : {
-          type            : Boolean,
-          computed        : "_isLastStep(_currentStep,_numberOfSteps)"
+        _lastStep: {
+          type: Boolean,
+          computed: "_isLastStep(_currentStep,_numberOfSteps)"
         },
       },
-      behaviors         : [
+      behaviors: [
         Polymer.PaperDialogBehavior
       ],
 
-      _isLastStep       : function() {
+      _isLastStep: function() {
        // console.debug("[experts-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
        return (this._currentStep == this._numberOfSteps -1);
       },
-      _isCurrentStep    : function(step) {
+      _isCurrentStep: function(step) {
         // console.debug("[experts-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
       },
-      back              : function() {
+      back: function() {
         if (this._currentStep > 0) {
           this._currentStep -= 1;
         }
       },      
-      next              : function() {
+      next: function() {
         // console.debug("[experts-create-activity] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
       },      
       
-      _createExpress    : function() {
-        this.newActivity = {"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
+      _createExpress: function() {
+        this.newActivity={"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
         this.finish();
       },
-      finish            : function(){        
-        this._currentStep = 0;
+      finish: function(){        
+        this._currentStep=0;
         // console.debug("[experts-create-activity] finish - Activity: ",this.newActivity);
         this._finishNewActivity();
         this.close();
       },
-      cancel            : function(){        
-        this._currentStep = 0;
+      cancel: function(){        
+        this._currentStep=0;
         this._initNewActivity();
         // console.debug("[experts-create-activity] close");
         this.close();
       },
       
-      _initNewActivity  : function() {
-        this.newActivity  = {
-          'title'           : '',
-          'description'     : ''
+      _initNewActivity: function() {
+        this.newActivity={
+          'title': '',
+          'description': ''
         };
       },
-      _finishNewActivity  : function() {
+      _finishNewActivity: function() {
         console.debug("[experts-create-activity] _finishNewActivity ", this.newActivity);
         this.fire('activity-created', this.newActivity);
         this._initNewActivity();
       },
       
-      selectActivityGroup : function(e){
+      selectActivityGroup: function(e){
 
         var _activityTypes = [];
         
@@ -506,7 +506,7 @@
               var already = false;
               for (var k in _activityTypes) {
                 if (_activityTypes[k] == this.activityGroups[i].types[j]) {
-                  already = true;
+                  already=true;
                   break;
                 }
               }
@@ -516,14 +516,14 @@
                 };
                 if (this.newActivity.activity_types.indexOf(this.activityGroups[i].types[j]) >= 0) {
                   // The type was already selected, we activate it
-                  type.active = true;
+                  type.active=true;
                 }
                 _activityTypes.push(type);
               }  
             }
           }
         }
-        this._activityTypes = _activityTypes.sort(function(a, b) {
+        this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
         console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
@@ -539,7 +539,7 @@
           }
         } 
 
-        this.newActivity.activity_types = _selectedActivityTypes.sort(function(a, b) {
+        this.newActivity.activity_types=_selectedActivityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
         console.debug("[experts-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);

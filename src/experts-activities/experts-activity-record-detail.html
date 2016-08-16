@@ -20,6 +20,7 @@
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
@@ -352,9 +353,20 @@
 
       <experts-create-activity-post 
         id="createActivityPost"
-        activity-groups  = "{{activityGroups}}"
-        product-groups  = "{{productGroups}}"
+        user="{{user}}"
+        activity-groups="{{activityGroups}}"
+        product-groups="{{productGroups}}"
+        on-activity-post-created="_doAddActivityPost"        
         modal></experts-create-activity-post>
+
+      <iron-ajax
+        id = "updateActivityRecord"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
+        method = "POST"
+        content-type = "application/json"
+        handle-as = "json"
+        last-response = "{{_apiActivityRecord}}"
+        on-response = "_handleUpdateActivityRecord"></iron-ajax>
 
   </template>
 <!--
@@ -387,7 +399,12 @@
               } 
             ]
           },
-        },        
+        }, 
+
+        user: {
+          type: Object,
+          value: null
+        },             
 
         _activityTypes  : {
           type            : Array,
@@ -473,6 +490,25 @@
       },
       _openCreatePostDialog: function() {
         this.createActivityPost.open();
+      },
+      _doAddActivityPost: function(evt, post) {
+        if (!this.activity.activity_posts) {
+          this.set('activity.activity_posts', []);
+        }
+        this.push ('activity.activity_posts', post.id);
+        
+        var request = this.$.updateActivityRecord;
+        request.body = JSON.stringify(this.activity);
+
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
+        
+      },
+      _handleUpdateActivityRecord: function() {
+        this.activity = this._apiActivityRecord;
+        this._editActivity = false;
       },
     });
   </script>
