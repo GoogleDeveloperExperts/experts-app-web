@@ -114,7 +114,7 @@
         text-overflow: ellipsis;
       }
 
-      .td.col3, .td.col7 {
+      .td.col0 {
         color: var(--google-grey-500);
       }
 
@@ -122,8 +122,8 @@
         .th, .td {
           display: none;
         }
-        .th.col0, .th.col1, .th.col7,
-        .td.col0,.td.col1, .td.col1  {
+        .th.col0, .th.col1, .th.col5,
+        .td.col0,.td.col1, .td.col5  {
           display: table-cell;
         }
       }
@@ -156,7 +156,7 @@
         </template>
       </div>
       <div class="tbody">
-        <template is="dom-repeat" items="{{activities}}" as="activity">
+        <template is="dom-repeat" items="{{postList}}" as="post">
           <div class="tr">
             <div class="td col0">{{post.type}}</div>
             <div class="td col1">{{post.url}}</div>
@@ -164,7 +164,7 @@
             <div class="td col3">{{post.metric_indirect}}</div>
             <div class="td col4">{{post.metric_trained}}</div>
             <template is="dom-if" if="{{editMode}}">
-              <div class="td col7">
+              <div class="td col5">
                 <iron-icon 
                   class="edit" 
                   icon="create"
@@ -178,7 +178,7 @@
             </template>
         </template>
       </div>
-    </div>
+    </div>    
   </template>
 
 <!--
@@ -213,6 +213,7 @@
          */
         postList: {
           type: Array,
+          observer:  "_postListChanged",
           value: function() {
             return [];
           }
@@ -229,6 +230,9 @@
       },
       _deleteActivityPost: function() {
 
+      },
+      _postListChanged: function() {
+        console.debug("[experts-activity-post-list] _postListChanged", this.postList);
       },
     });
 

@@ -397,7 +397,7 @@
 
         <experts-activity-post-list 
           record-id="{{activity.id}}" 
-          post-list="{{activity.activity_posts}}"
+          post-list="{{activity.listActivityPosts}}"
           user="{{user}}"
           edit-mode="{{_editActivity}}"></experts-activity-post-list>
 
@@ -422,6 +422,7 @@
       <experts-create-activity-post 
         id="createActivityPost"
         user="{{user}}"
+        record-id="{{activity.id}}"
         activity-groups="{{activityGroups}}"
         product-groups="{{productGroups}}"
         on-activity-post-created="_doAddActivityPost"        
@@ -435,6 +436,15 @@
         handle-as = "json"
         last-response = "{{_apiActivityRecord}}"
         on-response = "_handleUpdateActivityRecord"></iron-ajax>
+
+    <iron-ajax
+      id = "listActivityPost"
+      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
+      method = "GET"
+      content-type = "application/json"
+      handle-as = "json"
+      last-response = "{{_apiListActivityPost}}"
+      on-response = "_handleListActivityPost"></iron-ajax>        
 
   </template>
 <!--
@@ -460,12 +470,7 @@
           type          : 'array',
           notify        : true,
           value         : function(){ 
-            return [
-              {
-                "tag"               : '',
-                "types"             : [],
-              } 
-            ]
+            return [];
           },
         }, 
 
@@ -512,19 +517,20 @@
       },
 
       _paramsChanged: function() {
-        if (!this.activity || !this.activity.activityTypes) {
+
+        // console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
+        if (!this.activity || !this.activity.activity_types) {
           return;
         } 
-        for (var i in this.activity.activityTypes) {
+        this._listActivityPosts(); 
+      },
 
+      _listActivityPosts: function() {
+        var request = this.$.listActivityPost;
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
         }
-        for (var i in this.activity.productGroups) {
-          for (var j in this.productGroups) {
-            if (this.activity.productGroups[i] == this.productGroups[j].tag) {
-              this.productGroups[j].active = true;
-            }
-          }
-        }        
+        request.generateRequest();
       },
 
       _doEditActivity: function() {
@@ -604,9 +610,38 @@
         this._submitUpdateActivityRecord();
       },
 
+      _resynchroActivityPosts: function() {
+        var activity_posts = this.activity.listActivityPosts.map(function(post) {
+          return post.id;
+        });
+        var synchroNeeded = false;
+
+        var context = this;
+
+        synchroNeeded = 
+          !activity_posts.every(function(postId) {
+            return (context.activity.activity_posts.indexOf(postId) >= 0);
+          }) ||
+          !this.activity.activity_posts.every(function(postId) {
+            return (activity_posts.indexOf(postId) >= 0);
+          });
+
+        if (synchroNeeded) {
+          this.set('activity.activity_posts', activity_posts);
+          console.debug("[experts-activity-record-detail] _resynchroActivityPosts - synchroNeeded", this.activity.activity_posts);
+          this._submitUpdateActivityRecord();
+        }  
+      },
+
       _handleUpdateActivityRecord: function() {
         this.activity = this._apiActivityRecord;
         this._editActivity = false;
+      },
+
+      _handleListActivityPost: function() {
+        this.set('activity.listActivityPosts', this._apiListActivityPost.items);
+        console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
+        this._resynchroActivityPosts()
       },
     });
   </script>

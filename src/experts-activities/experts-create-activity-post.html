@@ -314,6 +314,10 @@
           value: null
         },
 
+        recordId: {
+          type: String,
+          value: null
+        },
         _activityTypes: { 
           type: Array, 
           value: function() {
@@ -411,6 +415,7 @@
       },
       _submitActivityPost: function() {
         this.post.email = this.user.email;
+        this.post.activity_record = this.recordId;
         console.debug("[experts-create-activity-post] _submitActivityPost ", this.post);
 
         var request = this.$.insertActivityPost;
@@ -424,6 +429,7 @@
 
       },
       _handleActivityPostInsert: function() {
+        this.set('post', this._apiActivityPost);
         this.fire('activity-post-created', this.post);
         this._initNewActivityPost();
         this.close();
