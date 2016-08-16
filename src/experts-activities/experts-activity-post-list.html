@@ -168,18 +168,30 @@
                 <iron-icon 
                   class="edit" 
                   icon="create"
+                  post$="{{post}}"
                   on-tap="_editActivityPost"></iron-icon>  
                 <iron-icon 
                   class="delete" 
                   icon="delete"
-                  post$="{{post.id}}"
+                  post$="{{post}}"
                   on-tap="_deleteActivityPost"></iron-icon>                 
               </div>            
             </div>
             </template>
         </template>
       </div>
-    </div>    
+    </div>  
+
+    <iron-ajax
+      id = "deleteActivityPost"
+      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
+      method = "DELETE"
+      content-type = "application/json"
+      handle-as = "json"
+      last-response = "{{_apiActivityPostDelete}}"
+      on-response = "_handleActivityPostDelete"></iron-ajax>
+   
+
   </template>
 
 <!--
@@ -228,16 +240,31 @@
 
       _editActivityPost: function(evt) {
         var post =  evt.model.post;
-        console.debug("[experts-activity-post-list] _editActivityPost", post.id);
-        this.fire('edit-activity-post', post.id);
+        console.debug("[experts-activity-post-list] _editActivityPost", post);
+        this.fire('edit-activity-post', post);
       },
       _deleteActivityPost: function(evt) {
         var post =  evt.model.post;
         console.debug("[experts-activity-post-list] _deleteActivityPost", post.id);
         this.fire('delecte-activity-post', post.id);
+
+        this._deletePostId = post.id;
+
+        var request = this.$.deleteActivityPost;
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
+
+        this._deletePostId = "";
+
       },
       _postListChanged: function() {
         console.debug("[experts-activity-post-list] _postListChanged", this.postList);
+      },
+
+      _handleActivityPostDelete: function() {
+        console.debug("[experts-activity-post-list] _handleActivityPostDelete", this._apiActivityPostDelete);
       },
     });
 

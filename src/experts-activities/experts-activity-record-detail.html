@@ -399,6 +399,7 @@
           record-id="{{activity.id}}" 
           post-list="{{activity.listActivityPosts}}"
           user="{{user}}"
+          on-edit-activity-post="_openEditPostDialog"
           edit-mode="{{_editActivity}}"></experts-activity-post-list>
 
         <template is="dom-if" if="{{_editActivity}}">
@@ -422,6 +423,7 @@
       <experts-create-activity-post 
         id="createActivityPost"
         user="{{user}}"
+        post="{{_aPost}}"
         record-id="{{activity.id}}"
         activity-groups="{{activityGroups}}"
         product-groups="{{productGroups}}"
@@ -437,14 +439,14 @@
         last-response = "{{_apiActivityRecord}}"
         on-response = "_handleUpdateActivityRecord"></iron-ajax>
 
-    <iron-ajax
-      id = "listActivityPost"
-      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
-      method = "GET"
-      content-type = "application/json"
-      handle-as = "json"
-      last-response = "{{_apiListActivityPost}}"
-      on-response = "_handleListActivityPost"></iron-ajax>        
+      <iron-ajax
+        id = "listActivityPost"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
+        method = "GET"
+        content-type = "application/json"
+        handle-as = "json"
+        last-response = "{{_apiListActivityPost}}"
+        on-response = "_handleListActivityPost"></iron-ajax>        
 
   </template>
 <!--
@@ -588,8 +590,14 @@
 
 
       _openCreatePostDialog: function() {
+        this._aPost = {};
         this.createActivityPost.open();
       },
+      _openEditPostDialog: function(evt, post) {
+        this._aPost = post;
+        this.createActivityPost.open();
+      },
+
 
       _submitUpdateActivityRecord: function() {
 
@@ -620,6 +628,9 @@
 
         synchroNeeded = 
           !activity_posts.every(function(postId) {
+            if (!context.activity.activity_posts) {
+              return false;
+            }
             return (context.activity.activity_posts.indexOf(postId) >= 0);
           }) ||
           !this.activity.activity_posts.every(function(postId) {
