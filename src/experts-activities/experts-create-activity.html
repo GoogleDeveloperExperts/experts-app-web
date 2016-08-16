@@ -84,8 +84,6 @@
         font-size: 16px;
         font-weight: 500;
         min-height: 56px;
-      }
-     :host  > h2 {
         margin: 0 0 0 21px !important;
       }
       h2  iron-icon {
@@ -190,12 +188,7 @@
         
         <!-- Tab 0 -->
         <div>
-          <!-- Temp button to allow express activity creation, for credentials test -->
-          <paper-fab style="float:right; margin-right: 15px;" icon="exit-to-app" on-click="_createExpress"></paper-fab>
           <h2>
-            <iron-icon 
-              icon="add-circle">
-            </iron-icon>
             Add an activity
           </h2>
           <section>
@@ -295,47 +288,7 @@
           </section>
         </div>
         
-        <!-- Tab 3 -->
-        <div>
-          <h2>
-            <iron-icon 
-              icon="arrow-back" 
-              on-tap="back">
-            </iron-icon>
-            Details
-          </h2>
-          <section
-            id="details">
-            <paper-input
-              id="url"
-              type="text"
-              label="A link for this?"
-              value="{{ newActivity.url }}">
-            </paper-input>
-            <div>Some metrics</div>
-            <paper-input
-              id="metric_reached"
-              type="number"
-              label="How many people directly reached?"
-              value="{{ newActivity.metric_reached }}"
-              min="0">
-            </paper-input>
-            <paper-input
-              id="metric_reached"
-              type="number"
-              label="How many people trained?"
-              value="{{ newActivity.metric_trained }}"
-              min="0">
-            </paper-input>
-            <paper-input
-              id="metric_reached"
-              type="number"
-              label="How many people indirectly reached?"
-              value="{{ newActivity.metric_indirect }}"
-              min="0">
-            </paper-input>
-          </section>
-        </div>        
+    
       </iron-pages>  
       
 
@@ -374,11 +327,6 @@
             class="indicator"
             id="third"
             active$="{{_isCurrentStep(2, _currentStep)}}">
-          </div>
-          <div
-            class="indicator"
-            id="fourth"
-            active$="{{_isCurrentStep(3, _currentStep)}}">
           </div>
         </div>
       </footer>
@@ -436,7 +384,7 @@
         },
         _numberOfSteps: {
           type: Number,
-          value: 4
+          value: 3
         },
         _lastStep: {
           type: Boolean,

@@ -267,6 +267,7 @@
         request.generateRequest();
       },
 
+
 /**
  * Receives an activity list and inject it in the view
  */
@@ -293,10 +294,17 @@
         return serializedList;
       },
 
+/**
+ * Edit activity record
+ */
+      editActitityRecord: function(activity) {
+        this.activityDetail.activity = activity;
+        this.activityDetail.open();
+      },
+
       _doActivityDetail: function(evt) {
         console.debug("[experts-activities] _doActivityDetail", evt.model.activity);
-        this.activityDetail.activity = evt.model.activity;
-        this.activityDetail.open();
+        this.editActitityRecord(evt.model.activity);
       },
     });
   </script>

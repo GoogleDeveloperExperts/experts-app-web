@@ -381,13 +381,11 @@
 
       <div class="container">
         
-        <template is="dom-if" if="{{_editActivity}}">
-          <paper-fab
-            id          = "addActivityPost" 
-            icon        = "add"
-            on-tap      = "_openCreatePostDialog">
-          </paper-fab>   
-        </template>
+        <paper-fab
+          id          = "addActivityPost" 
+          icon        = "add"
+          on-tap      = "_openCreatePostDialog">
+        </paper-fab>  
 
         <div class="item">
           <div class="item_name">
@@ -400,7 +398,7 @@
           post-list="{{activity.listActivityPosts}}"
           user="{{user}}"
           on-edit-activity-post="_openEditPostDialog"
-          edit-mode="{{_editActivity}}"></experts-activity-post-list>
+          edit-mode="true"></experts-activity-post-list>
 
         <template is="dom-if" if="{{_editActivity}}">
           <div class="item"> 

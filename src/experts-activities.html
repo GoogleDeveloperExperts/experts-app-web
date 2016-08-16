@@ -307,6 +307,7 @@
         evt.stopPropagation();
         console.debug('Activity created', this._apiActivityRecord);
         this.$.activityList.generateActivityListRequest();
+        this.$.activityList.editActitityRecord(this._apiActivityRecord);
       },
       _handleProductGroup : function(evt, ironRequest) {
         evt.stopPropagation();
