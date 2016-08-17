@@ -375,7 +375,7 @@
               } 
               if (!already) {
                 var type = { 
-                  tag: this.activityGroups[i].types[j], 
+                  tag: this.activityGroups[i].types[j],  
                   selected: "" 
                 }; 
                 _activityTypes.push(type); 
@@ -412,6 +412,9 @@
       },
       _initNewActivityPost: function() {
         this.post = {};
+        for (var i in this._activityTypes) {
+          this._activityTypes[i].selected = "";
+        }
       },
       _submitActivityPost: function() {
         this.post.email = this.user.email;

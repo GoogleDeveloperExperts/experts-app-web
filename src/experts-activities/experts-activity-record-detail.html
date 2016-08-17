@@ -397,6 +397,7 @@
           record-id="{{activity.id}}" 
           post-list="{{activity.listActivityPosts}}"
           user="{{user}}"
+          on-delecte-activity-post="_deleteActivityPost"
           on-edit-activity-post="_openEditPostDialog"
           edit-mode="true"></experts-activity-post-list>
 
@@ -446,6 +447,13 @@
         last-response = "{{_apiListActivityPost}}"
         on-response = "_handleListActivityPost"></iron-ajax>        
 
+      <iron-ajax
+        id = "deleteActivityPost"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
+        method = "DELETE"
+        handle-as = "json"
+        last-response = "{{_apiActivityPostDelete}}"
+        on-response = "_handleActivityPostDelete"></iron-ajax>
   </template>
 <!--
     ====================================
@@ -617,6 +625,9 @@
       },
 
       _resynchroActivityPosts: function() {
+        if (!this.activity.listActivityPosts) {
+          return;
+        }
         var activity_posts = this.activity.listActivityPosts.map(function(post) {
           return post.id;
         });
@@ -641,6 +652,20 @@
           this._submitUpdateActivityRecord();
         }  
       },
+      _deleteActivityPost: function(evt, postId) {
+        console.debug("[experts-activity-record-detail] _deleteActivityPost", postId);
+
+        this._deletePostId = postId;
+
+        var request = this.$.deleteActivityPost;
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
+
+        this._deletePostId = "";
+
+      },
 
       _handleUpdateActivityRecord: function() {
         this.activity = this._apiActivityRecord;
@@ -651,6 +676,14 @@
         this.set('activity.listActivityPosts', this._apiListActivityPost.items);
         console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
         this._resynchroActivityPosts()
+      },
+
+      _handleActivityPostDelete: function() {
+        console.debug("[experts-activity-record-detail] _handleActivityPostDelete", this._apiActivityPostDelete);
+        if(this.activity.activity_posts && this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id) >= 0) {
+          this.splice('activity.activity_posts', this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id), 1);
+        }
+        this._submitUpdateActivityRecord();
       },
     });
   </script>
