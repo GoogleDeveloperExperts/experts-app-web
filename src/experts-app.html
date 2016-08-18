@@ -231,18 +231,11 @@
             <paper-button name="activities" on-click="_goToPage">
                 Activities
             </paper-button>
+
             <paper-button name="profile" on-click="_goToPage">
               Profile
             </paper-button>
-<!--  Deprecated
-          </template>
-        
-          <paper-button name="map" on-click="_goToPage">
-            Map
-          </paper-button>
 
-          <template is="dom-if" if="{{user}}">
--->
             <paper-button name="help" on-click="_goToPage">
               Help
             </paper-button>
@@ -276,24 +269,19 @@
               hidden            = "{{!wideLayout}}">
 
               <template is="dom-if" if="{{user}}">
+
                 <paper-button name="activities" on-click="_goToPage">
                    Activities
                 </paper-button>
+
                 <paper-button name="profile" on-click="_goToPage">
                   Profile
                 </paper-button>
-<!--  Deprecated
-              </template>
-            
-              <paper-button name="map" on-click="_goToPage">
-                Map
-              </paper-button>
 
-              <template is="dom-if" if="{{user}}">
--->
                 <paper-button name="help" on-click="_goToPage">
                   Help
                 </paper-button>
+
               </template>
 
             </iron-selector>
@@ -323,9 +311,10 @@
           </app-toolbar>
         </app-header>
         <iron-pages
-          role              = "main"
-          selected          = "[[page]]"
-          attr-for-selected = "name">
+          role="main"
+          selected="[[page]]"
+          fallback-selection="activities" 
+          attr-for-selected="name">
           <div class="page" name="activities">
             <template is="dom-if" if="{{user}}">
               <experts-activities user="{{user}}"></experts-activities>
@@ -335,9 +324,6 @@
             <template is="dom-if" if="{{user}}">
               <experts-profile user="{{user}}"></experts-profile>
             </template>
-          </div>
-          <div class="page" name="map">
-            <experts-map user="{{user}}"></experts-map>
           </div>
           <div class="page" name="help">
             <experts-help user="{{user}}"></experts-help>
@@ -381,15 +367,6 @@
         },
         user : {
           type : Object,
-          /*
-          value       : function() {
-            return {
-              'name'    : 'Cesar Anton',
-              'email'   : 'reicek@gmail.com',
-              'avatar'  : 'https://secure.gravatar.com/avatar/f35f16285ad3235d467bb472771d62b0',
-            };
-          }
-          */
           value: null
         },
         _userSelected: {
