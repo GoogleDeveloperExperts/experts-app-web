@@ -415,10 +415,20 @@
         for (var i in this._activityTypes) {
           this._activityTypes[i].selected = "";
         }
+
       },
       _submitActivityPost: function() {
         this.post.email = this.user.email;
         this.post.activity_record = this.recordId;
+        if (!this.post.metric_reached) { 
+          this.post.metric_reached = 0;
+        }
+        if (!this.post.metric_indirect) { 
+          this.post.metric_indirect = 0;
+        } 
+        if (!this.post.metric_trained) { 
+          this.post.metric_trained = 0;
+        }
         console.debug("[experts-create-activity-post] _submitActivityPost ", this.post);
 
         var request = this.$.insertActivityPost;
