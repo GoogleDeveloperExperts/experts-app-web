@@ -55,6 +55,8 @@
         background: white;
         transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        font-family: Roboto;
+        font-size: 12px;
       }
     :host:hover {
         box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -108,8 +110,14 @@
         display: flex;
         flex-wrap: wrap;
       }
-      section#details  paper-input {
+      paper-input {
         width: 100%;
+        --paper-input-container-input: {
+          font-size: 12px;
+        };        
+        --paper-input-container-label: {
+          font-size: 12px;
+        };        
       }
       section  article  paper-button {
         margin: 5px;
@@ -121,7 +129,8 @@
         color: #fff;
         margin: 5px;
       }
-      section  article  paper-button.activityType[active] {
+      section  article  paper-button.activityType[active],
+      section  article  paper-button.productGroup[active] {
         background-color: #ff9e07;
         color: #fff;
         margin: 5px;
@@ -207,7 +216,8 @@
             </paper-input>
           </section>
         </div>  
-        
+
+
         <!-- Tab 1 -->
         <div>
           <h2>
@@ -215,9 +225,42 @@
               icon="arrow-back"
               on-tap="back">
             </iron-icon>
-            Activity Groups
+            Product Groups
           </h2>
           <section>
+            <p>Choose the product groups concerned by the activity</p>
+            <article
+              id="product_groups">
+              <template 
+                is="dom-repeat" 
+                items="[[productGroups]]"
+                as="product">
+                <paper-button
+                    on-tap="selectProductGroup"
+                    class="productGroup"
+                    id="{{product.id}}"
+                    toggles
+                    active="{{product.active}}"
+                    raised>
+                  {{product.tag}}
+                </paper-button>
+              </template>              
+            </article>
+          </section>
+        </div>
+
+
+        <!-- Tab 2 -->
+        <div>
+          <h2>
+            <iron-icon 
+              icon="arrow-back"
+              on-tap="back">
+            </iron-icon>
+            Activity Types
+          </h2>
+          <section>
+            <p>Begin by choosing one or several relevant activity groups</p>
             <article
               id="groups">
               <template 
@@ -234,7 +277,7 @@
                 </paper-button>
               </template>
             </article>
-            <h2>Activity types</h2>
+            <p>And then choose the relevant activity types</p>
             <article
               id="types">
               <template
@@ -256,7 +299,7 @@
           </section>
         </div>
         
-        <!-- Tab 2 -->
+        <!-- Tab 3 -->
         <div>
           <h2>
             <iron-icon 
@@ -298,7 +341,8 @@
           if="{{!_lastStep}}">
           <paper-button 
             id="continue" 
-            on-tap="next">
+            on-tap="next"
+            disabled="{{_stepDisabled}}">
             Continue
           </paper-button>
         </template>
@@ -307,7 +351,8 @@
           if="{{_lastStep}}">        
           <paper-button 
             id="continue" 
-            on-tap="finish">
+            on-tap="finish"
+            disabled="{{_stepDisabled}}">
             Finish
           </paper-button>
         </template>
@@ -327,6 +372,11 @@
             class="indicator"
             id="third"
             active$="{{_isCurrentStep(2, _currentStep)}}">
+          </div>
+          <div
+            class="indicator"
+            id="fourth"
+            active$="{{_isCurrentStep(3, _currentStep)}}">
           </div>
         </div>
       </footer>
@@ -384,12 +434,16 @@
         },
         _numberOfSteps: {
           type: Number,
-          value: 3
+          value: 4
         },
         _lastStep: {
           type: Boolean,
           computed: "_isLastStep(_currentStep,_numberOfSteps)"
         },
+        _stepDisabled: {
+          type: Boolean,
+          computed: "_isStepDisabled(_currentStep, newActivity.*)" 
+        },        
       },
       behaviors: [
         Polymer.PaperDialogBehavior
@@ -443,7 +497,22 @@
         this.fire('activity-created', this.newActivity);
         this._initNewActivity();
       },
-      
+      _isStepDisabled: function() {
+        switch (this._currentStep) {
+          case 0:
+            return (!this.newActivity.title || !this.newActivity.description);
+          case 1:
+            return (!this.newActivity.product_groups || this.newActivity.product_groups.length==0 )
+            break;
+          case 2:
+            return (!this.newActivity.activity_types || this.newActivity.activity_types.length==0 )
+            break;
+          case 3:
+            return (!this.newActivity.city || !this.newActivity.country || !this.newActivity.date);
+          default:
+            break;           
+        }
+      },
       selectActivityGroup: function(e){
 
         var _activityTypes = [];
@@ -487,11 +556,32 @@
           }
         } 
 
-        this.newActivity.activity_types=_selectedActivityTypes.sort(function(a, b) {
+        _selectedActivityTypes = _selectedActivityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
+        this.set("newActivity.activity_types", _selectedActivityTypes);
         console.debug("[experts-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
       },
+
+
+
+      selectProductGroup: function(e){
+
+        var _selectedProductGroups = [];
+        
+        for (var i in this.productGroups) {
+          if (this.productGroups[i].active) {
+            _selectedProductGroups.push(this.productGroups[i].tag);
+          }
+        } 
+
+        _selectedProductGroups  = _selectedProductGroups.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        });
+
+        this.set("newActivity.product_groups", _selectedProductGroups);
+        console.debug("[experts-create-activity] selectProductGroup - selected product groups", this.newActivity.product_groups);
+      },      
     });
   </script>
 </dom-module>
