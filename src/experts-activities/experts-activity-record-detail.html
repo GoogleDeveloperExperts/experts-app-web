@@ -51,15 +51,15 @@
       :host {
         display           : block;
         position          : fixed;
-        top               : 20vh;
-        left              : 11vw;
-        width             : 70vw;
+        top               : 10vh;
+        left              : 10vw;
+        width             : 80vw;
         overflow          : auto;
         border-radius     : 2px;    
         background: white;
         transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        padding           : 15px;
+        padding           : 0 25px;
       }
      :host:hover {
         box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -81,8 +81,9 @@
       }
       #addActivityPost {
         position          : absolute;
-        right             : 8px;
-        top               : 8px;
+        right             : 0;
+        top               : -30px;
+        background-color  : var(--google-green-500);
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);        
       }
@@ -95,28 +96,28 @@
         @apply(--layout-wrap);
       }
       .item_list .item:not(:first-child)  {
-        margin-left: 15px;
+        margin-left        : 15px;
       }
       .item_list .item:not(:last-child)  {
-        margin-right: 15px;
+        margin-right       : 15px;
       }
       
       .item {
-        margin-top: 15px;
-        margin-bottom: 15px;
+        margin-top         : 15px;
+        margin-bottom      : 15px;
       }
 
       .item_name {
-        color: var(--paper-grey-600);   
-        font-family: 'Roboto', 'Noto', sans-serif;
         -webkit-font-smoothing: antialiased;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-        font-size: 12px;
-        font-weight: 400;
-        letter-spacing: 0.011em;
-        line-height: 20px;
+        font-family        : 'Roboto', 'Noto', sans-serif;
+        color              : var(--paper-grey-600);   
+        white-space        : nowrap;
+        overflow           : hidden;
+        text-overflow      : ellipsis;
+        font-size          : 12px;
+        font-weight        : 400;
+        letter-spacing     : 0.011em;
+        line-height        : 20px;
       }
 
       .item_value {
@@ -125,19 +126,19 @@
       } 
 
       iron-icon.edit {
-        cursor: pointer;
-        color: var(--google-blue-500);;
+        cursor             : pointer;
+        color              : var(--google-blue-500);
       }    
       iron-icon.submit,
       iron-icon.add {
-        cursor: pointer;
-        color: var(--google-green-500);
+        cursor             : pointer;
+        color              : var(--google-green-500);
       }  
       iron-icon.delete {
       }
       iron-icon.close {
-        cursor: pointer;
-        color: var(--google-red-500);
+        cursor             : pointer;
+        color              : var(--google-red-500);
       }
 
       iron-icon[disabled] {
@@ -146,31 +147,31 @@
 
 
       .edit_label {
-        cursor: pointer;
-        padding: 5px;
-        border-radius: 5px;
-        color: white;
-        background-color:  var(--google-blue-500);
+        cursor             : pointer;
+        padding            : 5px;
+        border-radius      : 5px;
+        color              : white;
+        background-color   :  var(--google-blue-500);
       }
       .item_list .edit_label:not(:first-child)  {
-        margin-left: 15px;
+        margin-left        : 15px;
       }
       .item_list .edit_label:not(:last-child)  {
-        margin-right: 15px;
+        margin-right       : 15px;
       }   
       .container {
-        position: relative;
+        position           : relative;
       }  
       .item_value.submit { 
         @apply(--layout-center-justified); 
       }       
       #submit[disabled] {
-        background-color: var(--paper-grey-500);
+        background-color   : var(--paper-grey-500);
       }
       #submit { 
-        background-color: var(--google-blue-500);
-        color: white;
-        margin: 5px;
+        background-color   : var(--google-blue-500);
+        color              : white;
+        margin             : 5px;
       } 
     </style>
 <!--  
@@ -188,198 +189,377 @@
       </paper-button>
 
 
-      <template is="dom-if" if="{{!_editActivity}}">
+      <template 
+         is = "dom-if" 
+         if = "{{!_editActivity}}">
 
-        <div class="item_list">
-          <div class="item">
-            <div class="item_value">
-              <h2 class="activityTitle">{{activity.title}}</h2>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_value">
+              <h2 
+                class = "activityTitle">
+                {{activity.title}}
+              </h2>
             </div>
           </div>
           <paper-button
             id     = "editActivity"
             on-tap = "_doEditActivity">
             <iron-icon 
-              icon = "create" 
-              class="edit"></iron-icon>
+              icon  = "create" 
+              class = "edit"></iron-icon>
           </paper-button>
         </div>
 
-        <div class="item">
-          <div class="item_name">Description</div>
-          <div class="item_value activityDescription">{{activity.description}}</div>
+        <div 
+          class = "item">
+          <div 
+            class = "item_name">
+            Description
+          </div>
+          <div 
+            class = "item_value activityDescription">
+            {{activity.description}}
+          </div>
         </div>   
 
-        <div class="item_list">
-          <div class="item">
-            <div class="item_name">Type</div>
-            <div class="item_value activityType">{{_serializeList(activity.activity_types)}}</div>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Type
+            </div>
+            <div 
+              class = "item_value activityType">
+              {{_serializeList(activity.activity_types)}}
+            </div>
           </div> 
-          <div class="item">
-            <div class="item_name">Products</div>
-            <div class="item_value activityProductGroups">{{_serializeList(activity.product_groups)}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Products
+            </div>
+            <div 
+              class = "item_value activityProductGroups">
+              {{_serializeList(activity.product_groups)}}
+            </div>
           </div>
         </div> 
 
-
-        <div class="item_list">
-          <div class="item">
-            <div class="item_name">Date</div>
-            <div class="item_value activityDate">{{activity.date}}</div>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Date
+            </div>
+            <div 
+              class = "item_value activityDate">
+              {{activity.date}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">City</div>
-            <div class="item_value activityCity">{{activity.city}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              City
+            </div>
+            <div 
+              class = "item_value activityCity">
+              {{activity.city}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">Country</div>
-            <div class="item_value activityCountry">{{activity.country}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Country
+            </div>
+            <div 
+              class = "item_value activityCountry">
+              {{activity.country}}
+            </div>
           </div>  
         </div>
 
-        <div class="item_list">
-          <div class="item">
-            <div class="item_name">Direct reach</div>
-            <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Direct reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_reached}}
+            </div>
           </div>         
-          <div class="item">
-            <div class="item_name">Indirect reach</div>
-            <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Indirect reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_indirect}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">Trained reach</div>
-            <div class="item_value activityMetric">{{activity.metric_trained}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Trained reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_trained}}
+            </div>
           </div>  
         </div>
       </template>
 
-
-
-      <template is="dom-if" if="{{_editActivity}}">
-        <div class="item_list">
+      <template 
+        is = "dom-if" 
+        if = "{{_editActivity}}">
+        <div 
+          class = "item_list">
           <paper-input 
+            name      = "title" 
+            id        = "inputTitle" 
+            label     = "Title" 
+            type      = "text" 
+            value     = "{{activity.title}}"
+            maxlength = "128"
             auto-validate 
-            name="title" id="inputTitle" label="Title" 
-            type="text" value="{{activity.title}}"  
-            required maxlength="128"></paper-input>
+            required >
+          </paper-input>
         </div>
 
-        <div class="item">
+        <div 
+          class = "item">
           <paper-textarea 
+            name  = "description"
+            id    = "inputDescription"
+            label = "Description" 
+            type  = "text" 
+            value = "{{activity.description}}"
             auto-validate 
-            name="description" id="inputDescription" label="Description" 
-            type="text" value="{{activity.description}}"  
-            required></paper-textarea>
+            required>
+          </paper-textarea>
         </div>   
 
-
-        <div class="item">
-          <div class="item_name">Type</div>
-          <div class="item_list activityType">
-            <template is="dom-repeat" items="{{activity.activity_types}}" as="type">
-              <div class="edit_label" on-tap="_deleteType" >
+        <div 
+          class="item">
+          <div 
+            class = "item_name">
+            Type
+          </div>
+          <div 
+            class = "item_list activityType">
+            <template
+              is    = "dom-repeat"
+              items = "{{activity.activity_types}}" 
+              as    = "type">
+              <div 
+                class  = "edit_label" 
+                on-tap = "_deleteType" >
                 <iron-icon 
-                  class="delete"
-                  icon="cancel" ></iron-icon>
+                  class = "delete"
+                  icon  = "cancel" >
+                </iron-icon>
                 {{type}}
               </div>
             </template>
-            <template is="dom-if" if="{{!_isAddingType}}">
+            <template 
+              is = "dom-if" 
+              if = "{{!_isAddingType}}">
               <iron-icon 
-                class="add" 
-                icon="add-circle" 
-                on-tap="_addType" ></iron-icon> 
+                class  = "add" 
+                icon   = "add-circle" 
+                on-tap = "_addType" >
+              </iron-icon> 
             </template>
           </div>
-          <template is="dom-if" if="{{_isAddingType}}"> 
-            <div class="item_value">   
+          <template 
+            is = "dom-if" 
+            if = "{{_isAddingType}}"> 
+            <div 
+              class = "item_value">   
               <paper-input
-                name="newType" id="newType" label="Activity Type"
-                type="text" value="{{_newType}}"
-                required maxlength="64"
-                invalid={{_invalidNewType}}></paper-input>
+                name      = "newType" 
+                id        = "newType" 
+                label     = "Activity Type"
+                type      = "text" 
+                value     = "{{_newType}}"
+                maxlength = "64"
+                invalid   = {{_invalidNewType}}
+                required >
+              </paper-input>
               <iron-icon
-                class="submit" disabled$="{{_invalidNewType}}"
-                icon="done" on-tap="_submitNewType" ></iron-icon>
+                class     = "submit" 
+                disabled$ = "{{_invalidNewType}}"
+                icon      = "done" 
+                on-tap    = "_submitNewType" >
+              </iron-icon>
               <iron-icon
-                class="close"
-                icon="clear" on-tap="_closeAddType" ></iron-icon>  
+                class  = "close"
+                icon   = "clear" 
+                on-tap = "_closeAddType" >
+              </iron-icon>  
             </div>      
           </template>
           </div>
         </div> 
 
-        <div class="item">
-          <div class="item_name">Products</div>
-          <div class="item_list activityProductGroups">
-            <template is="dom-repeat" items="{{activity.product_groups}}" as="productGroup">
-              <div class="edit_label" on-tap="_deleteProductGroup" >
+        <div 
+          class = "item">
+          <div 
+            class = "item_name">
+            Products
+          </div>
+          <div 
+            class = "item_list activityProductGroups">
+            <template 
+              is    = "dom-repeat" 
+              items = "{{activity.product_groups}}" 
+              as    = "productGroup">
+              <div 
+                class = "edit_label" 
+                on-tap = "_deleteProductGroup" >
                 <iron-icon 
-                  class="delete"
-                  icon="cancel" ></iron-icon>
+                  class = "delete"
+                  icon = "cancel" >
+                </iron-icon>
                 {{productGroup}}
               </div>
             </template>
-            <template is="dom-if" if="{{!_isAddingProductGroup}}">
+            <template 
+              is = "dom-if" 
+              if = "{{!_isAddingProductGroup}}">
               <iron-icon 
-                class="add" 
-                icon="add-circle" 
-              on-tap="_addProductGroup" ></iron-icon> 
+                class  = "add" 
+                icon   = "add-circle" 
+                on-tap = "_addProductGroup" >
+              </iron-icon> 
             </template>
           </div>
         
-          <template is="dom-if" if="{{_isAddingProductGroup}}">
-            <div class="item_value">   
+          <template 
+            is = "dom-if" 
+            if = "{{_isAddingProductGroup}}">
+            <div 
+              class = "item_value">   
               <paper-input
-                name="newProductGroup" id="newProductGroup" label="Activity ProductGroup"
-                type="text" value="{{_newProductGroup}}"
-                required maxlength="64"
-                invalid={{_invalidNewProductGroup}}></paper-input>
+                name      = "newProductGroup" 
+                id        = "newProductGroup" 
+                label     = "Activity ProductGroup"
+                type      = "text" 
+                value     = "{{_newProductGroup}}"
+                maxlength = "64"
+                invalid   = {{_invalidNewProductGroup}}
+                required >
+              </paper-input>
               <iron-icon
-                class="submit" disabled$="{{_invalidNewProductGroup}}"
-                icon="done" on-tap="_submitNewProductGroup" ></iron-icon>
+                class     = "submit" 
+                disabled$ = "{{_invalidNewProductGroup}}"
+                icon      = "done" 
+                on-tap    = "_submitNewProductGroup" >
+              </iron-icon>
               <iron-icon
-                class="close"
-                icon="clear" on-tap="_closeAddProductGroup" ></iron-icon>    
+                class  = "close"
+                icon   = "clear" 
+                on-tap = "_closeAddProductGroup" >
+              </iron-icon>    
             </div>
           </template>
-          </div>
         </div>         
 
-
-        <div class="item_list">
-          <div class="item">
-            <div class="item_name">Date</div>
-            <div class="item_value activityDate">{{activity.date}}</div>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Date
+            </div>
+            <div 
+              class = "item_value activityDate">
+              {{activity.date}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">City</div>
-            <div class="item_value activityCity">{{activity.city}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              City
+            </div>
+            <div 
+              class = "item_value activityCity">
+              {{activity.city}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">Country</div>
-            <div class="item_value activityCountry">{{activity.country}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Country
+            </div>
+            <div 
+              class = "item_value activityCountry">
+              {{activity.country}}
+            </div>
           </div>  
         </div>
 
-        <div class="item_list">
-          <div class="item">
-            <div class="item_name">Direct reach</div>
-            <div class="item_value activityMetric">{{activity.metric_reached}}</div>
+        <div 
+          class = "item_list">
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Direct reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_reached}}
+            </div>
           </div>         
-          <div class="item">
-            <div class="item_name">Indirect reach</div>
-            <div class="item_value activityMetric">{{activity.metric_indirect}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Indirect reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_indirect}}
+            </div>
           </div>  
-          <div class="item">
-            <div class="item_name">Trained reach</div>
-            <div class="item_value activityMetric">{{activity.metric_trained}}</div>
+          <div 
+            class = "item">
+            <div 
+              class = "item_name">
+              Trained reach
+            </div>
+            <div 
+              class = "item_value activityMetric">
+              {{activity.metric_trained}}
+            </div>
           </div>  
         </div>
-
       </template>
 
-      <div class="container">
+      <div 
+        class = "container">
         
         <paper-fab
           id          = "addActivityPost" 
@@ -387,28 +567,35 @@
           on-tap      = "_openCreatePostDialog">
         </paper-fab>  
 
-        <div class="item">
-          <div class="item_name">
+        <div 
+          class = "item">
+          <div 
+            class = "item_name">
             Activity posts
           </div>
         </div>
 
         <experts-activity-post-list 
-          record-id="{{activity.id}}" 
-          post-list="{{activity.listActivityPosts}}"
-          user="{{user}}"
-          on-delecte-activity-post="_deleteActivityPost"
-          on-edit-activity-post="_openEditPostDialog"
-          edit-mode="true"></experts-activity-post-list>
+          user                     = "{{user}}"
+          edit-mode                = "true"
+          record-id                = "{{activity.id}}" 
+          post-list                = "{{activity.listActivityPosts}}"
+          on-edit-activity-post    = "_openEditPostDialog"
+          on-delecte-activity-post = "_deleteActivityPost" >
+        </experts-activity-post-list>
 
-        <template is="dom-if" if="{{_editActivity}}">
-          <div class="item"> 
-            <div class="item_value submit">     
+        <template 
+          is = "dom-if" 
+          if = "{{_editActivity}}">
+          <div 
+            class = "item"> 
+            <div 
+              class = "item_value submit">     
               <paper-button  
-                id="submit" 
-                on-tap="_submitUpdateActivityRecord"
-                disabled$="{{_submitDisabled}}"
-                raised> 
+                id        = "submit" 
+                on-tap    = "_submitUpdateActivityRecord"
+                disabled$ ="{{_submitDisabled}}"
+                raised > 
                 Submit 
               </paper-button> 
             </div> 
@@ -416,44 +603,42 @@
         </template>
       </div>
 
-
-
-
       <experts-create-activity-post 
-        id="createActivityPost"
-        user="{{user}}"
-        post="{{_aPost}}"
-        record-id="{{activity.id}}"
-        activity-groups="{{activityGroups}}"
-        product-groups="{{productGroups}}"
-        on-activity-post-created="_doAddActivityPost"        
-        modal></experts-create-activity-post>
+        id                       = "createActivityPost"
+        user                     = "{{user}}"
+        post                     = "{{_aPost}}"
+        record-id                = "{{activity.id}}"
+        activity-groups          = "{{activityGroups}}"
+        product-groups           = "{{productGroups}}"
+        on-activity-post-created = "_doAddActivityPost"        
+        modal>
+      </experts-create-activity-post>
 
       <iron-ajax
-        id = "updateActivityRecord"
-        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
-        method = "POST"
-        content-type = "application/json"
-        handle-as = "json"
+        id            = "updateActivityRecord"
+        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
+        method        = "POST"
+        content-type  = "application/json"
+        handle-as     = "json"
         last-response = "{{_apiActivityRecord}}"
-        on-response = "_handleUpdateActivityRecord"></iron-ajax>
+        on-response   = "_handleUpdateActivityRecord"></iron-ajax>
 
       <iron-ajax
-        id = "listActivityPost"
-        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
-        method = "GET"
-        content-type = "application/json"
-        handle-as = "json"
+        id            = "listActivityPost"
+        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
+        method        = "GET"
+        content-type  = "application/json"
+        handle-as     = "json"
         last-response = "{{_apiListActivityPost}}"
-        on-response = "_handleListActivityPost"></iron-ajax>        
+        on-response   = "_handleListActivityPost"></iron-ajax>        
 
       <iron-ajax
-        id = "deleteActivityPost"
-        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
-        method = "DELETE"
-        handle-as = "json"
+        id            = "deleteActivityPost"
+        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
+        method        = "DELETE"
+        handle-as     = "json"
         last-response = "{{_apiActivityPostDelete}}"
-        on-response = "_handleActivityPostDelete"></iron-ajax>
+        on-response   = "_handleActivityPostDelete"></iron-ajax>
   </template>
 <!--
     ====================================
@@ -462,28 +647,28 @@
 -->
   <script>
     Polymer({ 
-      is         : 'experts-activity-record-detail',
-      properties : {     
-        activity: {
-          type: Object,
-          value: null
+      is          : 'experts-activity-record-detail',
+      properties  : {     
+        activity        : {
+          type            : Object,
+          value           : null
         },
-        productGroups : {
+        productGroups   : {
           type            : Array,
           value           : function() {
             return [];
           }
         },        
-        activityGroups : {
-          type          : 'array',
-          notify        : true,
-          value         : function(){ 
+        activityGroups  : {
+          type            : 'array',
+          notify          : true,
+          value           : function(){ 
             return [];
           },
         }, 
 
-        user: {
-          type: Object,
+        user            : {
+          type            : Object,
           value: null
         },             
 
@@ -493,27 +678,27 @@
             return [];
           }
         },  
-        _editActivity: {
-          type: Boolean,
-          value: false
+        _editActivity   : {
+          type            : Boolean,
+          value           : false
         },
-        _isAddingType: {
-          type: Boolean,
-          value: false
+        _isAddingType   : {
+          type            : Boolean,
+          value           : false
         },
         _isAddingProductGroup: {
-          type: Boolean,
-          value: false
+          type            : Boolean,
+          value           : false
         },
       },
-      behaviors         : [
+      behaviors   : [
         Polymer.PaperDialogBehavior
       ],
-      observers: [
+      observers   : [
         "_paramsChanged(activity, activityGroups,  productGroups)"
       ],
 
-      ready : function() {
+      ready       : function() {
       /**
        * Attaching dialog to main body to make it live over the gray div 
        * Bug that will be corrected 
@@ -524,27 +709,24 @@
         document.querySelector('body').appendChild(this.createActivityPost);
       },
 
-      _paramsChanged: function() {
-
+      _paramsChanged              : function() {
         // console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
         if (!this.activity || !this.activity.activity_types) {
           return;
         } 
         this._listActivityPosts(); 
       },
-
-      _listActivityPosts: function() {
-        var request = this.$.listActivityPost;
+      _listActivityPosts          : function() {
+        var request     = this.$.listActivityPost;
         request.headers = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
       },
-
-      _doEditActivity: function() {
+      _doEditActivity             : function() {
         this._editActivity = true;
       },
-      _serializeList: function(list, prefix) {
+      _serializeList              : function(list, prefix) {
         prefix = prefix || "";
         var serializedList = ''
         for (var i in list) {
@@ -556,75 +738,66 @@
         }
         return serializedList;
       },
-
-      _deleteType: function(evt){
+      _deleteType                 : function(evt){
         console.debug("[experts-activity-record-detail] _deleteType", evt.model.type);
         this.splice('activity.activity_types', evt.model.index, 1);
       },  
-      _addType: function() {
+      _addType                    : function() {
         this._isAddingType = true;
       },
-      _closeAddType: function() {
+      _closeAddType               : function() {
         this._isAddingType = false;
       },
-      _submitNewType: function() {
+      _submitNewType              : function() {
         if (!this.activity.activity_types) {
           this.set('activity.activity_types', []);
         }
         this.push('activity.activity_types', this._newType);
         this._closeAddType();
       },
-
-
-      _deleteProductGroup: function(evt){
+      _deleteProductGroup         : function(evt){
         console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
         this.splice('activity.product_groups', evt.model.index, 1);
       },
-      _addProductGroup: function() {
+      _addProductGroup            : function() {
         this._isAddingProductGroup = true;
       },
-      _closeAddProductGroup: function() {
+      _closeAddProductGroup       : function() {
         this._isAddingProductGroup = false;
       },
-      _submitNewProductGroup: function() {
+      _submitNewProductGroup      : function() {
         if (!this.activity.product_groups) {
           this.set('activity.product_groups', []);
         }
         this.push('activity.product_groups', this._newProductGroup);
         this._closeAddProductGroup();
       },
-
-
-      _openCreatePostDialog: function() {
+      _openCreatePostDialog       : function() {
         this._aPost = {};
         this.createActivityPost.open();
       },
-      _openEditPostDialog: function(evt, post) {
+      _openEditPostDialog         : function(evt, post) {
         this._aPost = post;
         this.createActivityPost.open();
       },
+      _submitUpdateActivityRecord : function() {
 
-
-      _submitUpdateActivityRecord: function() {
-
-        var request = this.$.updateActivityRecord;
-        request.body = JSON.stringify(this.activity);
+        var request     = this.$.updateActivityRecord;
+        request.body    = JSON.stringify(this.activity);
 
         request.headers = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
       },
-
-      _doAddActivityPost: function(evt, post) {
+      _doAddActivityPost          : function(evt, post) {
         if (!this.activity.activity_posts) {
           this.set('activity.activity_posts', []);
         }
         this.push ('activity.activity_posts', post.id);
         this._submitUpdateActivityRecord();
       },
-
-      _resynchroActivityPosts: function() {
+      _resynchroActivityPosts     : function() {
         if (!this.activity.listActivityPosts) {
           return;
         }
@@ -652,33 +825,28 @@
           this._submitUpdateActivityRecord();
         }  
       },
-      _deleteActivityPost: function(evt, postId) {
+      _deleteActivityPost         : function(evt, postId) {
         console.debug("[experts-activity-record-detail] _deleteActivityPost", postId);
-
-        this._deletePostId = postId;
-
-        var request = this.$.deleteActivityPost;
-        request.headers = {
+        this._deletePostId  = postId;
+        var request         = this.$.deleteActivityPost;
+        request.headers     = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
 
-        this._deletePostId = "";
+        this._deletePostId  = "";
 
       },
-
-      _handleUpdateActivityRecord: function() {
-        this.activity = this._apiActivityRecord;
-        this._editActivity = false;
+      _handleUpdateActivityRecord : function() {
+        this.activity       = this._apiActivityRecord;
+        this._editActivity  = false;
       },
-
-      _handleListActivityPost: function() {
+      _handleListActivityPost     : function() {
         this.set('activity.listActivityPosts', this._apiListActivityPost.items);
         console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
         this._resynchroActivityPosts()
       },
-
-      _handleActivityPostDelete: function() {
+      _handleActivityPostDelete   : function() {
         console.debug("[experts-activity-record-detail] _handleActivityPostDelete", this._apiActivityPostDelete);
         if(this.activity.activity_posts && this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id) >= 0) {
           this.splice('activity.activity_posts', this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id), 1);
