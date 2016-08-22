@@ -2,7 +2,7 @@
 Google Experts tracking app
 ===========================
 ###### built with <3 by the GE Tracking App Team
-![App Screenshot](http://s32.postimg.org/4y3nsfx91/preview.jpg)
+[![Preview](https://s3.postimg.org/cqz89z2mb/gde_front.png)](https://postimg.org/image/6da56pxq7/)
 
 The GDE App aims to help Google Experts track their activities and give Googlers a way to analyze the impact of the program and it's members. It's a progressive web app built with Polymer 1.0 toolbox, please refer to [oficial documentation](https://www.polymer-project.org/1.0/docs/) if you require more information.
 
