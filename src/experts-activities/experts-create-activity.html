@@ -45,135 +45,135 @@
 -->
     <style>
      :host {
-        display: block;
-        position: fixed;
-        top: 20vh;
-        left: 11vw;
-        width: 70vw;
-        overflow: auto;
-        border-radius: 2px;    
-        background: white;
-        transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        font-family: Roboto;
-        font-size: 12px;
+        display         : block;
+        position        : fixed;
+        top             : 10vh;
+        left            : 10vw;
+        width           : 80vw;
+        overflow        : auto;
+        border-radius   : 2px;    
+        background      : white;
+        transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        font-family     : Roboto;
+        font-size       : 12px;
       }
     :host:hover {
-        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+        box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
      :host > * {
-        padding: 0 !important;
+        padding         : 0 !important;
       }
       #closeCreateActivity {
-        position: absolute;
-        justify-content: flex-end;
-        right: 16px;
-        top: 16px;
-        margin: 0;
-        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
-        color: #e5e5e5;
+        position        : absolute;
+        justify-content : flex-end;
+        right           : 16px;
+        top             : 16px;
+        margin          : 0;
+        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
+        color           : #e5e5e5;
       }
       #closeCreateActivity:hover {
-        color: #aaa;
+        color           : #aaa;
       }
       #continue {
-        margin: 0 auto;
+        margin          : 0 auto;
       }
       h2 {
-        display: flex;
-        align-items: center;
-        color: #4285f4;
-        font-size: 16px;
-        font-weight: 500;
-        min-height: 56px;
-        margin: 0 0 0 21px !important;
+        display         : flex;
+        align-items     : center;
+        color           : #4285f4;
+        font-size       : 16px;
+        font-weight     : 500;
+        min-height      : 56px;
+        margin          : 0 0 0 21px !important;
       }
       h2  iron-icon {
-        margin-right: 10px;
-        color: #e5e5e5;
-        cursor: pointer;
-        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
+        margin-right    : 10px;
+        color           : #e5e5e5;
+        cursor          : pointer;
+        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
       }
        h2  iron-icon:hover {
-        color: #aaa;
+        color           : #aaa;
       }
       section {
-        flex: 1;
-        margin: 0 56px !important;
+        flex            : 1;
+        margin          : 0 56px !important;
       }
       section  article {
-        display: flex;
-        justify-content: center;
-        flex-wrap: wrap;
+        display         : flex;
+        justify-content : center;
+        flex-wrap       : wrap;
       }
       section#details {
-        display: flex;
-        flex-wrap: wrap;
+        display         : flex;
+        flex-wrap       : wrap;
       }
       paper-input {
-        width: 100%;
+        width           : 100%;
         --paper-input-container-input: {
-          font-size: 12px;
+          font-size       : 12px;
         };        
         --paper-input-container-label: {
-          font-size: 12px;
+          font-size       : 12px;
         };        
       }
       section  article  paper-button {
-        margin: 5px;
-        font-weight: normal !important;
-        cursor: pointer;
+        margin            : 5px;
+        font-weight       : normal !important;
+        cursor            : pointer;
       }
       section  article  paper-button.activityGroup[active] {
-        background-color: #34a853;
-        color: #fff;
-        margin: 5px;
+        background-color  : #34a853;
+        color             : #fff;
+        margin            : 5px;
       }
       section  article  paper-button.activityType[active],
       section  article  paper-button.productGroup[active] {
-        background-color: #ff9e07;
-        color: #fff;
-        margin: 5px;
+        background-color  : #ff9e07;
+        color             : #fff;
+        margin            : 5px;
       }
       footer {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        height: 100px;
+        display           : flex;
+        flex-direction    : column;
+        align-items       : center;
+        justify-content   : center;
+        height            : 100px;
       }
       footer  paper-button {
-        color: #fff;
-        background-color: #4285f4;
-        border-radius: 2px;
-        padding: 14px 30px;
-        font-size: 14px;
+        color             : #fff;
+        background-color  : #4285f4;
+        border-radius     : 2px;
+        padding           : 14px 30px;
+        font-size         : 14px;
       }
       footer  .progress {
-        display: flex;
-        flex-direction: row;
-        justify-content: center;
-        align-items: center;
-        height: 48px;
+        display           : flex;
+        flex-direction    : row;
+        justify-content   : center;
+        align-items       : center;
+        height            : 48px;
       }
       footer  .progress  .indicator {
-        border-radius: 50%;
-        width: 8px;
-        height: 8px;
-        margin: 0 3px 0;
-        background-color: #d8d8d8;
+        border-radius     : 50%;
+        width             : 8px;
+        height            : 8px;
+        margin            : 0 3px 0;
+        background-color  : #d8d8d8;
       }
       footer  .progress  .indicator#first[active] {
-        background-color: #4285f4;
+        background-color  : #4285f4;
       }
       footer  .progress  .indicator#second[active] {
-        background-color: #ea4335;
+        background-color  : #ea4335;
       }
       footer  .progress  .indicator#third[active] {
-        background-color: #fbbc05;
+        background-color  : #fbbc05;
       }
       footer  .progress  .indicator#fourth[active] {
-        background-color: #34a853;
+        background-color  : #34a853;
       }      
       
     </style>
@@ -183,18 +183,17 @@
    ====================================
 -->
       <paper-button
-        id="closeCreateActivity"
-        on-tap="cancel"
+        id      = "closeCreateActivity"
+        on-tap  = "cancel"
         autofocus>
         <iron-icon 
-          icon="close">
+          icon  = "close">
         </iron-icon>
       </paper-button>
 
       <iron-pages 
-        id="ironpages" 
-        selected="{{_currentStep}}">
-        
+        id        = "ironpages" 
+        selected  = "{{_currentStep}}">
         <!-- Tab 0 -->
         <div>
           <h2>
@@ -203,27 +202,25 @@
           <section>
             <p>Fill in the details below to add and track your activity.</p>
             <paper-input
-              id="title"
-              type="text"
-              label="Activity Title"
-              value="{{ newActivity.title }}">
+              id    = "title"
+              type  = "text"
+              label = "Activity Title"
+              value = "{{ newActivity.title }}">
             </paper-input>
             <paper-input
-              id="description"
-              type="text"
-              label="Description"
-              value="{{ newActivity.description }}">
+              id    = "description"
+              type  = "text"
+              label = "Description"
+              value = "{{ newActivity.description }}">
             </paper-input>
           </section>
         </div>  
-
-
         <!-- Tab 1 -->
         <div>
           <h2>
             <iron-icon 
-              icon="arrow-back"
-              on-tap="back">
+              icon    = "arrow-back"
+              on-tap  = "back">
             </iron-icon>
             Product Groups
           </h2>
@@ -232,70 +229,71 @@
             <article
               id="product_groups">
               <template 
-                is="dom-repeat" 
-                items="[[productGroups]]"
+                is    = "dom-repeat" 
+                items = "[[productGroups]]"
                 as="product">
                 <paper-button
-                    on-tap="selectProductGroup"
-                    class="productGroup"
-                    id="{{product.id}}"
-                    toggles
-                    active="{{product.active}}"
-                    raised>
+                  id      = "{{product.id}}"
+                  class   = "productGroup"
+                  on-tap  = "selectProductGroup"
+                  active  = "{{product.active}}"
+                  toggles
+                  raised>
                   {{product.tag}}
                 </paper-button>
               </template>              
             </article>
           </section>
         </div>
-
-
         <!-- Tab 2 -->
         <div>
           <h2>
             <iron-icon 
-              icon="arrow-back"
-              on-tap="back">
+              icon    = "arrow-back"
+              on-tap  = "back">
             </iron-icon>
             Activity Types
           </h2>
           <section>
             <p>Begin by choosing one or several relevant activity groups</p>
             <article
-              id="groups">
+              id  = "groups">
               <template 
-                is="dom-repeat" 
-                items="[[activityGroups]]">
+                is    = "dom-repeat" 
+                items = "[[activityGroups]]">
                 <paper-button
-                    on-tap="selectActivityGroup"
-                    class="activityGroup"
-                    id="{{item.id}}"
-                    toggles
-                    active="{{item.active}}"
-                    raised>
+                  id      = "{{item.id}}"
+                  class   = "activityGroup"
+                  on-tap  = "selectActivityGroup"
+                  active  = "{{item.active}}"
+                  toggles
+                  raised>
                   {{item.tag}}
                 </paper-button>
               </template>
             </article>
-            <p>And then choose the relevant activity types</p>
-            <article
-              id="types">
-              <template
-                is="dom-repeat" 
-                items="[[_activityTypes]]"
-                as="type">
-                <paper-button
-                    on-tap="selectActivityType"
-                    class="activityType"
-                    id="{{type.tag}}"
-                    toggles
-                    active="{{type.active}}"
-                    raised>
-                  {{type.tag}}
-                </paper-button>
-
-              </template>
-            </article>
+            <template
+              is  = "dom-if"
+              if  = "{{_activityTypesActive}}">
+              <p>Now choose the relevant activity types</p>
+              <article
+                id  = "types">
+                <template
+                  is    = "dom-repeat" 
+                  items = "[[_activityTypes]]"
+                  as    = "type">
+                  <paper-button
+                      id      = "{{type.tag}}"
+                      class   = "activityType"
+                      on-tap  = "selectActivityType"
+                      active  = "{{type.active}}"
+                      toggles
+                      raised>
+                    {{type.tag}}
+                  </paper-button>
+                </template>
+              </article>
+            </template>
           </section>
         </div>
         
@@ -303,84 +301,79 @@
         <div>
           <h2>
             <iron-icon 
-              icon="arrow-back" 
-              on-tap="back">
+              icon    = "arrow-back" 
+              on-tap  = "back">
             </iron-icon>
             Details
           </h2>
           <section
             id="details">
             <paper-input
-              id="city"
-              type="text"
-              label="Which city?"
-              value="{{ newActivity.city }}">
+              id    = "city"
+              type  = "text"
+              label = "Which city?"
+              value = "{{ newActivity.city }}">
             </paper-input>
             <paper-input
-              id="country"
-              type="text"
-              label="Which country?"
-              value="{{ newActivity.country }}">
+              id    = "country"
+              type  = "text"
+              label = "Which country?"
+              value = "{{ newActivity.country }}">
             </paper-input>
             <paper-input
-              id="date"
-              type="date"
-              label="When it happened?"
-              value="{{ newActivity.date }}">
+              id    = "date"
+              type  = "date"
+              label = "When it happened?"
+              value = "{{ newActivity.date }}">
             </paper-input>
           </section>
         </div>
-        
-    
       </iron-pages>  
-      
-
       <footer>
         <template 
-          is="dom-if"
-          if="{{!_lastStep}}">
+          is  = "dom-if"
+          if  = "{{!_lastStep}}">
           <paper-button 
-            id="continue" 
-            on-tap="next"
-            disabled="{{_stepDisabled}}">
+            id        = "continue" 
+            on-tap    = "next"
+            disabled  = "{{_stepDisabled}}">
             Continue
           </paper-button>
         </template>
         <template 
-          is="dom-if"
-          if="{{_lastStep}}">        
+          is  = "dom-if"
+          if  = "{{_lastStep}}">        
           <paper-button 
-            id="continue" 
-            on-tap="finish"
-            disabled="{{_stepDisabled}}">
+            id        = "continue" 
+            on-tap    = "finish"
+            disabled  = "{{_stepDisabled}}">
             Finish
           </paper-button>
         </template>
         <div
-          class="progress">
+          class = "progress">
           <div 
-            class="indicator"
-            id="first"
-            active$="{{_isCurrentStep(0, _currentStep)}}">
+            id      = "first"
+            class   = "indicator"
+            active$ = "{{_isCurrentStep(0, _currentStep)}}">
           </div>
           <div
-            class="indicator"
-            id="second"
-            active$="{{_isCurrentStep(1,_currentStep)}}">
+            id      = "second"
+            class   = "indicator"
+            active$ = "{{_isCurrentStep(1,_currentStep)}}">
           </div>
           <div
-            class="indicator"
-            id="third"
-            active$="{{_isCurrentStep(2, _currentStep)}}">
+            id      = "third"
+            class   = "indicator"
+            active$ = "{{_isCurrentStep(2, _currentStep)}}">
           </div>
           <div
-            class="indicator"
-            id="fourth"
-            active$="{{_isCurrentStep(3, _currentStep)}}">
+            id      = "fourth"
+            class   = "indicator"
+            active$ = "{{_isCurrentStep(3, _currentStep)}}">
           </div>
         </div>
       </footer>
-
   </template>
 <!--
    ====================================
@@ -389,12 +382,12 @@
 -->
   <script>
     Polymer({ 
-      is: 'experts-create-activity',
-      properties: {
+      is          : 'experts-create-activity',
+      properties  : {
 /**
  * The new activity
  */
-        newActivity: {
+        newActivity           : {
           type: Object,
           notify: true,
           value: function() {
@@ -408,112 +401,73 @@
 /**
  * The allowed activity groups 
  */  
-        productGroups: {
+        productGroups         : {
           type: Array,
           value: function() {
             return [];
           }
         },
-        activityGroups: {
+        activityGroups        : {
           type: Array,
           notify: true,
           value: function(){ 
             return [];
           },
-        },        
-
-        _activityTypes: {
+        },
+        _activityTypes        : {
           type: Array,
           value: function() {
             return [];
           }
         },        
-        _currentStep: {
+        _currentStep          : {
           type: Number,
           value: 0
         },
-        _numberOfSteps: {
+        _numberOfSteps        : {
           type: Number,
           value: 4
         },
-        _lastStep: {
+        _lastStep             : {
           type: Boolean,
           computed: "_isLastStep(_currentStep,_numberOfSteps)"
         },
-        _stepDisabled: {
+        _stepDisabled         : {
           type: Boolean,
           computed: "_isStepDisabled(_currentStep, newActivity.*)" 
-        },        
+        },
+        _activityTypesActive  : {
+          type: Boolean,
+          computed: "_isActivityTypesActive(_activityTypes)"
+        },    
       },
-      behaviors: [
+      behaviors               : [
         Polymer.PaperDialogBehavior
       ],
-
-      _isLastStep: function() {
-       // console.debug("[experts-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
-       return (this._currentStep == this._numberOfSteps -1);
-      },
-      _isCurrentStep: function(step) {
-        // console.debug("[experts-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
-        return (this._currentStep == step);
-      },
-      back: function() {
+      back                    : function() {
         if (this._currentStep > 0) {
           this._currentStep -= 1;
         }
       },      
-      next: function() {
+      next                    : function() {
         // console.debug("[experts-create-activity] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
-      },      
-      
-      _createExpress: function() {
-        this.newActivity={"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
-        this.finish();
       },
-      finish: function(){        
+      finish                  : function(){        
         this._currentStep=0;
         // console.debug("[experts-create-activity] finish - Activity: ",this.newActivity);
         this._finishNewActivity();
         this.close();
       },
-      cancel: function(){        
+      cancel                  : function(){        
         this._currentStep=0;
         this._initNewActivity();
         // console.debug("[experts-create-activity] close");
         this.close();
       },
-      
-      _initNewActivity: function() {
-        this.newActivity={
-          'title': '',
-          'description': ''
-        };
-      },
-      _finishNewActivity: function() {
-        console.debug("[experts-create-activity] _finishNewActivity ", this.newActivity);
-        this.fire('activity-created', this.newActivity);
-        this._initNewActivity();
-      },
-      _isStepDisabled: function() {
-        switch (this._currentStep) {
-          case 0:
-            return (!this.newActivity.title || !this.newActivity.description);
-          case 1:
-            return (!this.newActivity.product_groups || this.newActivity.product_groups.length==0 )
-            break;
-          case 2:
-            return (!this.newActivity.activity_types || this.newActivity.activity_types.length==0 )
-            break;
-          case 3:
-            return (!this.newActivity.city || !this.newActivity.country || !this.newActivity.date);
-          default:
-            break;           
-        }
-      },
-      selectActivityGroup: function(e){
+      selectActivityGroup     : function(e){
 
         var _activityTypes = [];
         
@@ -545,8 +499,7 @@
         });
         console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
       },
-
-      selectActivityType: function(e){
+      selectActivityType      : function(e){
 
         var _selectedActivityTypes = [];
         
@@ -562,10 +515,7 @@
         this.set("newActivity.activity_types", _selectedActivityTypes);
         console.debug("[experts-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
       },
-
-
-
-      selectProductGroup: function(e){
+      selectProductGroup      : function(e){
 
         var _selectedProductGroups = [];
         
@@ -581,7 +531,49 @@
 
         this.set("newActivity.product_groups", _selectedProductGroups);
         console.debug("[experts-create-activity] selectProductGroup - selected product groups", this.newActivity.product_groups);
-      },      
+      },
+      _isActivityTypesActive  : function() {
+       return (this._activityTypes.length > 0);
+      },
+      _isLastStep             : function() {
+       // console.debug("[experts-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
+       return (this._currentStep == this._numberOfSteps -1);
+      },
+      _isCurrentStep          : function(step) {
+        // console.debug("[experts-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
+        return (this._currentStep == step);
+      },   
+      _createExpress          : function() {
+        this.newActivity={"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
+        this.finish();
+      },
+      _initNewActivity        : function() {
+        this.newActivity={
+          'title': '',
+          'description': ''
+        };
+      },
+      _finishNewActivity      : function() {
+        console.debug("[experts-create-activity] _finishNewActivity ", this.newActivity);
+        this.fire('activity-created', this.newActivity);
+        this._initNewActivity();
+      },
+      _isStepDisabled         : function() {
+        switch (this._currentStep) {
+          case 0:
+            return (!this.newActivity.title || !this.newActivity.description);
+          case 1:
+            return (!this.newActivity.product_groups || this.newActivity.product_groups.length==0 )
+            break;
+          case 2:
+            return (!this.newActivity.activity_types || this.newActivity.activity_types.length==0 )
+            break;
+          case 3:
+            return (!this.newActivity.city || !this.newActivity.country || !this.newActivity.date);
+          default:
+            break;           
+        }
+      },    
     });
   </script>
 </dom-module>
