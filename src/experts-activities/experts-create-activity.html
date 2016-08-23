@@ -58,12 +58,12 @@
         font-family     : Roboto;
         font-size       : 12px;
       }
-    :host:hover {
+      :host:hover {
         box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
-     :host > * {
-        padding         : 0 !important;
-      }
+      .content { 
+        padding: 15px;  
+      } 
       #closeCreateActivity {
         position        : absolute;
         justify-content : flex-end;
@@ -97,15 +97,6 @@
        h2  iron-icon:hover {
         color           : #aaa;
       }
-      section {
-        flex            : 1;
-        margin          : 0 56px !important;
-      }
-      section  article {
-        display         : flex;
-        justify-content : center;
-        flex-wrap       : wrap;
-      }
       section#details {
         display         : flex;
         flex-wrap       : wrap;
@@ -119,22 +110,49 @@
           font-size       : 12px;
         };        
       }
-      section  article  paper-button {
+      paper-button {
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
       }
-      section  article  paper-button.activityGroup[active] {
-        background-color  : #34a853;
-        color             : #fff;
-        margin            : 5px;
-      }
-      section  article  paper-button.activityType[active],
-      section  article  paper-button.productGroup[active] {
+      .product_groups paper-button[active] {
         background-color  : #ff9e07;
         color             : #fff;
         margin            : 5px;
       }
+
+      .groups paper-button[active] {
+        background-color: #34a853;
+        color: #fff;
+        margin: 5px;
+      } 
+      .types paper-button.selected {
+        background-color: #ff9e07;
+        color: #fff;
+        margin: 5px;
+      }        
+      .item { 
+        margin-top        : 15px; 
+        margin-bottom     : 15px; 
+      } 
+
+      .item_name { 
+        color             : var(--paper-grey-600); 
+        font-family       : 'Roboto', 'Noto', sans-serif;
+        white-space       : nowrap; 
+        overflow          : hidden; 
+        text-overflow     : ellipsis; 
+        font-size         : 12px; 
+        font-weight       : 400; 
+        letter-spacing    : 0.011em; 
+        line-height       : 20px; 
+      } 
+
+      .item_value { 
+        @apply(--layout-horizontal); 
+        @apply(--layout-center); 
+        @apply(--layout-wrap); 
+      } 
       footer {
         display           : flex;
         flex-direction    : column;
@@ -182,117 +200,131 @@
                    HTML
    ====================================
 -->
-      <paper-button
+    
+    <paper-button
         id      = "closeCreateActivity"
         on-tap  = "cancel"
         autofocus>
-        <iron-icon 
+      <iron-icon 
           icon  = "close">
-        </iron-icon>
-      </paper-button>
+      </iron-icon>
+    </paper-button>
 
+    <div class='content'> 
       <iron-pages 
-        id        = "ironpages" 
-        selected  = "{{_currentStep}}">
+          id        = "ironpages" 
+          selected  = "{{_currentStep}}">
         <!-- Tab 0 -->
         <div>
           <h2>
             Add an activity
           </h2>
           <section>
-            <p>Fill in the details below to add and track your activity.</p>
-            <paper-input
-              id    = "title"
-              type  = "text"
-              label = "Activity Title"
-              value = "{{ newActivity.title }}">
-            </paper-input>
-            <paper-input
-              id    = "description"
-              type  = "text"
-              label = "Description"
-              value = "{{ newActivity.description }}">
-            </paper-input>
+            <div class="item"> 
+              Fill in the details below to add and track your activity.
+            </div>
+            <div class="item"> 
+              <paper-input
+                  id    = "title"
+                  type  = "text"
+                  label = "Activity Title"
+                  value = "{{ newActivity.title }}">
+              </paper-input>
+            </div>
+            <div class="item"> 
+              <paper-input
+                  id    = "description"
+                  type  = "text"
+                  label = "Description"
+                  value = "{{ newActivity.description }}">
+              </paper-input>
+            </div>
           </section>
         </div>  
         <!-- Tab 1 -->
         <div>
           <h2>
             <iron-icon 
-              icon    = "arrow-back"
-              on-tap  = "back">
+                icon    = "arrow-back"
+                on-tap  = "back">
             </iron-icon>
             Product Groups
           </h2>
           <section>
-            <p>Choose the product groups concerned by the activity</p>
-            <article
-              id="product_groups">
-              <template 
-                is    = "dom-repeat" 
-                items = "[[productGroups]]"
-                as="product">
-                <paper-button
-                  id      = "{{product.id}}"
-                  class   = "productGroup"
-                  on-tap  = "selectProductGroup"
-                  active  = "{{product.active}}"
-                  toggles
-                  raised>
-                  {{product.tag}}
-                </paper-button>
-              </template>              
-            </article>
+            <div class="item"> 
+              <div class="item_name">
+                Choose the product groups concerned by the activity
+              </div>
+              <div class="product_groups item_value">
+                <template 
+                    is    = "dom-repeat" 
+                    items = "[[productGroups]]"
+                    as="product">
+                  <paper-button
+                      id      = "{{product.id}}"
+                      class   = "productGroup"
+                      on-tap  = "_selectProductGroup"
+                      active  = "{{product.active}}"
+                      toggles
+                      raised>
+                    {{product.tag}}
+                  </paper-button>
+                </template>   
+              </div>
           </section>
         </div>
         <!-- Tab 2 -->
         <div>
           <h2>
             <iron-icon 
-              icon    = "arrow-back"
-              on-tap  = "back">
+                icon    = "arrow-back"
+                on-tap  = "back">
             </iron-icon>
-            Activity Types
+            Activity Type
           </h2>
           <section>
-            <p>Begin by choosing one or several relevant activity groups</p>
-            <article
-              id  = "groups">
-              <template 
-                is    = "dom-repeat" 
-                items = "[[activityGroups]]">
-                <paper-button
-                  id      = "{{item.id}}"
-                  class   = "activityGroup"
-                  on-tap  = "selectActivityGroup"
-                  active  = "{{item.active}}"
-                  toggles
-                  raised>
-                  {{item.tag}}
-                </paper-button>
-              </template>
-            </article>
+            <div class="item"> 
+              <div class="item_name">Begin by choosing one or several relevant activity groups</div>
+              <div class="groups item_value">
+                <template  
+                    is="dom-repeat" 
+                    items="[[activityGroups]]">
+                  <paper-button 
+                      on-tap="_selectActivityGroup" 
+                      class="group" 
+                      id="{{item.id}}" 
+                      name="{{item.tag}}" 
+                      active="{{item.active}}" 
+                      toggles 
+                      raised> 
+                    {{item.tag}} 
+                  </paper-button> 
+                </template> 
+              </div> 
+            </div> 
             <template
-              is  = "dom-if"
-              if  = "{{_activityTypesActive}}">
-              <p>Now choose the relevant activity types</p>
-              <article
-                id  = "types">
-                <template
-                  is    = "dom-repeat" 
-                  items = "[[_activityTypes]]"
-                  as    = "type">
-                  <paper-button
-                      id      = "{{type.tag}}"
-                      class   = "activityType"
-                      on-tap  = "selectActivityType"
-                      active  = "{{type.active}}"
-                      toggles
-                      raised>
-                    {{type.tag}}
-                  </paper-button>
-                </template>
-              </article>
+                is  = "dom-if"
+                if  = "{{_activityTypesActive}}">
+              <div class="item"> 
+                <div class="item_name">Now choose the relevant activity type (only one allowed)</div>
+                <div 
+                    class="types item_value"
+                    invalid$="{{_typeInvalid}}">
+                  <template 
+                    is="dom-repeat" 
+                    items="[[_activityTypes]]"
+                    as="type">
+                    <paper-button 
+                        on-tap="_selectActivityType" 
+                        class$="type {{type.selected}} yeah"
+                        id="{{type.tag}}" 
+                        name="{{type.tag}}" 
+                        raised> 
+                      {{type.tag}} 
+                    </paper-button> 
+                  </template> 
+                </div>  
+              </div> 
             </template>
           </section>
         </div>
@@ -301,79 +333,80 @@
         <div>
           <h2>
             <iron-icon 
-              icon    = "arrow-back" 
-              on-tap  = "back">
+                icon    = "arrow-back" 
+                on-tap  = "back">
             </iron-icon>
             Details
           </h2>
           <section
             id="details">
             <paper-input
-              id    = "city"
-              type  = "text"
-              label = "Which city?"
-              value = "{{ newActivity.city }}">
+                id    = "city"
+                type  = "text"
+                label = "Which city?"
+                value = "{{ newActivity.city }}">
             </paper-input>
             <paper-input
-              id    = "country"
-              type  = "text"
-              label = "Which country?"
-              value = "{{ newActivity.country }}">
+                id    = "country"
+                type  = "text"
+                label = "Which country?"
+                value = "{{ newActivity.country }}">
             </paper-input>
             <paper-input
-              id    = "date"
-              type  = "date"
-              label = "When it happened?"
-              value = "{{ newActivity.date }}">
+                id    = "date"
+                type  = "date"
+                label = "When it happened?"
+                value = "{{ newActivity.date }}">
             </paper-input>
           </section>
         </div>
       </iron-pages>  
-      <footer>
-        <template 
+    </div>
+    <footer>
+      <template 
           is  = "dom-if"
           if  = "{{!_lastStep}}">
-          <paper-button 
+        <paper-button 
             id        = "continue" 
             on-tap    = "next"
             disabled  = "{{_stepDisabled}}">
-            Continue
-          </paper-button>
-        </template>
-        <template 
+          Continue
+        </paper-button>
+      </template>
+      <template 
           is  = "dom-if"
           if  = "{{_lastStep}}">        
-          <paper-button 
+        <paper-button 
             id        = "continue" 
             on-tap    = "finish"
             disabled  = "{{_stepDisabled}}">
-            Finish
-          </paper-button>
-        </template>
-        <div
+          Finish
+        </paper-button>
+      </template>
+      <div
           class = "progress">
-          <div 
+        <div 
             id      = "first"
             class   = "indicator"
             active$ = "{{_isCurrentStep(0, _currentStep)}}">
-          </div>
-          <div
+        </div>
+        <div
             id      = "second"
             class   = "indicator"
             active$ = "{{_isCurrentStep(1,_currentStep)}}">
-          </div>
-          <div
+        </div>
+        <div
             id      = "third"
             class   = "indicator"
             active$ = "{{_isCurrentStep(2, _currentStep)}}">
-          </div>
-          <div
+        </div>
+        <div
             id      = "fourth"
             class   = "indicator"
             active$ = "{{_isCurrentStep(3, _currentStep)}}">
-          </div>
         </div>
-      </footer>
+      </div>
+    </footer>
   </template>
 <!--
    ====================================
@@ -467,16 +500,26 @@
         // console.debug("[experts-create-activity] close");
         this.close();
       },
-      selectActivityGroup     : function(e){
 
+      _selectActivityGroup     : function(e){
+
+        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
-        
+        if (!this.newActivity.activity_type) {
+          this.newActivity.activity_type="";
+        } else {
+          var type = { 
+            tag: this.newActivity.activity_type, 
+            selected: "selected" 
+          }; 
+          _activityTypes.push(type); 
+        }         
         for (var i in this.activityGroups) {
           if (this.activityGroups[i].active) {
             for (var j in this.activityGroups[i].types) {
               var already = false;
               for (var k in _activityTypes) {
-                if (_activityTypes[k] == this.activityGroups[i].types[j]) {
+                if (_activityTypes[k].tag == this.activityGroups[i].types[j]) {
                   already=true;
                   break;
                 }
@@ -485,10 +528,6 @@
                 var type = { 
                   tag: this.activityGroups[i].types[j] 
                 };
-                if (this.newActivity.activity_types.indexOf(this.activityGroups[i].types[j]) >= 0) {
-                  // The type was already selected, we activate it
-                  type.active=true;
-                }
                 _activityTypes.push(type);
               }  
             }
@@ -497,25 +536,31 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-create-activity] _selectActivityGroup - _activityTypes", this._activityTypes);
       },
-      selectActivityType      : function(e){
 
-        var _selectedActivityTypes = [];
-        
+      _selectActivityType      : function(e){
+
+        var tag = e.model.type.tag;
+
+        console.debug("[experts-create] _selectActivityType", tag);
+          
         for (var i in this._activityTypes) {
-          if (this._activityTypes[i].active) {
-            _selectedActivityTypes.push(this._activityTypes[i].tag);
-          }
-        } 
-
-        _selectedActivityTypes = _selectedActivityTypes.sort(function(a, b) {
-          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
-        });
-        this.set("newActivity.activity_types", _selectedActivityTypes);
-        console.debug("[experts-create-activity] selectActivityType - selected activity types", this.newActivity.activity_types);
+          if (this._activityTypes[i].tag == tag) {
+            this.set(['_activityTypes',i,'selected'],"selected");  
+          } 
+          if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
+            console.debug("Let's delete ", this._activityTypes[i])
+            this.set(['_activityTypes',i,'selected'],""); 
+          } 
+        }  
+        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+             
+        this.set("newActivity.activity_type", tag);
+        console.debug("[experts-create-activity] _selectActivityType - selected activity type", this.newActivity.activity_type);
       },
-      selectProductGroup      : function(e){
+
+      _selectProductGroup      : function(e){
 
         var _selectedProductGroups = [];
         
@@ -530,8 +575,9 @@
         });
 
         this.set("newActivity.product_groups", _selectedProductGroups);
-        console.debug("[experts-create-activity] selectProductGroup - selected product groups", this.newActivity.product_groups);
+        console.debug("[experts-create-activity] _selectProductGroup - selected product groups", this.newActivity.product_groups);
       },
+
       _isActivityTypesActive  : function() {
        return (this._activityTypes.length > 0);
       },
@@ -566,7 +612,7 @@
             return (!this.newActivity.product_groups || this.newActivity.product_groups.length==0 )
             break;
           case 2:
-            return (!this.newActivity.activity_types || this.newActivity.activity_types.length==0 )
+            return (!this.newActivity.activity_type)
             break;
           case 3:
             return (!this.newActivity.city || !this.newActivity.country || !this.newActivity.date);

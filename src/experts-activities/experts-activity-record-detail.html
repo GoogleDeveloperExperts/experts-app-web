@@ -101,28 +101,49 @@
       .item_list .item:not(:last-child)  {
         margin-right       : 15px;
       }
-      
-      .item {
-        margin-top         : 15px;
-        margin-bottom      : 15px;
+
+      paper-button {
+        margin            : 5px;
+        font-weight       : normal !important;
+        cursor            : pointer;
+      }
+      .product_groups paper-button[active] {
+        background-color  : #ff9e07;
+        color             : #fff;
+        margin            : 5px;
       }
 
-      .item_name {
-        -webkit-font-smoothing: antialiased;
-        font-family        : 'Roboto', 'Noto', sans-serif;
-        color              : var(--paper-grey-600);   
-        white-space        : nowrap;
-        overflow           : hidden;
-        text-overflow      : ellipsis;
-        font-size          : 12px;
-        font-weight        : 400;
-        letter-spacing     : 0.011em;
-        line-height        : 20px;
-      }
+      .groups paper-button[active] {
+        background-color: #34a853;
+        color: #fff;
+        margin: 5px;
+      } 
+      .types paper-button.selected {
+        background-color: #ff9e07;
+        color: #fff;
+        margin: 5px;
+      }   
+      .item { 
+        margin-top        : 15px; 
+        margin-bottom     : 15px; 
+      } 
 
-      .item_value {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
+      .item_name { 
+        color             : var(--paper-grey-600); 
+        font-family       : 'Roboto', 'Noto', sans-serif;
+        white-space       : nowrap; 
+        overflow          : hidden; 
+        text-overflow     : ellipsis; 
+        font-size         : 12px; 
+        font-weight       : 400; 
+        letter-spacing    : 0.011em; 
+        line-height       : 20px; 
+      } 
+
+      .item_value { 
+        @apply(--layout-horizontal); 
+        @apply(--layout-center); 
+        @apply(--layout-wrap); 
       } 
 
       iron-icon.edit {
@@ -236,7 +257,7 @@
             </div>
             <div 
               class = "item_value activityType">
-              {{_serializeList(activity.activity_types)}}
+              {{activity.activity_type}}
             </div>
           </div> 
           <div 
@@ -357,68 +378,50 @@
           </paper-textarea>
         </div>   
 
-        <div 
-          class="item">
-          <div 
-            class = "item_name">
-            Type
-          </div>
-          <div 
-            class = "item_list activityType">
-            <template
-              is    = "dom-repeat"
-              items = "{{activity.activity_types}}" 
-              as    = "type">
-              <div 
-                class  = "edit_label" 
-                on-tap = "_deleteType" >
-                <iron-icon 
-                  class = "delete"
-                  icon  = "cancel" >
-                </iron-icon>
-                {{type}}
-              </div>
-            </template>
-            <template 
-              is = "dom-if" 
-              if = "{{!_isAddingType}}">
-              <iron-icon 
-                class  = "add" 
-                icon   = "add-circle" 
-                on-tap = "_addType" >
-              </iron-icon> 
-            </template>
-          </div>
-          <template 
-            is = "dom-if" 
-            if = "{{_isAddingType}}"> 
-            <div 
-              class = "item_value">   
-              <paper-input
-                name      = "newType" 
-                id        = "newType" 
-                label     = "Activity Type"
-                type      = "text" 
-                value     = "{{_newType}}"
-                maxlength = "64"
-                invalid   = {{_invalidNewType}}
-                required >
-              </paper-input>
-              <iron-icon
-                class     = "submit" 
-                disabled$ = "{{_invalidNewType}}"
-                icon      = "done" 
-                on-tap    = "_submitNewType" >
-              </iron-icon>
-              <iron-icon
-                class  = "close"
-                icon   = "clear" 
-                on-tap = "_closeAddType" >
-              </iron-icon>  
-            </div>      
-          </template>
-          </div>
+
+        <div class="item"> 
+          <div class="item_name">Activity groups</div>
+          <div class="groups item_value">
+            <template  
+                is="dom-repeat" 
+                items="[[activityGroups]]">
+              <paper-button 
+                  on-tap="_selectActivityGroup" 
+                  class="group" 
+                  id="{{item.id}}" 
+                  name="{{item.tag}}" 
+                  active="{{item.active}}" 
+                  toggles 
+                  raised> 
+                {{item.tag}} 
+              </paper-button> 
+            </template> 
+          </div> 
         </div> 
+        <template
+            is  = "dom-if"
+            if  = "{{_activityTypesActive}}">
+          <div class="item"> 
+            <div class="item_name">Activity type (only one allowed)</div>
+            <div 
+                class="types item_value"
+                invalid$="{{_typeInvalid}}">
+              <template 
+                is="dom-repeat" 
+                items="[[_activityTypes]]"
+                as="type">
+                <paper-button 
+                    on-tap="_selectActivityType" 
+                    class$="type {{type.selected}} yeah"
+                    id="{{type.tag}}" 
+                    name="{{type.tag}}" 
+                    raised> 
+                  {{type.tag}} 
+                </paper-button> 
+              </template> 
+            </div>  
+          </div> 
+        </template>   
 
         <div 
           class = "item">
@@ -690,6 +693,10 @@
           type            : Boolean,
           value           : false
         },
+        _activityTypesActive  : {
+          type: Boolean,
+          computed: "_isActivityTypesActive(_activityTypes)"
+        },  
       },
       behaviors   : [
         Polymer.PaperDialogBehavior
@@ -710,12 +717,16 @@
       },
 
       _paramsChanged              : function() {
-        // console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
-        if (!this.activity || !this.activity.activity_types) {
+        console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
+        if (!this.activity) {
           return;
         } 
         this._listActivityPosts(); 
       },
+
+      _isActivityTypesActive  : function() {
+       return (this._activityTypes.length > 0);
+      },      
       _listActivityPosts          : function() {
         var request     = this.$.listActivityPost;
         request.headers = {
@@ -738,23 +749,65 @@
         }
         return serializedList;
       },
-      _deleteType                 : function(evt){
-        console.debug("[experts-activity-record-detail] _deleteType", evt.model.type);
-        this.splice('activity.activity_types', evt.model.index, 1);
-      },  
-      _addType                    : function() {
-        this._isAddingType = true;
-      },
-      _closeAddType               : function() {
-        this._isAddingType = false;
-      },
-      _submitNewType              : function() {
-        if (!this.activity.activity_types) {
-          this.set('activity.activity_types', []);
+      
+      _selectActivityGroup     : function(e){
+
+        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);  
+        var _activityTypes = [];
+        if (!this.activity.activity_type) {
+          this.activity.activity_type="";
+        } else {
+          var type = { 
+            tag: this.activity.activity_type, 
+            selected: "selected" 
+          }; 
+          _activityTypes.push(type); 
+        }         
+        for (var i in this.activityGroups) {
+          if (this.activityGroups[i].active) {
+            for (var j in this.activityGroups[i].types) {
+              var already = false;
+              for (var k in _activityTypes) {
+                if (_activityTypes[k].tag == this.activityGroups[i].types[j]) {
+                  already=true;
+                  break;
+                }
+              }
+              if (!already) {
+                var type = { 
+                  tag: this.activityGroups[i].types[j] 
+                };
+                _activityTypes.push(type);
+              }  
+            }
+          }
         }
-        this.push('activity.activity_types', this._newType);
-        this._closeAddType();
+        this._activityTypes=_activityTypes.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        });
+        console.debug("[experts-create-activity] _selectActivityGroup - _activityTypes", this._activityTypes);
       },
+
+      _selectActivityType      : function(e){
+        var tag = e.model.type.tag;
+
+        console.debug("[experts-create] _selectActivityType", tag);
+          
+        for (var i in this._activityTypes) {
+          if (this._activityTypes[i].tag == tag) {
+            this.set(['_activityTypes',i,'selected'],"selected");  
+          } 
+          if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
+            console.debug("Let's delete ", this._activityTypes[i])
+            this.set(['_activityTypes',i,'selected'],""); 
+          } 
+        }  
+        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+             
+        this.set("activity.activity_type", tag);
+        console.debug("[experts-create-activity] _selectActivityType - selected activity type", this.activity.activity_type);
+      },
+
       _deleteProductGroup         : function(evt){
         console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
         this.splice('activity.product_groups', evt.model.index, 1);

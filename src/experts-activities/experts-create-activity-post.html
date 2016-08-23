@@ -121,7 +121,6 @@
       .item_name { 
         color: var(--paper-grey-600); 
         font-family: 'Roboto', 'Noto', sans-serif;
-        -webkit-font-smoothing: antialiased; 
         white-space: nowrap; 
         overflow: hidden; 
         text-overflow: ellipsis; 
@@ -386,14 +385,14 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         }); 
-        console.debug("[experts-create-activity] selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-create-activity-post] selectActivityGroup - _activityTypes", this._activityTypes);
       }, 
 
       _selectActivityType: function(e){ 
 
         var tag = e.model.type.tag;
 
-        console.debug("[experts-create-activity] selectActivityType", tag);
+        console.debug("[experts-create-activity-post] selectActivityType", tag);
          
         for (var i in this._activityTypes) {
           if (this._activityTypes[i].tag == tag) {
@@ -404,11 +403,11 @@
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+        console.debug("[experts-create-activity-post] _activityTypes", this._activityTypes);
 
         this.set("post.type",tag);
 
-        console.debug("[experts-create-activity] selectActivityType - selected activity types", this.post.type);
+        console.debug("[experts-create-activity-post] selectActivityType - selected activity type", this.post.type);
       },
       _initNewActivityPost: function() {
         this.post = {};
