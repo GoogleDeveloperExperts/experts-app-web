@@ -66,6 +66,7 @@
         background: white; 
         transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        font-size: 12px;
       } 
       .container:hover { 
         box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -85,12 +86,22 @@
        #closeCreateActivityPost:hover { 
         color: #aaa;
       }  
-      .groups paper-button, 
-      .types paper-button {
-        margin: 5px;
-        font-weight: normal !important;
-        cursor: pointer;
-      } 
+
+      paper-input {
+        width           : 100%;
+        --paper-input-container-input: {
+          font-size       : 12px;
+        };        
+        --paper-input-container-label: {
+          font-size       : 12px;
+        };        
+      }
+      paper-button {
+        font-size        : 12px;
+        margin            : 5px;
+        font-weight       : normal !important;
+        cursor            : pointer;
+      }
       .groups paper-button[active] {
         background-color: #34a853;
         color: #fff;

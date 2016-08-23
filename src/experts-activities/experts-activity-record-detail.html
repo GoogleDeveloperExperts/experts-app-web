@@ -89,20 +89,19 @@
       }
       #addActivityPost:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-      }       
-      .item_list {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-wrap);
-      }
-      .item_list .item:not(:first-child)  {
-        margin-left        : 15px;
-      }
-      .item_list .item:not(:last-child)  {
-        margin-right       : 15px;
+      }   
+      paper-input {
+        width           : 100%;
+        --paper-input-container-input: {
+          font-size       : 12px;
+        };        
+        --paper-input-container-label: {
+          font-size       : 12px;
+        };        
       }
 
       paper-button {
+      font-size       : 12px;
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
@@ -145,6 +144,26 @@
         @apply(--layout-center); 
         @apply(--layout-wrap); 
       } 
+    
+      .item_value iron-icon  {
+        margin-left        : 15px;
+      }
+      
+      .flexchild {
+        @apply(--layout-flex);
+      }
+
+      .item_list {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+        @apply(--layout-wrap);
+      }
+      .item_list .item:not(:first-child)  {
+        margin-left        : 15px;
+      }
+      .item_list .item:not(:last-child)  {
+        margin-right       : 15px;
+      }
 
       iron-icon.edit {
         cursor             : pointer;
@@ -209,176 +228,108 @@
         </iron-icon>
       </paper-button>
 
+      <div class="item title">
+        <template 
+            is = "dom-if" 
+            if = "{{!_isEditingTitle}}">
+          <div class = "item_name">Title</div>
+          <div class = "item_value">
+            {{activity.title}}
+            <iron-icon
+                class="edit"
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-tap="_editTitle"
+            ></iron-icon>
+          </div>
+        </template>
+        <template 
+            is = "dom-if" 
+            if = "{{_isEditingTitle}}">
+          <div class = "item_value">
+            <paper-input 
+                name      = "title" 
+                id        = "inputTitle" 
+                class     = "flexchild"
+                label     = "Title" 
+                type      = "text" 
+                value     = "{{activity.title}}"
+                maxlength = "128"
+                auto-validate 
+                required >
+            </paper-input>
+            <iron-icon
+                class     = "submit" 
+                icon      = "done" 
+                on-tap    = "_submitEditTitle" ></iron-icon>
+            <iron-icon
+                class     = "close"
+                icon      = "clear" 
+                on-tap    = "_closeEditTitle" ></iron-icon>
+          </div>
+        </template>
+      </div>
+
+      <div class="item description">
+        <template 
+            is = "dom-if" 
+            if = "{{!_isEditingDescription}}">
+          <div class = "item_name">Description</div>
+          <div class = "item_value">
+            {{activity.description}}
+            <iron-icon
+                class="edit"
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-tap="_editDescription"
+            ></iron-icon>
+          </div>
+        </template>
+        <template 
+            is = "dom-if" 
+            if = "{{_isEditingDescription}}">
+          <div class = "item_value">
+            <paper-textarea 
+                name      = "description"
+                id        = "inputDescription"
+                class     = "flexchild"
+                label     = "Description" 
+                type      = "text" 
+                value     = "{{activity.description}}"
+                auto-validate 
+                required></paper-textarea>            
+            <iron-icon
+                class     = "submit" 
+                icon      = "done" 
+                on-tap    = "_submitEditDescription" ></iron-icon>
+            <iron-icon
+                class     = "close"
+                icon      = "clear" 
+                on-tap    = "_closeEditDescription" ></iron-icon>
+          </div>
+        </template>
+      </div>
+
 
       <template 
-         is = "dom-if" 
-         if = "{{!_editActivity}}">
-
-        <div 
-          class = "item_list">
-          <div 
-            class = "item">
-            <div 
-              class = "item_value">
-              <h2 
-                class = "activityTitle">
-                {{activity.title}}
-              </h2>
-            </div>
+          is = "dom-if" 
+          if = "{{!_isEditingActivityType}}">
+        <div class="item activity_type">
+          <div class = "item_name">Activity Type</div>
+          <div class = "item_value">
+            {{activity.activity_type}}
+            <iron-icon
+                class="edit"
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-tap="_editActivityType"
+            ></iron-icon>
           </div>
-          <paper-button
-            id     = "editActivity"
-            on-tap = "_doEditActivity">
-            <iron-icon 
-              icon  = "create" 
-              class = "edit"></iron-icon>
-          </paper-button>
-        </div>
-
-        <div 
-          class = "item">
-          <div 
-            class = "item_name">
-            Description
-          </div>
-          <div 
-            class = "item_value activityDescription">
-            {{activity.description}}
-          </div>
-        </div>   
-
-        <div 
-          class = "item_list">
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Type
-            </div>
-            <div 
-              class = "item_value activityType">
-              {{activity.activity_type}}
-            </div>
-          </div> 
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Products
-            </div>
-            <div 
-              class = "item_value activityProductGroups">
-              {{_serializeList(activity.product_groups)}}
-            </div>
-          </div>
-        </div> 
-
-        <div 
-          class = "item_list">
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Date
-            </div>
-            <div 
-              class = "item_value activityDate">
-              {{activity.date}}
-            </div>
-          </div>  
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              City
-            </div>
-            <div 
-              class = "item_value activityCity">
-              {{activity.city}}
-            </div>
-          </div>  
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Country
-            </div>
-            <div 
-              class = "item_value activityCountry">
-              {{activity.country}}
-            </div>
-          </div>  
-        </div>
-
-        <div 
-          class = "item_list">
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Direct reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_reached}}
-            </div>
-          </div>         
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Indirect reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_indirect}}
-            </div>
-          </div>  
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Trained reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_trained}}
-            </div>
-          </div>  
         </div>
       </template>
-
       <template 
-        is = "dom-if" 
-        if = "{{_editActivity}}">
-        <div 
-          class = "item_list">
-          <paper-input 
-            name      = "title" 
-            id        = "inputTitle" 
-            label     = "Title" 
-            type      = "text" 
-            value     = "{{activity.title}}"
-            maxlength = "128"
-            auto-validate 
-            required >
-          </paper-input>
-        </div>
-
-        <div 
-          class = "item">
-          <paper-textarea 
-            name  = "description"
-            id    = "inputDescription"
-            label = "Description" 
-            type  = "text" 
-            value = "{{activity.description}}"
-            auto-validate 
-            required>
-          </paper-textarea>
-        </div>   
-
-
+          is = "dom-if" 
+          if = "{{_isEditingActivityType}}">    
         <div class="item"> 
           <div class="item_name">Activity groups</div>
           <div class="groups item_value">
@@ -421,145 +372,204 @@
               </template> 
             </div>  
           </div> 
-        </template>   
+        </template>  
+        <div class="item">
+          <div class="item_value">   
+            <template
+                is  = "dom-if"
+                if  = "{{_activityTypesActive}}">
+                <iron-icon
+                    class     = "submit" 
+                    icon      = "done" 
+                    on-tap    = "_submitEditActivityType" ></iron-icon>
+            </template>
+            <iron-icon
+                class     = "close"
+                icon      = "clear" 
+                on-tap    = "_closeEditActivityType" ></iron-icon>
+          </div>
+        </div>
+      </template>
 
+
+      <template 
+          is = "dom-if" 
+          if = "{{!_isEditingProductGroups}}">
+        <div class="item product_groups">
+          <div class = "item_name">Product Groups</div>
+          <div class = "item_value">
+            {{ _serializeList(activity.product_groups) }}
+            <iron-icon
+                class="edit"
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-tap="_editProductGroups"
+            ></iron-icon>
+          </div>
+        </div>
+      </template>
+      <template 
+          is = "dom-if" 
+          if = "{{_isEditingProductGroups}}">    
+        <div class="item"> 
+          <div class="item_name">Product Groups</div>
+            <div class="product_groups item_value">
+              <template 
+                  is    = "dom-repeat" 
+                  items = "[[productGroups]]"
+                  as="product">
+                <paper-button
+                    id      = "{{product.id}}"
+                    class   = "productGroup"
+                    on-tap  = "_selectProductGroup"
+                    active  = "{{product.active}}"
+                    toggles
+                    raised>
+                  {{product.tag}}
+                </paper-button>
+              </template>   
+            </div>
+        </div> 
+        <div class="item">
+          <div class="item_value">   
+            <iron-icon
+                class     = "submit" 
+                icon      = "done" 
+                on-tap    = "_submitEditProductGroups" ></iron-icon>
+            <iron-icon
+                class     = "close"
+                icon      = "clear" 
+                on-tap    = "_closeEditProductGroups" ></iron-icon>
+          </div>
+        </div>
+      </template>
+
+
+
+      <template is="dom-if" if="{{!_isEditingLocation}}">
+        <div class = "item_list">
+          <div class = "item">
+            <div class = "item_name">
+              City
+            </div>
+            <div class = "item_value activityCity">
+              {{activity.city}}
+            </div>
+          </div>  
+          <div class = "item">
+            <div class = "item_name">
+              Country
+            </div>
+            <div class = "item_value activityCountry">
+              {{activity.country}}
+            </div>
+          </div>  
+          <iron-icon
+              class="edit"
+              icon="create"
+              disabled$="{{_disableEdit}}"
+              on-tap="_editLocation"></iron-icon>
+        </div>
+      </template>
+      <template is="dom-if" if="{{_isEditingLocation}}">
+        <paper-input
+          auto-validate
+          name="city" id="inputCity" label="City"
+          type="text" value="{{activity.city}}"
+          required maxlength="64"></paper-input>
+        <paper-input
+          auto-validate
+          name="country" id="inputCountry" label="Country"
+          type="text" value="{{activity.country}}"
+          required maxlength="64"></paper-input>
+        <iron-icon
+          class="submit"
+          icon="done" on-tap="_submitEditLocation" ></iron-icon>
+        <iron-icon
+          class="close"
+          icon="clear" on-tap="_closeEditLocation" ></iron-icon>
+      </template>
+
+
+
+      <div class="item date">
+        <template 
+            is = "dom-if" 
+            if = "{{!_isEditingDate}}">
+          <div class = "item_name">Date</div>
+          <div class = "item_value">
+            {{activity.date}}
+            <iron-icon
+                class="edit"
+                icon="create"
+                disabled$="{{_disableEdit}}"
+                on-tap="_editDate"
+            ></iron-icon>
+          </div>
+        </template>
+        <template 
+            is = "dom-if" 
+            if = "{{_isEditingDate}}">
+          <div class = "item_value">
+            <paper-input 
+                name      = "date" 
+                id        = "inputDate" 
+                class     = "flexchild"
+                label     = "Date" 
+                type      = "date" 
+                value     = "{{activity.date}}"
+                maxlength = "128"
+                auto-validate 
+                required >
+            </paper-input>
+            <iron-icon
+                class     = "submit" 
+                icon      = "done" 
+                on-tap    = "_submitEditDate" ></iron-icon>
+            <iron-icon
+                class     = "close"
+                icon      = "clear" 
+                on-tap    = "_closeEditDate" ></iron-icon>
+          </div>
+        </template>
+      </div>
+
+      <div 
+        class = "item_list">
         <div 
           class = "item">
           <div 
             class = "item_name">
-            Products
+            Direct reach
           </div>
           <div 
-            class = "item_list activityProductGroups">
-            <template 
-              is    = "dom-repeat" 
-              items = "{{activity.product_groups}}" 
-              as    = "productGroup">
-              <div 
-                class = "edit_label" 
-                on-tap = "_deleteProductGroup" >
-                <iron-icon 
-                  class = "delete"
-                  icon = "cancel" >
-                </iron-icon>
-                {{productGroup}}
-              </div>
-            </template>
-            <template 
-              is = "dom-if" 
-              if = "{{!_isAddingProductGroup}}">
-              <iron-icon 
-                class  = "add" 
-                icon   = "add-circle" 
-                on-tap = "_addProductGroup" >
-              </iron-icon> 
-            </template>
+            class = "item_value activityMetric">
+            {{activity.metric_reached}}
           </div>
-        
-          <template 
-            is = "dom-if" 
-            if = "{{_isAddingProductGroup}}">
-            <div 
-              class = "item_value">   
-              <paper-input
-                name      = "newProductGroup" 
-                id        = "newProductGroup" 
-                label     = "Activity ProductGroup"
-                type      = "text" 
-                value     = "{{_newProductGroup}}"
-                maxlength = "64"
-                invalid   = {{_invalidNewProductGroup}}
-                required >
-              </paper-input>
-              <iron-icon
-                class     = "submit" 
-                disabled$ = "{{_invalidNewProductGroup}}"
-                icon      = "done" 
-                on-tap    = "_submitNewProductGroup" >
-              </iron-icon>
-              <iron-icon
-                class  = "close"
-                icon   = "clear" 
-                on-tap = "_closeAddProductGroup" >
-              </iron-icon>    
-            </div>
-          </template>
         </div>         
-
         <div 
-          class = "item_list">
+          class = "item">
           <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Date
-            </div>
-            <div 
-              class = "item_value activityDate">
-              {{activity.date}}
-            </div>
-          </div>  
+            class = "item_name">
+            Indirect reach
+          </div>
           <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              City
-            </div>
-            <div 
-              class = "item_value activityCity">
-              {{activity.city}}
-            </div>
-          </div>  
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Country
-            </div>
-            <div 
-              class = "item_value activityCountry">
-              {{activity.country}}
-            </div>
-          </div>  
-        </div>
-
+            class = "item_value activityMetric">
+            {{activity.metric_indirect}}
+          </div>
+        </div>  
         <div 
-          class = "item_list">
+          class = "item">
           <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Direct reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_reached}}
-            </div>
-          </div>         
+            class = "item_name">
+            Trained reach
+          </div>
           <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Indirect reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_indirect}}
-            </div>
-          </div>  
-          <div 
-            class = "item">
-            <div 
-              class = "item_name">
-              Trained reach
-            </div>
-            <div 
-              class = "item_value activityMetric">
-              {{activity.metric_trained}}
-            </div>
-          </div>  
-        </div>
-      </template>
+            class = "item_value activityMetric">
+            {{activity.metric_trained}}
+          </div>
+        </div>  
+      </div>
 
       <div 
         class = "container">
@@ -654,6 +664,7 @@
       properties  : {     
         activity        : {
           type            : Object,
+          notify          : true,
           value           : null
         },
         productGroups   : {
@@ -680,12 +691,34 @@
           value           : function() {
             return [];
           }
-        },  
-        _editActivity   : {
+        },
+
+        _isEditingTitle : {
           type            : Boolean,
           value           : false
-        },
-        _isAddingType   : {
+        }, 
+        _isEditingDescription   : {
+          type            : Boolean,
+          value           : false
+        }, 
+        _isEditingActivityType  : {
+          type            : Boolean,
+          value           : false
+        }, 
+        _isEditingProductGroups : {
+          type            : Boolean,
+          value           : false
+        }, 
+        _isEditingLocation : {
+          type            : Boolean,
+          value           : false
+        }, 
+        _isEditingDate : {
+          type            : Boolean,
+          value           : false
+        }, 
+
+        _editActivity   : {
           type            : Boolean,
           value           : false
         },
@@ -705,6 +738,9 @@
         "_paramsChanged(activity, activityGroups,  productGroups)"
       ],
 
+      /************************************************************************/
+      /* Lifecycle methods                                                    */
+      /************************************************************************/
       ready       : function() {
       /**
        * Attaching dialog to main body to make it live over the gray div 
@@ -716,43 +752,60 @@
         document.querySelector('body').appendChild(this.createActivityPost);
       },
 
+
+      /************************************************************************/
+      /* Observers                                                            */
+      /************************************************************************/
       _paramsChanged              : function() {
         console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
         if (!this.activity) {
           return;
         } 
+        var self = this;
+        this.productGroups.forEach(function(product){
+          if (self.activity.product_groups.indexOf(product.tag) > 0 ) {
+            product.active = true;
+          }
+        });
+        if (this.activity.activity_type) {          
+          this._activityTypes =  [
+            { 
+              tag: this.activity.activity_type, 
+              selected: "selected" 
+            } 
+          ];
+          console.debug("[experts-activity-record-detail] _paramsChanged - activity_type", this._activityTypes);
+        }
         this._listActivityPosts(); 
       },
 
+
+      /************************************************************************/
+      /* Computed properties                                                  */
+      /************************************************************************/
       _isActivityTypesActive  : function() {
-       return (this._activityTypes.length > 0);
+          console.debug("[experts-activity-record-detail] _isActivityTypesActive", this._activityTypes);
+        return (this._activityTypes.length > 0);
       },      
-      _listActivityPosts          : function() {
-        var request     = this.$.listActivityPost;
+
+
+      /************************************************************************/
+      /* Action listeners                                                     */
+      /************************************************************************/
+      _submitUpdateActivityRecord : function(evt) {
+
+        var request     = this.$.updateActivityRecord;
+        request.body    = JSON.stringify(this.activity);
+
         request.headers = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
       },
-      _doEditActivity             : function() {
-        this._editActivity = true;
-      },
-      _serializeList              : function(list, prefix) {
-        prefix = prefix || "";
-        var serializedList = ''
-        for (var i in list) {
-          serializedList += prefix + list[i];
+   
+      _selectActivityGroup : function(e){
 
-          if (i < list.length-1) {
-            serializedList += ', '
-          }
-        }
-        return serializedList;
-      },
-      
-      _selectActivityGroup     : function(e){
-
-        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);  
+        console.debug("[experts-activity-record-detail] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
         if (!this.activity.activity_type) {
           this.activity.activity_type="";
@@ -785,10 +838,10 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[experts-create-activity] _selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-record-detail] _selectActivityGroup - _activityTypes", this._activityTypes);
       },
 
-      _selectActivityType      : function(e){
+      _selectActivityType : function(e){
         var tag = e.model.type.tag;
 
         console.debug("[experts-create] _selectActivityType", tag);
@@ -802,28 +855,29 @@
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-record-detail] _activityTypes", this._activityTypes);
              
         this.set("activity.activity_type", tag);
-        console.debug("[experts-create-activity] _selectActivityType - selected activity type", this.activity.activity_type);
+        console.debug("[experts-activity-record-detail] _selectActivityType - selected activity type", this.activity.activity_type);
       },
 
-      _deleteProductGroup         : function(evt){
-        console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
-        this.splice('activity.product_groups', evt.model.index, 1);
-      },
-      _addProductGroup            : function() {
-        this._isAddingProductGroup = true;
-      },
-      _closeAddProductGroup       : function() {
-        this._isAddingProductGroup = false;
-      },
-      _submitNewProductGroup      : function() {
-        if (!this.activity.product_groups) {
-          this.set('activity.product_groups', []);
-        }
-        this.push('activity.product_groups', this._newProductGroup);
-        this._closeAddProductGroup();
+
+      _selectProductGroup      : function(e){
+
+        var _selectedProductGroups = [];
+        
+        for (var i in this.productGroups) {
+          if (this.productGroups[i].active) {
+            _selectedProductGroups.push(this.productGroups[i].tag);
+          }
+        } 
+
+        _selectedProductGroups  = _selectedProductGroups.sort(function(a, b) {
+          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
+        });
+
+        this.set("activity.product_groups", _selectedProductGroups);
+        console.debug("[experts-activity-record-detail] _selectProductGroup - selected product groups", this.activity.product_groups);
       },
       _openCreatePostDialog       : function() {
         this._aPost = {};
@@ -833,23 +887,122 @@
         this._aPost = post;
         this.createActivityPost.open();
       },
-      _submitUpdateActivityRecord : function() {
-
-        var request     = this.$.updateActivityRecord;
-        request.body    = JSON.stringify(this.activity);
-
-        request.headers = {
-          Authorization : "Bearer "+ this.user.token
-        }
-        request.generateRequest();
-      },
       _doAddActivityPost          : function(evt, post) {
         if (!this.activity.activity_posts) {
           this.set('activity.activity_posts', []);
         }
         this.push ('activity.activity_posts', post.id);
         this._submitUpdateActivityRecord();
+      },      
+
+      _deleteActivityPost         : function(evt, postId) {
+        console.debug("[experts-activity-record-detail] _deleteActivityPost", postId);
+        this._deletePostId  = postId;
+        var request         = this.$.deleteActivityPost;
+        request.headers     = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
+
+        this._deletePostId  = "";
+
       },
+
+      _editTitle: function(evt) {
+        this._isEditingTitle = true;
+      },
+      _closeEditTitle: function(evt) {
+        this._isEditingTitle = false;
+      },
+      _submitEditTitle: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditTitle();
+      },
+      _editDescription: function(evt) {
+        this._isEditingDescription = true;
+      },
+      _closeEditDescription: function(evt) {
+        this._isEditingDescription = false;
+      },   
+      _submitEditDescription: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditDescription();
+      },
+      _editActivityType: function(evt) {
+        this._isEditingActivityType = true;
+      },
+      _closeEditActivityType: function(evt) {
+        this._isEditingActivityType = false;
+      },   
+      _submitEditActivityType: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditActivityType();
+      },
+      _editProductGroups: function(evt) {
+        this._isEditingProductGroups = true;
+      },
+      _closeEditProductGroups: function(evt) {
+        this._isEditingProductGroups = false;
+      },   
+      _submitEditProductGroups: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditProductGroups();
+      },
+      _editLocation: function(evt) {
+        this._isEditingLocation = true;
+      },
+      _closeEditLocation: function(evt) {
+        this._isEditingLocation = false;
+      },   
+      _submitEditLocation: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditLocation();
+      },
+      _editDate: function(evt) {
+        this._isEditingDate = true;
+      },
+      _closeEditDate: function(evt) {
+        this._isEditingDate = false;
+      },   
+      _submitEditDate: function(evt) {
+        this._submitUpdateActivityRecord();
+        this._closeEditDate();
+      },
+
+
+
+      /************************************************************************/
+      /* Event listeners                                                      */
+      /************************************************************************/
+      _handleUpdateActivityRecord : function() {
+        this.activity       = this._apiActivityRecord;
+        this._editActivity  = false;
+      },
+      _handleListActivityPost     : function() {
+        console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
+        this.set('activity.listActivityPosts', this._apiListActivityPost.items);
+        this._resynchroActivityPosts()
+      },
+      _handleActivityPostDelete   : function() {
+        console.debug("[experts-activity-record-detail] _handleActivityPostDelete", this._apiActivityPostDelete);
+        if(this.activity.activity_posts && this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id) >= 0) {
+          this.splice('activity.activity_posts', this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id), 1);
+        }
+        this._submitUpdateActivityRecord();
+      },
+
+
+      /************************************************************************/
+      /* Other methods                                                        */
+      /************************************************************************/
+      _listActivityPosts          : function() {
+        var request     = this.$.listActivityPost;
+        request.headers = {
+          Authorization : "Bearer "+ this.user.token
+        }
+        request.generateRequest();
+      },
+
       _resynchroActivityPosts     : function() {
         if (!this.activity.listActivityPosts) {
           return;
@@ -878,33 +1031,56 @@
           this._submitUpdateActivityRecord();
         }  
       },
-      _deleteActivityPost         : function(evt, postId) {
-        console.debug("[experts-activity-record-detail] _deleteActivityPost", postId);
-        this._deletePostId  = postId;
-        var request         = this.$.deleteActivityPost;
-        request.headers     = {
-          Authorization : "Bearer "+ this.user.token
-        }
-        request.generateRequest();
 
-        this._deletePostId  = "";
+      _serializeList: function(list) {
+        var serializedList = ''
+        for (var i in list) {
+          serializedList += list[i];
 
-      },
-      _handleUpdateActivityRecord : function() {
-        this.activity       = this._apiActivityRecord;
-        this._editActivity  = false;
-      },
-      _handleListActivityPost     : function() {
-        this.set('activity.listActivityPosts', this._apiListActivityPost.items);
-        console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
-        this._resynchroActivityPosts()
-      },
-      _handleActivityPostDelete   : function() {
-        console.debug("[experts-activity-record-detail] _handleActivityPostDelete", this._apiActivityPostDelete);
-        if(this.activity.activity_posts && this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id) >= 0) {
-          this.splice('activity.activity_posts', this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id), 1);
+          if (i < list.length-1) {
+            serializedList += ', '
+          }
         }
-        this._submitUpdateActivityRecord();
+        return serializedList;
+      },
+
+
+
+
+
+      _doEditActivity             : function() {
+        this._editActivity = true;
+      },
+      _serializeList              : function(list, prefix) {
+        prefix = prefix || "";
+        var serializedList = ''
+        for (var i in list) {
+          serializedList += prefix + list[i];
+
+          if (i < list.length-1) {
+            serializedList += ', '
+          }
+        }
+        return serializedList;
+      },
+   
+
+      _deleteProductGroup         : function(evt){
+        console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
+        this.splice('activity.product_groups', evt.model.index, 1);
+      },
+      _addProductGroup            : function() {
+        this._isAddingProductGroup = true;
+      },
+      _closeAddProductGroup       : function() {
+        this._isAddingProductGroup = false;
+      },
+      _submitNewProductGroup      : function() {
+        if (!this.activity.product_groups) {
+          this.set('activity.product_groups', []);
+        }
+        this.push('activity.product_groups', this._newProductGroup);
+        this._closeAddProductGroup();
       },
     });
   </script>
