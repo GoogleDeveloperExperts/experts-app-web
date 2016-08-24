@@ -253,7 +253,7 @@
                 class     = "flexchild"
                 label     = "Title" 
                 type      = "text" 
-                value     = "{{activity.title}}"
+                value     = "{{_title}}"
                 maxlength = "128"
                 auto-validate 
                 required >
@@ -295,7 +295,7 @@
                 class     = "flexchild"
                 label     = "Description" 
                 type      = "text" 
-                value     = "{{activity.description}}"
+                value     = "{{_description}}"
                 auto-validate 
                 required></paper-textarea>            
             <iron-icon
@@ -475,12 +475,12 @@
         <paper-input
           auto-validate
           name="city" id="inputCity" label="City"
-          type="text" value="{{activity.city}}"
+          type="text" value="{{_city}}"
           required maxlength="64"></paper-input>
         <paper-input
           auto-validate
           name="country" id="inputCountry" label="Country"
-          type="text" value="{{activity.country}}"
+          type="text" value="{{_country}}"
           required maxlength="64"></paper-input>
         <iron-icon
           class="submit"
@@ -517,7 +517,7 @@
                 class     = "flexchild"
                 label     = "Date" 
                 type      = "date" 
-                value     = "{{activity.date}}"
+                value     = "{{_date}}"
                 maxlength = "128"
                 auto-validate 
                 required >
@@ -761,21 +761,7 @@
         if (!this.activity) {
           return;
         } 
-        var self = this;
-        this.productGroups.forEach(function(product){
-          if (self.activity.product_groups.indexOf(product.tag) > 0 ) {
-            product.active = true;
-          }
-        });
-        if (this.activity.activity_type) {          
-          this._activityTypes =  [
-            { 
-              tag: this.activity.activity_type, 
-              selected: "selected" 
-            } 
-          ];
-          console.debug("[experts-activity-record-detail] _paramsChanged - activity_type", this._activityTypes);
-        }
+
         this._listActivityPosts(); 
       },
 
@@ -857,13 +843,12 @@
         }  
         console.debug("[experts-activity-record-detail] _activityTypes", this._activityTypes);
              
-        this.set("activity.activity_type", tag);
-        console.debug("[experts-activity-record-detail] _selectActivityType - selected activity type", this.activity.activity_type);
+        this._activity_type = tag;
+        console.debug("[experts-activity-record-detail] _selectActivityType - selected activity type", this._activity_type);
       },
 
 
       _selectProductGroup      : function(e){
-
         var _selectedProductGroups = [];
         
         for (var i in this.productGroups) {
@@ -876,9 +861,10 @@
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
 
-        this.set("activity.product_groups", _selectedProductGroups);
-        console.debug("[experts-activity-record-detail] _selectProductGroup - selected product groups", this.activity.product_groups);
+        this._product_groups = _selectedProductGroups;
+        console.debug("[experts-activity-record-detail] _selectProductGroup - selected product groups", this._product_groups);
       },
+
       _openCreatePostDialog       : function() {
         this._aPost = {};
         this.createActivityPost.open();
@@ -909,56 +895,81 @@
       },
 
       _editTitle: function(evt) {
+        this._title = this.activity.title;
         this._isEditingTitle = true;
       },
       _closeEditTitle: function(evt) {
         this._isEditingTitle = false;
       },
       _submitEditTitle: function(evt) {
+        this.activity.title = this._title;
         this._submitUpdateActivityRecord();
         this._closeEditTitle();
       },
       _editDescription: function(evt) {
+        this._description = this.activity._description;
         this._isEditingDescription = true;
       },
       _closeEditDescription: function(evt) {
         this._isEditingDescription = false;
       },   
       _submitEditDescription: function(evt) {
+        this.activity.description = this._description;
         this._submitUpdateActivityRecord();
         this._closeEditDescription();
       },
       _editActivityType: function(evt) {
+        this._activity_type = this.activity.activity_type;
+        this._activityTypes =  [
+          { 
+            tag: this._activity_type, 
+            selected: "selected" 
+          } 
+        ];
         this._isEditingActivityType = true;
       },
       _closeEditActivityType: function(evt) {
         this._isEditingActivityType = false;
       },   
       _submitEditActivityType: function(evt) {
+        this.activity.activity_type = this._activity_type;
         this._submitUpdateActivityRecord();
         this._closeEditActivityType();
       },
       _editProductGroups: function(evt) {
+        this._product_groups = JSON.parse(JSON.stringify(this.activity.product_groups));
+        var self = this;
+        this.productGroups.forEach(function(product){
+          if (self._product_groups.indexOf(product.tag) >= 0 ) {
+            product.active = true;
+          }
+        });
         this._isEditingProductGroups = true;
       },
       _closeEditProductGroups: function(evt) {
         this._isEditingProductGroups = false;
       },   
       _submitEditProductGroups: function(evt) {
+        this.activity.product_groups = JSON.parse(JSON.stringify(this._product_groups));
         this._submitUpdateActivityRecord();
         this._closeEditProductGroups();
       },
       _editLocation: function(evt) {
+        this._city = this.activity.city;
+        this._country = this.activity.country;
         this._isEditingLocation = true;
       },
       _closeEditLocation: function(evt) {
         this._isEditingLocation = false;
       },   
       _submitEditLocation: function(evt) {
+        this.activity.city = this._city;
+        this.activity.country = this._country;
         this._submitUpdateActivityRecord();
         this._closeEditLocation();
       },
       _editDate: function(evt) {
+        this._date = this.activity.date;
         this._isEditingDate = true;
       },
       _closeEditDate: function(evt) {
@@ -1042,45 +1053,6 @@
           }
         }
         return serializedList;
-      },
-
-
-
-
-
-      _doEditActivity             : function() {
-        this._editActivity = true;
-      },
-      _serializeList              : function(list, prefix) {
-        prefix = prefix || "";
-        var serializedList = ''
-        for (var i in list) {
-          serializedList += prefix + list[i];
-
-          if (i < list.length-1) {
-            serializedList += ', '
-          }
-        }
-        return serializedList;
-      },
-   
-
-      _deleteProductGroup         : function(evt){
-        console.debug("[experts-activity-record-detail] _deleteProductGroup", evt.model.productGroup);
-        this.splice('activity.product_groups', evt.model.index, 1);
-      },
-      _addProductGroup            : function() {
-        this._isAddingProductGroup = true;
-      },
-      _closeAddProductGroup       : function() {
-        this._isAddingProductGroup = false;
-      },
-      _submitNewProductGroup      : function() {
-        if (!this.activity.product_groups) {
-          this.set('activity.product_groups', []);
-        }
-        this.push('activity.product_groups', this._newProductGroup);
-        this._closeAddProductGroup();
       },
     });
   </script>
