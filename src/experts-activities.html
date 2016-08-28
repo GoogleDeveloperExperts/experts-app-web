@@ -39,9 +39,9 @@
 <link rel="import" href="../bower_components/neon-animation/animations/slide-down-animation.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-from-bottom-animation.html">
 
-<link rel="import" href="./experts-activities/experts-activity-record-list.html">
+<link rel="import" href="./experts-activities/experts-activity-list.html">
 <link rel="import" href="./experts-activities/experts-activity-stats.html">
-<link rel="import" href="./experts-activities/experts-create-activity.html">
+<link rel="import" href="./experts-activities/experts-activity-create.html">
 
 
 <!--  
@@ -100,11 +100,11 @@
       paper-material.stats {
         margin            : 128px auto 17px;
       }
-      experts-activity-record-list {
+      experts-activity-list {
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
-      experts-activity-record-list:hover {
+      experts-activity-list:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       } 
       #add_activity {
@@ -119,19 +119,19 @@
       #add_activity:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       } 
-      experts-activity-record-list , 
+      experts-activity-list , 
       paper-material {        
         max-width         : 78%; 
       }
  
       @media (min-width: 1280px ) {
-        experts-activity-record-list, paper-material {
+        experts-activity-list, paper-material {
           margin-left       : auto;
           margin-right      : auto;
         }
       }
       @media (max-width: 1280px ) {
-        experts-activity-record-list, paper-material {  
+        experts-activity-list, paper-material {  
           clear             : both;
         }
       }
@@ -152,64 +152,67 @@
     ====================================
 -->
     <paper-header-panel 
-      mode = "cover">
+        mode = "cover">
+
       <paper-toolbar 
-        class = "tall">
+          class = "tall">
         <h1>My activities</h1>
       </paper-toolbar>
+
       <paper-material
-        class = "stats">
+          class = "stats">
         <experts-activity-stats 
-          activities = "{{activities}}" >
-        </experts-activity-stats>
+            activities = "{{activities}}" ></experts-activity-stats>
       </paper-material>
+
       <paper-fab
-        id          = "add_activity" 
-        icon        = "add"
-        data-dialog = "createActivity"
-        on-tap      = "openDialog">
-      </paper-fab>
-      <experts-activity-record-list
-        id = "activityList"
-        user = "{{user}}"
-        activity-groups  = "{{activityGroups}}"
-        product-groups  = "{{productGroups}}"
-        activities = "{{activities}}">
-      </experts-activity-record-list>
+          id          = "add_activity" 
+          icon        = "add"
+          data-dialog = "createActivity"
+          on-tap      = "openDialog"></paper-fab>
+
+      <experts-activity-list
+          id = "activityList"
+          user = "{{user}}"
+          activity-groups  = "{{activityGroups}}"
+          product-groups  = "{{productGroups}}"
+          activities = "{{activities}}"></experts-activity-list>
+
     </paper-header-panel>
 
-    <experts-create-activity 
-      id              = "createActivity"
-      exit-animation  = "slide-down-animation"
-      entry-animation = "slide-from-bottom-animation"
-      activity-groups  = "{{activityGroups}}"
-      product-groups  = "{{productGroups}}"
-      no-cancel-on-outside-click
-      on-activity-created = "_doCreateActivity"
-      modal>
-    </experts-create-activity>
-
+    <experts-activity-create 
+        id              = "createActivity"
+        exit-animation  = "slide-down-animation"
+        entry-animation = "slide-from-bottom-animation"
+        activity-groups  = "{{activityGroups}}"
+        product-groups  = "{{productGroups}}"
+        no-cancel-on-outside-click
+        on-activity-created = "_doCreateActivity"
+        modal></experts-activity-create>
 
     <iron-ajax 
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup?limit=100"
-      handle-as   = "json"
-      on-response = "_handleProductGroup"
-      auto></iron-ajax>
+        id          = "productGroupsRequests"
+        url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/productGroup?limit=100"
+        handle-as   = "json"
+        on-response = "_handleProductGroup"
+        auto></iron-ajax>
 
     <iron-ajax 
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityType?limit=100"
-      handle-as   = "json"
-      on-response = "_handleActivityType"
-      auto></iron-ajax>
+        id          = "activityTypesRequests"
+        url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityType?limit=100"
+        handle-as   = "json"
+        on-response = "_handleActivityType"
+        auto></iron-ajax>
 
-      <iron-ajax
-        id = "insertActivityRecord"
-        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
+    <iron-ajax
+        id = "insertActivityMaster"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster"
         method = "POST"
         content-type = "application/json"
         handle-as = "json"
-        last-response = "{{_apiActivityRecord}}"
-        on-response = "_handleActivityRecordInsert"></iron-ajax>
+        last-response = "{{_apiActivityMaster}}"
+        on-response = "_handleActivityMasterInsert"></iron-ajax>
+
   </template>
 <!--
     ====================================
@@ -276,12 +279,12 @@
       },
       
       ready : function() {
-/**
- * Attaching dialog to main body to make it live over the gray div 
- * Bug that will be corrected 
- * https://github.com/PolymerElements/polymer-starter-kit/issues/154
- * https://github.com/PolymerElements/paper-dialog/issues/7
- */
+        /*
+         * Attaching dialog to main body to make it live over the gray div 
+         * Bug that will be corrected 
+         * https://github.com/PolymerElements/polymer-starter-kit/issues/154
+         * https://github.com/PolymerElements/paper-dialog/issues/7
+         */
         this.createActivity = this.$.createActivity        
         document.querySelector('body').appendChild(this.createActivity);
       },
@@ -289,13 +292,7 @@
         console.debug("[experts-activities] _doCreateActivity - activity", activity);
         console.debug("[experts-activities] _doCreateActivity - user", this.user);
         activity.email = this.user.email;
-        /*
-        var request = this.$$("expertstracking-activity_record-insert");
-        request.accessToken = this.user.token;
-        request.body = activity;
-        request.go();
-        */
-        var request = this.$.insertActivityRecord;
+        var request = this.$.insertActivityMaster;
         request.body = JSON.stringify(activity);
 
         request.headers = {
@@ -303,11 +300,11 @@
         }
         request.generateRequest();
       },
-      _handleActivityRecordInsert: function(evt, ironRequest) {
+      _handleActivityMasterInsert: function(evt, ironRequest) {
         evt.stopPropagation();
-        console.debug('Activity created', this._apiActivityRecord);
+        console.debug('Activity created', this._apiActivityMaster);
         this.$.activityList.generateActivityListRequest();
-        this.$.activityList.editActitityRecord(this._apiActivityRecord);
+        this.$.activityList.editActitityMaster(this._apiActivityMaster);
       },
       _handleProductGroup : function(evt, ironRequest) {
         evt.stopPropagation();

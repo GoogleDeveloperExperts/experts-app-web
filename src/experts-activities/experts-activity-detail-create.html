@@ -36,7 +36,7 @@
 -->
 
 <dom-module  
-  id="experts-create-activity-post">
+  id="experts-activity-detail-create">
   <template> 
      
 <!--
@@ -74,7 +74,7 @@
       .content { 
         padding: 15px;  
       } 
-      #closeCreateActivityPost { 
+      #closeCreateActivityDetail { 
         position: absolute;
         justify-content: flex-end;
         right: 16px;
@@ -83,7 +83,7 @@
         transition: color 0.5s cubic-bezier(.25,.8,.25,1);
         color: #e5e5e5;
       } 
-       #closeCreateActivityPost:hover { 
+       #closeCreateActivityDetail:hover { 
         color: #aaa;
       }  
 
@@ -175,7 +175,7 @@
 -->
     <div class="container"> 
       <paper-button 
-        id="closeCreateActivityPost"
+        id="closeCreateActivityDetail"
         on-tap="cancel"
         autofocus> 
         <iron-icon  
@@ -184,7 +184,7 @@
       </paper-button>  
 
       <div class="content"> 
-        <h2>Add activity post</h2>
+        <h2>Add activity detail</h2>
 
         <div class="item"> 
           <paper-input  
@@ -193,7 +193,7 @@
             id="inputUrl" 
             label="URL" 
             type="text" 
-            value="{{post.url}}"
+            value="{{detail.url}}"
             maxlength="256"
             invalid="{{_urlInvalid}}" 
             required></paper-input> 
@@ -246,7 +246,7 @@
               id="metric_reached" 
               type="number" 
               label="How many people directly reached?"
-              value="{{ post.metric_reached }}"
+              value="{{ detail.metric_reached }}"
               min="0"> 
             </paper-input> 
           </div> 
@@ -255,7 +255,7 @@
               id="metric_reached" 
               type="number" 
               label="How many people trained?"
-              value="{{ post.metric_trained }}"
+              value="{{ detail.metric_trained }}"
               min="0"> 
             </paper-input> 
           </div> 
@@ -264,7 +264,7 @@
               id="metric_reached"
               type="number"
               label="How many people indirectly reached?"
-              value="{{ post.metric_indirect }}"
+              value="{{ detail.metric_indirect }}"
               min="0">
             </paper-input> 
           </div> 
@@ -273,7 +273,7 @@
         <div class="item_value submit">     
           <paper-button  
             id="submit" 
-            on-tap="_submitActivityPost"
+            on-tap="_submitActivityDetail"
             disabled$="{{_submitDisabled}}"
             raised> 
             Submit 
@@ -283,13 +283,13 @@
     </div> 
 
     <iron-ajax
-      id = "insertActivityPost"
-      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost"
+      id = "insertActivityDetail"
+      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityDetail"
       method = "POST"
       content-type = "application/json"
       handle-as = "json"
-      last-response = "{{_apiActivityPost}}"
-      on-response = "_handleActivityPostInsert"></iron-ajax>
+      last-response = "{{_apiActivityDetail}}"
+      on-response = "_handleActivityDetailInsert"></iron-ajax>
   </template> 
 <!--
    ==================================== 
@@ -298,13 +298,13 @@
 -->
   <script> 
     Polymer({  
-      is: 'experts-create-activity-post', 
+      is: 'experts-activity-detail-create', 
       properties: { 
 
         /** 
           * The new activity
         */ 
-        post: { 
+        detail: { 
           type: Object, 
           notify: true, 
           value: function() {
@@ -324,7 +324,7 @@
           value: null
         },
 
-        recordId: {
+        masterId: {
           type: String,
           value: null
         },
@@ -342,7 +342,7 @@
          
         _typeInvalid: {
           type: Boolean,
-          computed: "_isTypeInvalid(post.type)"
+          computed: "_isTypeInvalid(detail.detail_type)"
         },  
       }, 
 
@@ -351,24 +351,24 @@
       ], 
 
       _isTypeInvalid: function(){
-        console.debug("[experts-create-activity-post] _isTypeInvalid", this.post.type)
-        return(!this.post.type);
+        console.debug("[experts-activity-detail-create] _isTypeInvalid", this.detail.detail_type)
+        return(!this.detail.detail_type);
       },
       _isSubmitDisabled: function() {
-        console.debug("[experts-create-activity-post] _isSubmitDisabled",{typeInvalid: this._typeInvalid, urlInvalid: this._urlInvalid });
+        console.debug("[experts-activity-detail-create] _isSubmitDisabled",{typeInvalid: this._typeInvalid, urlInvalid: this._urlInvalid });
         return(this._typeInvalid || this._urlInvalid);
       },
 
       _selectActivityGroup: function(e){ 
 
-        console.debug("[experts-create-activity-post] _selectActivityGroup ", this.activityGroups);
+        console.debug("[experts-activity-detail-create] _selectActivityGroup ", this.activityGroups);
 
         var _activityTypes = [];
-        if (!this.post.type) {
-          this.post.type="";
+        if (!this.detail.detail_type) {
+          this.detail.detail_type="";
         } else {
           var type = { 
-            tag: this.post.type, 
+            tag: this.detail.detail_type, 
             selected: "selected" 
           }; 
           _activityTypes.push(type); 
@@ -396,53 +396,55 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         }); 
-        console.debug("[experts-create-activity-post] selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-detail-create] selectActivityGroup - _activityTypes", this._activityTypes);
       }, 
 
       _selectActivityType: function(e){ 
 
         var tag = e.model.type.tag;
 
-        console.debug("[experts-create-activity-post] selectActivityType", tag);
+        console.debug("[experts-activity-detail-create] selectActivityType", tag);
+
          
         for (var i in this._activityTypes) {
           if (this._activityTypes[i].tag == tag) {
-            this.set(['_activityTypes',i,'selected'],"selected");  
+            this.set(['_activityTypes',i,'selected'],"selected"); 
           } 
           if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
             console.debug("Let's delete ", this._activityTypes[i])
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-create-activity-post] _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-detail-create] _activityTypes", this._activityTypes);
 
-        this.set("post.type",tag);
+        this.set("detail.detail_type",tag);
 
-        console.debug("[experts-create-activity-post] selectActivityType - selected activity type", this.post.type);
+        console.debug("[experts-activity-detail-create] selectActivityType - selected activity type", this.detail.detail_type);
       },
-      _initNewActivityPost: function() {
-        this.post = {};
+      _initNewActivityDetail: function() {
+        this.detail = {};
         for (var i in this._activityTypes) {
           this._activityTypes[i].selected = "";
         }
 
       },
-      _submitActivityPost: function() {
-        this.post.email = this.user.email;
-        this.post.activity_record = this.recordId;
-        if (!this.post.metric_reached) { 
-          this.post.metric_reached = 0;
-        }
-        if (!this.post.metric_indirect) { 
-          this.post.metric_indirect = 0;
-        } 
-        if (!this.post.metric_trained) { 
-          this.post.metric_trained = 0;
-        }
-        console.debug("[experts-create-activity-post] _submitActivityPost ", this.post);
+      _submitActivityDetail: function() {
+        this.detail.email = this.user.email;
+        this.detail.activity_master = this.masterId;
 
-        var request = this.$.insertActivityPost;
-        request.body = JSON.stringify(this.post);
+        if (!this.detail.metric_reached) { 
+          this.detail.metric_reached = 0;
+        }
+        if (!this.detail.metric_indirect) { 
+          this.detail.metric_indirect = 0;
+        } 
+        if (!this.detail.metric_trained) { 
+          this.detail.metric_trained = 0;
+        }
+        console.debug("[experts-activity-detail-create] _submitActivityDetail ", this.detail);
+
+        var request = this.$.insertActivityDetail;
+        request.body = JSON.stringify(this.detail);
 
         request.headers = {
           Authorization : "Bearer "+ this.user.token
@@ -451,15 +453,15 @@
         request.generateRequest();
 
       },
-      _handleActivityPostInsert: function() {
-        this.set('post', this._apiActivityPost);
-        this.fire('activity-post-created', this.post);
-        this._initNewActivityPost();
+      _handleActivityDetailInsert: function() {
+        this.set('detail', this._apiActivityDetail);
+        this.fire('activity-detail-created', this.detail);
+        this._initNewActivityDetail();
         this.close();
       },
       cancel: function(){        
         this._currentStep=0;
-        this._initNewActivityPost();
+        this._initNewActivityDetail();
         this.close();
       }, 
     }); 

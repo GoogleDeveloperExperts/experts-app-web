@@ -35,7 +35,7 @@
 -->
 
 <dom-module 
-  id="experts-create-activity">
+  id="experts-activity-create">
   <template>
     
 <!--
@@ -416,7 +416,7 @@
 -->
   <script>
     Polymer({ 
-      is          : 'experts-create-activity',
+      is          : 'experts-activity-create',
       properties  : {
 /**
  * The new activity
@@ -484,27 +484,27 @@
         }
       },      
       next                    : function() {
-        // console.debug("[experts-create-activity] next - current tab: ", this._currentStep );
+        // console.debug("[experts-activity-create] next - current tab: ", this._currentStep );
         if (this._currentStep < this._numberOfSteps -1) {
           this._currentStep += 1;
         }
       },
       finish                  : function(){        
         this._currentStep=0;
-        // console.debug("[experts-create-activity] finish - Activity: ",this.newActivity);
+        // console.debug("[experts-activity-create] finish - Activity: ",this.newActivity);
         this._finishNewActivity();
         this.close();
       },
       cancel                  : function(){        
         this._currentStep=0;
         this._initNewActivity();
-        // console.debug("[experts-create-activity] close");
+        // console.debug("[experts-activity-create] close");
         this.close();
       },
 
       _selectActivityGroup     : function(e){
 
-        console.debug("[experts-create-activity] _selectActivityGroup ", this.activityGroups);  
+        console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
         if (!this.newActivity.activity_type) {
           this.newActivity.activity_type="";
@@ -537,7 +537,7 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[experts-create-activity] _selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-create] _selectActivityGroup - _activityTypes", this._activityTypes);
       },
 
       _selectActivityType      : function(e){
@@ -555,10 +555,10 @@
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-create-activity] _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-create] _activityTypes", this._activityTypes);
              
         this.set("newActivity.activity_type", tag);
-        console.debug("[experts-create-activity] _selectActivityType - selected activity type", this.newActivity.activity_type);
+        console.debug("[experts-activity-create] _selectActivityType - selected activity type", this.newActivity.activity_type);
       },
 
       _selectProductGroup      : function(e){
@@ -576,18 +576,18 @@
         });
 
         this.set("newActivity.product_groups", _selectedProductGroups);
-        console.debug("[experts-create-activity] _selectProductGroup - selected product groups", this.newActivity.product_groups);
+        console.debug("[experts-activity-create] _selectProductGroup - selected product groups", this.newActivity.product_groups);
       },
 
       _isActivityTypesActive  : function() {
        return (this._activityTypes.length > 0);
       },
       _isLastStep             : function() {
-       // console.debug("[experts-create-activity] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
+       // console.debug("[experts-activity-create] _isLastStep - current tab: ", { current: this._currentStep, numberOfSteps: this._numberOfSteps, egality: this._currentStep == this._numberOfSteps -1 });
        return (this._currentStep == this._numberOfSteps -1);
       },
       _isCurrentStep          : function(step) {
-        // console.debug("[experts-create-activity] _isCurrentStep: ", {current: this._currentStep, step: step} );
+        // console.debug("[experts-activity-create] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
       },   
       _createExpress          : function() {
@@ -601,7 +601,7 @@
         };
       },
       _finishNewActivity      : function() {
-        console.debug("[experts-create-activity] _finishNewActivity ", this.newActivity);
+        console.debug("[experts-activity-create] _finishNewActivity ", this.newActivity);
         this.fire('activity-created', this.newActivity);
         this._initNewActivity();
       },

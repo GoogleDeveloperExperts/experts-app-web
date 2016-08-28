@@ -31,15 +31,15 @@
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
-<link rel="import" href="experts-activity-post-list.html">
-<link rel="import" href="experts-create-activity-post.html">
+<link rel="import" href="experts-activity-detail-list.html">
+<link rel="import" href="experts-activity-detail-create.html">
 <!--
     ====================================
                   Shady DOM
     ====================================
 -->
 <dom-module 
-  id = "experts-activity-record-detail">
+  id = "experts-activity-edit">
   <template>
     
 <!--
@@ -79,7 +79,7 @@
       #closeActivityDetail:hover {
         color             : #aaa;
       }
-      #addActivityPost {
+      #addActivityDetail {
         position          : absolute;
         right             : 0;
         top               : -30px;
@@ -87,7 +87,7 @@
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);        
       }
-      #addActivityPost:hover {
+      #addActivityDetail:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       }   
       paper-input {
@@ -575,27 +575,25 @@
         class = "container">
         
         <paper-fab
-          id          = "addActivityPost" 
-          icon        = "add"
-          on-tap      = "_openCreatePostDialog">
-        </paper-fab>  
+            id          = "addActivityDetail" 
+            icon        = "add"
+            on-tap      = "_openCreateDetailDialog"></paper-fab>  
 
         <div 
           class = "item">
           <div 
-            class = "item_name">
-            Activity posts
+              class = "item_name">
+            Activity details
           </div>
         </div>
 
-        <experts-activity-post-list 
-          user                     = "{{user}}"
-          edit-mode                = "true"
-          record-id                = "{{activity.id}}" 
-          post-list                = "{{activity.listActivityPosts}}"
-          on-edit-activity-post    = "_openEditPostDialog"
-          on-delecte-activity-post = "_deleteActivityPost" >
-        </experts-activity-post-list>
+        <experts-activity-detail-list 
+            user                     = "[[user]]"
+            edit-mode                = "true"
+            master-id                = "[[activity.id]]" 
+            detail-list                = "[[activity.listActivityDetails]]"
+            on-edit-activity-detail    = "_openEditDetailDialog"
+            on-delecte-activity-detail = "_deleteActivityDetail" ></experts-activity-detail-list>
 
         <template 
           is = "dom-if" 
@@ -606,7 +604,7 @@
               class = "item_value submit">     
               <paper-button  
                 id        = "submit" 
-                on-tap    = "_submitUpdateActivityRecord"
+                on-tap    = "_submitUpdateActivityMaster"
                 disabled$ ="{{_submitDisabled}}"
                 raised > 
                 Submit 
@@ -616,42 +614,41 @@
         </template>
       </div>
 
-      <experts-create-activity-post 
-        id                       = "createActivityPost"
-        user                     = "{{user}}"
-        post                     = "{{_aPost}}"
-        record-id                = "{{activity.id}}"
-        activity-groups          = "{{activityGroups}}"
-        product-groups           = "{{productGroups}}"
-        on-activity-post-created = "_doAddActivityPost"        
-        modal>
-      </experts-create-activity-post>
+      <experts-activity-detail-create 
+          id                       = "createActivityDetail"
+          user                     = "{{user}}"
+          detail                     = "{{_aDetail}}"
+          master-id                = "{{activity.id}}"
+          activity-groups          = "{{activityGroups}}"
+          product-groups           = "{{productGroups}}"
+          on-activity-detail-created = "_doAddActivityDetail"        
+          modal></experts-activity-detail-create>
 
       <iron-ajax
-        id            = "updateActivityRecord"
-        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord"
-        method        = "POST"
-        content-type  = "application/json"
-        handle-as     = "json"
-        last-response = "{{_apiActivityRecord}}"
-        on-response   = "_handleUpdateActivityRecord"></iron-ajax>
+          id            = "updateActivityMaster"
+          url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster"
+          method        = "POST"
+          content-type  = "application/json"
+          handle-as     = "json"
+          last-response = "{{_apiActivityMaster}}"
+          on-response   = "_handleUpdateActivityMaster"></iron-ajax>
+
+        <iron-ajax
+          id            = "listActivityDetails"
+          url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/ActivityDetail/activityDetail?activity_master={{activity.id}}"
+          method        = "GET"
+          content-type  = "application/json"
+          handle-as     = "json"
+          last-response = "{{_apiListActivityDetails}}"
+          on-response   = "_handleListActivityDetails"></iron-ajax>        
 
       <iron-ajax
-        id            = "listActivityPost"
-        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/activityPost?activity_record={{activity.id}}"
-        method        = "GET"
-        content-type  = "application/json"
-        handle-as     = "json"
-        last-response = "{{_apiListActivityPost}}"
-        on-response   = "_handleListActivityPost"></iron-ajax>        
-
-      <iron-ajax
-        id            = "deleteActivityPost"
-        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
+        id            = "deleteActivityDetail"
+        url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityDetail/delete/{{_deleteDetailId}}"
         method        = "DELETE"
         handle-as     = "json"
-        last-response = "{{_apiActivityPostDelete}}"
-        on-response   = "_handleActivityPostDelete"></iron-ajax>
+        last-response = "{{_apiActivityDetailDelete}}"
+        on-response   = "_handleActivityDetailDelete"></iron-ajax>
   </template>
 <!--
     ====================================
@@ -660,7 +657,7 @@
 -->
   <script>
     Polymer({ 
-      is          : 'experts-activity-record-detail',
+      is          : 'experts-activity-edit',
       properties  : {     
         activity        : {
           type            : Object,
@@ -748,8 +745,8 @@
        * https://github.com/PolymerElements/polymer-starter-kit/issues/154
        * https://github.com/PolymerElements/paper-dialog/issues/7
        */
-        this.createActivityPost = this.$.createActivityPost        
-        document.querySelector('body').appendChild(this.createActivityPost);
+        this.createActivityDetail = this.$.createActivityDetail        
+        document.querySelector('body').appendChild(this.createActivityDetail);
       },
 
 
@@ -757,12 +754,12 @@
       /* Observers                                                            */
       /************************************************************************/
       _paramsChanged              : function() {
-        console.debug("[experts-activity-record-detail] _paramsChanged", this.activity);
+        console.debug("[experts-activity-edit] _paramsChanged", this.activity);
         if (!this.activity) {
           return;
         } 
 
-        this._listActivityPosts(); 
+        this._listActivityDetails(); 
       },
 
 
@@ -770,7 +767,7 @@
       /* Computed properties                                                  */
       /************************************************************************/
       _isActivityTypesActive  : function() {
-          console.debug("[experts-activity-record-detail] _isActivityTypesActive", this._activityTypes);
+          console.debug("[experts-activity-edit] _isActivityTypesActive", this._activityTypes);
         return (this._activityTypes.length > 0);
       },      
 
@@ -778,9 +775,9 @@
       /************************************************************************/
       /* Action listeners                                                     */
       /************************************************************************/
-      _submitUpdateActivityRecord : function(evt) {
+      _submitUpdateActivityMaster : function(evt) {
 
-        var request     = this.$.updateActivityRecord;
+        var request     = this.$.updateActivityMaster;
         request.body    = JSON.stringify(this.activity);
 
         request.headers = {
@@ -791,7 +788,7 @@
    
       _selectActivityGroup : function(e){
 
-        console.debug("[experts-activity-record-detail] _selectActivityGroup ", this.activityGroups);  
+        console.debug("[experts-activity-edit] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
         if (!this.activity.activity_type) {
           this.activity.activity_type="";
@@ -824,7 +821,7 @@
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
-        console.debug("[experts-activity-record-detail] _selectActivityGroup - _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-edit] _selectActivityGroup - _activityTypes", this._activityTypes);
       },
 
       _selectActivityType : function(e){
@@ -841,10 +838,10 @@
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-activity-record-detail] _activityTypes", this._activityTypes);
+        console.debug("[experts-activity-edit] _activityTypes", this._activityTypes);
              
         this._activity_type = tag;
-        console.debug("[experts-activity-record-detail] _selectActivityType - selected activity type", this._activity_type);
+        console.debug("[experts-activity-edit] _selectActivityType - selected activity type", this._activity_type);
       },
 
 
@@ -862,35 +859,35 @@
         });
 
         this._product_groups = _selectedProductGroups;
-        console.debug("[experts-activity-record-detail] _selectProductGroup - selected product groups", this._product_groups);
+        console.debug("[experts-activity-edit] _selectProductGroup - selected product groups", this._product_groups);
       },
 
-      _openCreatePostDialog       : function() {
-        this._aPost = {};
-        this.createActivityPost.open();
+      _openCreateDetailDialog       : function() {
+        this._aDetail = {};
+        this.createActivityDetail.open();
       },
-      _openEditPostDialog         : function(evt, post) {
-        this._aPost = post;
-        this.createActivityPost.open();
+      _openEditDetailDialog         : function(evt, detail) {
+        this._aDetail = detail;
+        this.createActivityDetail.open();
       },
-      _doAddActivityPost          : function(evt, post) {
-        if (!this.activity.activity_posts) {
-          this.set('activity.activity_posts', []);
+      _doAddActivityDetail          : function(evt, detail) {
+        if (!this.activity.activity_details) {
+          this.set('activity.activity_details', []);
         }
-        this.push ('activity.activity_posts', post.id);
-        this._submitUpdateActivityRecord();
+        this.push ('activity.activity_details', detail.id);
+        this._submitUpdateActivityMaster();
       },      
 
-      _deleteActivityPost         : function(evt, postId) {
-        console.debug("[experts-activity-record-detail] _deleteActivityPost", postId);
-        this._deletePostId  = postId;
-        var request         = this.$.deleteActivityPost;
+      _deleteActivityDetail         : function(evt, detailId) {
+        console.debug("[experts-activity-edit] _deleteActivityDetail", detailId);
+        this._deleteDetailId  = detailId;
+        var request         = this.$.deleteActivityDetail;
         request.headers     = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
 
-        this._deletePostId  = "";
+        this._deleteDetailId  = "";
 
       },
 
@@ -903,7 +900,7 @@
       },
       _submitEditTitle: function(evt) {
         this.activity.title = this._title;
-        this._submitUpdateActivityRecord();
+        this._submitUpdateActivityMaster();
         this._closeEditTitle();
       },
       _editDescription: function(evt) {
@@ -915,7 +912,7 @@
       },   
       _submitEditDescription: function(evt) {
         this.activity.description = this._description;
-        this._submitUpdateActivityRecord();
+        this._submitUpdateActivityMaster();
         this._closeEditDescription();
       },
       _editActivityType: function(evt) {
@@ -933,10 +930,13 @@
       },   
       _submitEditActivityType: function(evt) {
         this.activity.activity_type = this._activity_type;
-        this._submitUpdateActivityRecord();
+        this._submitUpdateActivityMaster();
         this._closeEditActivityType();
       },
       _editProductGroups: function(evt) {
+        if (!this.activity.product_groups) {
+          this.activity.product_groups = [];   
+        } 
         this._product_groups = JSON.parse(JSON.stringify(this.activity.product_groups));
         var self = this;
         this.productGroups.forEach(function(product){
@@ -951,7 +951,7 @@
       },   
       _submitEditProductGroups: function(evt) {
         this.activity.product_groups = JSON.parse(JSON.stringify(this._product_groups));
-        this._submitUpdateActivityRecord();
+        this._submitUpdateActivityMaster();
         this._closeEditProductGroups();
       },
       _editLocation: function(evt) {
@@ -965,7 +965,7 @@
       _submitEditLocation: function(evt) {
         this.activity.city = this._city;
         this.activity.country = this._country;
-        this._submitUpdateActivityRecord();
+        this._submitUpdateActivityMaster();
         this._closeEditLocation();
       },
       _editDate: function(evt) {
@@ -976,7 +976,8 @@
         this._isEditingDate = false;
       },   
       _submitEditDate: function(evt) {
-        this._submitUpdateActivityRecord();
+        this.activity.date = this._date;
+        this._submitUpdateActivityMaster();
         this._closeEditDate();
       },
 
@@ -985,62 +986,30 @@
       /************************************************************************/
       /* Event listeners                                                      */
       /************************************************************************/
-      _handleUpdateActivityRecord : function() {
-        this.activity       = this._apiActivityRecord;
+      _handleUpdateActivityMaster : function() {
+        this.activity       = this._apiActivityMaster;
         this._editActivity  = false;
       },
-      _handleListActivityPost     : function() {
-        console.debug("[experts-activity-record-detail] _handleListActivityPost", this.activity.listActivityPosts );
-        this.set('activity.listActivityPosts', this._apiListActivityPost.items);
-        this._resynchroActivityPosts()
+      _handleListActivityDetails     : function() {
+        console.debug("[experts-activity-edit] _handleListActivityDetails", this._apiListActivityDetails.items );
+        this.set('activity.listActivityDetails', this._apiListActivityDetails.items);
       },
-      _handleActivityPostDelete   : function() {
-        console.debug("[experts-activity-record-detail] _handleActivityPostDelete", this._apiActivityPostDelete);
-        if(this.activity.activity_posts && this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id) >= 0) {
-          this.splice('activity.activity_posts', this.activity.activity_posts.indexOf(this._apiActivityPostDelete.id), 1);
-        }
-        this._submitUpdateActivityRecord();
+      _handleActivityDetailDelete   : function() {
+        console.debug("[experts-activity-edit] _handleActivityDetailDelete", this._apiActivityDetailDelete);
+        this._listActivityDetails();
+        this._submitUpdateActivityMaster();
       },
 
 
       /************************************************************************/
       /* Other methods                                                        */
       /************************************************************************/
-      _listActivityPosts          : function() {
-        var request     = this.$.listActivityPost;
+      _listActivityDetails          : function() {
+        var request     = this.$.listActivityDetails;
         request.headers = {
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
-      },
-
-      _resynchroActivityPosts     : function() {
-        if (!this.activity.listActivityPosts) {
-          return;
-        }
-        var activity_posts = this.activity.listActivityPosts.map(function(post) {
-          return post.id;
-        });
-        var synchroNeeded = false;
-
-        var context = this;
-
-        synchroNeeded = 
-          !activity_posts.every(function(postId) {
-            if (!context.activity.activity_posts) {
-              return false;
-            }
-            return (context.activity.activity_posts.indexOf(postId) >= 0);
-          }) ||
-          !this.activity.activity_posts.every(function(postId) {
-            return (activity_posts.indexOf(postId) >= 0);
-          });
-
-        if (synchroNeeded) {
-          this.set('activity.activity_posts', activity_posts);
-          console.debug("[experts-activity-record-detail] _resynchroActivityPosts - synchroNeeded", this.activity.activity_posts);
-          this._submitUpdateActivityRecord();
-        }  
       },
 
       _serializeList: function(list) {

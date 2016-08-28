@@ -28,7 +28,7 @@
     ====================================
 -->
 <dom-module
-  id = "experts-activity-post-list">
+    id = "experts-activity-detail-list">
   <template>
 <!--
     ====================================
@@ -156,40 +156,31 @@
         </template>
       </div>
       <div class="tbody">
-        <template is="dom-repeat" items="{{postList}}" as="post">
+        <template is="dom-repeat" items="{{detailList}}" as="detail">
           <div class="tr">
-            <div class="td col0">{{post.type}}</div>
-            <div class="td col1">{{post.url}}</div>
-            <div class="td col2">{{post.metric_reached}}</div>
-            <div class="td col3">{{post.metric_indirect}}</div>
-            <div class="td col4">{{post.metric_trained}}</div>
+            <div class="td col0">{{detail.detail_type}}</div>
+            <div class="td col1">{{detail.url}}</div>
+            <div class="td col2">{{detail.metric_reached}}</div>
+            <div class="td col3">{{detail.metric_indirect}}</div>
+            <div class="td col4">{{detail.metric_trained}}</div>
             <template is="dom-if" if="{{editMode}}">
               <div class="td col5">
                 <iron-icon 
                   class="edit" 
                   icon="create"
-                  post$="{{post}}"
-                  on-tap="_editActivityPost"></iron-icon>  
+                  detail$="{{detail}}"
+                  on-tap="_editActivityDetail"></iron-icon>  
                 <iron-icon 
                   class="delete" 
                   icon="delete"
-                  post$="{{post}}"
-                  on-tap="_deleteActivityPost"></iron-icon>                 
+                  detail$="{{detail}}"
+                  on-tap="_deleteActivityDetail"></iron-icon>                 
               </div>            
             </div>
             </template>
         </template>
       </div>
     </div>  
-
-    <iron-ajax
-      id = "deleteActivityPost"
-      url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityPost/delete/{{_deletePostId}}"
-      method = "DELETE"
-      handle-as = "json"
-      last-response = "{{_apiActivityPostDelete}}"
-      on-response = "_handleActivityPostDelete"></iron-ajax>
-   
 
   </template>
 
@@ -200,7 +191,7 @@
 -->
   <script>
     Polymer({
-      is: 'experts-activity-post-list',
+      is: 'experts-activity-detail-list',
       properties: {
 
         /**
@@ -214,18 +205,18 @@
         },
 
         /**
-         * The activity record parent to this activity post list
+         * The activity record parent to this activity detail list
          */
         recordId: {
           type: String
         },
 
         /**
-         * The activity post list
+         * The activity detail list
          */
-        postList: {
+        detailList: {
           type: Array,
-          observer:  "_postListChanged",
+          observer:  "_detailListChanged",
           value: function() {
             return [];
           }
@@ -237,18 +228,18 @@
         },
       },
 
-      _editActivityPost: function(evt) {
-        var post =  evt.model.post;
-        console.debug("[experts-activity-post-list] _editActivityPost", post);
-        this.fire('edit-activity-post', post);
+      _editActivityDetail: function(evt) {
+        var detail =  evt.model.detail;
+        console.debug("[experts-activity-detail-list] _editActivityDetail", detail);
+        this.fire('edit-activity-detail', detail);
       },
-      _deleteActivityPost: function(evt) {
-        var post =  evt.model.post;
-        console.debug("[experts-activity-post-list] _deleteActivityPost", post.id);
-        this.fire('delecte-activity-post', post.id);
+      _deleteActivityDetail: function(evt) {
+        var detail =  evt.model.detail;
+        console.debug("[experts-activity-detail-list] _deleteActivityDetail", detail.id);
+        this.fire('delecte-activity-detail', detail.id);
       },
-      _postListChanged: function() {
-        console.debug("[experts-activity-post-list] _postListChanged", this.postList);
+      _detailListChanged: function() {
+        console.debug("[experts-activity-detail-list] _detailListChanged", this.detailList);
       },
     });
 

@@ -397,10 +397,10 @@
         this._userSelected = !this._userSelected;
       },
       _goToPage: function(evt) {
-          var pageId = evt.srcElement.getAttribute('name');
-          this.set('route.path',  "/"+pageId);
-          window.location.hash = "/"+pageId;
-          console.debug("[experts-app] route", this.route);
+        console.debug("[experts-app] _goToPage", evt);
+        var pageId = evt.target.getAttribute('name');
+        window.history.pushState({}, null, '#/'+pageId);
+        window.dispatchEvent(new CustomEvent('location-changed'));
       },
       ready : function() {
         this.$.drawer.forceNarrow = true;

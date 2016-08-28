@@ -24,14 +24,14 @@
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
-<link rel="import" href="./experts-activity-record-detail.html">
+<link rel="import" href="./experts-activity-edit.html">
 <!--
     ====================================
                   Shady DOM
     ====================================
 -->
 <dom-module
-  id = "experts-activity-record-list">
+  id = "experts-activity-list">
   <template>
 <!--
     ====================================
@@ -146,21 +146,21 @@
 
 
     <iron-ajax 
-      id          = "activityListRequest"
-      method      = "GET"
-      url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityRecord/activityRecord"
-      handle-as   = "json"
-      on-response = "_handleActivityList"></iron-ajax>
+        id          = "activityListRequest"
+        method      = "GET"
+        url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/activityMaster"
+        handle-as   = "json"
+        on-response = "_handleActivityList"></iron-ajax>
 
-    <experts-activity-record-detail 
-      id              = "activityDetail"
-      activity-groups  = "{{activityGroups}}"
-      product-groups  = "{{productGroups}}"
-      user            = "{{user}}"
-      exit-animation  = "slide-down-animation"
-      entry-animation = "slide-from-bottom-animation"
-      no-cancel-on-outside-click
-      modal></experts-activity-record-detail>
+    <experts-activity-edit 
+        id              = "activityEdit"
+        activity-groups  = "{{activityGroups}}"
+        product-groups  = "{{productGroups}}"
+        user            = "{{user}}"
+        exit-animation  = "slide-down-animation"
+        entry-animation = "slide-from-bottom-animation"
+        no-cancel-on-outside-click
+        modal></experts-activity-edit>
 
     <div class="table">
       <div class="thead">
@@ -177,7 +177,7 @@
         <template is="dom-repeat" items="{{activities}}" as="activity">
           <div class="tr">
             <div class="td col0"><paper-checkbox></paper-checkbox></div>
-            <div class="td col1 action" on-click="_doActivityDetail">{{activity.title}}</div>
+            <div class="td col1 action" on-click="_doActivityEdit">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
@@ -196,7 +196,7 @@
 -->
   <script>
     Polymer({
-      is: 'experts-activity-record-list',
+      is: 'experts-activity-list',
       properties: {
 /**
  * The list of activities
@@ -236,7 +236,7 @@
       },
 
       _userChanged: function(){
-        console.debug("[experts-activity-record-list] _userChanged ", this.user);
+        console.debug("[experts-activity-list] _userChanged ", this.user);
         if (!this.user || !this.user.email) {
           this.activities = [];
           return;
@@ -252,8 +252,8 @@
  * https://github.com/PolymerElements/polymer-starter-kit/issues/154
  * https://github.com/PolymerElements/paper-dialog/issues/7
  */
-        this.activityDetail = this.$.activityDetail        
-        document.querySelector('body').appendChild(this.activityDetail);
+        this.activityEdit = this.$.activityEdit        
+        document.querySelector('body').appendChild(this.activityEdit);
       },
 
 /**
@@ -277,7 +277,7 @@
           // No activity found, what should we do?
           return;
         }
-        console.debug("[experts-activity-record-list] _handleActivityList",response.items);
+        console.debug("[experts-activity-list] _handleActivityList",response.items);
         this.activities = response.items;
 
       },
@@ -295,16 +295,17 @@
       },
 
 /**
- * Edit activity record
+ * Edit activity master
  */
-      editActitityRecord: function(activity) {
-        this.activityDetail.activity = activity;
-        this.activityDetail.open();
+      editActitityMaster: function(activity) {
+        this.activityEdit.activity = activity;
+        // console.debug("[experts-activities] activityEdit", this.activityEdit)
+        this.activityEdit.open();
       },
 
-      _doActivityDetail: function(evt) {
-        console.debug("[experts-activities] _doActivityDetail", evt.model.activity);
-        this.editActitityRecord(evt.model.activity);
+      _doActivityEdit: function(evt) {
+        console.debug("[experts-activities] _doActivityEdit", evt.model.activity);
+        this.editActitityMaster(evt.model.activity);
       },
     });
   </script>

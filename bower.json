@@ -34,7 +34,8 @@
     "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.2",
     "google-map": "GoogleWebComponents/google-map#^1.1.10",
     "firebase": "^3.0.5",
-    "google-signin": "GoogleWebComponents/google-signin#^1.3.6"
+    "google-signin": "GoogleWebComponents/google-signin#^1.3.6",
+    "granite-spinner": "^2.0.0"
   },
   "devDependencies": {
     "web-component-tester": "^4.0.0"
