@@ -376,7 +376,50 @@
             </div>             
           </section>
         </div>
-        
+
+        <!-- Tab 4 -->        
+        <div>
+          <h2>
+            <iron-icon 
+                icon    = "arrow-back"
+                on-tap  = "back">
+            </iron-icon>
+            Have you any metrics on the activity reach?            
+          </h2>
+
+          <section>
+            <div class="item"> 
+              <div class="item_name">Activity metrics</div>
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people directly reached?"
+                  value="{{ detail.metric_reached }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people trained?"
+                  value="{{ detail.metric_trained }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached"
+                  type="number"
+                  label="How many people indirectly reached?"
+                  value="{{ detail.metric_indirect }}"
+                  min="0">
+                </paper-input> 
+              </div> 
+            </div> 
+          </section>
+        </div>        
         
 
       </iron-pages>  
@@ -423,6 +466,11 @@
             id      = "fourth"
             class   = "indicator"
             active$ = "{{_isCurrentStep(3, _currentStep)}}">
+        </div>
+        <div
+            id      = "fifth"
+            class   = "indicator"
+            active$ = "{{_isCurrentStep(4, _currentStep)}}">
         </div>
       </div>
     </footer>
@@ -523,7 +571,7 @@
         },
         _numberOfSteps        : {
           type: Number,
-          value: 4
+          value: 5
         },
         _lastStep             : {
           type: Boolean,
@@ -555,8 +603,9 @@
       finish                  : function(){        
         this._currentStep=0;
         // console.debug("[experts-activity-create] finish - Activity: ",this.activity);
-        this._finishNewActivity();
-        this.close();
+        //this._finishNewActivity();
+        //this.close();
+        this._submitActivity();
       },
       cancel                  : function(){        
         this._currentStep=0;
@@ -674,11 +723,6 @@
         };
 
       },
-      _finishNewActivity      : function() {
-        console.debug("[experts-activity-create] _finishNewActivity ", { activity: this.activity, details: [ this.detail ]});
-        this.fire('activity-created', { activity: this.activity, details: [ this.detail ]});
-        this._initNewActivity();
-      },
       _isStepDisabled         : function() {
         switch (this._currentStep) {
           case 0:
@@ -691,17 +735,19 @@
             break;
           case 3:
             return (!this.detail.detail_type  || !this.detail.url );
+          case 4:
+            return (this.detail.metric_reach < 0  || this.detail.metric_indirect < 0 || this.detail.metric_trained < 0);
           default:
             break;           
         }
       },  
 
       _submitActivity: function(evt, activity) {
-        console.debug("[experts-activity-create] _doCreateActivity - activity", activity);
+        console.debug("[experts-activity-create] _doCreateActivity - activity", this.activity);
         console.debug("[experts-activity-create] _doCreateActivity - user", this.user);
-        activity.email = this.user.email;
+        this.activity.email = this.user.email;
         var request = this.$.insertActivityMaster;
-        request.body = JSON.stringify(activity);
+        request.body = JSON.stringify(this.activity);
 
         request.headers = {
           Authorization : "Bearer "+ this.user.token
