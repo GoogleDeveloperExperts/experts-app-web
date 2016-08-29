@@ -635,7 +635,7 @@
 
         <iron-ajax
           id            = "listActivityDetails"
-          url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/ActivityDetail/activityDetail?activity_master={{activity.id}}"
+          url           = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityDetail/activityDetail?activity_master={{activity.id}}"
           method        = "GET"
           content-type  = "application/json"
           handle-as     = "json"
@@ -993,11 +993,12 @@
       _handleListActivityDetails     : function() {
         console.debug("[experts-activity-edit] _handleListActivityDetails", this._apiListActivityDetails.items );
         this.set('activity.listActivityDetails', this._apiListActivityDetails.items);
+        this._resynchroActivityDetails()
       },
       _handleActivityDetailDelete   : function() {
         console.debug("[experts-activity-edit] _handleActivityDetailDelete", this._apiActivityDetailDelete);
         this._listActivityDetails();
-        this._submitUpdateActivityMaster();
+        this._resynchroActivityDetails();
       },
 
 
@@ -1010,6 +1011,33 @@
           Authorization : "Bearer "+ this.user.token
         }
         request.generateRequest();
+      },
+
+
+      _resynchroActivityDetails     : function() {
+        if (!this.activity.listActivityDetails) {
+          return;
+        }
+        var activity_details = this.activity.listActivityDetails.map(function(detail) {
+          return detail.id;
+        });
+        var synchroNeeded = false;
+        var context = this;
+        synchroNeeded = 
+          !activity_details.every(function(detailId) {
+            if (!context.activity.activity_details) {
+              return false;
+            }
+            return (context.activity.activity_details.indexOf(detailId) >= 0);
+          }) ||
+          !this.activity.activity_details.every(function(detailId) {
+            return (activity_details.indexOf(detailId) >= 0);
+          });
+        if (synchroNeeded) {
+          this.set('activity.activity_details', activity_details);
+          console.debug("[experts-activity-record-detail] _resynchroActivityDetails - synchroNeeded", this.activity.activity_details);
+          this._submitUpdateActivityMaster();
+        }  
       },
 
       _serializeList: function(list) {
