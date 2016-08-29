@@ -182,12 +182,14 @@
 
     <experts-activity-create 
         id              = "createActivity"
+        user            = "{{user}}"
         exit-animation  = "slide-down-animation"
         entry-animation = "slide-from-bottom-animation"
         activity-groups  = "{{activityGroups}}"
         product-groups  = "{{productGroups}}"
         no-cancel-on-outside-click
-        on-activity-created = "_doCreateActivity"
+        on-activity-created = "_handleActivityCreated"
+        
         modal></experts-activity-create>
 
     <iron-ajax 
@@ -204,14 +206,7 @@
         on-response = "_handleActivityType"
         auto></iron-ajax>
 
-    <iron-ajax
-        id = "insertActivityMaster"
-        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster"
-        method = "POST"
-        content-type = "application/json"
-        handle-as = "json"
-        last-response = "{{_apiActivityMaster}}"
-        on-response = "_handleActivityMasterInsert"></iron-ajax>
+
 
   </template>
 <!--
@@ -288,40 +283,23 @@
         this.createActivity = this.$.createActivity        
         document.querySelector('body').appendChild(this.createActivity);
       },
-      _doCreateActivity: function(evt, activity) {
-        console.debug("[experts-activities] _doCreateActivity - activity", activity);
-        console.debug("[experts-activities] _doCreateActivity - user", this.user);
-        activity.email = this.user.email;
-        var request = this.$.insertActivityMaster;
-        request.body = JSON.stringify(activity);
 
-        request.headers = {
-          Authorization : "Bearer "+ this.user.token
-        }
-        request.generateRequest();
-      },
-      _handleActivityMasterInsert: function(evt, ironRequest) {
-        evt.stopPropagation();
-        console.debug('Activity created', this._apiActivityMaster);
-        this.$.activityList.generateActivityListRequest();
-        this.$.activityList.editActitityMaster(this._apiActivityMaster);
-      },
       _handleProductGroup : function(evt, ironRequest) {
         evt.stopPropagation();
         this.productGroups = ironRequest.response.items;
-        console.debug('Product groups', this.productGroups);
+        console.debug('[experts-activity] Product groups', this.productGroups);
       },
 
       _handleActivityGroup : function(evt, ironRequest) {
         evt.stopPropagation();
         this.activityGroups = ironRequest.response.items;
-        console.debug('Activity groups', this.activityGroups);
+        console.debug('[experts-activity] Activity groups', this.activityGroups);
       },
 
       _handleActivityType : function(evt, ironRequest) {
         evt.stopPropagation();
         this.activityTypes = ironRequest.response.items;
-        console.debug('Activity types', this.activityTypes);
+        console.debug('[experts-activity] Activity types', this.activityTypes);
 
         var activityGroups = {};
         this.activityTypes.forEach(function(activityType){
@@ -334,9 +312,14 @@
           activityGroups[activityType.group].types.push(activityType.tag);
         });
         this.activityGroups = Object.keys(activityGroups).map(function (key) {return activityGroups[key]});
-        console.debug('Activity groups', this.activityGroups);
+        console.debug('[experts-activity] Activity groups', this.activityGroups);
 
       },
+
+      _handleActivityCreated: function(evt, obj) {
+        console.debug("[experts-activity] _handleActivityCreated", obj);
+        this.$.activityList.generateActivityListRequest();
+      }
     });
   </script>
 </dom-module>
