@@ -93,7 +93,7 @@
       .th.col1  {
         width: 170px;
       }
-      .th.col2, {
+      .th.col2, .th.col3,{
         width: 100px;
       }
       .th.col4, .th.col5, .th.col6 {
@@ -128,8 +128,8 @@
         .th, .td {
           display: none;
         }
-        .th.col0, .th.col1, .th.col2, .th.col4, .th.col5, .th.col6,
-        .td.col0,.td.col1, .td.col2, .td.col4, .td.col5,  .td.col6 {
+        .th.col0, .th.col1, .th.col2, .th.col3,
+        .td.col0,.td.col1, .td.col2, .td.col3 {
           display: table-cell;
         }
       }
@@ -159,6 +159,7 @@
         user            = "{{user}}"
         exit-animation  = "slide-down-animation"
         entry-animation = "slide-from-bottom-animation"
+        on-activity-updated="generateActivityListRequest"
         no-cancel-on-outside-click
         modal></experts-activity-edit>
 
@@ -167,6 +168,7 @@
         <div class="th col0"></div>
         <div class="th col1">Activity name</div>
         <div class="th col2">Date</div>
+        <div class="th col3">Type</div>
         <div class="th col4">Direct reach</div>
         <div class="th col5">Trained</div>
         <div class="th col6">Indirect reach</div>
@@ -178,6 +180,7 @@
             <div class="td col0"><paper-checkbox></paper-checkbox></div>
             <div class="td col1 action" on-click="_doActivityEdit">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
+            <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
             <div class="td col5">{{activity.metric_trained}}</div>
             <div class="td col6">{{activity.metric_indirect}}</div>

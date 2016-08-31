@@ -311,6 +311,7 @@
       </div>
 
 
+
       <template 
           is = "dom-if" 
           if = "{{!_isEditingActivityType}}">
@@ -327,9 +328,6 @@
           </div>
         </div>
       </template>
-
-
-      <!--
       <template 
           is = "dom-if" 
           if = "{{_isEditingActivityType}}">    
@@ -393,7 +391,6 @@
           </div>
         </div>
       </template>
-      -->
 
       <template 
           is = "dom-if" 
@@ -991,6 +988,7 @@
       /************************************************************************/
       _handleUpdateActivityMaster : function() {
         this.activity       = this._apiActivityMaster;
+        this.fire('activity-updated', this.activity);
         this._editActivity  = false;
       },
       _handleListActivityDetails     : function() {

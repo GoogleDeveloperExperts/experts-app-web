@@ -184,91 +184,66 @@
       </paper-button>  
 
       <div class="content"> 
-        <h2>Add activity detail</h2>
+        <h2>Add activity link</h2>
 
-        <div class="item"> 
-          <paper-input  
-            auto-validate  
-            name="url" 
-            id="inputUrl" 
-            label="URL" 
-            type="text" 
-            value="{{detail.url}}"
-            maxlength="256"
-            invalid="{{_urlInvalid}}" 
-            required></paper-input> 
-        </div> 
+            <div class="item">
+              <div class="item_name">
+                <paper-dropdown-menu 
+                    selected-item-label="{{detail.detail_type}}"
+                    label="Link source">
+                  <paper-listbox
+                      selected="{{initial_detail_type}}" 
+                      class="dropdown-content">
+                    <template is="dom-repeat" items="{{detailTypes}}" as="type">
+                      <paper-item label="{{type}}">{{type}}</paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </div>
+            </div>
 
-        <div class="item"> 
-          <div class="item_name">Activity Groups</div>
-          <div class="groups item_value">
-            <template  
-              is="dom-repeat" 
-              items="[[activityGroups]]">
-              <paper-button 
-                  on-tap="_selectActivityGroup" 
-                  class="group" 
-                  id="{{item.id}}" 
-                  name="{{item.tag}}" 
-                  active="{{item.active}}" 
-                  toggles 
-                  raised> 
-                {{item.tag}} 
-              </paper-button> 
-            </template> 
-          </div> 
-        </div> 
-        <div class="item"> 
-          <div class="item_name">Activity type (only one allowed)</div>
-          <div 
-            class="types item_value"
-            invalid$="{{_typeInvalid}}">
-            <template 
-              is="dom-repeat" 
-              items="[[_activityTypes]]"
-              as="type">
-              <paper-button 
-                  on-tap="_selectActivityType" 
-                  class$="type {{type.selected}} yeah"
-                  id="{{type.tag}}" 
-                  name="{{type.tag}}" 
-                  raised> 
-                {{type.tag}} 
-              </paper-button> 
-            </template> 
-          </div>  
-        </div> 
-
-        <div class="item"> 
-          <div class="item_name">Activity metrics</div>
-          <div class="item_value metric">
-            <paper-input 
-              id="metric_reached" 
-              type="number" 
-              label="How many people directly reached?"
-              value="{{ detail.metric_reached }}"
-              min="0"> 
-            </paper-input> 
-          </div> 
-          <div class="item_value metric">
-            <paper-input 
-              id="metric_reached" 
-              type="number" 
-              label="How many people trained?"
-              value="{{ detail.metric_trained }}"
-              min="0"> 
-            </paper-input> 
-          </div> 
-          <div class="item_value metric">
-            <paper-input 
-              id="metric_reached"
-              type="number"
-              label="How many people indirectly reached?"
-              value="{{ detail.metric_indirect }}"
-              min="0">
-            </paper-input> 
-          </div> 
-      </div> 
+            <div class="item">              
+              <paper-input  
+                auto-validate  
+                name="url" 
+                id="inputUrl" 
+                label="URL" 
+                type="text" 
+                value="{{detail.url}}"
+                maxlength="256"
+                invalid="{{_urlInvalid}}" 
+                required></paper-input> 
+            </div>    
+            <div class="item"> 
+              <div class="item_name">Activity metrics</div>
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people directly reached?"
+                  value="{{ detail.metric_reached }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people trained?"
+                  value="{{ detail.metric_trained }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached"
+                  type="number"
+                  label="How many people indirectly reached?"
+                  value="{{ detail.metric_indirect }}"
+                  min="0">
+                </paper-input> 
+              </div> 
+            </div> 
       <div class="item"> 
         <div class="item_value submit">     
           <paper-button  
@@ -328,6 +303,20 @@
           type: String,
           value: null
         },
+        detailTypes        : {
+          type: Array,
+          notify: true,
+          value: function(){ 
+            return [
+              "Google+",
+              "Twitter",
+              "LinkedIn",
+              "GitHub",
+              "YouTube",
+              "Another site"
+            ];
+          },
+        },
         _activityTypes: { 
           type: Array, 
           value: function() {
@@ -349,6 +338,9 @@
       behaviors: [ 
         Polymer.PaperDialogBehavior 
       ], 
+      listeners: {
+        'iron-overlay-opened' : '_initNewActivityDetailIfNeeded'
+      },
 
       _isTypeInvalid: function(){
         console.debug("[experts-activity-detail-create] _isTypeInvalid", this.detail.detail_type)
@@ -421,12 +413,24 @@
 
         console.debug("[experts-activity-detail-create] selectActivityType - selected activity type", this.detail.detail_type);
       },
+      _initNewActivityDetailIfNeeded: function() {
+        if (!this.detail.url) {
+          this._initNewActivityDetail();
+        }
+        this.initial_detail_type = this.detailTypes.indexOf(this.detail.detail_type);
+        console.debug("[experts-activity-detail-create] _initNewActivityDetailIfNeeded ",{ detail: this.detail, initial_detail_type: initial_detail_type});
+      },
       _initNewActivityDetail: function() {
-        this.detail = {};
+        this.detail = {
+          'detail_type': '',
+          'url': '',
+          'metric_reached': 0,
+          'metric_indirect': 0,
+          'metric_trained': 0
+        };
         for (var i in this._activityTypes) {
           this._activityTypes[i].selected = "";
         }
-
       },
       _submitActivityDetail: function() {
         this.detail.email = this.user.email;

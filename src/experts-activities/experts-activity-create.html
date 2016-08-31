@@ -26,7 +26,10 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-item/paper-item.html">
+<link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
 <!--
@@ -35,7 +38,7 @@
    ====================================
 -->
 
-<dom-module 
+<dom-module
   id="experts-activity-create">
   <template>
     
@@ -226,7 +229,7 @@
               Fill in the details below to add and track your activity.
             </div>
             <div class="item"> 
-              <paper-input
+              <paper-input  tabindex="1"
                   id    = "title"
                   type  = "text"
                   label = "Activity Title"
@@ -234,7 +237,7 @@
               </paper-input>
             </div>
             <div class="item"> 
-              <paper-input
+              <paper-input  tabindex="2"
                   id    = "description"
                   type  = "text"
                   label = "Description"
@@ -275,45 +278,14 @@
               </div>
           </section>
         </div>
-        <!-- Tab 2 -->
-        <div>
-          <h2>
-            <iron-icon 
-                icon    = "arrow-back" 
-                on-tap  = "back">
-            </iron-icon>
-            Where and when did it happen?
-          </h2>
-          <section
-            id="details">
-            <paper-input
-                id    = "city"
-                type  = "text"
-                label = "Which city?"
-                value = "{{ activity.city }}">
-            </paper-input>
-            <paper-input
-                id    = "country"
-                type  = "text"
-                label = "Which country?"
-                value = "{{ activity.country }}">
-            </paper-input>
-            <paper-input
-                id    = "date"
-                type  = "date"
-                label = "When it happened?"
-                value = "{{ activity.date }}">
-            </paper-input>
-          </section>
-        </div>
-        <!-- Tab 3 -->        
+        <!-- Tab 2 -->        
         <div>
           <h2>
             <iron-icon 
                 icon    = "arrow-back"
                 on-tap  = "back">
             </iron-icon>
-            Let's add some details            
+            Activity type            
           </h2>
 
           <section>
@@ -360,9 +332,66 @@
                 </div>  
               </div> 
             </template>
+          </section>
+        </div>        
+        <!-- Tab 3 -->
+        <div>
+          <h2>
+            <iron-icon 
+                icon    = "arrow-back" 
+                on-tap  = "back">
+            </iron-icon>
+            Where and when did it happen?
+          </h2>
+          <section
+            id="details">
+            <paper-input
+                id    = "city"
+                type  = "text"
+                label = "Which city?"
+                value = "{{ activity.city }}">
+            </paper-input>
+            <paper-input
+                id    = "country"
+                type  = "text"
+                label = "Which country?"
+                value = "{{ activity.country }}">
+            </paper-input>
+            <paper-input
+                id    = "date"
+                type  = "date"
+                label = "When it happened?"
+                value = "{{ activity.date }}">
+            </paper-input>
+          </section>
+        </div>
+        <!-- Tab 4 -->        
+        <div>
+          <h2>
+            <iron-icon 
+                icon    = "arrow-back"
+                on-tap  = "back">
+            </iron-icon>
+            Activity links            
+          </h2>
 
-            <div class="item"> 
-            <div class="item_name">A link for the activity? (website, repository...)</div>
+          <section>
+
+            <div class="item">
+              <div class="item_name">
+                <paper-dropdown-menu 
+                    selected-item-label="{{detail.detail_type}}"
+                    label="Link source">
+                  <paper-listbox class="dropdown-content">
+                    <template is="dom-repeat" items="{{detailTypes}}" as="type">
+                      <paper-item label="{{type}}">{{type}}</paper-item>
+                    </template>
+                  </paper-listbox>
+                </paper-dropdown-menu>
+              </div>
+            </div>
+
+            <div class="item">              
               <paper-input  
                 auto-validate  
                 name="url" 
@@ -373,21 +402,7 @@
                 maxlength="256"
                 invalid="{{_urlInvalid}}" 
                 required></paper-input> 
-            </div>             
-          </section>
-        </div>
-
-        <!-- Tab 4 -->        
-        <div>
-          <h2>
-            <iron-icon 
-                icon    = "arrow-back"
-                on-tap  = "back">
-            </iron-icon>
-            Have you any metrics on the activity reach?            
-          </h2>
-
-          <section>
+            </div>    
             <div class="item"> 
               <div class="item_name">Activity metrics</div>
               <div class="item_value metric">
@@ -552,6 +567,20 @@
             return [];
           }
         },
+        detailTypes        : {
+          type: Array,
+          notify: true,
+          value: function(){ 
+            return [
+              "Google+",
+              "Twitter",
+              "LinkedIn",
+              "GitHub",
+              "YouTube",
+              "Another site"
+            ];
+          },
+        },
         activityGroups        : {
           type: Array,
           notify: true,
@@ -669,8 +698,8 @@
         }  
         console.debug("[experts-activity-create] _activityTypes", this._activityTypes);
              
-        this.set("detail.detail_type", tag);
-        console.debug("[experts-activity-create] _selectActivityType - selected detail type", this.detail.detail_type);
+        this.set("activity.activity_type", tag);
+        console.debug("[experts-activity-create] _selectActivityType - selected activity type", this.activity.activity_type);
       },
 
       _selectProductGroup      : function(e){
@@ -731,12 +760,14 @@
             return (!this.activity.product_groups || this.activity.product_groups.length==0 )
             break;
           case 2:
-            return (!this.activity.city || !this.activity.country || !this.activity.date);            
+            return (!this.activity.activity_type)
             break;
           case 3:
-            return (!this.detail.detail_type  || !this.detail.url );
+            return (!this.activity.city || !this.activity.country || !this.activity.date);            
+            break;
           case 4:
-            return (this.detail.metric_reach < 0  || this.detail.metric_indirect < 0 || this.detail.metric_trained < 0);
+            console.debug("[experts-activity-create] _isStepDisabled - step 4", this.detail);
+            return (!this.detail.detail_type  || !this.detail.url || this.detail.metric_reach < 0  || this.detail.metric_indirect < 0 || this.detail.metric_trained < 0);
           default:
             break;           
         }
