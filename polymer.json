@@ -7,5 +7,9 @@
     "src/experts-icons.html",
     "src/experts-profile.html",
     "src/experts-activities.html"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
   ]
 }
