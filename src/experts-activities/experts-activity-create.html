@@ -32,6 +32,8 @@
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 
+<link rel="import" href="./experts-activity-link-behavior.html">
+
 <!--
    ====================================
                   Shady DOM
@@ -158,6 +160,24 @@
         @apply(--layout-center); 
         @apply(--layout-wrap); 
       } 
+      .activityLinkPanel {
+        min-height        : 400px;
+      }
+      paper-listbox {
+        max-height: 300px;
+        min-width: 180px;
+        overflow-x: hidden;
+      }
+      paper-dropdown-menu {
+        --paper-dropdown-menu: {          
+          min-width: 200px;
+        }
+        --paper-listbox: {
+          max-height: 300px;
+          min-width: 180px;
+          overflow-x: hidden;
+        };
+      }
       footer {
         display           : flex;
         flex-direction    : column;
@@ -366,7 +386,7 @@
           </section>
         </div>
         <!-- Tab 4 -->        
-        <div>
+        <div class="activityLinkPanel">
           <h2>
             <iron-icon 
                 icon    = "arrow-back"
@@ -381,58 +401,72 @@
               <div class="item_name">
                 <paper-dropdown-menu 
                     selected-item-label="{{detail.detail_type}}"
-                    label="Link source">
-                  <paper-listbox class="dropdown-content">
-                    <template is="dom-repeat" items="{{detailTypes}}" as="type">
-                      <paper-item label="{{type}}">{{type}}</paper-item>
+                    label="Link source"
+                    on-iron-select="_activityLinkSelected">
+                  <paper-listbox 
+                      class="dropdown-content">
+                    <template is="dom-repeat" items="{{activityLinks}}" as="link">
+                      <paper-item 
+                          data-link="{{link}}"
+                          label="{{link.label}}">
+                        {{link.label}}
+                      </paper-item>
                     </template>
                   </paper-listbox>
                 </paper-dropdown-menu>
               </div>
             </div>
 
-            <div class="item">              
-              <paper-input  
-                auto-validate  
-                name="url" 
-                id="inputUrl" 
-                label="URL" 
-                type="text" 
-                value="{{detail.url}}"
-                maxlength="256"
-                invalid="{{_urlInvalid}}" 
-                required></paper-input> 
-            </div>    
-            <div class="item"> 
-              <div class="item_name">Activity metrics</div>
-              <div class="item_value metric">
-                <paper-input 
-                  id="metric_reached" 
-                  type="number" 
-                  label="How many people directly reached?"
-                  value="{{ detail.metric_reached }}"
-                  min="0"> 
-                </paper-input> 
+            <template is="dom-if" if="{{_chosenActivityLink}}">
+              <div class="item">              
+                <paper-input  
+                  auto-validate  
+                  name="url" 
+                  id="inputUrl" 
+                  label="URL" 
+                  type="text" 
+                  value="{{detail.url}}"
+                  maxlength="256"
+                  invalid="{{_urlInvalid}}" 
+                  required></paper-input> 
+              </div>    
+              <div class="item"> 
+                <div class="item_name">Activity metrics</div>
+                <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
+                  <div class="item_value metric">
+                    <paper-input 
+                      id="metric_reached" 
+                      type="number" 
+                      label="How many people directly reached?"
+                      value="{{ detail.metric_reached }}"
+                      min="0"> 
+                    </paper-input> 
+                  </div> 
+                </template>
+                <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
+                  <div class="item_value metric">
+                    <paper-input 
+                      id="metric_reached" 
+                      type="number" 
+                      label="How many people trained?"
+                      value="{{ detail.metric_trained }}"
+                      min="0"> 
+                    </paper-input> 
+                  </div> 
+                </template>
+                <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
+                  <div class="item_value metric">
+                    <paper-input 
+                      id="metric_reached"
+                      type="number"
+                      label="How many people indirectly reached?"
+                      value="{{ detail.metric_indirect }}"
+                      min="0">
+                    </paper-input> 
+                  </div> 
+                </template>
               </div> 
-              <div class="item_value metric">
-                <paper-input 
-                  id="metric_reached" 
-                  type="number" 
-                  label="How many people trained?"
-                  value="{{ detail.metric_trained }}"
-                  min="0"> 
-                </paper-input> 
-              </div> 
-              <div class="item_value metric">
-                <paper-input 
-                  id="metric_reached"
-                  type="number"
-                  label="How many people indirectly reached?"
-                  value="{{ detail.metric_indirect }}"
-                  min="0">
-                </paper-input> 
-              </div> 
-            </div> 
+            </template>
           </section>
         </div>        
         
@@ -616,7 +650,7 @@
         },    
       },
       behaviors               : [
-        Polymer.PaperDialogBehavior
+        Polymer.PaperDialogBehavior, ActivityLinks
       ],
       back                    : function() {
         if (this._currentStep > 0) {
@@ -823,7 +857,13 @@
         this._initNewActivity();
         this.close();
       },
-          
+
+      _activityLinkSelected: function(evt, obj) {
+        console.debug("[experts-activity-create] _activityLinkSelected", obj.item.dataLink);
+        this._chosenActivityLink = obj.item.dataLink;
+      },
+         
+
     });
   </script>
 </dom-module>
