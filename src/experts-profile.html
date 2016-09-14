@@ -407,6 +407,9 @@
       _submitSkill: function(evt) {
         console.debug("[experts-profile] _submitSkill", this._skill);
         var userToUpdate = JSON.parse(JSON.stringify(this.user));
+        if (!userToUpdate.skills) { 
+          userToUpdate.skills = []; 
+        }
         userToUpdate.skills.push(this._skill);
         this._submitProfileChanges(userToUpdate);
         this._closeAddSkill();
@@ -477,15 +480,18 @@
       },
 
       _handleAccountInfo: function(evt, ironRequest) {
+        console.debug("[experts-profile] _handleAccountInfo - apiUser",this._apiUser);
         evt.stopPropagation();
-        if (this._apiUser && this._apiUser.type) {
-          this.set('user.category', this._apiUser.type);
-          this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
+        if (this._apiUser && this._apiUser.email) {
+          if (this._apiUser.type) { 
+            this.set('user.category', this._apiUser.type);
+            this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
+          }
           this.set('user.skills', this._apiUser.skills);
           this.set('user.biography', this._apiUser.biography);
           this.set('user.city', this._apiUser.city);
           this.set('user.country', this._apiUser.country);
-          this.set('user.image', this._apiUser.pic_url);
+          if (this._apiUser.pic_url) this.set('user.image', this._apiUser.pic_url);
           this.set('user.product_group', this._apiUser.product_group);
         }
         console.debug("[experts-profile] _handleAccountInfo", this.user);
