@@ -152,14 +152,24 @@
         font-size         : 12px; 
         font-weight       : 400; 
         letter-spacing    : 0.011em; 
-        line-height       : 20px; 
-      } 
+        line-height       : 20px;
+      }
+
+      .item_filter paper-input {
+        max-width: 50%;
+        margin-bottom: 1em;
+      }
 
       .item_value { 
         @apply(--layout-horizontal); 
         @apply(--layout-center); 
         @apply(--layout-wrap); 
       } 
+
+      .item_value paper-button {
+        min-width: 150px;
+      }
+
       .activityLinkPanel {
         min-height        : 400px;
       }
@@ -278,12 +288,19 @@
           <section>
             <div class="item"> 
               <div class="item_name">
-                Choose the product groups concerned by the activity
+                Choose product group(s) that relate to your completed activity.
+              </div>
+              <div class="item_filter">
+                  <paper-input 
+                    type  = "text" 
+                    label = "Type to filter product list..." 
+                    value = "{{filterProduct}}">
               </div>
               <div class="product_groups item_value">
                 <template 
                     is    = "dom-repeat" 
                     items = "[[productGroups]]"
+                    filter="{{_filterProducts(filterProduct)}}"
                     as="product">
                   <paper-button
                       id      = "{{product.id}}"
@@ -675,6 +692,19 @@
         this._initNewActivity();
         // console.debug("[experts-activity-create] close");
         this.close();
+      },
+
+      _filterProducts: function(string) {  
+        if (!string) {
+          // filter to null = disable filtering for buttons
+          return null;
+        } else {
+          string = string.toLowerCase();
+          return function(product) {
+            var first = product.tag.toLowerCase();
+            return (first.indexOf(string) != -1)
+          };
+        }
       },
 
       _selectActivityGroup     : function(e){
