@@ -27,6 +27,8 @@
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input-error.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
@@ -227,7 +229,11 @@
       }
       footer  .progress  .indicator#fourth[active] {
         background-color  : #34a853;
-      }      
+      }
+
+      .keyboard-focus {
+        background-color: #f442d6;
+      }
       
     </style>
 <!--  
@@ -238,8 +244,7 @@
     
     <paper-button
         id      = "closeCreateActivity"
-        on-tap  = "cancel"
-        autofocus>
+        on-tap  = "cancel">
       <iron-icon 
           icon  = "close">
       </iron-icon>
@@ -259,19 +264,23 @@
               Fill in the details below to add and track your activity.
             </div>
             <div class="item"> 
-              <paper-input  tabindex="1"
+              <paper-input
                   id    = "title"
                   type  = "text"
                   label = "Activity Title"
-                  value = "{{ activity.title }}">
+                  value = "{{ activity.title }}" 
+                  error-message="Activity title must be defined."
+                  required auto-validate autofocus>
               </paper-input>
             </div>
             <div class="item"> 
-              <paper-input  tabindex="2"
+              <paper-input
                   id    = "description"
                   type  = "text"
                   label = "Description"
-                  value = "{{ activity.description }}">
+                  value = "{{ activity.description }}"
+                  error-message="Activity description must be defined."
+                  required auto-validate>
               </paper-input>
             </div>
           </section>
@@ -292,6 +301,7 @@
               </div>
               <div class="item_filter">
                   <paper-input 
+                    id    = "filterForProducts"
                     type  = "text" 
                     label = "Type to filter product list..." 
                     value = "{{filterProduct}}">
@@ -339,18 +349,16 @@
                       name="{{item.tag}}" 
                       active="{{item.active}}" 
                       toggles 
-                      raised> 
+                      raised>
                     {{item.tag}} 
                   </paper-button> 
                 </template> 
               </div> 
             </div> 
-            <template
-                is  = "dom-if"
-                if  = "{{_activityTypesActive}}">
               <div class="item"> 
                 <div class="item_name">Now choose the relevant activity type (only one allowed)</div>
                 <div 
+                    id="activitytypenodes"
                     class="types item_value"
                     invalid$="{{_typeInvalid}}">
                   <template 
@@ -368,7 +376,6 @@
                   </template> 
                 </div>  
               </div> 
-            </template>
           </section>
         </div>        
         <!-- Tab 3 -->
@@ -385,20 +392,21 @@
             <paper-input
                 id    = "city"
                 type  = "text"
-                label = "Which city?"
+                label = "Which city? (Optional)"
                 value = "{{ activity.city }}">
             </paper-input>
             <paper-input
                 id    = "country"
                 type  = "text"
-                label = "Which country?"
+                label = "Which country? (Optional)"
                 value = "{{ activity.country }}">
             </paper-input>
             <paper-input
                 id    = "date"
                 type  = "date"
                 label = "When it happened?"
-                value = "{{ activity.date }}">
+                value = "{{ activity.date }}"
+                required auto-validate error-message="Please enter a date for this activity.">
             </paper-input>
           </section>
         </div>
@@ -406,8 +414,8 @@
         <div class="activityLinkPanel">
           <h2>
             <iron-icon 
-                icon    = "arrow-back"
-                on-tap  = "back">
+                icon   = "arrow-back" 
+               on-tap  = "back">
             </iron-icon>
             Activity links            
           </h2>
@@ -416,7 +424,8 @@
 
             <div class="item">
               <div class="item_name">
-                <paper-dropdown-menu 
+                <paper-dropdown-menu
+                    id="linkSource"
                     selected-item-label="{{detail.detail_type}}"
                     label="Link source"
                     on-iron-select="_activityLinkSelected">
@@ -486,8 +495,6 @@
             </template>
           </section>
         </div>        
-        
-
       </iron-pages>  
     </div>
     <footer>
@@ -496,8 +503,7 @@
           if  = "{{!_lastStep}}">
         <paper-button 
             id        = "continue" 
-            on-tap    = "next"
-            disabled  = "{{_stepDisabled}}">
+            on-tap    = "next">
           Continue
         </paper-button>
       </template>
@@ -506,8 +512,7 @@
           if  = "{{_lastStep}}">        
         <paper-button 
             id        = "continue" 
-            on-tap    = "finish"
-            disabled  = "{{_stepDisabled}}">
+            on-tap    = "finish">
           Finish
         </paper-button>
       </template>
@@ -669,20 +674,30 @@
       behaviors               : [
         Polymer.PaperDialogBehavior, ActivityLinks
       ],
+      ready : function() {
+        // this is a bit of a hack; listen for dom-changes when activity master selected
+        // which populates the sub list and then trigger the focus to follow the new list
+        this.$.activitytypenodes.addEventListener("dom-change", 
+          this._followActivityFocus.bind(this));
+      },
+      _followActivityFocus : function() {
+        this.$$('.types paper-button:first-child').focus();
+      },
       back                    : function() {
         if (this._currentStep > 0) {
           this._currentStep -= 1;
         }
       },      
       next                    : function() {
-        // console.debug("[experts-activity-create] next - current tab: ", this._currentStep );
-        if (this._currentStep < this._numberOfSteps -1) {
+        //console.debug("[experts-activity-create] next - current tab: ", this._currentStep );
+        if (this._currentStep < this._numberOfSteps -1 && !this._isStepDisabled()) {
           this._currentStep += 1;
+          this._focusStart();
         }
       },
       finish                  : function(){        
         this._currentStep=0;
-        // console.debug("[experts-activity-create] finish - Activity: ",this.activity);
+        //console.debug("[experts-activity-create] finish - Activity: ",this.activity);
         //this._finishNewActivity();
         //this.close();
         this._submitActivity();
@@ -690,7 +705,7 @@
       cancel                  : function(){        
         this._currentStep=0;
         this._initNewActivity();
-        // console.debug("[experts-activity-create] close");
+        //console.debug("[experts-activity-create] close");
         this.close();
       },
 
@@ -708,8 +723,7 @@
       },
 
       _selectActivityGroup     : function(e){
-
-        console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);  
+        //console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
         if (!this.activity.activity_type) {
           this.activity.activity_type="";
@@ -760,9 +774,9 @@
             this.set(['_activityTypes',i,'selected'],""); 
           } 
         }  
-        console.debug("[experts-activity-create] _activityTypes", this._activityTypes);
-             
+        //console.debug("[experts-activity-create] _activityTypes", this._activityTypes);
         this.set("activity.activity_type", tag);
+
         console.debug("[experts-activity-create] _selectActivityType - selected activity type", this.activity.activity_type);
       },
 
@@ -816,6 +830,28 @@
         };
 
       },
+      _focusStart             : function() {
+        switch (this._currentStep) {
+          case 0:
+            this.$.filterForProducts.focus();
+            break;
+          case 1:
+            this.$.filterForProducts.focus();
+            break;
+          case 2:
+            this.$$(".groups paper-button:first-child").focus();
+            break;
+          case 3:
+            this.$.city.focus();            
+            break;
+          case 4:
+            // TODO paper-dropdown-menu has a messed up focus; the below doesn't work
+            this.$.linkSource.focus();
+            break;
+          default:
+            break;           
+        }
+      },
       _isStepDisabled         : function() {
         switch (this._currentStep) {
           case 0:
@@ -827,7 +863,7 @@
             return (!this.activity.activity_type)
             break;
           case 3:
-            return (!this.activity.city || !this.activity.country || !this.activity.date);            
+            return (!this.activity.date);      
             break;
           case 4:
             console.debug("[experts-activity-create] _isStepDisabled - step 4", this.detail);
