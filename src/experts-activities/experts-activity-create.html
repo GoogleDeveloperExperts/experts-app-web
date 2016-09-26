@@ -677,11 +677,49 @@
       ready : function() {
         // this is a bit of a hack; listen for dom-changes when activity master selected
         // which populates the sub list and then trigger the focus to follow the new list
-        this.$.activitytypenodes.addEventListener("dom-change", 
+        this.$.activitytypenodes.addEventListener('dom-change', 
           this._followActivityFocus.bind(this));
+
+        // on dialog open, reset the form to base
+        this.addEventListener('iron-overlay-opened', function() {
+
+          // reset
+          this.set('activity.product_groups', null);
+          this.set('activity.activity_type', null);
+
+          // get active products (if any) and reset
+          var activeProducts = Polymer.dom(this.root).querySelectorAll('.product_groups paper-button[active]');
+          for (var product in activeProducts) {
+            activeProducts[product].active = false;
+          }
+
+          // get active activity (if any) and reset
+          var activeActivityTypes = Polymer.dom(this.root).querySelectorAll('.groups paper-button[active]');
+          for (var type in activeActivityTypes) {
+            activeActivityTypes[type].active = false;
+          }
+
+          // reset activity types object
+          this._activityTypes = [];
+
+          // reset the paper-inputs to start
+          this.$.title.invalid = false;
+          this.$.description.invalid = false;
+          this.$.city.invalid = false;
+          this.$.country.invalid = false;
+          this.$.date.invalid = false;
+
+          // reset focus start to 0
+          this._focusStart();
+        });
       },
       _followActivityFocus : function() {
-        this.$$('.types paper-button:first-child').focus();
+        try {
+          this.$$('.types paper-button:first-child').focus();
+        } catch(e) {
+          // this is going to fire twice; once on inist, once on open.
+          // Let it error; it'll work fine once it gets to the step 
+        }
       },
       back                    : function() {
         if (this._currentStep > 0) {
@@ -833,7 +871,8 @@
       _focusStart             : function() {
         switch (this._currentStep) {
           case 0:
-            this.$.filterForProducts.focus();
+            this.$.title.focus();
+            console.log('here?');
             break;
           case 1:
             this.$.filterForProducts.focus();
