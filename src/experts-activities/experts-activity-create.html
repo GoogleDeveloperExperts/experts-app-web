@@ -21,6 +21,7 @@
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
 <link rel="import" href="../../bower_components/iron-ajax/iron-ajax.html">
+<link rel="import" href="../../iron-flex-layout/iron-flex-layout-classes.html">
 <link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 <link rel="import" href="../../bower_components/iron-pages/iron-pages.html">
 
@@ -105,9 +106,14 @@
        h2  iron-icon:hover {
         color           : #aaa;
       }
-      section#details {
-        display         : flex;
-        flex-wrap       : wrap;
+      #details {
+        @apply(--layout-vertical);
+      }
+      #details paper-input {
+        max-width: 300px;
+      }
+      #details paper-input#date {
+        max-width: 120px;
       }
       paper-input {
         width           : 100%;
