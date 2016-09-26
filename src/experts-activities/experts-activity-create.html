@@ -684,6 +684,9 @@
         // on dialog open, reset the form to base
         this.addEventListener('iron-overlay-opened', function() {
 
+          if (this._currentStep >0) {
+            return;
+          }
           // reset
           this.set('activity.product_groups', null);
           this.set('activity.activity_type', null);
@@ -728,7 +731,7 @@
         }
       },      
       next                    : function() {
-        //console.debug("[experts-activity-create] next - current tab: ", this._currentStep );
+        console.debug("[experts-activity-create] next - current tab: ", this._currentStep, this.activity );
         if (this._currentStep < this._numberOfSteps -1 && !this._isStepDisabled()) {
           this._currentStep += 1;
           this._focusStart();
@@ -736,7 +739,7 @@
       },
       finish                  : function(){        
         this._currentStep=0;
-        //console.debug("[experts-activity-create] finish - Activity: ",this.activity);
+        console.debug("[experts-activity-create] finish - Activity: ",this.activity);
         //this._finishNewActivity();
         //this.close();
         this._submitActivity();
@@ -908,7 +911,7 @@
             return (!this.activity.date);      
             break;
           case 4:
-            console.debug("[experts-activity-create] _isStepDisabled - step 4", this.detail);
+            // console.debug("[experts-activity-create] _isStepDisabled - step 4", this.activity);
             return (!this.detail.detail_type  || !this.detail.url || this.detail.metric_reach < 0  || this.detail.metric_indirect < 0 || this.detail.metric_trained < 0);
           default:
             break;           
@@ -965,7 +968,10 @@
         this._initNewActivity();
         this.close();
       },
-
+      _handleActivityLinkOverlayOpened: function(evt, details) {
+        console.debug("[experts-activity-create] _handleActivityLinkOverlayOpened", evt);
+        evt.stopPropagation();
+      },
       _activityLinkSelected: function(evt, obj) {
         console.debug("[experts-activity-create] _activityLinkSelected", obj.item.dataLink);
         this._chosenActivityLink = obj.item.dataLink;

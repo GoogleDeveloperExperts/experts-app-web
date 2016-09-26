@@ -165,26 +165,24 @@
 
     <div class="table">
       <div class="thead">
-        <div class="th col0"></div>
         <div class="th col1">Activity name</div>
         <div class="th col2">Date</div>
         <div class="th col3">Type</div>
         <div class="th col4">Direct reach</div>
         <div class="th col5">Trained</div>
         <div class="th col6">Indirect reach</div>
-        <div class="th col7"><iron-icon icon="delete"></div>
+        <div class="th col7"></div>
       </div>
       <div class="tbody">
         <template is="dom-repeat" items="{{activities}}" as="activity">
           <div class="tr">
-            <div class="td col0"><paper-checkbox></paper-checkbox></div>
             <div class="td col1 action" on-click="_doActivityEdit">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
             <div class="td col5">{{activity.metric_trained}}</div>
             <div class="td col6">{{activity.metric_indirect}}</div>
-            <div class="td col7"><iron-icon icon="more-vert"></div>
+            <div class="td col7"><iron-icon icon="delete"></div>
           </div>
         </template>
       </div>
