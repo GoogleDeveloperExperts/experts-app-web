@@ -763,16 +763,11 @@
 
       _selectActivityGroup     : function(e){
         //console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);  
+
         var _activityTypes = [];
-        if (!this.activity.activity_type) {
-          this.activity.activity_type="";
-        } else {
-          var type = { 
-            tag: this.activity.activity_type, 
-            selected: "selected" 
-          }; 
-          _activityTypes.push(type); 
-        }         
+        
+        var selectedFound = false;
+
         for (var i in this.activityGroups) {
           if (this.activityGroups[i].active) {
             for (var j in this.activityGroups[i].types) {
@@ -787,11 +782,19 @@
                 var type = { 
                   tag: this.activityGroups[i].types[j] 
                 };
+                if (this.activity.activity_type && this.activity.activity_type == this.activityGroups[i].types[j] ) {
+                  type.selected = "selected"   
+                  selectedFound = true;
+                }
                 _activityTypes.push(type);
               }  
             }
-          }
+          } 
         }
+        if (!selectedFound) {
+          this.activity.activity_type=""  
+        }
+
         this._activityTypes=_activityTypes.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
         });
