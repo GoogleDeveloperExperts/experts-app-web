@@ -23,6 +23,7 @@
 
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-dialog/paper-dialog.html">
 
 <link rel="import" href="./experts-activity-edit.html">
 <!--
@@ -152,6 +153,13 @@
         handle-as   = "json"
         on-response = "_handleActivityList"></iron-ajax>
 
+    <iron-ajax
+        id = "deleteActivityMaster"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/delete/{{activityToDelete.id}}"
+        method = "DELETE"
+        last-response = "{{_apiActivityMaster}}"
+        on-response = "_handleActivityMasterDelete"></iron-ajax>
+
     <experts-activity-edit 
         id              = "activityEdit"
         activity-groups  = "{{activityGroups}}"
@@ -175,18 +183,41 @@
       </div>
       <div class="tbody">
         <template is="dom-repeat" items="{{activities}}" as="activity">
-          <div class="tr">
+          <div class="tr" id="r-{{activity.id}}">
             <div class="td col1 action" on-click="_doActivityEdit">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
             <div class="td col5">{{activity.metric_trained}}</div>
             <div class="td col6">{{activity.metric_indirect}}</div>
-            <div class="td col7"><iron-icon icon="delete"></div>
+            <div class="td col7"><iron-icon icon="delete" on-click="_doActivityDelete"></div>
           </div>
         </template>
       </div>
     </div>
+
+    <paper-dialog id="deleteActivityConfirm">
+      <h2>Confirm Activity Delete</h2>
+      <paper-dialog-scrollable>
+        Are you sure you want to delete the activity <i>{{deleteActivityTitle}}</i>? This cannot be undone.
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus on-click="_deleteActitityMasterConfirmed">Accept</paper-button>
+      </div>
+    </paper-dialog>
+
+    <paper-dialog id="genericError">
+      <h2>Sorry Hal, I can't do that.</h2>
+      <paper-dialog-scrollable>
+        It appears we've run into a hiccup and cannot complete your request.
+        {{errorMessage}}
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Okay, but I'm not happy about this</paper-button>
+      </div>
+    </paper-dialog>
+
   </template>
 <!--
     ====================================
@@ -301,10 +332,52 @@
         // console.debug("[experts-activities] activityEdit", this.activityEdit)
         this.activityEdit.open();
       },
-
+      
       _doActivityEdit: function(evt) {
         console.debug("[experts-activities] _doActivityEdit", evt.model.activity);
         this.editActitityMaster(evt.model.activity);
+      },
+
+      _doActivityDelete: function(evt) {
+        // will update our delete ajax target
+        this.activityToDelete = evt.model.activity;
+
+        // set title in modal so user can see
+        this.deleteActivityTitle = evt.model.activity.title;
+
+        // pop up the modal confirm window
+        this.$.deleteActivityConfirm.open();
+      },
+
+      _deleteActitityMasterConfirmed: function() {
+
+        // grab ajax context
+        var request = this.$.deleteActivityMaster;
+
+        // set the auth token
+        request.headers = {
+          Authorization: 'Bearer ' + this.user.token
+        };
+
+        // send
+        request.generateRequest();
+      },
+      _handleActivityMasterDelete: function(data) {
+        if (data.detail.status === 200) {
+          
+          // cheap trick so we don't have to pass context
+          this.$$('#r-' + this.activityToDelete.id).remove();
+
+          // fast reset
+          this.activityToDelete = null;
+          this.deleteActivityTitle = '';
+        
+        } else {
+
+          // That did not go right; pop the error window
+          this.errorMessage = data.detail.status + ': ' + data.detail.statusText;
+          this.$.genericErrorPopUp.open();
+        }
       },
     });
   </script>
