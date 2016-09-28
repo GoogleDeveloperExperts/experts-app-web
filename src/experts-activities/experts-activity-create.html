@@ -34,6 +34,7 @@
 <link rel="import" href="../../bower_components/paper-item/paper-item.html">
 <link rel="import" href="../../bower_components/paper-listbox/paper-listbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
 <link rel="import" href="./experts-activity-link-behavior.html">
 
@@ -237,6 +238,14 @@
         background-color  : #34a853;
       }
 
+      .hidden {
+        display: none;
+      }
+
+      paper-spinner {
+        margin-right: 1em;
+      }
+
       .groups paper-button.keyboard-focus {
         background-color: #90d0a0;
       }
@@ -266,6 +275,9 @@
         <!-- Tab 0 -->
         <div>
           <h2>
+            <iron-icon 
+              icon   = "home">
+            </iron-icon>
             Add an activity
           </h2>
           <section>
@@ -504,7 +516,15 @@
               </div> 
             </template>
           </section>
-        </div>        
+        </div>
+        <div>
+          <h2>
+            <paper-spinner active></paper-spinner> Completing Data Save         
+          </h2>
+          <section>
+            Please wait, we're inserting your data...
+          </section>
+        </div> 
       </iron-pages>  
     </div>
     <footer>
@@ -747,7 +767,8 @@
         }
       },
       finish                  : function(){        
-        this._currentStep=0;
+        this._currentStep += 1;
+        this.toggleClass('hidden', true, this.$$('footer'));
         console.debug("[experts-activity-create] finish - Activity: ",this.activity);
         //this._finishNewActivity();
         //this.close();
@@ -976,6 +997,8 @@
         this.fire('activity-created', {activity: this.activity, detail: this.detail});
         this._initNewActivity();
         this.close();
+        this._currentStep = 0;
+        this.toggleClass('hidden', false, this.$$('footer'));
       },
       _handleActivityLinkOverlayOpened: function(evt, details) {
         console.debug("[experts-activity-create] _handleActivityLinkOverlayOpened", evt);

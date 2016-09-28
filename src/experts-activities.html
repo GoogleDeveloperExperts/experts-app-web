@@ -33,7 +33,7 @@
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
 <link rel="import" href="../bower_components/paper-tooltip/paper-tooltip.html">
-
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="../bower_components/neon-animation/neon-animations.html">
 <link rel="import" href="../bower_components/neon-animation/animations/slide-down-animation.html">
@@ -206,7 +206,7 @@
         on-response = "_handleActivityType"
         auto></iron-ajax>
 
-
+      <paper-toast id="activityCreated" text="Your Activity was successfully created!"></paper-toast>
 
   </template>
 <!--
@@ -320,6 +320,7 @@
       _handleActivityCreated: function(evt, obj) {
         console.debug("[experts-activity] _handleActivityCreated", obj);
         this.$.activityList.generateActivityListRequest();
+        this.$.activityCreated.open();
       }
     });
   </script>
