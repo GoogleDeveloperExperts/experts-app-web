@@ -157,7 +157,7 @@
         id = "deleteActivityMaster"
         url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/delete/{{activityToDelete.id}}"
         method = "DELETE"
-        last-response = "{{_apiActivityMaster}}"
+        last-response = "{{_apiActivityMasterDelete}}"
         on-response = "_handleActivityMasterDelete"></iron-ajax>
 
     <experts-activity-edit 
@@ -364,7 +364,7 @@
       },
       _handleActivityMasterDelete: function(data) {
         if (data.detail.status === 200) {
-          
+
           // cheap trick so we don't have to pass context
           this.$$('#r-' + this.activityToDelete.id).remove();
 
