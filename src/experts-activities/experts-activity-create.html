@@ -55,22 +55,17 @@
 -->
     <style>
      :host {
-        display         : block;
-        position        : fixed;
-        top             : 10vh;
-        left            : 10vw;
-        width           : 80vw;
-        overflow        : auto;
+        width           : 50vw;
         border-radius   : 2px;    
         background      : white;
         transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
         font-family     : Roboto;
-        font-size       : 12px;
       }
       :host:hover {
         box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
+
       .content { 
         padding: 15px;  
       } 
@@ -93,43 +88,50 @@
         display         : flex;
         align-items     : center;
         color           : #4285f4;
-        font-size       : 16px;
+        font-size       : 18px;
         font-weight     : 500;
-        min-height      : 56px;
-        margin          : 0 0 0 21px !important;
+        margin          : 0.5em 0 2em 0;
       }
-      h2  iron-icon {
+      h2 paper-button {
+        margin: 0;
+        padding: 0;
+      }
+      h2 iron-icon {
         margin-right    : 10px;
-        color           : #e5e5e5;
+        color           : #999;
         cursor          : pointer;
         transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
       }
-       h2  iron-icon:hover {
-        color           : #aaa;
+      h2 paper-button iron-icon {
+        margin: 0;
       }
+
+      .iron-selected section {
+        margin: 0 2em;
+      }
+
       #details {
         @apply(--layout-vertical);
       }
       #details paper-input {
-        max-width: 300px;
+        max-width: 400px;
       }
       #details paper-input#date {
-        max-width: 120px;
+        max-width: 200px;
       }
       paper-input {
         width           : 100%;
-        --paper-input-container-input: {
-          font-size       : 12px;
-        };        
-        --paper-input-container-label: {
-          font-size       : 12px;
-        };        
       }
+
+      /* the 2px border is for keyboard focus so we don't jump */
       paper-button {
         font-size        : 12px;
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
+        border            : 2px solid transparent;
       }
       .product_groups paper-button[active] {
         background-color  : #ff9e07;
@@ -176,7 +178,7 @@
       } 
 
       .item_value paper-button {
-        min-width: 150px;
+        min-width: 145px;
       }
 
       .activityLinkPanel {
@@ -246,11 +248,22 @@
         margin-right: 1em;
       }
 
-      .groups paper-button.keyboard-focus {
-        background-color: #90d0a0;
+      .step0-icon {
+        --iron-icon-fill-color: #4285f4;
       }
-      .types paper-button.keyboard-focus {
-        background-color: #ffe8c1;
+
+      .keyboard-focus {
+        border: 2px solid orange;
+      }
+
+      blockquote {
+        padding: 1em;
+        border-radius: 5px;
+      }
+
+      blockquote.help {
+        background-color: #4285f4;
+        color: #fff;
       }
       
     </style>
@@ -276,7 +289,8 @@
         <div>
           <h2>
             <iron-icon 
-              icon   = "home">
+              class="step0-icon"
+              icon   = "add-circle">
             </iron-icon>
             Add an activity
           </h2>
@@ -309,17 +323,14 @@
         <!-- Tab 1 -->
         <div>
           <h2>
-            <iron-icon 
-                icon    = "arrow-back"
-                on-tap  = "back">
-            </iron-icon>
+            <paper-button on-tap="back">
+              <iron-icon icon="arrow-back"></iron-icon>
+            </paper-button>
             Product Groups
           </h2>
           <section>
             <div class="item"> 
-              <div class="item_name">
-                Choose product group(s) that relate to your completed activity.
-              </div>
+              Choose product group(s) that relate to your completed activity.
               <div class="item_filter">
                   <paper-input 
                     id    = "filterForProducts"
@@ -349,16 +360,15 @@
         <!-- Tab 2 -->        
         <div>
           <h2>
-            <iron-icon 
-                icon    = "arrow-back"
-                on-tap  = "back">
-            </iron-icon>
-            Activity type            
+            <paper-button on-tap="back">
+              <iron-icon icon="arrow-back"></iron-icon>
+            </paper-button>
+            Activity Type
           </h2>
 
           <section>
             <div class="item"> 
-              <div class="item_name">Begin by choosing one or several relevant activity groups</div>
+              Begin by choosing one relevant activity group.
               <div class="groups item_value">
                 <template  
                     is="dom-repeat" 
@@ -378,7 +388,7 @@
               </div> 
             </div> 
               <div class="item"> 
-                <div class="item_name">Now choose the relevant activity type (only one allowed)</div>
+                <div>Now choose the relevant activity type (only one allowed).</div>
                 <div 
                     id="activitytypenodes"
                     class="types item_value"
@@ -403,47 +413,51 @@
         <!-- Tab 3 -->
         <div>
           <h2>
-            <iron-icon 
-                icon    = "arrow-back" 
-                on-tap  = "back">
-            </iron-icon>
-            Where and when did it happen?
+            <paper-button on-tap="back">
+              <iron-icon icon="arrow-back"></iron-icon>
+            </paper-button>
+            Activity Information
           </h2>
           <section
             id="details">
             <paper-input
+                id    = "date"
+                type  = "date"
+                label = "Which date did this activity take place?"
+                value = "{{ activity.date }}"
+                required auto-validate error-message="Please enter a date for this activity.">
+            </paper-input>
+            <paper-input
                 id    = "city"
                 type  = "text"
-                label = "Which city? (Optional)"
+                label = "In which city did this event take place? (Optional)"
                 value = "{{ activity.city }}">
             </paper-input>
             <paper-input
                 id    = "country"
                 type  = "text"
-                label = "Which country? (Optional)"
+                label = "Which country did this event take place? (Optional)"
                 value = "{{ activity.country }}">
-            </paper-input>
-            <paper-input
-                id    = "date"
-                type  = "date"
-                label = "When it happened?"
-                value = "{{ activity.date }}"
-                required auto-validate error-message="Please enter a date for this activity.">
             </paper-input>
           </section>
         </div>
         <!-- Tab 4 -->        
         <div class="activityLinkPanel">
           <h2>
-            <iron-icon 
-                icon   = "arrow-back" 
-               on-tap  = "back">
-            </iron-icon>
-            Activity links            
+            <paper-button on-tap="back">
+              <iron-icon icon="arrow-back"></iron-icon>
+            </paper-button>
+            Activity Links and Impact
           </h2>
 
           <section>
+            <div class="item">
+              <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
 
+              <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
+
+              <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
+            </div>
             <div class="item">
               <div class="item_name">
                 <paper-dropdown-menu
@@ -453,7 +467,7 @@
                     on-iron-select="_activityLinkSelected">
                   <paper-listbox 
                       class="dropdown-content">
-                    <template is="dom-repeat" items="{{activityLinks}}" as="link">
+                    <template is="dom-repeat" items="{{activityLinks}}" as="link" sort="{{_sort(activityLinks)}}">
                       <paper-item 
                           data-link="{{link}}"
                           label="{{link.label}}">
@@ -888,6 +902,14 @@
         this.activity={"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
         this.finish();
       },
+
+      // Probably use this later; leave genric for activityLinks for now
+      _sort: function(value) {  
+        return function(a, b) {
+          if (a.name === b.name) return 0;
+          return a.name < b.name ? -1 : 1;
+        };
+      },
       _initNewActivity        : function() {
         this.activity = {
           'title': '',
@@ -917,7 +939,7 @@
             this.$$(".groups paper-button:first-child").focus();
             break;
           case 3:
-            this.$.city.focus();            
+            this.$.date.focus();            
             break;
           case 4:
             // TODO paper-dropdown-menu has a messed up focus; the below doesn't work
