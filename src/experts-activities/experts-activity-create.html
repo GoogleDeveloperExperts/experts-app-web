@@ -55,7 +55,7 @@
 -->
     <style>
      :host {
-        width           : 50vw;
+        width           : 65vw;
         border-radius   : 2px;    
         background      : white;
         transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
@@ -447,7 +447,7 @@
             <paper-button on-tap="back">
               <iron-icon icon="arrow-back"></iron-icon>
             </paper-button>
-            Activity Links and Impact
+            Activity Link and Impact
           </h2>
 
           <section>
@@ -488,7 +488,8 @@
                   label="URL" 
                   type="text" 
                   value="{{detail.url}}"
-                  maxlength="256"
+                  pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
+                  error-message="Must be a valid URL."
                   invalid="{{_urlInvalid}}" 
                   required></paper-input> 
               </div>    
