@@ -46,32 +46,19 @@
    ==================================== 
 -->
     <style> 
-     : host { 
-        position: fixed; 
-        top: 0; 
-        left: 0; 
-        width: 100%; 
-        height: 100%; 
-        background-color: rgba(64,64,64,0.6); 
-      } 
+     :host {
+        width           : 65vw;
+        min-height: 70vh;
+        border-radius   : 2px;    
+        background      : white;
+        transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
+        box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
+        font-family     : Roboto;
+      }
+      :host:hover {
+        box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+      }
        
-      .container { 
-        display: block;
-        position: fixed;
-        top: 20vh;
-        left: 11vw;
-        width: 70vw;
-        bottom: 2vw;
-        overflow: auto;
-        border-radius: 2px;    
-        background: white; 
-        transition: box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow: 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        font-size: 12px;
-      } 
-      .container:hover { 
-        box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-      } 
       .content { 
         padding: 15px;  
       } 
@@ -88,17 +75,34 @@
         color: #aaa;
       }  
 
+      h2 {
+        display         : flex;
+        align-items     : center;
+        color           : #4285f4;
+        font-size       : 18px;
+        font-weight     : 500;
+        margin          : 0.5em 0 2em 0;
+      }
+      h2 paper-button {
+        margin: 0;
+        padding: 0;
+      }
+      h2 iron-icon {
+        margin-right    : 10px;
+        color           : #999;
+        cursor          : pointer;
+        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+      }
+      h2 paper-button iron-icon {
+        margin: 0;
+      }
+
       paper-input {
-        width           : 100%;
-        --paper-input-container-input: {
-          font-size       : 12px;
-        };        
-        --paper-input-container-label: {
-          font-size       : 12px;
-        };        
+        width           : 100%;     
       }
       paper-button {
-        font-size        : 12px;
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
@@ -168,6 +172,24 @@
         color: white;
         margin: 5px;
       } 
+
+      .step0-icon {
+        --iron-icon-fill-color: #4285f4;
+      }
+
+      .keyboard-focus {
+        border: 2px solid orange;
+      }
+
+      blockquote {
+        padding: 1em;
+        border-radius: 5px;
+      }
+
+      blockquote.help {
+        background-color: #4285f4;
+        color: #fff;
+      }
     </style> 
 <!--  
    ==================================== 
@@ -185,7 +207,21 @@
       </paper-button>  
 
       <div class="content"> 
-        <h2>Add activity link</h2>
+        <h2>
+          <iron-icon 
+            class="step0-icon"
+            icon   = "add-circle">
+          </iron-icon>
+          Add Activity Link and Impact
+        </h2>
+
+        <div class="item">
+          <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
+
+          <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
+
+          <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
+        </div>
 
             <div class="item">
               <div class="item_name">
@@ -212,13 +248,14 @@
             <template is="dom-if" if="{{_chosenActivityLink}}">
               <div class="item">              
                 <paper-input  
-                  auto-validate  
+                  auto-validate 
+                  pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
+                  error-message="Must be a valid URL."
                   name="url" 
                   id="inputUrl" 
                   label="URL" 
-                  type="text" 
+                  type="text"
                   value="{{detail.url}}"
-                  maxlength="256"
                   invalid="{{_urlInvalid}}" 
                   required></paper-input> 
               </div>    
@@ -267,7 +304,7 @@
             on-tap="_submitActivityDetail"
             disabled$="{{_submitDisabled}}"
             raised> 
-            Submit 
+            Save
           </paper-button> 
         </div> 
       </div> 

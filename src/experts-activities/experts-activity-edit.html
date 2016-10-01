@@ -30,6 +30,7 @@
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
 <link rel="import" href="../../bower_components/paper-input/paper-textarea.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
+<link rel="import" href="../../bower_components/iron-flex-layout/iron-flex-layout-classes.html">
 
 <link rel="import" href="experts-activity-detail-list.html">
 <link rel="import" href="experts-activity-detail-create.html">
@@ -47,19 +48,14 @@
                      CSS 
     ====================================
 -->
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
-        display           : block;
-        position          : fixed;
-        top               : 10vh;
-        left              : 10vw;
-        width             : 80vw;
-        overflow          : auto;
+        width             : 65vw;
         border-radius     : 2px;    
-        background: white;
+        background        : white;
         transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        padding           : 0 25px;
+        padding           : 15px;
         font-family       : 'Roboto', 'Noto', sans-serif;
       }
      :host:hover {
@@ -80,6 +76,24 @@
       #closeActivityDetail:hover {
         color             : #aaa;
       }
+
+      h2 {
+        display         : flex;
+        align-items     : center;
+        color           : #4285f4;
+        font-size       : 18px;
+        font-weight     : 500;
+        margin          : 0.5em 0 0.5em 0;
+      }
+      h2 iron-icon {
+        margin-right    : 10px;
+        color           : #4285f4;
+        cursor          : pointer;
+        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
+        --iron-icon-height: 32px;
+        --iron-icon-width: 32px;
+      }
+
       #addActivityDetail {
         position          : absolute;
         right             : 0;
@@ -92,17 +106,11 @@
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       }   
       paper-input {
-        width           : 100%;
-        --paper-input-container-input: {
-          font-size       : 12px;
-        };        
-        --paper-input-container-label: {
-          font-size       : 12px;
-        };        
+        width           : 95%;  
       }
 
       paper-button {
-      font-size       : 12px;
+        font-size       : 12px;
         margin            : 5px;
         font-weight       : normal !important;
         cursor            : pointer;
@@ -168,23 +176,36 @@
       iron-icon.edit {
         cursor             : pointer;
         color              : var(--google-blue-500);
-      }    
-      iron-icon.submit,
+      }
       iron-icon.add {
         cursor             : pointer;
         color              : var(--google-green-500);
+        color: white;
       }  
-      iron-icon.delete {
+      paper-button.submit {
+        color             : #ffffff;
+        background-color  : #0f9d58;
+        border-radius     : 2px;
+        font-size         : 14px;
+        padding: 5px;
+      }  
+      paper-button.close {
+        color             : #ffffff;
+        background-color  : #d82929;
+        border-radius     : 2px;
+        font-size         : 14px;
+        padding: 5px;
       }
-      iron-icon.close {
-        cursor             : pointer;
-        color              : var(--google-red-500);
+
+      /* hacky Justin against time :-( */
+      paper-button iron-icon {
+        padding: 0 5px 0 0;
+        margin-left: 0 !important;
       }
 
       iron-icon[disabled] {
         color: var(--google-grey-500) !important;
       }
-
 
       .edit_label {
         cursor             : pointer;
@@ -213,12 +234,21 @@
         color              : white;
         margin             : 5px;
       } 
+
+      main {
+        margin: 0 2em;
+      }
     </style>
 <!--  
     ====================================
                    HTML
     ====================================
 -->
+      <h2>
+        <iron-icon icon="create"></iron-icon>
+        Edit This Activity
+      </h2>
+
       <paper-button
         id     = "closeActivityDetail"
         on-tap = "cancel"
@@ -228,391 +258,223 @@
         </iron-icon>
       </paper-button>
 
-      <div class="item title">
-        <template 
-            is = "dom-if" 
-            if = "{{!_isEditingTitle}}">
-          <div class = "item_name">Title</div>
-          <div class = "item_value">
-            {{activity.title}}
-            <iron-icon
-                class="edit"
-                icon="create"
-                disabled$="{{_disableEdit}}"
-                on-tap="_editTitle"
-            ></iron-icon>
-          </div>
-        </template>
-        <template 
-            is = "dom-if" 
-            if = "{{_isEditingTitle}}">
-          <div class = "item_value">
+      <main>
+        <section class="layout horizontal">
+          <div class="flex">
             <paper-input 
-                name      = "title" 
-                id        = "inputTitle" 
-                class     = "flexchild"
                 label     = "Title" 
                 type      = "text" 
-                value     = "{{_title}}"
+                value     = "{{activity.title}}"
                 maxlength = "128"
                 auto-validate 
-                required >
-            </paper-input>
-            <iron-icon
-                class     = "submit" 
-                icon      = "done" 
-                on-tap    = "_submitEditTitle" ></iron-icon>
-            <iron-icon
-                class     = "close"
-                icon      = "clear" 
-                on-tap    = "_closeEditTitle" ></iron-icon>
+                error-message="Activity title must be defined."
+                required></paper-input>
           </div>
-        </template>
-      </div>
+          <div class="flex">
+            <paper-input 
+                  label     = "Description" 
+                  type      = "text" 
+                  value     = "{{activity.description}}"
+                  auto-validate 
+                  error-message="Activity description must be defined."
+                  required></paper-input>
+          </div>
+        </section>
+        <section class="layout horizontal">
+          <div class="flex">
+              <paper-input 
+                  type      = "date" 
+                  value     = "{{activity.date}}"
+                  maxlength = "128"
+                  label = "Which date did this activity take place?"
+                  required auto-validate error-message="Please enter a date for this activity.">
+              </paper-input>
+          </div>
+          <div class="flex">
+            <paper-input
+                label = "In which city did this event take place? (Optional)"
+                type="text" value="{{activity.city}}"
+                maxlength="64"></paper-input>
+          </div>
+          <div class="flex">
+            <paper-input
+              label="Which country did this event take place? (Optional)"
+              type="text" value="{{activity.country}}"
+              maxlength="64"></paper-input>
+          </div>
+        </section>
 
-      <div class="item description">
         <template 
             is = "dom-if" 
-            if = "{{!_isEditingDescription}}">
-          <div class = "item_name">Description</div>
-          <div class = "item_value">
-            {{activity.description}}
-            <iron-icon
-                class="edit"
-                icon="create"
-                disabled$="{{_disableEdit}}"
-                on-tap="_editDescription"
-            ></iron-icon>
+            if = "{{!_isEditingActivityType}}">
+          <div class="item activity_type">
+            <div class = "item_name">Activity Type</div>
+            <div class = "item_value">
+              {{activity.activity_type}}
+              <iron-icon
+                  class="edit"
+                  icon="create"
+                  disabled$="{{_disableEdit}}"
+                  on-tap="_editActivityType"
+              ></iron-icon>
+            </div>
           </div>
         </template>
         <template 
             is = "dom-if" 
-            if = "{{_isEditingDescription}}">
-          <div class = "item_value">
-            <paper-textarea 
-                name      = "description"
-                id        = "inputDescription"
-                class     = "flexchild"
-                label     = "Description" 
-                type      = "text" 
-                value     = "{{_description}}"
-                auto-validate 
-                required></paper-textarea>            
-            <iron-icon
-                class     = "submit" 
-                icon      = "done" 
-                on-tap    = "_submitEditDescription" ></iron-icon>
-            <iron-icon
-                class     = "close"
-                icon      = "clear" 
-                on-tap    = "_closeEditDescription" ></iron-icon>
-          </div>
-        </template>
-      </div>
-
-
-
-      <template 
-          is = "dom-if" 
-          if = "{{!_isEditingActivityType}}">
-        <div class="item activity_type">
-          <div class = "item_name">Activity Type</div>
-          <div class = "item_value">
-            {{activity.activity_type}}
-            <iron-icon
-                class="edit"
-                icon="create"
-                disabled$="{{_disableEdit}}"
-                on-tap="_editActivityType"
-            ></iron-icon>
-          </div>
-        </div>
-      </template>
-      <template 
-          is = "dom-if" 
-          if = "{{_isEditingActivityType}}">    
-        <div class="item"> 
-          <div class="item_name">Activity groups</div>
-          <div class="groups item_value">
-            <template  
-                is="dom-repeat" 
-                items="[[activityGroups]]">
-              <paper-button 
-                  on-tap="_selectActivityGroup" 
-                  class="group" 
-                  id="{{item.id}}" 
-                  name="{{item.tag}}" 
-                  active="{{item.active}}" 
-                  toggles 
-                  raised> 
-                {{item.tag}} 
-              </paper-button> 
-            </template> 
-          </div> 
-        </div> 
-        <template
-            is  = "dom-if"
-            if  = "{{_activityTypesActive}}">
+            if = "{{_isEditingActivityType}}">    
           <div class="item"> 
-            <div class="item_name">Activity type (only one allowed)</div>
-            <div 
-                class="types item_value"
-                invalid$="{{_typeInvalid}}">
-              <template 
-                is="dom-repeat" 
-                items="[[_activityTypes]]"
-                as="type">
+            <div class="item_name">Activity groups</div>
+            <div class="groups item_value">
+              <template  
+                  is="dom-repeat" 
+                  items="[[activityGroups]]">
                 <paper-button 
-                    on-tap="_selectActivityType" 
-                    class$="type {{type.selected}} yeah"
-                    id="{{type.tag}}" 
-                    name="{{type.tag}}" 
+                    on-tap="_selectActivityGroup" 
+                    class="group" 
+                    id="{{item.id}}" 
+                    name="{{item.tag}}" 
+                    active="{{item.active}}" 
+                    toggles 
                     raised> 
-                  {{type.tag}} 
+                  {{item.tag}} 
                 </paper-button> 
               </template> 
-            </div>  
-          </div> 
-        </template>  
-        <div class="item">
-          <div class="item_value">   
-            <template
-                is  = "dom-if"
-                if  = "{{_activityTypesActive}}">
-                <iron-icon
-                    class     = "submit" 
-                    icon      = "done" 
-                    on-tap    = "_submitEditActivityType" ></iron-icon>
-            </template>
-            <iron-icon
-                class     = "close"
-                icon      = "clear" 
-                on-tap    = "_closeEditActivityType" ></iron-icon>
-          </div>
-        </div>
-      </template>
-
-      <template 
-          is = "dom-if" 
-          if = "{{!_isEditingProductGroups}}">
-        <div class="item product_groups">
-          <div class = "item_name">Product Groups</div>
-          <div class = "item_value">
-            {{ _serializeList(activity.product_groups) }}
-            <iron-icon
-                class="edit"
-                icon="create"
-                disabled$="{{_disableEdit}}"
-                on-tap="_editProductGroups"
-            ></iron-icon>
-          </div>
-        </div>
-      </template>
-      <template 
-          is = "dom-if" 
-          if = "{{_isEditingProductGroups}}">    
-        <div class="item"> 
-          <div class="item_name">Product Groups</div>
-            <div class="product_groups item_value">
-              <template 
-                  is    = "dom-repeat" 
-                  items = "[[productGroups]]"
-                  as="product">
-                <paper-button
-                    id      = "{{product.id}}"
-                    class   = "productGroup"
-                    on-tap  = "_selectProductGroup"
-                    active  = "{{product.active}}"
-                    toggles
-                    raised>
-                  {{product.tag}}
-                </paper-button>
-              </template>   
-            </div>
-        </div> 
-        <div class="item">
-          <div class="item_value">   
-            <iron-icon
-                class     = "submit" 
-                icon      = "done" 
-                on-tap    = "_submitEditProductGroups" ></iron-icon>
-            <iron-icon
-                class     = "close"
-                icon      = "clear" 
-                on-tap    = "_closeEditProductGroups" ></iron-icon>
-          </div>
-        </div>
-      </template>
-
-
-
-      <template is="dom-if" if="{{!_isEditingLocation}}">
-        <div class = "item_list">
-          <div class = "item">
-            <div class = "item_name">
-              City
-            </div>
-            <div class = "item_value activityCity">
-              {{activity.city}}
-            </div>
-          </div>  
-          <div class = "item">
-            <div class = "item_name">
-              Country
-            </div>
-            <div class = "item_value activityCountry">
-              {{activity.country}}
-            </div>
-          </div>  
-          <iron-icon
-              class="edit"
-              icon="create"
-              disabled$="{{_disableEdit}}"
-              on-tap="_editLocation"></iron-icon>
-        </div>
-      </template>
-      <template is="dom-if" if="{{_isEditingLocation}}">
-        <paper-input
-          auto-validate
-          name="city" id="inputCity" label="City"
-          type="text" value="{{_city}}"
-          required maxlength="64"></paper-input>
-        <paper-input
-          auto-validate
-          name="country" id="inputCountry" label="Country"
-          type="text" value="{{_country}}"
-          required maxlength="64"></paper-input>
-        <iron-icon
-          class="submit"
-          icon="done" on-tap="_submitEditLocation" ></iron-icon>
-        <iron-icon
-          class="close"
-          icon="clear" on-tap="_closeEditLocation" ></iron-icon>
-      </template>
-
-
-
-      <div class="item date">
-        <template 
-            is = "dom-if" 
-            if = "{{!_isEditingDate}}">
-          <div class = "item_name">Date</div>
-          <div class = "item_value">
-            {{activity.date}}
-            <iron-icon
-                class="edit"
-                icon="create"
-                disabled$="{{_disableEdit}}"
-                on-tap="_editDate"
-            ></iron-icon>
-          </div>
-        </template>
-        <template 
-            is = "dom-if" 
-            if = "{{_isEditingDate}}">
-          <div class = "item_value">
-            <paper-input 
-                name      = "date" 
-                id        = "inputDate" 
-                class     = "flexchild"
-                label     = "Date" 
-                type      = "date" 
-                value     = "{{_date}}"
-                maxlength = "128"
-                auto-validate 
-                required >
-            </paper-input>
-            <iron-icon
-                class     = "submit" 
-                icon      = "done" 
-                on-tap    = "_submitEditDate" ></iron-icon>
-            <iron-icon
-                class     = "close"
-                icon      = "clear" 
-                on-tap    = "_closeEditDate" ></iron-icon>
-          </div>
-        </template>
-      </div>
-
-      <div 
-        class = "item_list">
-        <div 
-          class = "item">
-          <div 
-            class = "item_name">
-            Direct reach
-          </div>
-          <div 
-            class = "item_value activityMetric">
-            {{activity.metric_reached}}
-          </div>
-        </div>         
-        <div 
-          class = "item">
-          <div 
-            class = "item_name">
-            Indirect reach
-          </div>
-          <div 
-            class = "item_value activityMetric">
-            {{activity.metric_indirect}}
-          </div>
-        </div>  
-        <div 
-          class = "item">
-          <div 
-            class = "item_name">
-            Trained reach
-          </div>
-          <div 
-            class = "item_value activityMetric">
-            {{activity.metric_trained}}
-          </div>
-        </div>  
-      </div>
-
-      <div 
-        class = "container">
-        
-        <paper-fab
-            id          = "addActivityDetail" 
-            icon        = "add"
-            on-tap      = "_openCreateDetailDialog"></paper-fab>  
-
-        <div 
-          class = "item">
-          <div 
-              class = "item_name">
-            Activity details
-          </div>
-        </div>
-
-        <experts-activity-detail-list 
-            user                     = "[[user]]"
-            edit-mode                = "true"
-            master-id                = "[[activity.id]]" 
-            detail-list                = "[[activity.listActivityDetails]]"
-            on-edit-activity-detail    = "_openEditDetailDialog"
-            on-delecte-activity-detail = "_deleteActivityDetail" ></experts-activity-detail-list>
-
-        <template 
-          is = "dom-if" 
-          if = "{{_editActivity}}">
-          <div 
-            class = "item"> 
-            <div 
-              class = "item_value submit">     
-              <paper-button  
-                id        = "submit" 
-                on-tap    = "_submitUpdateActivityMaster"
-                disabled$ ="{{_submitDisabled}}"
-                raised > 
-                Submit 
-              </paper-button> 
             </div> 
           </div> 
+          <template
+              is  = "dom-if"
+              if  = "{{_activityTypesActive}}">
+            <div class="item"> 
+              <div class="item_name">Activity type (only one allowed)</div>
+              <div 
+                  class="types item_value"
+                  invalid$="{{_typeInvalid}}">
+                <template 
+                  is="dom-repeat" 
+                  items="[[_activityTypes]]"
+                  as="type">
+                  <paper-button 
+                      on-tap="_selectActivityType" 
+                      class$="type {{type.selected}} yeah"
+                      id="{{type.tag}}" 
+                      name="{{type.tag}}" 
+                      raised> 
+                    {{type.tag}} 
+                  </paper-button> 
+                </template> 
+              </div>  
+            </div> 
+          </template>  
+          <div class="item">
+            <div class="item_value">   
+              <template
+                  is  = "dom-if"
+                  if  = "{{_activityTypesActive}}">
+                  <paper-button on-tap="_submitEditActivityType" class="submit" raised>
+                    <iron-icon icon="done"></iron-icon> Save
+                  </paper-button>
+              </template>
+              <paper-button on-tap="_closeEditActivityType" class="close" raised>
+                <iron-icon icon="clear"></iron-icon> Cancel
+              </paper-button>
+            </div>
+          </div>
         </template>
-      </div>
+
+        <template 
+            is = "dom-if" 
+            if = "{{!_isEditingProductGroups}}">
+          <div class="item product_groups">
+            <div class = "item_name">Product Groups</div>
+            <div class = "item_value">
+              {{ _serializeList(activity.product_groups) }}
+              <iron-icon
+                  class="edit"
+                  icon="create"
+                  disabled$="{{_disableEdit}}"
+                  on-tap="_editProductGroups"
+              ></iron-icon>
+            </div>
+          </div>
+        </template>
+        <template 
+            is = "dom-if" 
+            if = "{{_isEditingProductGroups}}">    
+          <div class="item"> 
+            <div class="item_name">Product Groups</div>
+              <div class="product_groups item_value">
+                <template 
+                    is    = "dom-repeat" 
+                    items = "[[productGroups]]"
+                    as="product">
+                  <paper-button
+                      id      = "{{product.id}}"
+                      class   = "productGroup"
+                      on-tap  = "_selectProductGroup"
+                      active  = "{{product.active}}"
+                      toggles
+                      raised>
+                    {{product.tag}}
+                  </paper-button>
+                </template>   
+              </div>
+          </div> 
+          <div class="item">
+            <div class="item_value">   
+              <paper-button on-tap="_submitEditProductGroups" class="submit" raised>
+                <iron-icon icon="done"></iron-icon> Save
+              </paper-button>
+              <paper-button on-tap="_closeEditProductGroups" class="close" raised>
+                <iron-icon icon="clear"></iron-icon> Cancel
+              </paper-button>
+            </div>
+          </div>
+        </template>
+
+        <div 
+          class = "container">
+          
+          <paper-fab
+              id          = "addActivityDetail" 
+              icon        = "add"
+              on-tap      = "_openCreateDetailDialog"></paper-fab>  
+
+          <div 
+            class = "item">
+            <div 
+                class = "item_name">
+              Activity details
+            </div>
+          </div>
+
+          <experts-activity-detail-list 
+              user                     = "[[user]]"
+              edit-mode                = "true"
+              master-id                = "[[activity.id]]" 
+              detail-list                = "[[activity.listActivityDetails]]"
+              on-edit-activity-detail    = "_openEditDetailDialog"
+              on-delecte-activity-detail = "_deleteActivityDetail" ></experts-activity-detail-list>
+
+          <template 
+            is = "dom-if" 
+            if = "{{_editActivity}}">
+            <div 
+              class = "item"> 
+              <div 
+                class = "item_value submit">     
+                <paper-button  
+                  id        = "submit" 
+                  on-tap    = "_submitUpdateActivityMaster"
+                  disabled$ ="{{_submitDisabled}}"
+                  raised > 
+                  Submit 
+                </paper-button> 
+              </div> 
+            </div> 
+          </template>
+        </div>
+      </main>
 
       <experts-activity-detail-create 
           id                       = "createActivityDetail"
@@ -689,15 +551,6 @@
             return [];
           }
         },
-
-        _isEditingTitle : {
-          type            : Boolean,
-          value           : false
-        }, 
-        _isEditingDescription   : {
-          type            : Boolean,
-          value           : false
-        }, 
         _isEditingActivityType  : {
           type            : Boolean,
           value           : false
@@ -706,33 +559,20 @@
           type            : Boolean,
           value           : false
         }, 
-        _isEditingLocation : {
-          type            : Boolean,
-          value           : false
-        }, 
-        _isEditingDate : {
-          type            : Boolean,
-          value           : false
-        }, 
-
-        _editActivity   : {
-          type            : Boolean,
-          value           : false
-        },
         _isAddingProductGroup: {
-          type            : Boolean,
-          value           : false
-        },
-        _activityTypesActive  : {
           type: Boolean,
-          computed: "_isActivityTypesActive(_activityTypes)"
-        },  
+          value: false
+        },
+        _activityTypesActive: {
+          type: Boolean,
+          computed: '_isActivityTypesActive(_activityTypes)'
+        },
       },
-      behaviors   : [
+      behaviors: [
         Polymer.PaperDialogBehavior
       ],
-      observers   : [
-        "_paramsChanged(activity, activityGroups,  productGroups)"
+      observers: [
+        '_activityChanged(activity.*)'
       ],
 
       /************************************************************************/
@@ -745,8 +585,13 @@
        * https://github.com/PolymerElements/polymer-starter-kit/issues/154
        * https://github.com/PolymerElements/paper-dialog/issues/7
        */
-        this.createActivityDetail = this.$.createActivityDetail        
+        this.createActivityDetail = this.$.createActivityDetail;
         document.querySelector('body').appendChild(this.createActivityDetail);
+
+        // on dialog open, reset the form to base
+        this.addEventListener('iron-overlay-opened', function() {
+          this._listActivityDetails();
+        });
       },
 
 
@@ -762,27 +607,35 @@
         this._listActivityDetails(); 
       },
 
+      _activityChanged: function(newValue, oldValue) {
+        // When we pop the dialog, we know that the root changes which we don't
+        // care about at all. Otherwise, we'll dead loop this. :-)
+        if(newValue.path !== 'activity' && newValue.path !== 'activity.listActivityDetails') {
+          // We have to debounce on our input changes otherwise it'll pound the
+          // server on every keypress
+          this.debounce('_activityChanged', function () {
+            this._submitUpdateActivityMaster();
+          }, 1000);
+        }
+      },
 
       /************************************************************************/
       /* Computed properties                                                  */
       /************************************************************************/
       _isActivityTypesActive  : function() {
-          console.debug("[experts-activity-edit] _isActivityTypesActive", this._activityTypes);
+        console.debug("[experts-activity-edit] _isActivityTypesActive", this._activityTypes);
         return (this._activityTypes.length > 0);
-      },      
-
+      },
 
       /************************************************************************/
       /* Action listeners                                                     */
       /************************************************************************/
-      _submitUpdateActivityMaster : function(evt) {
-
+      _submitUpdateActivityMaster: function(evt) {
         var request     = this.$.updateActivityMaster;
         request.body    = JSON.stringify(this.activity);
-
         request.headers = {
-          Authorization : "Bearer "+ this.user.token
-        }
+          Authorization : 'Bearer ' + this.user.token
+        };
         request.generateRequest();
       },
    
@@ -844,7 +697,6 @@
         console.debug("[experts-activity-edit] _selectActivityType - selected activity type", this._activity_type);
       },
 
-
       _selectProductGroup      : function(e){
         var _selectedProductGroups = [];
         
@@ -887,33 +739,7 @@
         }
         request.generateRequest();
 
-        this._deleteDetailId  = "";
-
-      },
-
-      _editTitle: function(evt) {
-        this._title = this.activity.title;
-        this._isEditingTitle = true;
-      },
-      _closeEditTitle: function(evt) {
-        this._isEditingTitle = false;
-      },
-      _submitEditTitle: function(evt) {
-        this.activity.title = this._title;
-        this._submitUpdateActivityMaster();
-        this._closeEditTitle();
-      },
-      _editDescription: function(evt) {
-        this._description = this.activity._description;
-        this._isEditingDescription = true;
-      },
-      _closeEditDescription: function(evt) {
-        this._isEditingDescription = false;
-      },   
-      _submitEditDescription: function(evt) {
-        this.activity.description = this._description;
-        this._submitUpdateActivityMaster();
-        this._closeEditDescription();
+        this._deleteDetailId = '';
       },
       _editActivityType: function(evt) {
         this._activity_type = this.activity.activity_type;
@@ -924,14 +750,23 @@
           } 
         ];
         this._isEditingActivityType = true;
+
+        // will resize and define dialog position
+        this.notifyResize();
       },
       _closeEditActivityType: function(evt) {
         this._isEditingActivityType = false;
+
+        // will resize and define dialog position
+        this.notifyResize();
       },   
       _submitEditActivityType: function(evt) {
         this.activity.activity_type = this._activity_type;
         this._submitUpdateActivityMaster();
         this._closeEditActivityType();
+
+        // will resize and define dialog position
+        this.notifyResize();
       },
       _editProductGroups: function(evt) {
         if (!this.activity.product_groups) {
@@ -945,56 +780,37 @@
           }
         });
         this._isEditingProductGroups = true;
+
+        // will resize and define dialog position
+        this.notifyResize();
       },
       _closeEditProductGroups: function(evt) {
         this._isEditingProductGroups = false;
+
+        // will resize and define dialog position
+        this.notifyResize();
       },   
       _submitEditProductGroups: function(evt) {
         this.activity.product_groups = JSON.parse(JSON.stringify(this._product_groups));
         this._submitUpdateActivityMaster();
         this._closeEditProductGroups();
-      },
-      _editLocation: function(evt) {
-        this._city = this.activity.city;
-        this._country = this.activity.country;
-        this._isEditingLocation = true;
-      },
-      _closeEditLocation: function(evt) {
-        this._isEditingLocation = false;
-      },   
-      _submitEditLocation: function(evt) {
-        this.activity.city = this._city;
-        this.activity.country = this._country;
-        this._submitUpdateActivityMaster();
-        this._closeEditLocation();
-      },
-      _editDate: function(evt) {
-        this._date = this.activity.date;
-        this._isEditingDate = true;
-      },
-      _closeEditDate: function(evt) {
-        this._isEditingDate = false;
-      },   
-      _submitEditDate: function(evt) {
-        this.activity.date = this._date;
-        this._submitUpdateActivityMaster();
-        this._closeEditDate();
-      },
 
-
+        // will resize and define dialog position
+        this.notifyResize();
+      },
 
       /************************************************************************/
       /* Event listeners                                                      */
       /************************************************************************/
       _handleUpdateActivityMaster : function() {
-        this.activity       = this._apiActivityMaster;
+        this.activity       = this._apiActivityMaster; 
+        this._listActivityDetails();
         this.fire('activity-updated', this.activity);
-        this._editActivity  = false;
       },
       _handleListActivityDetails     : function() {
         console.debug("[experts-activity-edit] _handleListActivityDetails", this._apiListActivityDetails.items );
         this.set('activity.listActivityDetails', this._apiListActivityDetails.items);
-        this._resynchroActivityDetails()
+        this._resynchroActivityDetails();
       },
       _handleActivityDetailDelete   : function() {
         console.debug("[experts-activity-edit] _handleActivityDetailDelete", this._apiActivityDetailDelete);
@@ -1002,18 +818,16 @@
         this._resynchroActivityDetails();
       },
 
-
       /************************************************************************/
       /* Other methods                                                        */
       /************************************************************************/
-      _listActivityDetails          : function() {
+      _listActivityDetails: function() {
         var request     = this.$.listActivityDetails;
         request.headers = {
-          Authorization : "Bearer "+ this.user.token
-        }
+          Authorization : 'Bearer ' + this.user.token
+        };
         request.generateRequest();
       },
-
 
       _resynchroActivityDetails     : function() {
         if (!this.activity.listActivityDetails) {

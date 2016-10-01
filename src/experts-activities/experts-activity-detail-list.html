@@ -136,6 +136,10 @@
         cursor: pointer;
         color: var(--google-blue-500);;
       }
+
+      .content {
+        padding: 1em;
+      }
     </style>
 <!--
     ====================================
@@ -174,13 +178,37 @@
                   class="delete" 
                   icon="delete"
                   detail$="{{detail}}"
-                  on-tap="_deleteActivityDetail"></iron-icon>                 
+                  on-tap="_doDeleteActivityDetail"></iron-icon>                 
               </div>            
             </div>
             </template>
         </template>
       </div>
     </div>  
+
+    <paper-dialog id="deleteActivityLinkConfirm">
+      <h2>Confirm Activity Link</h2>
+      <paper-dialog-scrollable>
+        Are you sure you want to delete this activity link? This cannot be undone.
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-dismiss>Cancel</paper-button>
+        <paper-button dialog-confirm autofocus on-click="_deleteActitityLinkConfirmed">Accept</paper-button>
+      </div>
+    </paper-dialog>
+
+    <paper-dialog id="genericError">
+      <h2>Sorry Hal, I can't do that.</h2>
+      <paper-dialog-scrollable>
+        <section class="content">
+        <p>It appears we've run into a hiccup and cannot complete your request.</p>
+        <p>{{errorMessage}}</p>
+        </section>
+      </paper-dialog-scrollable>
+      <div class="buttons">
+        <paper-button dialog-confirm autofocus>Okay, but I'm not happy about this</paper-button>
+      </div>
+    </paper-dialog>
 
   </template>
 
@@ -233,10 +261,21 @@
         console.debug("[experts-activity-detail-list] _editActivityDetail", detail);
         this.fire('edit-activity-detail', detail);
       },
-      _deleteActivityDetail: function(evt) {
+      _doDeleteActivityDetail: function(evt) {
         var detail =  evt.model.detail;
-        console.debug("[experts-activity-detail-list] _deleteActivityDetail", detail.id);
-        this.fire('delecte-activity-detail', detail.id);
+
+        this.deleteLinkTarget = detail.id;
+
+        if (this.detailList.length === 1) {
+          this.errorMessage = 'You must have at least one activity link child record.';
+          this.$.genericError.open();
+        } else {
+          // pop up the modal confirm window
+          this.$.deleteActivityLinkConfirm.open();
+        }
+      },
+      _deleteActitityLinkConfirmed: function(evt) {
+        this.fire('delecte-activity-detail', this.deleteLinkTarget);
       },
       _detailListChanged: function() {
         console.debug("[experts-activity-detail-list] _detailListChanged", this.detailList);
