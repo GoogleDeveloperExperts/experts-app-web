@@ -186,7 +186,7 @@
       </div>
     </div>  
 
-    <paper-dialog id="deleteActivityLinkConfirm">
+    <paper-dialog id="deleteActivityLinkConfirm" entry-animation="fade-in-animation" exit-animation="fade-out-animation">
       <h2>Confirm Activity Link</h2>
       <paper-dialog-scrollable>
         Are you sure you want to delete this activity link? This cannot be undone.
@@ -198,10 +198,10 @@
     </paper-dialog>
 
     <paper-dialog id="genericError">
-      <h2>Sorry Hal, I can't do that.</h2>
+      <h2>Sorry Human, I can't do that.</h2>
       <paper-dialog-scrollable>
         <section class="content">
-        <p>It appears we've run into a hiccup and cannot complete your request.</p>
+        <p>It appears we've run into a glitch and cannot complete your request.</p>
         <p>{{errorMessage}}</p>
         </section>
       </paper-dialog-scrollable>
@@ -255,7 +255,16 @@
           value: false
         },
       },
-
+      ready       : function() {
+      /**
+       * Attaching dialog to main body to make it live over the gray div 
+       * Bug that will be corrected 
+       * https://github.com/PolymerElements/polymer-starter-kit/issues/154
+       * https://github.com/PolymerElements/paper-dialog/issues/7
+       */
+        this.deleteActivityLinkConfirm = this.$.deleteActivityLinkConfirm;
+        document.querySelector('body').appendChild(this.deleteActivityLinkConfirm);
+      },
       _editActivityDetail: function(evt) {
         var detail =  evt.model.detail;
         console.debug("[experts-activity-detail-list] _editActivityDetail", detail);

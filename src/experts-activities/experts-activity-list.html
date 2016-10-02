@@ -196,7 +196,7 @@
       </div>
     </div>
 
-    <paper-dialog id="deleteActivityConfirm">
+    <paper-dialog id="deleteActivityConfirm" entry-animation="fade-in-animation" exit-animation="fade-out-animation" with-backdrop>
       <h2>Confirm Activity Delete</h2>
       <paper-dialog-scrollable>
         Are you sure you want to delete the activity <i>{{deleteActivityTitle}}</i>? This cannot be undone.
@@ -207,10 +207,10 @@
       </div>
     </paper-dialog>
 
-    <paper-dialog id="genericError">
-      <h2>Sorry Hal, I can't do that.</h2>
+    <paper-dialog id="genericError" entry-animation="scale-up-animation" exit-animation="scale-down-animation">
+      <h2>Sorry Human, I can't do that.</h2>
       <paper-dialog-scrollable>
-        It appears we've run into a hiccup and cannot complete your request.
+        It appears we've run into a glitch and cannot complete your request.
         {{errorMessage}}
       </paper-dialog-scrollable>
       <div class="buttons">
@@ -284,6 +284,9 @@
  */
         this.activityEdit = this.$.activityEdit        
         document.querySelector('body').appendChild(this.activityEdit);
+
+        this.deleteActivityConfirm = this.$.deleteActivityConfirm        
+        document.querySelector('body').appendChild(this.deleteActivityConfirm);
       },
 
 /**
