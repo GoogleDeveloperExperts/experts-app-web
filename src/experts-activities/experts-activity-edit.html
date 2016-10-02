@@ -610,7 +610,8 @@
       _activityChanged: function(newValue, oldValue) {
         // When we pop the dialog, we know that the root changes which we don't
         // care about at all. Otherwise, we'll dead loop this. :-)
-        if(newValue.path !== 'activity' && newValue.path !== 'activity.listActivityDetails') {
+        if(newValue.path !== 'activity' && newValue.path !== 'activity.listActivityDetails'
+          && newValue.path !== 'activity.activity_details') {
           // We have to debounce on our input changes otherwise it'll pound the
           // server on every keypress
           this.debounce('_activityChanged', function () {
@@ -630,8 +631,19 @@
       /************************************************************************/
       /* Action listeners                                                     */
       /************************************************************************/
-      _submitUpdateActivityMaster: function(evt) {
+      _submitUpdateActivityMaster: function() {
         var request     = this.$.updateActivityMaster;
+
+        // There is a bug which causes dup'ed id's in the array.
+        // Didn't have time to debug the root cause
+        var checkActivityDetails = this.activity.activity_details;
+        var deDupActivityDetails = checkActivityDetails.filter(function(element, position) {
+          return checkActivityDetails.indexOf(element) === position;
+        });
+        // this will fire the observer, but the observer will filter this out
+        // so you don't end up with dead mans loop
+        this.set('activity.activity_details', deDupActivityDetails);
+
         request.body    = JSON.stringify(this.activity);
         request.headers = {
           Authorization : 'Bearer ' + this.user.token
@@ -761,7 +773,7 @@
         this.notifyResize();
       },   
       _submitEditActivityType: function(evt) {
-        this.activity.activity_type = this._activity_type;
+        this.set('activity.activity_type', this._activity_type);
         this._submitUpdateActivityMaster();
         this._closeEditActivityType();
 
@@ -791,7 +803,7 @@
         this.notifyResize();
       },   
       _submitEditProductGroups: function(evt) {
-        this.activity.product_groups = JSON.parse(JSON.stringify(this._product_groups));
+        this.set('activity.product_groups', JSON.parse(JSON.stringify(this._product_groups)));
         this._submitUpdateActivityMaster();
         this._closeEditProductGroups();
 
@@ -803,7 +815,8 @@
       /* Event listeners                                                      */
       /************************************************************************/
       _handleUpdateActivityMaster : function() {
-        this.activity       = this._apiActivityMaster; 
+        // Should not need this; protect the package
+        //this.activity       = this._apiActivityMaster;
         this._listActivityDetails();
         this.fire('activity-updated', this.activity);
       },
