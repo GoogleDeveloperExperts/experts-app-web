@@ -17,6 +17,7 @@
       is-authorized="{{_isAuthorized}}"
       scope="email profile"  brand="google" theme="dark"
       on-google-signin-aware-success="_signedIn"
+      label-signin="SIGN IN WITH GOOGLE"
       on-google-signed-out="_signedOut"></google-signin>
 
   </template>
@@ -100,7 +101,7 @@
           this._googleUser = undefined;
           this._apiUser = undefined;;
           // this._isAuthorized = false;
-          this.fire('iron-signal', {name: 'user', data: null} )
+          this.fire('iron-signal', {name: 'user', data: false} )
         },
 
 

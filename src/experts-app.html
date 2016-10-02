@@ -54,14 +54,14 @@
                      CSS
     ====================================
 -->
-    <style>
+    <style include="iron-flex iron-flex-alignment">
       :host {
         display             : block;
-        height              : 56px;
         padding             : 0;
         font-family         : Roboto;
       --app-primary-color   : black;
       --app-secondary-color : #4285f4;
+        background-color: #4285f4;
       }
       [hidden] {
         display             : none !important;
@@ -192,6 +192,21 @@
         display           : block;
         height            : 100%;
       }
+      #not-signedin-container {
+        width: 100vw;
+        height: 100vh;
+        margin: 0;
+        padding: 0;
+      }
+      #not-signedin-hello {
+        padding: 2em;
+        text-align: center;
+        background-color: #fff;
+        max-width: 65vw;
+      }
+      #not-signedin-hello img {
+        width: 50%;
+      }
     </style>
 <!--
     ====================================
@@ -211,131 +226,146 @@
         data    = "{{routeData}}"
         tail    = "{{subroute}}"></app-route>
 
-    <app-drawer-layout
-      id = "drawer"
-      fullbleed>
-      <app-drawer>
-        <app-toolbar>
-          <a
-            class = "toolbar-badge gde-logo"
-            href  = "/">
-          </a> Google Experts
-        </app-toolbar>
-        <iron-selector
-          selected          = "[[page]]"
-          class             = "drawer-list"
-          role              = "navigation"
-          attr-for-selected = "name">
-
-          <template is="dom-if" if="{{user}}">
-            <paper-button name="activities" on-click="_goToPage">
-                Activities
-            </paper-button>
-
-            <paper-button name="profile" on-click="_goToPage">
-              Profile
-            </paper-button>
-
-            <paper-button name="help" on-click="_goToPage">
-              Help
-            </paper-button>
-          </template>        
-
-        </iron-selector>
-      </app-drawer>
-      <app-header-layout
-        has-scrolling-region>
-        <app-header
-          effects = "waterfall"
-          class   = "fit"
-          condenses
-          reveals>
+      <app-drawer-layout
+        hidden$="{{!user}}"
+        id = "drawer"
+        fullbleed>
+        <app-drawer>
           <app-toolbar>
-            <paper-icon-button
-              icon    = "menu"
-              hidden  = "{{wideLayout}}"
-              drawer-toggle>
-            </paper-icon-button>
             <a
-              class   = "toolbar-badge gde-logo"
-              href    = "#/"
-              hidden  = "{{!wideLayout}}">
-            </a>
-            <iron-selector
-              selected          = "[[page]]"
-              attr-for-selected = "name"
-              class             = "drawer-list"
-              role              = "navigation"
-              hidden            = "{{!wideLayout}}">
-
-              <template is="dom-if" if="{{user}}">
-
-                <paper-button name="activities" on-click="_goToPage">
-                   Activities
-                </paper-button>
-
-                <paper-button name="profile" on-click="_goToPage">
-                  Profile
-                </paper-button>
-
-                <paper-button name="help" on-click="_goToPage">
-                  Help
-                </paper-button>
-
-              </template>
-
-            </iron-selector>
-            <template is="dom-if" if="{{user}}">
-              <user on-click="_userClicked" >
-                <info>
-                  <name>
-                    {{user.name}}
-                  </name>
-                  <email>
-                    {{user.email}}
-                  </email>
-                </info>
-                <img
-                  class = "avatar"
-                  src   = "{{user.image}}"/>
-              </user>
-              <template is="dom-if" if="{{_userSelected}}">
-                <div class="user_details">
-                  <experts-signin user="{{user}}"></experts-signin>
-                </div>
-              </template>
-            </template>
-            <template is="dom-if" if="{{!user}}">
-              <experts-signin user="{{user}}"></experts-signin>
-            </template>
+              class = "toolbar-badge gde-logo"
+              href  = "/">
+            </a> Google Experts
           </app-toolbar>
-        </app-header>
-        <iron-pages
-          role="main"
-          selected="[[page]]"
-          fallback-selection="activities" 
-          attr-for-selected="name">
-          <div class="page" name="activities">
-            <template is="dom-if" if="{{user}}">
-              <experts-activities user="{{user}}"></experts-activities>
-            </template>
-          </div>
-          <div class="page" name="profile">
-            <template is="dom-if" if="{{user}}">
-              <experts-profile user="{{user}}"></experts-profile>
-            </template>
-          </div>
-          <div class="page" name="help">
-            <experts-help user="{{user}}"></experts-help>
-          </div>
-        </iron-pages>
-      </app-header-layout>
-    </app-drawer-layout>
+          <iron-selector
+            selected          = "[[page]]"
+            class             = "drawer-list"
+            role              = "navigation"
+            attr-for-selected = "name">
 
-    <iron-media-query
-      query         = "min-width: 800px"
-      query-matches = "{{wideLayout}}">
-    </iron-media-query>
+            <template is="dom-if" if="{{user}}">
+              <paper-button name="activities" on-click="_goToPage">
+                  Activities
+              </paper-button>
+
+              <paper-button name="profile" on-click="_goToPage">
+                Profile
+              </paper-button>
+
+              <paper-button name="help" on-click="_goToPage">
+                Help
+              </paper-button>
+            </template>        
+
+          </iron-selector>
+        </app-drawer>
+        <app-header-layout
+          has-scrolling-region>
+          <app-header
+            effects = "waterfall"
+            class   = "fit"
+            condenses
+            reveals>
+            <app-toolbar>
+              <paper-icon-button
+                icon    = "menu"
+                hidden  = "{{wideLayout}}"
+                drawer-toggle>
+              </paper-icon-button>
+              <a
+                class   = "toolbar-badge gde-logo"
+                href    = "#/"
+                hidden  = "{{!wideLayout}}">
+              </a>
+              <iron-selector
+                selected          = "[[page]]"
+                attr-for-selected = "name"
+                class             = "drawer-list"
+                role              = "navigation"
+                hidden            = "{{!wideLayout}}">
+
+                <template is="dom-if" if="{{user}}">
+
+                  <paper-button name="activities" on-click="_goToPage">
+                     Activities
+                  </paper-button>
+
+                  <paper-button name="profile" on-click="_goToPage">
+                    Profile
+                  </paper-button>
+
+                  <paper-button name="help" on-click="_goToPage">
+                    Help
+                  </paper-button>
+
+                </template>
+
+              </iron-selector>
+              <template is="dom-if" if="{{user}}">
+                <user on-click="_userClicked" >
+                  <info>
+                    <name>
+                      {{user.name}}
+                    </name>
+                    <email>
+                      {{user.email}}
+                    </email>
+                  </info>
+                  <img
+                    class = "avatar"
+                    src   = "{{user.image}}"/>
+                </user>
+                <template is="dom-if" if="{{_userSelected}}">
+                  <div class="user_details">
+                    <experts-signin user="{{user}}"></experts-signin>
+                  </div>
+                </template>
+              </template>
+              <template is="dom-if" if="{{!user}}">
+                <experts-signin user="{{user}}"></experts-signin>
+              </template>
+            </app-toolbar>
+          </app-header>
+          <iron-pages
+            role="main"
+            selected="[[page]]"
+            fallback-selection="activities" 
+            attr-for-selected="name">
+            <div class="page" name="welcome">
+              <h1>Welcome!</h1>
+            </div>
+            <div class="page" name="activities">
+              <template is="dom-if" if="{{user}}">
+                <experts-activities user="{{user}}"></experts-activities>
+              </template>
+            </div>
+            <div class="page" name="profile">
+              <template is="dom-if" if="{{user}}">
+                <experts-profile user="{{user}}"></experts-profile>
+              </template>
+            </div>
+            <div class="page" name="help">
+              <experts-help user="{{user}}"></experts-help>
+            </div>
+          </iron-pages>
+        </app-header-layout>
+      </app-drawer-layout>
+
+      <iron-media-query
+        query         = "min-width: 800px"
+        query-matches = "{{wideLayout}}">
+      </iron-media-query>
+
+      <div id="not-signedin-container" hidden$="{{user}}" class="horizontal layout center-justified center-center">
+        <paper-material id="not-signedin-hello">
+          <img src="/images/gde-logo.svg">
+          <h1>Welcome. Bienvenido. ようこそ.</h1>
+          <p>Sign in to start logging your Google Expert activities.</p>
+          <experts-signin user="{{user}}"></experts-signin>
+        </paper-material>       
+      </div>
+    
+    </template>
 
     <firebase-collection
       location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
@@ -380,7 +410,7 @@
       _userChanged: function(evt, user){
         console.debug("[experts-app] _userChanged ", user);
         if (!user || !user.email) {
-          this.user = {};
+          this.user = false;
           return;
         }
 
