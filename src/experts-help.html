@@ -81,10 +81,7 @@
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       }
       paper-material {
-        display           : flex;
-        flex-direction    : row;
         background        : white;
-        box-sizing        : border-box;
         width             : 70vw;
         min-height        : 30vh;
         padding           : 32px;
@@ -96,6 +93,15 @@
       paper-material:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
       }
+      h2, h3 {
+        color           : #4285f4;
+        font-weight     : 500;
+        margin          : 0;
+      }
+      h2 {
+        font-size       : 24px;
+      }
+
     </style>
 <!--  
     ====================================
@@ -109,7 +115,134 @@
         <h1>Help</h1>
       </paper-toolbar>
       <paper-material>
-        <p>Hang in there...</p>
+        <h2>Table of Contents</h2>
+        <ul>
+          <li><a href="#overview" on-tap="_scrollToView">Overview</a></li>
+          <li><a href="#tldr" on-tap="_scrollToView">TL;DR</a></li>
+          <li><a href="#activityrecords" on-tap="_scrollToView">Understanding Activity Records</a></li>
+          <li><a href="#activitylinks" on-tap="_scrollToView">Understanding Activity Links and Impact</a></li>
+          <li><a href="#impact" on-tap="_scrollToView">Understanding Impact</a></li>
+          <li><a href="#examples" on-tap="_scrollToView">Activity Examples</a></li>
+          <li><a href="#faq" on-tap="_scrollToView">Frequently Asked Questions</a></li>
+        </ul>
+
+        <h2 id="overview">Overview</h2>
+        <p>One of the primary purposes of this version of the application is to create a better understanding between a activity an expert enters and the interactions and actions that occur around that activity.</p>
+
+        <h2 id="tldr">TL;DR</h2>
+
+        <h2 id="activityrecords">Understanding Activity Records</h2>
+        <p>An activity record is the top level thing that you have done. You can think of it as any number of things:</p>
+
+        <ul>
+          <li>A talk or speaking engagement</li>
+          <li>An article or blog post</li>
+          <li>Organizating an event</li>
+          <li>Helping at a codelab</li>
+        </ul>
+
+        <p>There are simply too many types of activity a Google Expert may partake, but the key thing to remember is that this is the top level thing you have done. We consider this activity the master record.</p>
+
+        <p>Taken at face value, the entry of an activity has no measurable impact score. Instead, we ask that you add at least one activity link to track impact.</p>
+
+        <h2 id="activitylinks">Understanding Activity Links and Impact</h2>
+        <p>One of the primary problems that the old system faced was the nature of the supporting actions that took place around activities. Consider:</p>
+
+        <ul>
+          <li>A talk: you tweeted, you have slides, you have sample code, et cetera</li>
+          <li>An article or blog post: you tweeted, the publication tweeted, you have the article link, et cetera </li>
+          <li>Organizating an event: you have an event link, you have tweets, you code, you have lots of material, et cetera</li>
+          <li>Helping at a codelab: you have the event link, you have a tweet, you have organizer outreach, et cetera</li>
+        </ul>
+
+        <p>All those supporting actions were often hard to track, resulting in experts creating lots of primary activities when many should have simply rolled up into one master record.</p>
+
+        <p>In this version of the system, you can add as many Activity Links you want to a master record on the Edit screen, allowing you to have many types of measurables on a given activity making it easier to track how much goes on around the hard work you put in.</p>
+
+        <h2 id="impact">Understanding Impact</h2>
+        <p>One of the major changes is the way impact is measured on an activity. Three things to remember:</p>
+
+        <ol>
+          <li>Activity Records contain Activity Links</li>
+          <li>Activity Links determine impact</li>
+          <li>Activity Link type can have different types of impact</li>
+        </ol>
+
+        <p>If the activity link type can have different impact, what are the types of impact we are now tracking?</p>
+
+        <ol>
+          <li>Direct Impact: Face to Face contact</li>
+          <li>Indirect Impact: Social sharing, certain online activity</li>
+          <li>Trained Impact: Lesson based, face to face or remote</li>
+        </ol>
+
+        <p>In most cases, you don't have to worry about what type of impact a particular link will require. Let's look at a few examples:</p>
+
+        <ol>
+          <li>Meetup Link: Direct Impact (people came to the event)</li>
+          <li>Tweet: Indirect Impact</li>
+          <li>Codelab: Trained (people came to the event)</li>
+          <li>Online Course: Trained Impact (people came to the course and completed)</li>
+        </ol>
+
+        <p>Don't see a link type that works? You can always use <i>Generic URL</i>, which gives you all the impact stats (you can choose the most relevent).</p>
+
+        <h2 id="examples">Activity Examples</h2>
+        <p>The following are examples of common activity/activity link relationships.</p>
+
+        <h3>A Talk or Speaking Engagement</h3>
+        <ul>
+          <li>Master Activity Record: My Talk - Magical Words
+          <ol>
+            <li>Activity link: My Talk @ Org Website</li>
+            <li>Activity link: Tweet about event</li>
+            <li>Activity link: Slides</li>
+            <li>Activity link: Github Repo Code sample</li>
+            <li>Activity link: Tweet after event target slides+code</li>
+            <li>Activity link: Tweet about event by Org</li>
+            <li>Activity link: Tweet about event by you Product Team</li>
+            <li>Activity link: Article about your talk @ Third Party Publication</li>
+          </ol>
+          </li>
+        </ul>
+
+        <h3>Community Work</h3>
+        <p>Sometimes it can be hard capturing the smaller things that go into helping the community you serve. Consider keeping tabs like so:</p>
+        <ul>
+          <li>Master Activity Record: Monthly Community Support
+          <ol>
+            <li>Activity link: My Stack Overflow links</li>
+            <li>Activity link: Forum post on bug issue</li>
+            <li>Activity link: Ticket and test case filed for issue</li>
+            <li>Activity link: Github answers and ticket responses</li>
+            <li>Activity link: PR code reviews</li>
+          </ol>
+          </li>
+        </ul>
+
+        <h2 id="faq">Frequently Asked Questions</h2>
+        <p>Have a question you'd like answered? Send us a question and let us know!</p>
+
+        <h3>What happened to all my previous activities?</h3>
+        <p>Your old tracking data is safe. We have not yet ported the old data format into the new format. It is planned for a future version.</p>
+        <br>
+
+        <h3>What happened to the automatic importing from Google+ and Stack Overflow?</h3>
+        <p>In an attempt to handle a more wide range of activity, we have disabled this functionailty in this version.</p>
+        <br>
+
+        <h3>What if my activity doesn't have a link? How do I track impact?</h3>
+        <p>We've found that this is usually an edge case, typically involving certain types of mentoring (where one-on-one private meetings can occur). We ask that you use Generic URL with the best-case link you can think of for the time being.</p>
+        <br>
+
+        <h3>Why doesn't the activity link screen parse the url and pull the proper metrics?</h3>
+        <p>This requirement is planned for a future version.</p>
+        <br>
+
+        <h3>Where can I file bugs or help add functionality?</h3>
+        <p>You can file tickets and help work on this app in the <a href="https://github.com/GoogleDeveloperExperts/experts-app-web">GoogleDeveloperExperts/experts-app-web</a> repo on Github.</p>
+        <br>
+
       </paper-material>
     </paper-header-panel>
   </template>
@@ -120,7 +253,16 @@
 -->
   <script>
     Polymer({
-      is: 'experts-help'
+      is: 'experts-help',
+
+      // https://github.com/PolymerElements/app-route/issues/56
+      // not ideal, really fast workaround
+      _scrollToView: function(data){
+        var link = data.target.href;
+        this.$$(link.substring(link.indexOf('#'))).scrollIntoView();
+      },
     });
   </script>
 </dom-module>
+
+
