@@ -81,7 +81,6 @@
       .tr {
       }
       .th, .td {
-        font-size         : 12px;
         padding           : 0.75em 0.25em 0.75em;
         text-align        : center;
         vertical-align    : middle;
@@ -137,6 +136,7 @@
 
       .action {
         cursor: pointer;
+        color: var(--google-blue-500);
       }
     </style>
 <!--
@@ -149,7 +149,7 @@
     <iron-ajax 
         id          = "activityListRequest"
         method      = "GET"
-        url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/activityMaster"
+        url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/activityMaster?limit=100"
         handle-as   = "json"
         on-response = "_handleActivityList"></iron-ajax>
 
@@ -184,13 +184,13 @@
       <div class="tbody">
         <template is="dom-repeat" items="{{activities}}" as="activity">
           <div class="tr" id="r-{{activity.id}}">
-            <div class="td col1 action" on-click="_doActivityEdit">{{activity.title}}</div>
+            <div class="td col1 action" on-click="_doActivityEdit" title="Edit this Activity">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
             <div class="td col5">{{activity.metric_trained}}</div>
             <div class="td col6">{{activity.metric_indirect}}</div>
-            <div class="td col7"><iron-icon icon="delete" on-click="_doActivityDelete"></div>
+            <div class="td col7"><iron-icon icon="delete" on-click="_doActivityDelete" title="Delete this Activity"></div>
           </div>
         </template>
       </div>
