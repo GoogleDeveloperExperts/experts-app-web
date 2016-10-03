@@ -483,9 +483,9 @@
         console.debug("[experts-profile] _handleAccountInfo - apiUser",this._apiUser);
         evt.stopPropagation();
         if (this._apiUser && this._apiUser.email) {
-          if (this._apiUser.type) { 
-            this.set('user.category', this._apiUser.type);
-            this.set('user.isExpert', (this._apiUser.type !== 'deleted'));
+          if (this._apiUser.expert_type) { 
+            this.set('user.category', this._apiUser.expert_type);
+            this.set('user.isExpert', (this._apiUser.expert_type !== 'deleted'));
           }
           this.set('user.skills', this._apiUser.skills);
           this.set('user.biography', this._apiUser.biography);
