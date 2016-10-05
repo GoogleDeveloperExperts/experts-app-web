@@ -223,91 +223,89 @@
           <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
         </div>
 
-            <div class="item">
-              <div class="item_name">
-                <paper-dropdown-menu 
-                    selected-item-label="{{detail.detail_type}}"
-                    label="Link source"
-                    on-iron-select="_activityLinkSelected">
-                  <paper-listbox 
-                      selected="{{initial_detail_type}}" 
-                      class="dropdown-content">
-                    <template is="dom-repeat" items="{{activityLinks}}" as="link">
-                      <paper-item 
-                          data-link="{{link}}"
-                          label="{{link.label}}">
-                        {{link.label}}
-                      </paper-item>
-                    </template>
-                  </paper-listbox>
-                </paper-dropdown-menu>
-              </div>
-            </div>
+      <div class="item">
+        <div class="item_name">
+          <paper-dropdown-menu 
+              selected-item-label="{{detail.detail_type}}"
+              label="Link source"
+              on-iron-select="_activityLinkSelected">
+            <paper-listbox 
+                selected="{{initial_detail_type}}" 
+                class="dropdown-content">
+              <template is="dom-repeat" items="{{activityLinks}}" as="link">
+                <paper-item 
+                    data-link="{{link}}"
+                    label="{{link.label}}">
+                  {{link.label}}
+                </paper-item>
+              </template>
+            </paper-listbox>
+          </paper-dropdown-menu>
+        </div>
+      </div>
 
-
-            <template is="dom-if" if="{{_chosenActivityLink}}">
-              <div class="item">              
-                <paper-input  
-                  auto-validate 
-                  pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
-                  error-message="Must be a valid URL."
-                  name="url" 
-                  id="inputUrl" 
-                  label="URL" 
-                  type="text"
-                  value="{{detail.url}}"
-                  invalid="{{_urlInvalid}}" 
-                  required></paper-input> 
-              </div>    
-              <div class="item"> 
-                <div class="item_name">Activity metrics</div>
-                <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
-                  <div class="item_value metric">
-                    <paper-input 
-                      id="metric_reached" 
-                      type="number" 
-                      label="How many people directly reached?"
-                      value="{{ detail.metric_reached }}"
-                      min="0"> 
-                    </paper-input> 
-                  </div> 
-                </template>
-                <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
-                  <div class="item_value metric">
-                    <paper-input 
-                      id="metric_reached" 
-                      type="number" 
-                      label="How many people trained?"
-                      value="{{ detail.metric_trained }}"
-                      min="0"> 
-                    </paper-input> 
-                  </div> 
-                </template>
-                <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
-                  <div class="item_value metric">
-                    <paper-input 
-                      id="metric_reached"
-                      type="number"
-                      label="How many people indirectly reached?"
-                      value="{{ detail.metric_indirect }}"
-                      min="0">
-                    </paper-input> 
-                  </div> 
-                </template>
+      <div hidden$="{{!_activateMetrics}}">
+          <div class="item">              
+            <paper-input  
+              auto-validate 
+              pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
+              error-message="Must be a valid URL."
+              name="url" 
+              id="inputUrl" 
+              label="URL" 
+              type="text"
+              value="{{detail.url}}"
+              invalid="{{_urlInvalid}}" 
+              required></paper-input> 
+          </div>    
+          <div class="item"> 
+            <div class="item_name">Activity metrics</div>
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people directly reached?"
+                  value="{{ detail.metric_reached }}"
+                  min="0"> 
+                </paper-input> 
               </div> 
             </template>
-     
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people trained?"
+                  value="{{ detail.metric_trained }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+            </template>
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached"
+                  type="number"
+                  label="How many people indirectly reached?"
+                  value="{{ detail.metric_indirect }}"
+                  min="0">
+                </paper-input> 
+              </div> 
+            </template>
+          </div> 
+      </div>
       <div class="item"> 
         <div class="item_value submit">     
           <paper-button  
             id="submit" 
             on-tap="_submitActivityDetail"
-            disabled$="{{_submitDisabled}}"
+            disabled$="{{!_submitDisabled}}"
             raised> 
             Save
           </paper-button> 
         </div> 
-      </div> 
+      </div>
     </div> 
 
     <iron-ajax
@@ -365,13 +363,17 @@
 
         _submitDisabled: {
           type: Boolean,
-          computed: "_isSubmitDisabled(_urlInvalid, _typeInvalid)"
+          computed: "_isSubmitDisabled(detail.*)"
         }, 
          
         _typeInvalid: {
           type: Boolean,
           computed: "_isTypeInvalid(detail.detail_type)"
-        },  
+        },
+        _activateMetrics: {
+          type: Boolean,
+          value: false
+        },
       }, 
 
       behaviors: [ 
@@ -382,75 +384,12 @@
       },
 
       _isTypeInvalid: function(){
-        console.debug("[experts-activity-detail-create] _isTypeInvalid", this.detail.detail_type)
-        return(!this.detail.detail_type);
+
       },
       _isSubmitDisabled: function() {
-        console.debug("[experts-activity-detail-create] _isSubmitDisabled",{typeInvalid: this._typeInvalid, urlInvalid: this._urlInvalid });
-        return(this._typeInvalid || this._urlInvalid);
-      },
-
-      _selectActivityGroup: function(e){ 
-
-        console.debug("[experts-activity-detail-create] _selectActivityGroup ", this.activityGroups);
-
-        var _activityTypes = [];
-        if (!this.detail.detail_type) {
-          this.detail.detail_type="";
-        } else {
-          var type = { 
-            tag: this.detail.detail_type, 
-            selected: "selected" 
-          }; 
-          _activityTypes.push(type); 
-        } 
-        for (var i in this.activityGroups) {
-          if (this.activityGroups[i].active) {
-            for (var j in this.activityGroups[i].types) {
-              var already = false;
-              for (var k in _activityTypes) {
-                if (_activityTypes[k].tag == this.activityGroups[i].types[j]) {
-                  already=true;
-                  break; 
-                } 
-              } 
-              if (!already) {
-                var type = { 
-                  tag: this.activityGroups[i].types[j],  
-                  selected: "" 
-                }; 
-                _activityTypes.push(type); 
-              }  
-            } 
-          } 
-        } 
-        this._activityTypes=_activityTypes.sort(function(a, b) {
-          return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
-        }); 
-        console.debug("[experts-activity-detail-create] selectActivityGroup - _activityTypes", this._activityTypes);
-      }, 
-
-      _selectActivityType: function(e){ 
-
-        var tag = e.model.type.tag;
-
-        console.debug("[experts-activity-detail-create] selectActivityType", tag);
-
-         
-        for (var i in this._activityTypes) {
-          if (this._activityTypes[i].tag == tag) {
-            this.set(['_activityTypes',i,'selected'],"selected"); 
-          } 
-          if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
-            console.debug("Let's delete ", this._activityTypes[i])
-            this.set(['_activityTypes',i,'selected'],""); 
-          } 
-        }  
-        console.debug("[experts-activity-detail-create] _activityTypes", this._activityTypes);
-
-        this.set("detail.detail_type",tag);
-
-        console.debug("[experts-activity-detail-create] selectActivityType - selected activity type", this.detail.detail_type);
+        console.log(this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
+        console.log(this.detail.detail_type, this.$.inputUrl.validate(), (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
+        return (this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
       },
       _initNewActivityDetailIfNeeded: function() {
         if (!this.detail.url) {
@@ -514,6 +453,7 @@
       _activityLinkSelected: function(evt, obj) {
         console.debug("[experts-activity-create] _activityLinkSelected", obj.item.dataLink);
         this._chosenActivityLink = obj.item.dataLink;
+        this._activateMetrics = true;
       },
                 
     }); 
