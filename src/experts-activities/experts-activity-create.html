@@ -478,19 +478,17 @@
                 </paper-dropdown-menu>
               </div>
             </div>
-
-            <template is="dom-if" if="{{_chosenActivityLink}}">
+            <div hidden$="{{!_activateMetrics}}">
               <div class="item">              
                 <paper-input  
                   auto-validate  
-                  name="url" 
                   id="inputUrl" 
                   label="URL" 
                   type="text" 
-                  value="{{detail.url}}"
                   pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
                   error-message="Must be a valid URL."
-                  invalid="{{_urlInvalid}}" 
+                  invalid="{{_urlInvalid}}"
+                  value="{{detail.url}}"
                   required></paper-input> 
               </div>    
               <div class="item"> 
@@ -528,8 +526,8 @@
                     </paper-input> 
                   </div> 
                 </template>
-              </div> 
-            </template>
+              </div>
+            </div>
           </section>
         </div>
         <div>
@@ -557,7 +555,8 @@
           if  = "{{_lastStep}}">        
         <paper-button 
             id        = "continue" 
-            on-tap    = "finish">
+            on-tap    = "finish"
+            disabled  = "{{!_stepDisabled}}">
           Finish
         </paper-button>
       </template>
@@ -714,7 +713,11 @@
         _activityTypesActive  : {
           type: Boolean,
           computed: "_isActivityTypesActive(_activityTypes)"
-        },    
+        },
+        _activateMetrics: {
+          type: Boolean,
+          value: false
+        },
       },
       behaviors               : [
         Polymer.PaperDialogBehavior, ActivityLinks
@@ -781,7 +784,10 @@
           this._focusStart();
         }
       },
-      finish                  : function(){        
+      finish                  : function(){   
+
+
+
         this._currentStep += 1;
         this.toggleClass('hidden', true, this.$$('footer'));
         console.debug("[experts-activity-create] finish - Activity: ",this.activity);
@@ -964,8 +970,7 @@
             return (!this.activity.date);      
             break;
           case 4:
-            // console.debug("[experts-activity-create] _isStepDisabled - step 4", this.activity);
-            return (!this.detail.detail_type  || !this.detail.url || this.detail.metric_reach < 0  || this.detail.metric_indirect < 0 || this.detail.metric_trained < 0);
+            return (this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
           default:
             break;           
         }
@@ -1030,6 +1035,7 @@
       _activityLinkSelected: function(evt, obj) {
         console.debug("[experts-activity-create] _activityLinkSelected", obj.item.dataLink);
         this._chosenActivityLink = obj.item.dataLink;
+        this._activateMetrics = true;
       },
          
 
