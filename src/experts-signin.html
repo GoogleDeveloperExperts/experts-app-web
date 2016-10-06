@@ -128,28 +128,6 @@
           console.debug("[experts-signin] _isAuthorizedChanged", this._isAuthorized);
         },
 
-        /**
-         * Basic user information and access rights for the user
-         */
-        _userInfoChanged: function () {
-          if (!this._googleUser || !this._googleUser.email) {
-            this._setUser(undefined);
-            return;
-          }
-
-          var user = {
-            id: this._googleUser.id,
-            name: this._googleUser.name,
-            image: this._googleUser.image,
-            email: this._googleUser.email,
-            token: this._googleUser.token,
-            isGoogler: (this._googleUser.email.split('@')[1] === 'google.com')
-          };
-
-
-          console.debug("[experts-sign-in] _userInfoChanged", user);
-          this._setUser(user);
-        },
 
         /**
          * Check if user data is initialized correctly
@@ -162,6 +140,7 @@
           console.debug("[experts-profile] _handleAccountInfo - apiUser",this._apiUser);
           evt.stopPropagation();
           var user = this._googleUser;
+          user.isGoogler = (this._googleUser.email.split('@')[1] === 'google.com')
           if (this._apiUser && this._apiUser.email) {
             if (this._apiUser.expert_type) { 
               user.category = this._apiUser.expert_type;
@@ -175,13 +154,20 @@
               user.image = this._apiUser.pic_url;
             }
             user.product_group = this._apiUser.product_group;
+            user.ok = true;
           }
           this._setUser(user);
           console.debug("[experts-profile] _handleAccountInfo", this.user);
           this.fire('iron-signal', {name: 'user', data: this.user} )
         },  
         _handleAccountError: function(evt, error) {
-
+          console.debug("[experts-profile] _handleAccountError", this.evt);
+          var user = this._googleUser;
+          user.isGoogler = (this._googleUser.email.split('@')[1] === 'google.com')
+          user.ok = false;
+          user.notGde = true;
+          this._setUser(user);
+          this.fire('iron-signal', {name: 'user', data: this.user} )
         },      
       });
     })();

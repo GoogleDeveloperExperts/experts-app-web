@@ -40,6 +40,8 @@
 
 <link rel="import" href="experts-icons.html">
 <link rel="import" href="experts-signin.html">
+<link rel="import" href="experts-not-logged-in.html">
+
 
 <script src="../bower_components/firebase/firebase.js"></script>
 <!--
@@ -214,7 +216,7 @@
     ====================================
 -->
 
-    <iron-signals on-iron-signal-user="_userChanged"></iron-signals>
+    <iron-signals on-iron-signal-user="_userSignalReceived"></iron-signals>
 
     <app-location
       route = "{{route}}"
@@ -227,8 +229,8 @@
         tail    = "{{subroute}}"></app-route>
 
       <app-drawer-layout
-        hidden$="{{!user}}"
         id = "drawer"
+        hidden$="{{!user.ok}}"
         fullbleed>
         <app-drawer>
           <app-toolbar>
@@ -243,7 +245,7 @@
             role              = "navigation"
             attr-for-selected = "name">
 
-            <template is="dom-if" if="{{user}}">
+            <template is="dom-if" if="{{user.ok}}">
               <paper-button name="activities" on-click="_goToPage">
                   Activities
               </paper-button>
@@ -356,16 +358,15 @@
         query-matches = "{{wideLayout}}">
       </iron-media-query>
 
-      <div id="not-signedin-container" hidden$="{{user}}" class="horizontal layout center-justified center-center">
-        <paper-material id="not-signedin-hello">
-          <img src="/images/gde-logo.svg">
-          <h1>Welcome. Bienvenido. ようこそ.</h1>
-          <p>Sign in to start logging your Google Expert activities.</p>
-          <experts-signin user="{{user}}"></experts-signin>
-        </paper-material>       
+
+      <div 
+          id="not-signedin-container" 
+          hidden$="{{user.ok}}" 
+          class="horizontal layout center-justified center-center">
+        <experts-not-logged-in
+            id="userNotLoggedIn" 
+            user="{{user}}"></experts-not-logged-in>
       </div>
-    
-    </template>
 
     <firebase-collection
       location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
@@ -397,6 +398,7 @@
         },
         user : {
           type : Object,
+          observer: "_userChanged",
           value: null
         },
         _userSelected: {
@@ -407,8 +409,8 @@
       observers : [
         '_routePageChanged(routeData.page)'
       ],
-      _userChanged: function(evt, user){
-        console.debug("[experts-app] _userChanged ", user);
+      _userSignalReceived: function(evt, user){
+        console.debug("[experts-app] _userSignalReceived ", user);
         if (!user || !user.email) {
           this.user = false;
           return;
