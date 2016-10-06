@@ -1,5 +1,7 @@
 <link rel="import" href="../bower_components/iron-signals/iron-signals.html">
 
+<link rel="import" href="../bower_components/iron-ajax/iron-ajax.html">
+
 <link rel="import" href="../bower_components/google-signin/google-signin.html">
 
 <!--
@@ -19,6 +21,16 @@
       on-google-signin-aware-success="_signedIn"
       label-signin="SIGN IN WITH GOOGLE"
       on-google-signed-out="_signedOut"></google-signin>
+
+      <iron-ajax
+        id = "getAccountRequest"
+        url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/account/{{_googleUser.email}}"
+        method = "GET"
+        handle-as = "json"
+        last-response = "{{_apiUser}}"
+        on-response = "_handleAccountInfo"
+        on-error = "_handleAccountError">
+      </iron-ajax>
 
   </template>
 
@@ -51,8 +63,14 @@
            * User information from Google authentication
            */
           _googleUser: {
+            type: Object
+          },
+
+          /**
+           * User information from Google authentication
+           */
+          _apiUser: {
             type: Object,
-            observer: '_userInfoChanged'
           },
 
           /**
@@ -91,7 +109,8 @@
 
           console.debug("[experts-signin] _signedIn",this._googleUser);
 
-          this.fire('iron-signal', {name: 'user', data: this._googleUser} )
+          this.$.getAccountRequest.generateRequest();
+
         },
 
         /**
@@ -137,7 +156,33 @@
          */
         _computeAuthorized: function (user) {
           return (!!user && !!user.email);
-        }
+        },
+
+        _handleAccountInfo: function(evt, ironRequest) {
+          console.debug("[experts-profile] _handleAccountInfo - apiUser",this._apiUser);
+          evt.stopPropagation();
+          var user = this._googleUser;
+          if (this._apiUser && this._apiUser.email) {
+            if (this._apiUser.expert_type) { 
+              user.category = this._apiUser.expert_type;
+              user.isExpert = (this._apiUser.expert_type !== 'deleted');
+            }
+            user.skills = this._apiUser.skills;
+            user.biography = this._apiUser.biography;
+            user.city = this._apiUser.city;
+            user.country = this._apiUser.country;
+            if (this._apiUser.pic_url) { 
+              user.image = this._apiUser.pic_url;
+            }
+            user.product_group = this._apiUser.product_group;
+          }
+          this._setUser(user);
+          console.debug("[experts-profile] _handleAccountInfo", this.user);
+          this.fire('iron-signal', {name: 'user', data: this.user} )
+        },  
+        _handleAccountError: function(evt, error) {
+
+        },      
       });
     })();
   </script>
