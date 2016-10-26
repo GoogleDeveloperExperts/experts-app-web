@@ -541,25 +541,19 @@
       </iron-pages>  
     </div>
     <footer>
-      <template 
-          is  = "dom-if"
-          if  = "{{!_lastStep}}">
-        <paper-button 
-            id        = "continue" 
-            on-tap    = "next">
-          Continue
-        </paper-button>
-      </template>
-      <template 
-          is  = "dom-if"
-          if  = "{{_lastStep}}">        
-        <paper-button 
-            id        = "continue" 
-            on-tap    = "finish"
-            disabled  = "{{!_stepDisabled}}">
-          Finish
-        </paper-button>
-      </template>
+      <paper-button 
+          id        = "continue" 
+          on-tap    = "next"
+          hidden$   = "{{_lastStep}}">
+        Continue
+      </paper-button>
+      <paper-button 
+          id        = "continue" 
+          on-tap    = "finish"
+          hidden$   = "{{!_lastStep}}"
+          disabled  = "{{!_stepDisabled}}">
+        Finish
+      </paper-button>
       <div
           class = "progress">
         <div 
