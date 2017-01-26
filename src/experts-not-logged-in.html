@@ -1,7 +1,7 @@
 <!--
     Google Developers Experts Tracking App
     Copyright (C) 2016  by the GDE Tracking App Team
-    
+
     gdetracking.appspot.com/
     https://github.com/GoogleDeveloperExperts/experts-app-web
 
@@ -26,21 +26,21 @@
 <link rel="import" href="experts-signin.html">
 
 <dom-module is="experts-not-logged-in">
-<!--  
+<!--
     ====================================
-                  Shadow DOM  
+                  Shadow DOM
     ====================================
--->  
+-->
   <template>
 <!--
     ====================================
-                     CSS 
+                     CSS
     ====================================
 -->
     <style>
      :host {
         width           : 65vw;
-        border-radius   : 2px;    
+        border-radius   : 2px;
         background      : white;
         transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
@@ -57,7 +57,7 @@
         max-width: 65vw;
       }
     </style>
-<!--  
+<!--
     ====================================
                    HTML
     ====================================
@@ -68,15 +68,15 @@
         <img src="/images/gde-logo.svg">
         <h1>Welcome. Bienvenido. ようこそ.</h1>
         <p>Sign in to start logging your Google Expert activities.</p>
-        <experts-signin 
+        <experts-signin
             user="{{user}}"></experts-signin>
       </template>
       <template is="dom-if" if="{{user.notGde}}">
         <h2>The email you've used isn't associated to a GDE program account</h2>
         <p>You must sign in with the email address you use in the GDE program.</p>
-        <p>If you've uesed the wrong address, please sign out and then sign in with the right account.</p>
-        <experts-signin 
-            user="{{user}}"></experts-signin> 
+        <p>If you've used the wrong address, please sign out and then sign in with the right account.</p>
+        <experts-signin
+            user="{{user}}"></experts-signin>
       </template>
     </paper-material>
   </template>
