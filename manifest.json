@@ -3,7 +3,6 @@
   "short_name": "ge-app",
     "icons": [{
       "src": "images/gde-logo.svg",
-      "type": "image/png",
       "type": "image/svg"
     }, {
       "src": "images/gde-logo.svg",
