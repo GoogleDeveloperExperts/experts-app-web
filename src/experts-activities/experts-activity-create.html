@@ -27,6 +27,7 @@
 
 <link rel="import" href="../../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
+<link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-dropdown-menu/paper-dropdown-menu.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input-container.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input-error.html">
@@ -56,11 +57,13 @@
     <style>
      :host {
         width           : 65vw;
+        height          : 80vh;
         border-radius   : 2px;    
         background      : white;
         transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
         box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
         font-family     : Roboto;
+        @apply(--layout-vertical);
       }
       :host:hover {
         box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
@@ -68,6 +71,7 @@
 
       .content { 
         padding: 15px;  
+        @apply(--layout-flex);
       } 
       #closeCreateActivity {
         position        : absolute;
@@ -281,7 +285,7 @@
       </iron-icon>
     </paper-button>
 
-    <div class='content'> 
+    <paper-dialog-scrollable class='content'> 
       <iron-pages 
           id        = "ironpages" 
           selected  = "{{_currentStep}}">
@@ -539,7 +543,7 @@
           </section>
         </div> 
       </iron-pages>  
-    </div>
+    </paper-dialog-scrollable>
     <footer>
       <paper-button 
           id        = "continue" 
