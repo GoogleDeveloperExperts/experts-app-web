@@ -16,7 +16,7 @@
     "iron-localstorage": "PolymerElements/iron-localstorage#^1.0.0",
     "iron-media-query": "PolymerElements/iron-media-query#^1.0.0",
     "iron-meta": "PolymerElements/iron-meta#^1.1.1",
-    "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#ce768cf1f08f0b917ae4ceb1992f80c71e9ccca2",
+    "iron-overlay-behavior": "PolymerElements/iron-overlay-behavior#^1.10.2",
     "iron-pages": "PolymerElements/iron-pages#^1.0.0",
     "iron-selector": "PolymerElements/iron-selector#^1.0.0",
     "iron-signals": "PolymerElements/iron-signal#^1.0.3",
