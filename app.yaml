@@ -1,5 +1,5 @@
 application: expertstracking
-version: 2-0-5
+version: 2-0-6
 runtime: python27
 api_version: 1
 threadsafe: yes
@@ -47,4 +47,5 @@ skip_files:
 - ^(.*/)?node_modules/.*
 - ^(.*/)?tests/.*
 - ^.*.md|markdown
-- ^(.*/)?bower_components/.*
+- ^bower_components/.*
+- ^build/unbundled/.*
