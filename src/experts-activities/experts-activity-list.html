@@ -20,6 +20,7 @@
 -->
 <link rel="import" href="../../bower_components/polymer/polymer.html">
 
+<link rel="import" href="../../bower_components/iron-icons/iron-icons.html">
 
 <link rel="import" href="../../bower_components/paper-checkbox/paper-checkbox.html">
 <link rel="import" href="../../bower_components/paper-styles/color.html">
@@ -41,22 +42,23 @@
 -->
     <style is="custom-style">
       :host {
-        display           : block;
-        background        : white;
-        box-sizing        : border-box;
-        width             : 80vw;
-        margin            : 0 auto 17px;
-        border-radius     : 2px;
-        font-family       : Roboto;
+        display: block;
+        background: white;
+        box-sizing: border-box;
+        width: 80vw;
+        margin: 0 auto 17px;
+        border-radius: 2px;
+        font-family: Roboto;
+        font-size: 0.80rem;
 
-        --paper-checkbox-checked-color        : var(--paper-blue-500);
-        --paper-checkbox-checked-ink-color    : var(--paper-blue-500);
-        --paper-checkbox-unchecked-color      : var(--paper-grey-500);
-        --paper-checkbox-unchecked-ink-color  : var(--paper-grey-500);
-        --paper-checkbox-label-spacing        : 0;
+        --paper-checkbox-checked-color: var(--paper-blue-500);
+        --paper-checkbox-checked-ink-color: var(--paper-blue-500);
+        --paper-checkbox-unchecked-color: var(--paper-grey-500);
+        --paper-checkbox-unchecked-ink-color: var(--paper-grey-500);
+        --paper-checkbox-label-spacing: 0;
       }
       [hidden] {
-        display           : none !important;
+        display: none !important;
       }
       .table    { 
         display: table; 
@@ -74,18 +76,21 @@
       }
       .thead    {
         text-transform: uppercase;
-        background-color  : var(--google-blue-500);
-        color             : white;
-        font-weight       : 500;
+        background-color: var(--google-blue-500);
+        color: white;
+        font-weight: 500;
       }
       .tr {
       }
       .th, .td {
-        padding           : 0.75em 0.25em 0.75em;
-        text-align        : center;
-        vertical-align    : middle;
+        padding: 0.75em 0.25em 0.75em;
+        text-align: center;
+        vertical-align: middle;
       }
 
+      .th.sorted_by {
+        font-weight: bold;
+      }
       .th.col0  {
         width: 30px;
       }
@@ -141,6 +146,17 @@
         cursor: pointer;
         color: var(--google-blue-500);
       }
+
+      .horizontal {
+        display: flex;
+        flex-flow: row nowrap;
+        align-items: center;
+        justify-content: center;
+      }
+      .sorting {
+        width: 18px;
+        height: 18px; 
+      }
     </style>
 <!--
     ====================================
@@ -176,24 +192,130 @@
 
     <div class="table">
       <div class="thead">
-        <div class="th col1">Activity name</div>
-        <div class="th col2">Date</div>
-        <div class="th col3">Type</div>
-        <div class="th col4">Direct reach</div>
-        <div class="th col5">Trained</div>
-        <div class="th col6">Indirect reach</div>
+        <div 
+            class$="th col1 [[_cssColumnSortStatus('activityName',_sortTerm)]]"            
+            name="activityName"
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('activityName',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('activityName',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>         
+              </div>
+              <div>
+                Activity name 
+              </div>
+            </div>
+        </div>      
+        <div 
+            class$="th col2 [[_cssColumnSortStatus('date',_sortTerm)]]"            
+            name="date"           
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('date',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('date',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>      
+              </div>
+              <div>       
+                Date
+              </div>
+            </div>
+        </div>                  
+        <div 
+            class$="th col3 [[_cssColumnSortStatus('type',_sortTerm)]]"             
+            name="type"          
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('type',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('type',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>   
+              </div>
+              <div>          
+                Type
+              </div>
+            </div>
+        </div>                
+        <div 
+            class$="th col4 [[_cssColumnSortStatus('directReach',_sortTerm)]]"              
+            name="directReach"         
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('directReach',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('directReach',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>     
+              </div>
+              <div>        
+                Direct reach
+              </div>
+            </div>
+        </div>               
+        <div 
+            class$="th col5 [[_cssColumnSortStatus('trained',_sortTerm)]]"              
+            name="trained"         
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('trained',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('trained',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>     
+              </div>
+              <div>        
+                Trained
+              </div>
+            </div>
+        </div>               
+        <div 
+            class$="th col6 [[_cssColumnSortStatus('indirectReach',_sortTerm)]]"              
+            name="indirectReach"         
+            on-tap="_sortBy">
+            <div class="horizontal">
+              <div>
+                <template is="dom-if" if="[[_columnSortStatus('indirectReach',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
+                </template>       
+                <template is="dom-if" if="[[_columnReverseSortStatus('indirectReach',_sortTerm, _sortReverse)]]">
+                  <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
+                </template>       
+              </div>
+              <div>  
+                Indirect reach
+              </div>
+            </div>
+        </div>  
         <div class="th col7"></div>
       </div>
       <div class="tbody">
-        <template is="dom-repeat" items="{{activities}}" as="activity">
+        <template 
+            is="dom-repeat" 
+            items="{{activities}}" 
+            as="activity" 
+            sort="[[_computeSort(_sortTerm, _sortReverse)]]">
           <div class="tr" id="r-{{activity.id}}">
-            <div class="td col1 action" on-click="_doActivityEdit" title="Edit this Activity">{{activity.title}}</div>
+            <div class="td col1 action" on-tap="_doActivityEdit" title="Edit this Activity">{{activity.title}}</div>
             <div class="td col2">{{activity.date}}</div>
             <div class="td col3">{{activity.activity_type}}</div>
             <div class="td col4">{{activity.metric_reached}}</div>
             <div class="td col5">{{activity.metric_trained}}</div>
             <div class="td col6">{{activity.metric_indirect}}</div>
-            <div class="td col7"><iron-icon icon="delete" on-click="_doActivityDelete" title="Delete this Activity"></div>
+            <div class="td col7"><iron-icon class="sorting" icon="delete" on-tap="_doActivityDelete" title="Delete this Activity"></div>
           </div>
         </template>
       </div>
@@ -206,7 +328,7 @@
       </paper-dialog-scrollable>
       <div class="buttons">
         <paper-button dialog-dismiss>Cancel</paper-button>
-        <paper-button dialog-confirm autofocus on-click="_deleteActitityMasterConfirmed">Accept</paper-button>
+        <paper-button dialog-confirm autofocus on-tap="_deleteActitityMasterConfirmed">Accept</paper-button>
       </div>
     </paper-dialog>
 
@@ -231,42 +353,76 @@
     Polymer({
       is: 'experts-activity-list',
       properties: {
-/**
- * The list of activities
- */
+
+        /**
+         * The list of activities
+         */
         activities: {
           type: Array,
         },
-/**
- * The user
- */
+
+        /**
+         * The user
+         */
         user: {
           type: Object,
           observer: "_userChanged",
           value: null
         },
         
-        productGroups : {
-          type            : Array,
-          value           : function() {
+        productGroups: {
+          type: Array,
+          value: function() {
             return [];
           }
         },        
-        activityGroups : {
-          type          : 'array',
-          notify        : true,
-          value         : function(){ 
+        activityGroups: {
+          type: 'array',
+          notify: true,
+          value: function(){ 
             return [];
           },
         },        
 
-        _activityTypes  : {
-          type            : Array,
-          value           : function() {
+        _activityTypes: {
+          type: Array,
+          value: function() {
             return [];
           }
-        },         
+        },  
+        _sortTerm: {
+          type: String,
+          value: ""
+        },
+        _sortReverse: {
+          type: Boolean,
+          value: false
+        },
       },
+
+
+      // *******************************************************************************************
+      // Lifecycle
+      // *******************************************************************************************
+
+      ready: function() {
+        /*
+         * Attaching dialog to main body to make it live over the gray div 
+         * Bug that will be corrected 
+         * https://github.com/PolymerElements/polymer-starter-kit/issues/154
+         * https://github.com/PolymerElements/paper-dialog/issues/7
+         */
+        this.activityEdit = this.$.activityEdit        
+        document.querySelector('body').appendChild(this.activityEdit);
+
+        this.deleteActivityConfirm = this.$.deleteActivityConfirm        
+        document.querySelector('body').appendChild(this.deleteActivityConfirm);
+      },
+
+
+      // *******************************************************************************************
+      // Observers 
+      // *******************************************************************************************
 
       _userChanged: function(){
         console.debug("[experts-activity-list] _userChanged ", this.user);
@@ -278,35 +434,15 @@
         this.generateActivityListRequest();
       },
 
-      ready : function() {
-/**
- * Attaching dialog to main body to make it live over the gray div 
- * Bug that will be corrected 
- * https://github.com/PolymerElements/polymer-starter-kit/issues/154
- * https://github.com/PolymerElements/paper-dialog/issues/7
- */
-        this.activityEdit = this.$.activityEdit        
-        document.querySelector('body').appendChild(this.activityEdit);
 
-        this.deleteActivityConfirm = this.$.deleteActivityConfirm        
-        document.querySelector('body').appendChild(this.deleteActivityConfirm);
-      },
+      
+      // *******************************************************************************************
+      // Event listener
+      // *******************************************************************************************
 
-/**
- * Calls the activity list service with the current `user` as parameter
- */
-      generateActivityListRequest: function() {
-        var request = this.$.activityListRequest;
-        request.params = {
-          email: this.user.email
-        }
-        request.generateRequest();
-      },
-
-
-/**
- * Receives an activity list and inject it in the view
- */
+      /**
+       * Receives an activity list and inject it in the view
+       */
       _handleActivityList: function(evt, ironRequest) {
         var response = ironRequest.response;
         if (! ('items' in response)) {
@@ -318,27 +454,6 @@
 
       },
 
-      _serializeList: function(list) {
-        var serializedList = ''
-        for (var i in list) {
-          serializedList += list[i];
-
-          if (i < list.length-1) {
-            serializedList += ', '
-          }
-        }
-        return serializedList;
-      },
-
-/**
- * Edit activity master
- */
-      editActitityMaster: function(activity) {
-        this.activityEdit.activity = activity;
-        // console.debug("[experts-activities] activityEdit", this.activityEdit)
-        this.activityEdit.open();
-      },
-      
       _doActivityEdit: function(evt) {
         console.debug("[experts-activities] _doActivityEdit", evt.model.activity);
         this.editActitityMaster(evt.model.activity);
@@ -353,7 +468,8 @@
 
         // pop up the modal confirm window
         this.$.deleteActivityConfirm.open();
-      },
+      },      
+
 
       _deleteActitityMasterConfirmed: function() {
 
@@ -368,6 +484,8 @@
         // send
         request.generateRequest();
       },
+
+
       _handleActivityMasterDelete: function(data) {
         if (data.detail.status === 200) {
 
@@ -385,6 +503,102 @@
           this.$.genericErrorPopUp.open();
         }
       },
+
+      _sortBy: function(evt) {
+        console.debug("[experts-activity-list] _sortBy", evt.currentTarget.getAttribute("name"));
+        var columnName =  evt.currentTarget.getAttribute("name");
+        if (columnName == this._sortTerm) {
+          this._sortReverse = !this._sortReverse;
+        } else {
+          this._sortTerm = columnName;
+          this._sortReverse = false;
+        }        
+      },
+
+      // *******************************************************************************************
+      // Other instance methods
+      // *******************************************************************************************
+
+      /**
+       * Calls the activity list service with the current `user` as parameter
+       */
+      generateActivityListRequest: function() {
+        var request = this.$.activityListRequest;
+        request.params = {
+          email: this.user.email
+        }
+        request.generateRequest();
+      },
+
+
+      _serializeList: function(list) {
+        var serializedList = ''
+        for (var i in list) {
+          serializedList += list[i];
+
+          if (i < list.length-1) {
+            serializedList += ', '
+          }
+        }
+        return serializedList;
+      },
+
+
+
+      /**
+       * Edit activity master
+       */
+      editActitityMaster: function(activity) {
+        this.activityEdit.activity = activity;
+        // console.debug("[experts-activities] activityEdit", this.activityEdit)
+        this.activityEdit.open();
+      },
+      
+
+      _cssColumnSortStatus: function(columnName, sortTerm) {
+        if (columnName != sortTerm) {
+          return "";
+        }
+        return "sorted_by";
+      },
+
+      _columnSortStatus: function(columnName, sortTerm, sortReverse) {
+        if (columnName != sortTerm || sortReverse) {
+          return false;
+        } 
+        return true;
+      },
+
+      _columnReverseSortStatus: function(columnName, sortTerm, sortReverse) {
+        if (columnName != sortTerm || !sortReverse) {
+          return false;
+        } 
+        return true;
+      },
+
+      _computeSort: function(sortTerm, sortReverse) {
+        if (!sortTerm) {
+          this._sortTerm = "date";
+          this._sortReverse = true;
+          return;
+        }
+        return function(itemA, itemB) {
+          var prop= {
+            "activityName": "title",
+            "date": "date",
+            "type": "activity_type",
+            "directReach": "metric_reached",
+            "trained": "metric_trained",
+            "indirectReach": "metric_indirect"
+          }
+          console.debug("[experts-activity-list] _sortList", prop[sortTerm])
+          if (sortReverse) {
+            return itemA[prop[sortTerm]] < itemB[prop[sortTerm]];
+          } 
+          return itemA[prop[sortTerm]] > itemB[prop[sortTerm]];       
+        }
+      },
+
     });
   </script>
 </dom-module>
