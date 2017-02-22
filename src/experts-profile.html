@@ -31,6 +31,8 @@
 <link rel="import" href="../bower_components/paper-material/paper-material.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
 <link rel="import" href="../bower_components/paper-toolbar/paper-toolbar.html">
+
+<link rel="import" href="./experts-icons.html"
 <!--
     ====================================
                   Shady DOM
@@ -256,22 +258,33 @@
             <template is="dom-if" if="{{_isEditingLocation}}">
               <paper-input
                 auto-validate
-                name="city" id="inputCity" label="City"
-                type="text" value="{{_city}}"
-                required maxlength="64"
-                invalid={{_invalidCity}}></paper-input>
+                name="city" 
+                id="inputCity" 
+                label="City"
+                type="text" 
+                value="{{_city}}"
+                required 
+                maxlength="64"
+                invalid="{{_invalidCity}}"></paper-input>
               <paper-input
                 auto-validate
-                name="country" id="inputCountry" label="Country"
-                type="text" value="{{_country}}"
-                required maxlength="64"
-                invalid={{_invalidCountry}}></paper-input>
+                name="country" 
+                id="inputCountry" 
+                label="Country"
+                type="text" 
+                value="{{_country}}"
+                required 
+                maxlength="64"
+                invalid="{{_invalidCountry}}"></paper-input>
               <iron-icon
-                class="submit" disabled$="{{_invalidLocation}}"
-                icon="done" on-tap="_submitLocation" ></iron-icon>
+                class="submit" 
+                disabled$="{{_invalidLocation}}"
+                icon="experts:done" 
+                on-tap="_submitLocation"></iron-icon>
               <iron-icon
                 class="close"
-                icon="clear" on-tap="_closeEditLocation" ></iron-icon>
+                icon="experts:clear" 
+                on-tap="_closeEditLocation"></iron-icon>
             </template>
           </div>
           <div
@@ -307,10 +320,10 @@
                 invalid={{_invalidSkill}}></paper-input>
               <iron-icon
                 class="submit" disabled$="{{_invalidSkill}}"
-                icon="done" on-tap="_submitSkill" ></iron-icon>
+                icon="experts:done" on-tap="_submitSkill" ></iron-icon>
               <iron-icon
                 class="close"
-                icon="clear" on-tap="_closeAddSkill" ></iron-icon>
+                icon="experts:clear" on-tap="_closeAddSkill" ></iron-icon>
             </template>
           </div>
 
@@ -332,11 +345,11 @@
             <template is="dom-if" if="{{_isEditingBio}}">
               <iron-icon
                 class="submit"
-                icon="done"
+                icon="experts:done"
                 on-tap="_submitBio" ></iron-icon>
               <iron-icon
                 class="close"
-                icon="clear"
+                icon="experts:clear"
                 on-tap="_closeEditBio"
               ></iron-icon>
             </template>
