@@ -65,6 +65,7 @@
         font-family     : Roboto;
         @apply(--layout-vertical);
       }
+
       :host:hover {
         box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
       }
@@ -86,7 +87,7 @@
         color           : #aaa;
       }
       #continue {
-        margin          : 0 auto;
+        margin          : 20px auto 0;
       }
       h2 {
         display         : flex;
@@ -203,6 +204,15 @@
           overflow-x: hidden;
         };
       }
+
+      header {
+        padding: 24px 20px;
+      }
+      header h2 {
+        margin: 0;
+        width: 90%;
+      }
+
       footer {
         display           : flex;
         flex-direction    : column;
@@ -216,6 +226,7 @@
         border-radius     : 2px;
         padding           : 14px 30px;
         font-size         : 14px;
+
       }
       footer  .progress {
         display           : flex;
@@ -269,6 +280,17 @@
         background-color: #4285f4;
         color: #fff;
       }
+
+      /* On mobile, don't crunch the window */
+      @media (max-width: 767px) {
+       :host {
+          width           : 100vw;
+          height          : 100vh;
+        }
+        .iron-selected section {
+            margin: 0 1em;
+        }
+      }
       
     </style>
 <!--  
@@ -276,14 +298,16 @@
                    HTML
    ====================================
 -->
-    
-    <paper-button
-        id      = "closeCreateActivity"
-        on-tap  = "cancel">
-      <iron-icon 
-          icon  = "close">
-      </iron-icon>
-    </paper-button>
+    <header>
+      <h2>
+        <iron-icon id="headerIcon" class="step0-icon" icon="add-circle" 
+          on-tap="back"></iron-icon>
+        Add an activity
+      </h2>
+      <paper-button id="closeCreateActivity" on-tap="cancel">
+        <iron-icon icon ="close"></iron-icon>
+      </paper-button>
+    </header>
 
     <paper-dialog-scrollable class='content'> 
       <iron-pages 
@@ -291,13 +315,6 @@
           selected  = "{{_currentStep}}">
         <!-- Tab 0 -->
         <div>
-          <h2>
-            <iron-icon 
-              class="step0-icon"
-              icon   = "add-circle">
-            </iron-icon>
-            Add an activity
-          </h2>
           <section>
             <div class="item"> 
               Fill in the details below to add and track your activity.
@@ -326,12 +343,6 @@
         </div>  
         <!-- Tab 1 -->
         <div>
-          <h2>
-            <paper-button on-tap="back">
-              <iron-icon icon="arrow-back"></iron-icon>
-            </paper-button>
-            Product Groups
-          </h2>
           <section>
             <div class="item"> 
               Choose product group(s) that relate to your completed activity.
@@ -363,13 +374,6 @@
         </div>
         <!-- Tab 2 -->        
         <div>
-          <h2>
-            <paper-button on-tap="back">
-              <iron-icon icon="arrow-back"></iron-icon>
-            </paper-button>
-            Activity Type
-          </h2>
-
           <section>
             <div class="item"> 
               Begin by choosing one relevant activity group.
@@ -392,7 +396,7 @@
               </div> 
             </div> 
               <div class="item"> 
-                <div>Now choose the relevant activity type (only one allowed).</div>
+                Now choose the relevant activity type (only one allowed).
                 <div 
                     id="activitytypenodes"
                     class="types item_value"
@@ -416,14 +420,12 @@
         </div>        
         <!-- Tab 3 -->
         <div>
-          <h2>
-            <paper-button on-tap="back">
-              <iron-icon icon="arrow-back"></iron-icon>
-            </paper-button>
-            Activity Information
-          </h2>
-          <section
-            id="details">
+          
+          <section id="details">
+            <div class="item"> 
+              Date and Location Information.
+            </div>
+
             <paper-input
                 id    = "date"
                 type  = "date"
@@ -447,13 +449,6 @@
         </div>
         <!-- Tab 4 -->        
         <div class="activityLinkPanel">
-          <h2>
-            <paper-button on-tap="back">
-              <iron-icon icon="arrow-back"></iron-icon>
-            </paper-button>
-            Activity Link and Impact
-          </h2>
-
           <section>
             <div class="item">
               <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
@@ -758,6 +753,8 @@
           this.$.country.invalid = false;
           this.$.date.invalid = false;
 
+          this.$.headerIcon.icon = "add-circle";
+
           // reset focus start to 0
           this._focusStart();
         });
@@ -774,11 +771,16 @@
         if (this._currentStep > 0) {
           this._currentStep -= 1;
         }
+
+        if (this._currentStep === 0) {
+          this.$.headerIcon.icon = "add-circle";
+        }
       },      
-      next                    : function() {
+      next: function() {
         console.debug("[experts-activity-create] next - current tab: ", this._currentStep, this.activity );
         if (this._currentStep < this._numberOfSteps -1 && !this._isStepDisabled()) {
           this._currentStep += 1;
+          this.$.headerIcon.icon = "arrow-back";
           this._focusStart();
         }
       },
