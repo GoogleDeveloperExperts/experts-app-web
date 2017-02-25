@@ -28,80 +28,13 @@
 <link rel="import" href="../../bower_components/paper-dialog-behavior/paper-dialog-behavior.html">
 <link rel="import" href="../../bower_components/paper-dialog-scrollable/paper-dialog-scrollable.html">
 <link rel="import" href="../../bower_components/paper-input/paper-input.html">
-<link rel="import" href="../../bower_components/paper-styles/color.html">
 
+<link rel="import" href="./shared-styles-dialog.html">
 <link rel="import" href="./experts-activity-link-behavior.html">
-<!--
-   ==================================== 
-                  Shady DOM 
-   ==================================== 
--->
 
-<dom-module  
-  id="experts-activity-detail-create">
+<dom-module id="experts-activity-detail-create">
   <template> 
-     
-<!--
-   ==================================== 
-                     CSS  
-   ==================================== 
--->
-    <style> 
-     :host {
-        width           : 65vw;
-        min-height: 70vh;
-        border-radius   : 2px;    
-        background      : white;
-        transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        font-family     : Roboto;
-        @apply(--layout-vertical);
-      }
-      :host:hover {
-        box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-      }
-       
-      .content { 
-        padding: 15px;  
-        @apply(--layout-flex);
-      } 
-      #closeCreateActivityDetail { 
-        position: absolute;
-        justify-content: flex-end;
-        right: 16px;
-        top: 16px;
-        margin: 0;
-        transition: color 0.5s cubic-bezier(.25,.8,.25,1);
-        color: #e5e5e5;
-      } 
-       #closeCreateActivityDetail:hover { 
-        color: #aaa;
-      }  
-
-      h2 {
-        display         : flex;
-        align-items     : center;
-        color           : #4285f4;
-        font-size       : 18px;
-        font-weight     : 500;
-        margin          : 0.5em 0 2em 0;
-      }
-      h2 paper-button {
-        margin: 0;
-        padding: 0;
-      }
-      h2 iron-icon {
-        margin-right    : 10px;
-        color           : #999;
-        cursor          : pointer;
-        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
-        --iron-icon-height: 32px;
-        --iron-icon-width: 32px;
-      }
-      h2 paper-button iron-icon {
-        margin: 0;
-      }
-
+    <style include="shared-styles-dialog">
       paper-input {
         width           : 100%;     
       }
@@ -110,50 +43,7 @@
         font-weight       : normal !important;
         cursor            : pointer;
       }
-      .groups paper-button[active] {
-        background-color: #34a853;
-        color: #fff;
-        margin: 5px;
-      } 
-      .types paper-button.selected {
-        background-color: #ff9e07;
-        color: #fff;
-        margin: 5px;
-      }  
-      .item_list { 
-        @apply(--layout-horizontal); 
-        @apply(--layout-center); 
-        @apply(--layout-wrap); 
-      } 
-      .item_list .item:not(:first-child) {
-        margin-left: 15px; 
-      } 
-      .item_list .item:not(:last-child) {
-        margin-right: 15px; 
-      } 
-       
-      .item { 
-        margin-top: 15px; 
-        margin-bottom: 15px; 
-      } 
 
-      .item_name { 
-        color: var(--paper-grey-600); 
-        font-family: 'Roboto', 'Noto', sans-serif;
-        white-space: nowrap; 
-        overflow: hidden; 
-        text-overflow: ellipsis; 
-        font-size: 12px; 
-        font-weight: 400; 
-        letter-spacing: 0.011em; 
-        line-height: 20px; 
-      } 
-
-      .item_value { 
-        @apply(--layout-horizontal); 
-        @apply(--layout-center); 
-        @apply(--layout-wrap); 
-      }  
       .item_value.types { 
         @apply(--layout-center-justified); 
         min-height: 50px; 
@@ -164,151 +54,110 @@
       .item_value.metric paper-input {
         width: 100%; 
       } 
-      .item_value.submit { 
-        @apply(--layout-center-justified); 
-      } 
-      #submit[disabled] {
-        background-color: var(--paper-grey-500);
-      }
-      #submit { 
-        background-color: var(--paper-blue-500);
-        color: white;
-        margin: 5px;
-      } 
-
-      .step0-icon {
-        --iron-icon-fill-color: #4285f4;
-      }
-
-      .keyboard-focus {
-        border: 2px solid orange;
-      }
-
-      blockquote {
-        padding: 1em;
-        border-radius: 5px;
-      }
-
-      blockquote.help {
-        background-color: #4285f4;
-        color: #fff;
-      }
     </style> 
-<!--  
-   ==================================== 
-                   HTML 
-   ==================================== 
--->
-      <paper-button 
-        id="closeCreateActivityDetail"
-        on-tap="cancel"
-        autofocus> 
-        <iron-icon  
-          icon="close">
-        </iron-icon> 
-      </paper-button>  
 
-      <paper-dialog-scrollable class="content"> 
-        <h2>
-          <iron-icon 
-            class="step0-icon"
-            icon   = "add-circle">
-          </iron-icon>
-          Add Activity Link and Impact
-        </h2>
+    <header>
+      <h2>
+        <iron-icon id="headerIcon" class="step0-icon" icon="arrow-back" 
+          on-tap="cancel"></iron-icon>
+        {{optype}} Activity Link and Impact
+      </h2>
+      <paper-button id="closeCreateActivityDetail" on-tap="cancel">
+        <iron-icon icon ="close"></iron-icon>
+      </paper-button>
+    </header>
+    <paper-dialog-scrollable> 
+      <div class="item">
+        <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
 
-        <div class="item">
-          <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
+        <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
 
-          <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
+        <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
+      </div>
 
-          <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
-        </div>
-
-        <div class="item">
-          <div class="item_name">
-            <paper-dropdown-menu 
-                selected-item-label="{{detail.detail_type}}"
-                label="Link source"
-                on-iron-select="_activityLinkSelected">
-              <paper-listbox 
-                  selected="{{initial_detail_type}}" 
-                  class="dropdown-content">
-                <template is="dom-repeat" items="{{activityLinks}}" as="link">
-                  <paper-item 
-                      data-link="{{link}}"
-                      label="{{link.label}}">
-                    {{link.label}}
-                  </paper-item>
-                </template>
-              </paper-listbox>
-            </paper-dropdown-menu>
-          </div>
-        </div>
-
-        <div hidden$="{{!_activateMetrics}}">
-            <div class="item">              
-              <paper-input  
-                auto-validate 
-                pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
-                error-message="Must be a valid URL."
-                name="url" 
-                id="inputUrl" 
-                label="URL" 
-                type="text"
-                value="{{detail.url}}"
-                invalid="{{_urlInvalid}}" 
-                required></paper-input> 
-            </div>    
-            <div class="item"> 
-              <div class="item_name">Activity metrics</div>
-              <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
-                <div class="item_value metric">
-                  <paper-input 
-                    id="metric_reached" 
-                    type="number" 
-                    label="How many people directly reached?"
-                    value="{{ detail.metric_reached }}"
-                    min="0"> 
-                  </paper-input> 
-                </div> 
+      <div class="item">
+        <div class="item_name">
+          <paper-dropdown-menu 
+              selected-item-label="{{detail.detail_type}}"
+              label="Link source"
+              on-iron-select="_activityLinkSelected">
+            <paper-listbox 
+                selected="{{initial_detail_type}}" 
+                class="dropdown-content">
+              <template is="dom-repeat" items="{{activityLinks}}" as="link">
+                <paper-item 
+                    data-link="{{link}}"
+                    label="{{link.label}}">
+                  {{link.label}}
+                </paper-item>
               </template>
-              <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
-                <div class="item_value metric">
-                  <paper-input 
-                    id="metric_reached" 
-                    type="number" 
-                    label="How many people trained?"
-                    value="{{ detail.metric_trained }}"
-                    min="0"> 
-                  </paper-input> 
-                </div> 
-              </template>
-              <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
-                <div class="item_value metric">
-                  <paper-input 
-                    id="metric_reached"
-                    type="number"
-                    label="How many people indirectly reached?"
-                    value="{{ detail.metric_indirect }}"
-                    min="0">
-                  </paper-input> 
-                </div> 
-              </template>
-            </div> 
+            </paper-listbox>
+          </paper-dropdown-menu>
         </div>
-        <div class="item"> 
-          <div class="item_value submit">     
-            <paper-button  
-              id="submit" 
-              on-tap="_submitActivityDetail"
-              disabled$="{{!_submitDisabled}}"
-              raised> 
-              Save
-            </paper-button> 
+      </div>
+
+      <div hidden$="{{!_activateMetrics}}">
+          <div class="item">              
+            <paper-input  
+              auto-validate 
+              pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
+              error-message="Must be a valid URL."
+              name="url" 
+              id="inputUrl" 
+              label="URL" 
+              type="text"
+              value="{{detail.url}}"
+              invalid="{{_urlInvalid}}" 
+              required></paper-input> 
+          </div>    
+          <div class="item"> 
+            <div class="item_name">Activity metrics</div>
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people directly reached?"
+                  value="{{ detail.metric_reached }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+            </template>
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached" 
+                  type="number" 
+                  label="How many people trained?"
+                  value="{{ detail.metric_trained }}"
+                  min="0"> 
+                </paper-input> 
+              </div> 
+            </template>
+            <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
+              <div class="item_value metric">
+                <paper-input 
+                  id="metric_reached"
+                  type="number"
+                  label="How many people indirectly reached?"
+                  value="{{ detail.metric_indirect }}"
+                  min="0">
+                </paper-input> 
+              </div> 
+            </template>
           </div> 
-        </div>
-      </paper-dialog-scrollable> 
+      </div>
+    </paper-dialog-scrollable>
+    <footer>
+      <paper-button  
+        id="submit" 
+        on-tap="_submitActivityDetail"
+        disabled$="{{!_submitDisabled}}"
+        raised> 
+        Save
+      </paper-button> 
+    </footer>
+
     <iron-ajax
       id = "insertActivityDetail"
       url = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityDetail"
@@ -328,9 +177,11 @@
       is: 'experts-activity-detail-create', 
       properties: { 
 
-        /** 
-          * The new activity
-        */ 
+        optype: {
+          type: String,
+          value: "Add"
+        },
+
         detail: { 
           type: Object, 
           notify: true, 

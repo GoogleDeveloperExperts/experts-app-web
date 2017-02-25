@@ -37,86 +37,14 @@
 <link rel="import" href="../../bower_components/paper-styles/color.html">
 <link rel="import" href="../../bower_components/paper-spinner/paper-spinner.html">
 
+<link rel="import" href="./shared-styles-dialog.html">
 <link rel="import" href="./experts-activity-link-behavior.html">
 
-<!--
-   ====================================
-                  Shady DOM
-   ====================================
--->
-
-<dom-module
-  id="experts-activity-create">
+<dom-module id="experts-activity-create">
   <template>
-    
-<!--
-   ====================================
-                     CSS 
-   ====================================
--->
-    <style>
-     :host {
-        width           : 65vw;
-        height          : 80vh;
-        border-radius   : 2px;    
-        background      : white;
-        transition      : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow      : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        font-family     : Roboto;
-        @apply(--layout-vertical);
-      }
+    <style include="shared-styles-dialog">
 
-      :host:hover {
-        box-shadow      : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-      }
-
-      .content { 
-        padding: 15px;  
-        @apply(--layout-flex);
-      } 
-      #closeCreateActivity {
-        position        : absolute;
-        justify-content : flex-end;
-        right           : 16px;
-        top             : 16px;
-        margin          : 0;
-        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
-        color           : #e5e5e5;
-      }
-      #closeCreateActivity:hover {
-        color           : #aaa;
-      }
-      #continue {
-        margin          : 20px auto 0;
-      }
-      h2 {
-        display         : flex;
-        align-items     : center;
-        color           : #4285f4;
-        font-size       : 18px;
-        font-weight     : 500;
-        margin          : 0.5em 0 2em 0;
-      }
-      h2 paper-button {
-        margin: 0;
-        padding: 0;
-      }
-      h2 iron-icon {
-        margin-right    : 10px;
-        color           : #999;
-        cursor          : pointer;
-        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
-        --iron-icon-height: 32px;
-        --iron-icon-width: 32px;
-      }
-      h2 paper-button iron-icon {
-        margin: 0;
-      }
-
-      .iron-selected section {
-        margin: 0 2em;
-      }
-
+      /* Specific only to this dialog */
       #details {
         @apply(--layout-vertical);
       }
@@ -127,189 +55,21 @@
         max-width: 200px;
       }
       paper-input {
-        width           : 100%;
-      }
-
-      /* the 2px border is for keyboard focus so we don't jump */
-      paper-button {
-        font-size        : 12px;
-        margin            : 5px;
-        font-weight       : normal !important;
-        cursor            : pointer;
-        border            : 2px solid transparent;
-      }
-      .product_groups paper-button[active] {
-        background-color  : #ff9e07;
-        color             : #fff;
-        margin            : 5px;
-      }
-
-      .groups paper-button[active] {
-        background-color: #34a853 !important;
-        color: #fff;
-        margin: 5px;
-      } 
-      .types paper-button.selected {
-        background-color: #ff9e07 !important;
-        color: #fff;
-        margin: 5px;
-      }        
-      .item { 
-        margin-top        : 15px; 
-        margin-bottom     : 15px; 
-      } 
-
-      .item_name { 
-        color             : var(--paper-grey-600); 
-        font-family       : 'Roboto', 'Noto', sans-serif;
-        white-space       : nowrap; 
-        overflow          : hidden; 
-        text-overflow     : ellipsis; 
-        font-size         : 12px; 
-        font-weight       : 400; 
-        letter-spacing    : 0.011em; 
-        line-height       : 20px;
-      }
-
-      .item_filter paper-input {
-        max-width: 50%;
-        margin-bottom: 1em;
-      }
-
-      .item_value { 
-        @apply(--layout-horizontal); 
-        @apply(--layout-center); 
-        @apply(--layout-wrap); 
-      } 
-
-      .item_value paper-button {
-        min-width: 145px;
-      }
-
-      .activityLinkPanel {
-        min-height        : 400px;
-      }
-      paper-listbox {
-        max-height: 300px;
-        min-width: 180px;
-        overflow-x: hidden;
-      }
-      paper-dropdown-menu {
-        --paper-dropdown-menu: {          
-          min-width: 200px;
-        }
-        --paper-listbox: {
-          max-height: 300px;
-          min-width: 180px;
-          overflow-x: hidden;
-        };
-      }
-
-      header {
-        padding: 24px 20px;
-      }
-      header h2 {
-        margin: 0;
-        width: 90%;
-      }
-
-      footer {
-        display           : flex;
-        flex-direction    : column;
-        align-items       : center;
-        justify-content   : center;
-        height            : 100px;
-      }
-      footer  paper-button {
-        color             : #fff;
-        background-color  : #4285f4;
-        border-radius     : 2px;
-        padding           : 14px 30px;
-        font-size         : 14px;
-
-      }
-      footer  .progress {
-        display           : flex;
-        flex-direction    : row;
-        justify-content   : center;
-        align-items       : center;
-        height            : 48px;
-      }
-      footer  .progress  .indicator {
-        border-radius     : 50%;
-        width             : 8px;
-        height            : 8px;
-        margin            : 0 3px 0;
-        background-color  : #d8d8d8;
-      }
-      footer  .progress  .indicator#first[active] {
-        background-color  : #4285f4;
-      }
-      footer  .progress  .indicator#second[active] {
-        background-color  : #ea4335;
-      }
-      footer  .progress  .indicator#third[active] {
-        background-color  : #fbbc05;
-      }
-      footer  .progress  .indicator#fourth[active] {
-        background-color  : #34a853;
-      }
-
-      .hidden {
-        display: none;
-      }
-
-      paper-spinner {
-        margin-right: 1em;
-      }
-
-      .step0-icon {
-        --iron-icon-fill-color: #4285f4;
-      }
-
-      .keyboard-focus {
-        border: 2px solid orange;
-      }
-
-      blockquote {
-        padding: 1em;
-        border-radius: 5px;
-      }
-
-      blockquote.help {
-        background-color: #4285f4;
-        color: #fff;
-      }
-
-      /* On mobile, don't crunch the window */
-      @media (max-width: 767px) {
-       :host {
-          width           : 100vw;
-          height          : 100vh;
-        }
-        .iron-selected section {
-            margin: 0 1em;
-        }
-      }
-      
+        width: 100%;
+      }      
     </style>
-<!--  
-   ====================================
-                   HTML
-   ====================================
--->
+
     <header>
       <h2>
-        <iron-icon id="headerIcon" class="step0-icon" icon="add-circle" 
-          on-tap="back"></iron-icon>
+        <iron-icon id="headerIcon" icon="add-circle" on-tap="back"></iron-icon>
         Add an activity
       </h2>
-      <paper-button id="closeCreateActivity" on-tap="cancel">
+      <paper-button on-tap="cancel">
         <iron-icon icon ="close"></iron-icon>
       </paper-button>
     </header>
 
-    <paper-dialog-scrollable class='content'> 
+    <paper-dialog-scrollable> 
       <iron-pages 
           id        = "ironpages" 
           selected  = "{{_currentStep}}">
@@ -541,13 +301,11 @@
     </paper-dialog-scrollable>
     <footer>
       <paper-button 
-          id        = "continue" 
           on-tap    = "next"
           hidden$   = "{{_lastStep}}">
         Continue
       </paper-button>
       <paper-button 
-          id        = "continue" 
           on-tap    = "finish"
           hidden$   = "{{!_lastStep}}"
           disabled  = "{{!_stepDisabled}}">
@@ -563,7 +321,7 @@
         <div
             id      = "second"
             class   = "indicator"
-            active$ = "{{_isCurrentStep(1,_currentStep)}}">
+            active$ = "{{_isCurrentStep(1, _currentStep)}}">
         </div>
         <div
             id      = "third"
