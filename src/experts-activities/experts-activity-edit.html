@@ -34,67 +34,12 @@
 
 <link rel="import" href="experts-activity-detail-list.html">
 <link rel="import" href="experts-activity-detail-create.html">
+<link rel="import" href="./shared-styles-dialog.html">
 <link rel="import" href="../experts-icons.html">
 
-<!--
-    ====================================
-                  Shady DOM
-    ====================================
--->
-<dom-module 
-  id = "experts-activity-edit">
+<dom-module id = "experts-activity-edit">
   <template>
-    
-<!--
-    ====================================
-                     CSS 
-    ====================================
--->
-    <style include="iron-flex iron-flex-alignment">
-      :host {
-        width             : 65vw;
-        border-radius     : 2px;    
-        background        : white;
-        transition        : box-shadow 0.5s cubic-bezier(.25,.8,.25,1);
-        box-shadow        : 0 14px 28px rgba(0,0,0,0.25), 0 10px 10px rgba(0,0,0,0.22);
-        padding           : 15px;
-        font-family       : 'Roboto', 'Noto', sans-serif;
-      }
-     :host:hover {
-        box-shadow        : 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
-      }
-      :host > * {
-        padding           : 0 !important;
-      }
-      #closeActivityDetail {
-        position          : absolute;
-        justify-content   : flex-end;
-        right             : 16px;
-        top               : 16px;
-        margin            : 0;
-        transition        : color 0.5s cubic-bezier(.25,.8,.25,1);
-        color             : #e5e5e5;
-      }
-      #closeActivityDetail:hover {
-        color             : #aaa;
-      }
-
-      h2 {
-        display         : flex;
-        align-items     : center;
-        color           : #4285f4;
-        font-size       : 18px;
-        font-weight     : 500;
-        margin          : 0.5em 0 0.5em 0;
-      }
-      h2 iron-icon {
-        margin-right    : 10px;
-        color           : #4285f4;
-        cursor          : pointer;
-        transition      : color 0.5s cubic-bezier(.25,.8,.25,1);
-        --iron-icon-height: 32px;
-        --iron-icon-width: 32px;
-      }
+    <style include="iron-flex iron-flex-alignment shared-styles-dialog">    
 
       #addActivityDetail {
         position          : absolute;
@@ -106,73 +51,14 @@
       }
       #addActivityDetail:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-      }   
+      } 
+
       paper-input {
         width           : 95%;  
-      }
-
-      paper-button {
-        font-size       : 12px;
-        margin            : 5px;
-        font-weight       : normal !important;
-        cursor            : pointer;
-      }
-      .product_groups paper-button[active] {
-        background-color  : #ff9e07;
-        color             : #fff;
-        margin            : 5px;
-      }
-
-      .groups paper-button[active] {
-        background-color: #34a853;
-        color: #fff;
-        margin: 5px;
-      } 
-      .types paper-button.selected {
-        background-color: #ff9e07;
-        color: #fff;
-        margin: 5px;
-      }   
-      .item { 
-        margin-top        : 15px; 
-        margin-bottom     : 15px; 
-      } 
-
-      .item_name { 
-        color             : var(--paper-grey-600);
-        white-space       : nowrap; 
-        overflow          : hidden; 
-        text-overflow     : ellipsis; 
-        font-size         : 12px; 
-        font-weight       : 400; 
-        letter-spacing    : 0.011em; 
-        line-height       : 20px; 
-      } 
-
-      .item_value { 
-        @apply(--layout-horizontal); 
-        @apply(--layout-center); 
-        @apply(--layout-wrap); 
-      } 
-    
-      .item_value iron-icon  {
-        margin-left        : 15px;
       }
       
       .flexchild {
         @apply(--layout-flex);
-      }
-
-      .item_list {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-        @apply(--layout-wrap);
-      }
-      .item_list .item:not(:first-child)  {
-        margin-left        : 15px;
-      }
-      .item_list .item:not(:last-child)  {
-        margin-right       : 15px;
       }
 
       iron-icon.edit {
@@ -184,20 +70,6 @@
         color              : var(--google-green-500);
         color: white;
       }  
-      paper-button.submit {
-        color             : #ffffff;
-        background-color  : #0f9d58;
-        border-radius     : 2px;
-        font-size         : 14px;
-        padding: 5px;
-      }  
-      paper-button.close {
-        color             : #ffffff;
-        background-color  : #d82929;
-        border-radius     : 2px;
-        font-size         : 14px;
-        padding: 5px;
-      }
 
       /* hacky Justin against time :-( */
       paper-button iron-icon {
@@ -216,51 +88,24 @@
         color              : white;
         background-color   :  var(--google-blue-500);
       }
-      .item_list .edit_label:not(:first-child)  {
-        margin-left        : 15px;
-      }
-      .item_list .edit_label:not(:last-child)  {
-        margin-right       : 15px;
-      }   
+ 
       .container {
         position           : relative;
       }  
-      .item_value.submit { 
-        @apply(--layout-center-justified); 
-      }       
-      #submit[disabled] {
-        background-color   : var(--paper-grey-500);
-      }
-      #submit { 
-        background-color   : var(--google-blue-500);
-        color              : white;
-        margin             : 5px;
-      } 
-
-      main {
-        margin: 0 2em;
-      }
+     
     </style>
-<!--  
-    ====================================
-                   HTML
-    ====================================
--->
+
+    <header>
       <h2>
-        <iron-icon icon="create"></iron-icon>
-        Edit This Activity
+        <iron-icon id="headerIcon" icon="create" on-tap="back"></iron-icon>
+        Edit this activity
       </h2>
-
-      <paper-button
-        id     = "closeActivityDetail"
-        on-tap = "cancel"
-        autofocus>
-        <iron-icon 
-          icon = "close">
-        </iron-icon>
+      <paper-button on-tap="cancel">
+        <iron-icon icon ="close"></iron-icon>
       </paper-button>
+    </header>
 
-      <main>
+    <paper-dialog-scrollable> 
         <section class="layout horizontal">
           <div class="flex">
             <paper-input 
@@ -306,133 +151,74 @@
           </div>
         </section>
 
-        <template 
-            is = "dom-if" 
-            if = "{{!_isEditingActivityType}}">
-          <div class="item activity_type">
-            <div class = "item_name">Activity Type</div>
-            <div class = "item_value">
-              {{activity.activity_type}}
-              <iron-icon
-                  class="edit"
-                  icon="create"
-                  disabled$="{{_disableEdit}}"
-                  on-tap="_editActivityType"
-              ></iron-icon>
-            </div>
-          </div>
-        </template>
-        <template 
-            is = "dom-if" 
-            if = "{{_isEditingActivityType}}">    
-          <div class="item"> 
-            <div class="item_name">Activity groups</div>
-            <div class="groups item_value">
-              <template  
-                  is="dom-repeat" 
-                  items="[[activityGroups]]">
-                <paper-button 
-                    on-tap="_selectActivityGroup" 
-                    class="group" 
-                    id="{{item.id}}" 
-                    name="{{item.tag}}" 
-                    active="{{item.active}}" 
-                    toggles 
-                    raised> 
-                  {{item.tag}} 
-                </paper-button> 
-              </template> 
-            </div> 
+        <div class="item"> 
+          <div class="item_name">Activity groups</div>
+          <div class="groups item_value">
+            <template  
+                is="dom-repeat" 
+                items="[[activityGroups]]">
+              <paper-button 
+                  on-tap="_selectActivityGroup" 
+                  class="group" 
+                  id="{{item.id}}" 
+                  name="{{item.tag}}" 
+                  active="{{item.active}}" 
+                  toggles 
+                  raised> 
+                {{item.tag}} 
+              </paper-button> 
+            </template> 
           </div> 
-          <template
-              is  = "dom-if"
-              if  = "{{_activityTypesActive}}">
-            <div class="item"> 
-              <div class="item_name">Activity type (only one allowed)</div>
-              <div 
-                  class="types item_value"
-                  invalid$="{{_typeInvalid}}">
-                <template 
-                  is="dom-repeat" 
-                  items="[[_activityTypes]]"
-                  as="type">
-                  <paper-button 
-                      on-tap="_selectActivityType" 
-                      class$="type {{type.selected}} yeah"
-                      id="{{type.tag}}" 
-                      name="{{type.tag}}" 
-                      raised> 
-                    {{type.tag}} 
-                  </paper-button> 
-                </template> 
-              </div>  
-            </div> 
-          </template>  
-          <div class="item">
-            <div class="item_value">   
-              <template
-                  is  = "dom-if"
-                  if  = "{{_activityTypesActive}}">
-                  <paper-button on-tap="_submitEditActivityType" class="submit" raised>
-                    <iron-icon icon="done"></iron-icon> Save
-                  </paper-button>
-              </template>
-              <paper-button on-tap="_closeEditActivityType" class="close" raised>
-                <iron-icon icon="clear"></iron-icon> Cancel
-              </paper-button>
-            </div>
-          </div>
-        </template>
+        </div> 
+        <div class="item"> 
+          <div class="item_name">Activity type (only one allowed)</div>
+          <div 
+              class="types item_value"
+              invalid$="{{_typeInvalid}}">
+            <template 
+              is="dom-repeat" 
+              items="[[_activityTypes]]"
+              as="type">
+              <paper-button 
+                  on-tap="_selectActivityType" 
+                  class$="type {{type.selected}} yeah"
+                  id="{{type.tag}}" 
+                  name="{{type.tag}}" 
+                  raised> 
+                {{type.tag}} 
+              </paper-button> 
+            </template> 
+          </div>  
+        </div>
 
-        <template 
-            is = "dom-if" 
-            if = "{{!_isEditingProductGroups}}">
-          <div class="item product_groups">
-            <div class = "item_name">Product Groups</div>
-            <div class = "item_value">
-              {{ _serializeList(activity.product_groups) }}
-              <iron-icon
-                  class="edit"
-                  icon="create"
-                  disabled$="{{_disableEdit}}"
-                  on-tap="_editProductGroups"
-              ></iron-icon>
-            </div>
+        <div class="item"> 
+          <div class="item_name">Product Groups</div>
+          <div class="item_filter">
+              <paper-input v
+                id    = "filterForProducts"
+                type  = "text" 
+                label = "Type to filter product list..." 
+                value = "{{filterProduct}}">
           </div>
-        </template>
-        <template 
-            is = "dom-if" 
-            if = "{{_isEditingProductGroups}}">    
-          <div class="item"> 
-            <div class="item_name">Product Groups</div>
-              <div class="product_groups item_value">
-                <template 
-                    is    = "dom-repeat" 
-                    items = "[[productGroups]]"
-                    as="product">
-                  <paper-button
-                      id      = "{{product.id}}"
-                      class   = "productGroup"
-                      on-tap  = "_selectProductGroup"
-                      active  = "{{product.active}}"
-                      toggles
-                      raised>
-                    {{product.tag}}
-                  </paper-button>
-                </template>   
-              </div>
-          </div> 
-          <div class="item">
-            <div class="item_value">   
-              <paper-button on-tap="_submitEditProductGroups" class="submit" raised>
-                <iron-icon icon="done"></iron-icon> Save
+          <div class="product_groups item_value">
+            <template 
+                id="productGroups"
+                is    = "dom-repeat" 
+                items = "[[productGroups]]"
+                filter="{{_filterProducts(filterProduct)}}"
+                as="product">
+              <paper-button
+                  id      = "{{product.id}}"
+                  class   = "productGroup"
+                  on-tap  = "_selectProductGroup"
+                  active  = "{{product.active}}"
+                  toggles
+                  raised>
+                {{product.tag}}
               </paper-button>
-              <paper-button on-tap="_closeEditProductGroups" class="close" raised>
-                <iron-icon icon="clear"></iron-icon> Cancel
-              </paper-button>
-            </div>
+            </template>   
           </div>
-        </template>
+        </div> 
 
         <div 
           class = "container">
@@ -476,7 +262,14 @@
             </div> 
           </template>
         </div>
-      </main>
+    </paper-dialog-scrollable>
+    <footer>
+      <paper-button  
+        on-tap="_submitActivityEdit"
+        raised> 
+        Save
+      </paper-button> 
+    </footer>
 
       <experts-activity-detail-create 
           id                       = "createActivityDetail"
@@ -573,9 +366,6 @@
       behaviors: [
         Polymer.PaperDialogBehavior
       ],
-      observers: [
-        '_activityChanged(activity.*)'
-      ],
 
       /************************************************************************/
       /* Lifecycle methods                                                    */
@@ -592,47 +382,68 @@
 
         // on dialog open, reset the form to base
         this.addEventListener('iron-overlay-opened', function() {
-          this._listActivityDetails();
+          this._populate();
         });
       },
 
-
-      /************************************************************************/
-      /* Observers                                                            */
-      /************************************************************************/
-      _paramsChanged              : function() {
-        console.debug("[experts-activity-edit] _paramsChanged", this.activity);
-        if (!this.activity) {
-          return;
-        } 
-
-        this._listActivityDetails(); 
-      },
-
-      _activityChanged: function(newValue, oldValue) {
-        // When we pop the dialog, we know that the root changes which we don't
-        // care about at all. Otherwise, we'll dead loop this. :-)
-        if(newValue.path !== 'activity' && newValue.path !== 'activity.listActivityDetails'
-          && newValue.path !== 'activity.activity_details') {
-          // We have to debounce on our input changes otherwise it'll pound the
-          // server on every keypress
-          this.debounce('_activityChanged', function () {
-            this._submitUpdateActivityMaster();
-          }, 1000);
+      _filterProducts: function(string) {  
+        if (!string) {
+          // filter to null = disable filtering for buttons
+          return null;
+        } else {
+          string = string.toLowerCase();
+          return function(product) {
+            var first = product.tag.toLowerCase();
+            return (first.indexOf(string) != -1)
+          };
         }
       },
 
-      /************************************************************************/
-      /* Computed properties                                                  */
-      /************************************************************************/
-      _isActivityTypesActive  : function() {
-        console.debug("[experts-activity-edit] _isActivityTypesActive", this._activityTypes);
-        return (this._activityTypes.length > 0);
+      _populate: function() {
+        var self = this;
+
+        // load table full of records
+        this._listActivityDetails();
+        
+        // Failsafe for older records
+        if (!this.activity.product_groups) {
+          this.activity.product_groups = [];   
+        } 
+
+        // pull products, flip through, update seclections
+        this._product_groups = JSON.parse(JSON.stringify(this.activity.product_groups));
+        this.productGroups.forEach(function(product){
+          if (self._product_groups.indexOf(product.tag) >= 0 ) {
+            product.active = true;
+            self.$$("#" + product.id).active = true;
+          } else {
+            self.$$("#" + product.id).active = false;
+          }
+        });
+
+        // pull activity type, select, display
+        this._activity_type = this.activity.activity_type;
+        this._activityTypes =  [
+          { 
+            tag: this._activity_type, 
+            selected: "selected" 
+          } 
+        ];
       },
 
       /************************************************************************/
       /* Action listeners                                                     */
       /************************************************************************/
+
+      // Fired when Save button tapped; grab, build, send all data
+      _submitActivityEdit: function() {
+        this.set('activity.activity_type', this._activity_type);
+        this.set('activity.product_groups', JSON.parse(JSON.stringify(this._product_groups)));
+        this._submitUpdateActivityMaster();
+        this.close();
+        this.fire('activity-updated', {activity: this.activity, detail: this.detail});
+      },
+
       _submitUpdateActivityMaster: function() {
         var request     = this.$.updateActivityMaster;
 
@@ -654,7 +465,6 @@
       },
    
       _selectActivityGroup : function(e){
-
         console.debug("[experts-activity-edit] _selectActivityGroup ", this.activityGroups);  
         var _activityTypes = [];
         if (!this.activity.activity_type) {
@@ -730,10 +540,12 @@
 
       _openCreateDetailDialog       : function() {
         this._aDetail = {};
+        this.createActivityDetail.optype = 'Add';
         this.createActivityDetail.open();
       },
       _openEditDetailDialog         : function(evt, detail) {
         this._aDetail = detail;
+        this.createActivityDetail.optype = 'Edit';
         this.createActivityDetail.open();
       },
       _doAddActivityDetail          : function(evt, detail) {
@@ -755,63 +567,6 @@
 
         this._deleteDetailId = '';
       },
-      _editActivityType: function(evt) {
-        this._activity_type = this.activity.activity_type;
-        this._activityTypes =  [
-          { 
-            tag: this._activity_type, 
-            selected: "selected" 
-          } 
-        ];
-        this._isEditingActivityType = true;
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },
-      _closeEditActivityType: function(evt) {
-        this._isEditingActivityType = false;
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },   
-      _submitEditActivityType: function(evt) {
-        this.set('activity.activity_type', this._activity_type);
-        this._submitUpdateActivityMaster();
-        this._closeEditActivityType();
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },
-      _editProductGroups: function(evt) {
-        if (!this.activity.product_groups) {
-          this.activity.product_groups = [];   
-        } 
-        this._product_groups = JSON.parse(JSON.stringify(this.activity.product_groups));
-        var self = this;
-        this.productGroups.forEach(function(product){
-          if (self._product_groups.indexOf(product.tag) >= 0 ) {
-            product.active = true;
-          }
-        });
-        this._isEditingProductGroups = true;
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },
-      _closeEditProductGroups: function(evt) {
-        this._isEditingProductGroups = false;
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },   
-      _submitEditProductGroups: function(evt) {
-        this.set('activity.product_groups', JSON.parse(JSON.stringify(this._product_groups)));
-        this._submitUpdateActivityMaster();
-        this._closeEditProductGroups();
-
-        // will resize and define dialog position
-        this.notifyResize();
-      },
 
       /************************************************************************/
       /* Event listeners                                                      */
@@ -820,15 +575,14 @@
         // Should not need this; protect the package
         //this.activity       = this._apiActivityMaster;
         this._listActivityDetails();
-        this.fire('activity-updated', this.activity);
       },
+
       _handleListActivityDetails     : function() {
-        console.debug("[experts-activity-edit] _handleListActivityDetails", this._apiListActivityDetails.items );
         this.set('activity.listActivityDetails', this._apiListActivityDetails.items);
         this._resynchroActivityDetails();
       },
+      
       _handleActivityDetailDelete   : function() {
-        console.debug("[experts-activity-edit] _handleActivityDetailDelete", this._apiActivityDetailDelete);
         this._listActivityDetails();
         this._resynchroActivityDetails();
       },

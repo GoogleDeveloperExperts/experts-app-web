@@ -186,7 +186,7 @@
         user            = "{{user}}"
         exit-animation  = "slide-down-animation"
         entry-animation = "slide-from-bottom-animation"
-        on-activity-updated="generateActivityListRequest"
+        on-activity-updated="_handleActivityUpdated"
         no-cancel-on-outside-click
         modal></experts-activity-edit>
 
@@ -342,6 +342,8 @@
         <paper-button dialog-confirm autofocus>Okay, but I'm not happy about this</paper-button>
       </div>
     </paper-dialog>
+
+    <paper-toast id="activityUpdated" text="Your Activity was successfully updated!"></paper-toast>
 
   </template>
 <!--
@@ -599,6 +601,10 @@
         }
       },
 
+      _handleActivityUpdated: function(evt, obj) {
+        this.generateActivityListRequest();
+        this.$.activityUpdated.open();
+      }
     });
   </script>
 </dom-module>
