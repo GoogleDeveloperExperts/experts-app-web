@@ -37,6 +37,7 @@
 <link rel="import" href="../bower_components/paper-button/paper-button.html">
 <link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
 <link rel="import" href="../bower_components/paper-styles/color.html">
+<link rel="import" href="../bower_components/paper-toast/paper-toast.html">
 
 <link rel="import" href="experts-icons.html">
 <link rel="import" href="experts-signin.html">
@@ -368,6 +369,9 @@
             user="{{user}}"></experts-not-logged-in>
       </div>
 
+    <paper-toast id="swReady" text="Service Worker ready! #pushthewebforward"></paper-toast>
+    <paper-toast id="swReload" text="Looks like there is a new version of the app! Refresh to get the latest version."></paper-toast>
+
     <firebase-collection
       location = "https://gooogle-experts-tracking-app.firebaseio.com/cache"
       data     = "{{cache}}">
@@ -420,9 +424,61 @@
       _routePageChanged : function(page) {
         this.page = page || 'activities';
       },
+      _ensureLazyLoaded: function() {
+
+        if (!this.loadComplete) {
+          // If you've looked at the shop demo, this isn't the same. This
+          // alerts the user to SW state changes. Debatable user xp, but I
+          // decided to add it.
+          if ('serviceWorker' in navigator) {
+              navigator.serviceWorker.register('/service-worker.js')
+                .then(function(registration) {
+                  console.log("hey");
+                  registration.onupdatefound = function() {
+                    
+                    var installingWorker = registration.installing;
+
+                    installingWorker.onstatechange = function() {
+
+                      switch (installingWorker.state) {
+                        case 'installed':
+                          if (navigator.serviceWorker.controller) {
+                            
+                            this.$.swReload.open();
+
+                          } else {
+
+                            // Note, if you wanted this SW to kick at this
+                            // point, you should do a page reload ala
+                            // window.location.reload();
+                            // or some such.
+                            this.$.swReady.open();
+                          }
+                          break;
+                        case 'redundant':
+                          // Error! Bad! No!
+                          break;
+                      }
+
+                    }.bind(this);
+
+                  }.bind(this);
+
+                }.bind(this)).catch(function(e) {
+
+                  console.error('SW error on install', e.toString());
+                
+                }.bind(this));
+            }
+          this.loadComplete = true;
+        }
+      },
       _pageChanged : function(page) {
+
+        var callback = this._ensureLazyLoaded.bind(this);
         this.importHref(
-          this.resolveUrl('experts-' + page + '.html'), null, null, true);
+          this.resolveUrl('experts-' + page + '.html'), callback, null, true);
+        
       },
       _userClicked: function() {
         this._userSelected = !this._userSelected;
