@@ -298,6 +298,8 @@
          * https://github.com/PolymerElements/paper-dialog/issues/7
          */
         this.createActivity = this.$.createActivity        
+        this.$.productGroupsRequests.generateRequest();
+        this.$.activityTypesRequests.generateRequest();
         document.querySelector('body').appendChild(this.createActivity);
       },
 
