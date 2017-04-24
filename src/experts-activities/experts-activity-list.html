@@ -594,10 +594,21 @@
             "indirectReach": "metric_indirect"
           }
           console.debug("[experts-activity-list] _sortList", prop[sortTerm])
+
+          if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
+            return 0;
+          }            
           if (sortReverse) {
-            return itemA[prop[sortTerm]] < itemB[prop[sortTerm]];
-          } 
-          return itemA[prop[sortTerm]] > itemB[prop[sortTerm]];       
+            if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
+              return 1;
+            } else {
+              return -1;
+            }
+          }
+          if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
+            return -1;
+          }
+          return 1;                
         }
       },
 
