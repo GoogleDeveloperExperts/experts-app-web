@@ -395,11 +395,11 @@
         },  
         _sortTerm: {
           type: String,
-          value: ""
+          value: "date"
         },
         _sortReverse: {
           type: Boolean,
-          value: false
+          value: true
         },
       },
 
@@ -580,12 +580,6 @@
       },
 
       _computeSort: function(sortTerm, sortReverse) {
-        if (!sortTerm) {
-          sortTerm = "date";
-          sortReverse = true;
-          this._sortTerm = "date";
-          this._sortReverse = true;
-        }
         return function(itemA, itemB) {
           var prop= {
             "activityName": "title",
