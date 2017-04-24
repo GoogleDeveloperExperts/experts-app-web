@@ -16,9 +16,11 @@
   GNU General Public License for more details.
 
   You should have received a copy of the GNU General Public License
-  along with this program.  If not, see <http://www.gnu.org/licenses/>
+  along with this program.  If not, see <http://www.gnu.org/licenses/>  
 -->
 <script>
+
+
 
   var activityLinks = [
     { name : "twitter", label: "Twitter", metrics: { indirect: true } },
@@ -39,6 +41,9 @@
     { name : "genericurl", label: "Generic URL", metrics: { direct: true, indirect: true, trained: true } }
   ];
 
+  /**
+    * @polymerBehavior
+    */
   ActivityLinks = {
    
     // Properties      
