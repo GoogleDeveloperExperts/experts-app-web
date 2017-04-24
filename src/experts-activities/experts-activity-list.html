@@ -304,6 +304,7 @@
       </div>
       <div class="tbody">
         <template 
+            id="activityList"
             is="dom-repeat" 
             items="{{activities}}" 
             as="activity" 
@@ -580,9 +581,10 @@
 
       _computeSort: function(sortTerm, sortReverse) {
         if (!sortTerm) {
+          sortTerm = "date";
+          sortReverse = true;
           this._sortTerm = "date";
           this._sortReverse = true;
-          return;
         }
         return function(itemA, itemB) {
           var prop= {
@@ -593,7 +595,7 @@
             "trained": "metric_trained",
             "indirectReach": "metric_indirect"
           }
-          console.debug("[experts-activity-list] _sortList", prop[sortTerm], itemA[prop[sortTerm]],itemB[prop[sortTerm]]);
+          // console.debug("[experts-activity-list] _sortList", prop[sortTerm], itemA[prop[sortTerm]],itemB[prop[sortTerm],sortTerm, sortReverse]);
 
           if (itemA[prop[sortTerm]] === itemB[prop[sortTerm]] ) {
             return 0;
