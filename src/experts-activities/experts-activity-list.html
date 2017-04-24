@@ -595,7 +595,7 @@
           }
           console.debug("[experts-activity-list] _sortList", prop[sortTerm])
 
-          if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
+          if (itemA[prop[sortTerm]] === itemB[prop[sortTerm]] ) {
             return 0;
           }            
           if (sortReverse) {
