@@ -8,6 +8,7 @@
     "src/experts-profile.html",
     "src/experts-activities.html"
   ],
+
   "sources": [
     "src/**/*",
     "images/**/*",
@@ -16,5 +17,43 @@
   "includeDependencies": [
     "manifest.json",
     "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ],
+
+  "sourceGlobs": [
+    "src/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "extraDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ],
+  "builds": [
+    {
+      "name": "bundled",
+      "bundle": true,
+      "addServiceWorker": true,
+      "js": {
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      }
+    },
+    {
+      "name": "unbundled",
+      "js": {
+        "minify": true
+      },
+      "css": {
+        "minify": true
+      },
+      "html": {
+        "minify": true
+      }
+    }
   ]
 }
