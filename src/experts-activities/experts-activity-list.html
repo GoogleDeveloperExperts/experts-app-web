@@ -60,8 +60,8 @@
       [hidden] {
         display: none !important;
       }
-      .table    { 
-        display: table; 
+      .table    {
+        display: table;
         width: 100%; }
       .tr       { display: table-row; }
       .thead    { display: table-header-group; }
@@ -155,7 +155,7 @@
       }
       .sorting {
         width: 18px;
-        height: 18px; 
+        height: 18px;
       }
     </style>
 <!--
@@ -165,7 +165,7 @@
 -->
 
 
-    <iron-ajax 
+    <iron-ajax
         id          = "activityListRequest"
         method      = "GET"
         url         = "https://elite-firefly-737.appspot.com/_ah/api/expertstracking/v2.0/activityMaster/activityMaster?limit=100"
@@ -179,7 +179,7 @@
         last-response = "{{_apiActivityMasterDelete}}"
         on-response = "_handleActivityMasterDelete"></iron-ajax>
 
-    <experts-activity-edit 
+    <experts-activity-edit
         id              = "activityEdit"
         activity-groups  = "{{activityGroups}}"
         product-groups  = "{{productGroups}}"
@@ -192,122 +192,122 @@
 
     <div class="table">
       <div class="thead">
-        <div 
-            class$="th col1 [[_cssColumnSortStatus('activityName',_sortTerm)]]"            
+        <div
+            class$="th col1 [[_cssColumnSortStatus('activityName',_sortTerm)]]"
             name="activityName"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('activityName',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('activityName',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>         
+                </template>
               </div>
               <div>
-                Activity name 
+                Activity name
               </div>
             </div>
-        </div>      
-        <div 
-            class$="th col2 [[_cssColumnSortStatus('date',_sortTerm)]]"            
-            name="date"           
+        </div>
+        <div
+            class$="th col2 [[_cssColumnSortStatus('date',_sortTerm)]]"
+            name="date"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('date',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('date',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>      
+                </template>
               </div>
-              <div>       
+              <div>
                 Date
               </div>
             </div>
-        </div>                  
-        <div 
-            class$="th col3 [[_cssColumnSortStatus('type',_sortTerm)]]"             
-            name="type"          
+        </div>
+        <div
+            class$="th col3 [[_cssColumnSortStatus('type',_sortTerm)]]"
+            name="type"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('type',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('type',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>   
+                </template>
               </div>
-              <div>          
+              <div>
                 Type
               </div>
             </div>
-        </div>                
-        <div 
-            class$="th col4 [[_cssColumnSortStatus('directReach',_sortTerm)]]"              
-            name="directReach"         
+        </div>
+        <div
+            class$="th col4 [[_cssColumnSortStatus('directReach',_sortTerm)]]"
+            name="directReach"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('directReach',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('directReach',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>     
+                </template>
               </div>
-              <div>        
+              <div>
                 Direct reach
               </div>
             </div>
-        </div>               
-        <div 
-            class$="th col5 [[_cssColumnSortStatus('trained',_sortTerm)]]"              
-            name="trained"         
+        </div>
+        <div
+            class$="th col5 [[_cssColumnSortStatus('trained',_sortTerm)]]"
+            name="trained"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('trained',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('trained',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>     
+                </template>
               </div>
-              <div>        
+              <div>
                 Trained
               </div>
             </div>
-        </div>               
-        <div 
-            class$="th col6 [[_cssColumnSortStatus('indirectReach',_sortTerm)]]"              
-            name="indirectReach"         
+        </div>
+        <div
+            class$="th col6 [[_cssColumnSortStatus('indirectReach',_sortTerm)]]"
+            name="indirectReach"
             on-tap="_sortBy">
             <div class="horizontal">
               <div>
                 <template is="dom-if" if="[[_columnSortStatus('indirectReach',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-upward"></iron-icon>
-                </template>       
+                </template>
                 <template is="dom-if" if="[[_columnReverseSortStatus('indirectReach',_sortTerm, _sortReverse)]]">
                   <iron-icon class="sorting" icon="arrow-downward"></iron-icon>
-                </template>       
+                </template>
               </div>
-              <div>  
+              <div>
                 Indirect reach
               </div>
             </div>
-        </div>  
+        </div>
         <div class="th col7"></div>
       </div>
       <div class="tbody">
-        <template 
+        <template
             id="activityList"
-            is="dom-repeat" 
-            items="{{activities}}" 
-            as="activity" 
+            is="dom-repeat"
+            items="{{activities}}"
+            as="activity"
             sort="[[_computeSort(_sortTerm, _sortReverse)]]">
           <div class="tr" id="r-{{activity.id}}">
             <div class="td col1 action" on-tap="_doActivityEdit" title="Edit this Activity">{{activity.title}}</div>
@@ -372,27 +372,27 @@
           observer: "_userChanged",
           value: null
         },
-        
+
         productGroups: {
           type: Array,
           value: function() {
             return [];
           }
-        },        
+        },
         activityGroups: {
           type: 'array',
           notify: true,
-          value: function(){ 
+          value: function(){
             return [];
           },
-        },        
+        },
 
         _activityTypes: {
           type: Array,
           value: function() {
             return [];
           }
-        },  
+        },
         _sortTerm: {
           type: String,
           value: "date"
@@ -410,21 +410,21 @@
 
       ready: function() {
         /*
-         * Attaching dialog to main body to make it live over the gray div 
-         * Bug that will be corrected 
+         * Attaching dialog to main body to make it live over the gray div
+         * Bug that will be corrected
          * https://github.com/PolymerElements/polymer-starter-kit/issues/154
          * https://github.com/PolymerElements/paper-dialog/issues/7
          */
-        this.activityEdit = this.$.activityEdit        
+        this.activityEdit = this.$.activityEdit
         document.querySelector('body').appendChild(this.activityEdit);
 
-        this.deleteActivityConfirm = this.$.deleteActivityConfirm        
+        this.deleteActivityConfirm = this.$.deleteActivityConfirm
         document.querySelector('body').appendChild(this.deleteActivityConfirm);
       },
 
 
       // *******************************************************************************************
-      // Observers 
+      // Observers
       // *******************************************************************************************
 
       _userChanged: function(){
@@ -438,7 +438,7 @@
       },
 
 
-      
+
       // *******************************************************************************************
       // Event listener
       // *******************************************************************************************
@@ -471,7 +471,7 @@
 
         // pop up the modal confirm window
         this.$.deleteActivityConfirm.open();
-      },      
+      },
 
 
       _deleteActitityMasterConfirmed: function() {
@@ -498,7 +498,7 @@
           // fast reset
           this.activityToDelete = null;
           this.deleteActivityTitle = '';
-        
+
         } else {
 
           // That did not go right; pop the error window
@@ -515,7 +515,7 @@
         } else {
           this._sortTerm = columnName;
           this._sortReverse = false;
-        }        
+        }
       },
 
       // *******************************************************************************************
@@ -528,7 +528,8 @@
       generateActivityListRequest: function() {
         var request = this.$.activityListRequest;
         request.params = {
-          email: this.user.email
+          email: this.user.email,
+          order: '-date'
         }
         request.generateRequest();
       },
@@ -556,7 +557,7 @@
         // console.debug("[experts-activities] activityEdit", this.activityEdit)
         this.activityEdit.open();
       },
-      
+
 
       _cssColumnSortStatus: function(columnName, sortTerm) {
         if (columnName != sortTerm) {
@@ -568,14 +569,14 @@
       _columnSortStatus: function(columnName, sortTerm, sortReverse) {
         if (columnName != sortTerm || sortReverse) {
           return false;
-        } 
+        }
         return true;
       },
 
       _columnReverseSortStatus: function(columnName, sortTerm, sortReverse) {
         if (columnName != sortTerm || !sortReverse) {
           return false;
-        } 
+        }
         return true;
       },
 
@@ -593,7 +594,7 @@
 
           if (itemA[prop[sortTerm]] === itemB[prop[sortTerm]] ) {
             return 0;
-          }            
+          }
           if (sortReverse) {
             if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
               return 1;
@@ -604,7 +605,7 @@
           if (itemA[prop[sortTerm]] < itemB[prop[sortTerm]] ) {
             return -1;
           }
-          return 1;                
+          return 1;
         }
       },
 
