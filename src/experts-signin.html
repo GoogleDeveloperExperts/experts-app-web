@@ -102,7 +102,7 @@
             id: profile.getEmail(),
             name: profile.getName(),
             image: profile.getImageUrl(),
-            email: profile.getEmail(),
+            email: profile.getEmail().toLowerCase(),
             token: authResponse.access_token || authResponse.id_token
           };
           // this._isAuthorized = true;
