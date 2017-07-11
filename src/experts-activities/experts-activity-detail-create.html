@@ -2,8 +2,8 @@
   Google Developers Experts Tracking App
   Copyright (C) 2016  by the GDE Tracking App Team
 
-  gdetracking.appspot.com/ 
-  https://github.com/GoogleDeveloperExperts/experts-app-web 
+  gdetracking.appspot.com/
+  https://github.com/GoogleDeveloperExperts/experts-app-web
 
   This program is free software: you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -33,10 +33,10 @@
 <link rel="import" href="./experts-activity-link-behavior.html">
 
 <dom-module id="experts-activity-detail-create">
-  <template> 
+  <template>
     <style include="shared-styles-dialog">
       paper-input {
-        width           : 100%;     
+        width           : 100%;
       }
       paper-button {
         margin            : 5px;
@@ -44,21 +44,21 @@
         cursor            : pointer;
       }
 
-      .item_value.types { 
-        @apply(--layout-center-justified); 
-        min-height: 50px; 
-      } 
+      .item_value.types {
+        @apply(--layout-center-justified);
+        min-height: 50px;
+      }
       .item_value.types[invalid] {
         border-bottom: solid 2px var(--paper-deep-orange-a700);
       }
       .item_value.metric paper-input {
-        width: 100%; 
-      } 
-    </style> 
+        width: 100%;
+      }
+    </style>
 
     <header>
       <h2>
-        <iron-icon id="headerIcon" class="step0-icon" icon="arrow-back" 
+        <iron-icon id="headerIcon" class="step0-icon" icon="arrow-back"
           on-tap="cancel"></iron-icon>
         {{optype}} Activity Link and Impact
       </h2>
@@ -66,26 +66,26 @@
         <iron-icon icon ="close"></iron-icon>
       </paper-button>
     </header>
-    <paper-dialog-scrollable> 
+    <paper-dialog-scrollable>
       <div class="item">
         <p>Activity links help define the impact of your activity in three areas: direct, indirect, and trained users. Each link source can have a different metric(s) for you to report and you can have many supporting links.</p>
 
         <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
 
-        <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
+        <p>Activities must contain at least one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
       </div>
 
       <div class="item">
         <div class="item_name">
-          <paper-dropdown-menu 
+          <paper-dropdown-menu
               selected-item-label="{{detail.detail_type}}"
               label="Link source"
               on-iron-select="_activityLinkSelected">
-            <paper-listbox 
-                selected="{{initial_detail_type}}" 
+            <paper-listbox
+                selected="{{initial_detail_type}}"
                 class="dropdown-content">
               <template is="dom-repeat" items="{{activityLinks}}" as="link">
-                <paper-item 
+                <paper-item
                     data-link="{{link}}"
                     label="{{link.label}}">
                   {{link.label}}
@@ -97,65 +97,65 @@
       </div>
 
       <div hidden$="{{!_activateMetrics}}">
-          <div class="item">              
-            <paper-input  
-              auto-validate 
+          <div class="item">
+            <paper-input
+              auto-validate
               pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
               error-message="Must be a valid URL."
-              name="url" 
-              id="inputUrl" 
-              label="URL" 
+              name="url"
+              id="inputUrl"
+              label="URL"
               type="text"
               value="{{detail.url}}"
-              invalid="{{_urlInvalid}}" 
-              required></paper-input> 
-          </div>    
-          <div class="item"> 
+              invalid="{{_urlInvalid}}"
+              required></paper-input>
+          </div>
+          <div class="item">
             <div class="item_name">Activity metrics</div>
             <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
               <div class="item_value metric">
-                <paper-input 
-                  id="metric_reached" 
-                  type="number" 
+                <paper-input
+                  id="metric_reached"
+                  type="number"
                   label="How many people directly reached?"
                   value="{{ detail.metric_reached }}"
-                  min="0"> 
-                </paper-input> 
-              </div> 
+                  min="0">
+                </paper-input>
+              </div>
             </template>
             <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
               <div class="item_value metric">
-                <paper-input 
-                  id="metric_reached" 
-                  type="number" 
+                <paper-input
+                  id="metric_reached"
+                  type="number"
                   label="How many people trained?"
                   value="{{ detail.metric_trained }}"
-                  min="0"> 
-                </paper-input> 
-              </div> 
+                  min="0">
+                </paper-input>
+              </div>
             </template>
             <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
               <div class="item_value metric">
-                <paper-input 
+                <paper-input
                   id="metric_reached"
                   type="number"
                   label="How many people indirectly reached?"
                   value="{{ detail.metric_indirect }}"
                   min="0">
-                </paper-input> 
-              </div> 
+                </paper-input>
+              </div>
             </template>
-          </div> 
+          </div>
       </div>
     </paper-dialog-scrollable>
     <footer>
-      <paper-button  
-        id="submit" 
+      <paper-button
+        id="submit"
         on-tap="_submitActivityDetail"
         disabled$="{{!_submitDisabled}}"
-        raised> 
+        raised>
         Save
-      </paper-button> 
+      </paper-button>
     </footer>
 
     <iron-ajax
@@ -166,36 +166,36 @@
       handle-as = "json"
       last-response = "{{_apiActivityDetail}}"
       on-response = "_handleActivityDetailInsert"></iron-ajax>
-  </template> 
+  </template>
 <!--
-   ==================================== 
-                    JS 
-   ==================================== 
+   ====================================
+                    JS
+   ====================================
 -->
-  <script> 
-    Polymer({  
-      is: 'experts-activity-detail-create', 
-      properties: { 
+  <script>
+    Polymer({
+      is: 'experts-activity-detail-create',
+      properties: {
 
         optype: {
           type: String,
           value: "Add"
         },
 
-        detail: { 
-          type: Object, 
-          notify: true, 
+        detail: {
+          type: Object,
+          notify: true,
           value: function() {
-            return {}; 
-          }, 
-        }, 
+            return {};
+          },
+        },
 
-        activityGroups: { 
-          type: Array, 
-          value: function(){ 
-            return []; 
-          }, 
-        },  
+        activityGroups: {
+          type: Array,
+          value: function(){
+            return [];
+          },
+        },
 
         user: {
           type: Object,
@@ -206,18 +206,18 @@
           type: String,
           value: null
         },
-        _activityTypes: { 
-          type: Array, 
+        _activityTypes: {
+          type: Array,
           value: function() {
-            return []; 
-          } 
-        }, 
+            return [];
+          }
+        },
 
         _submitDisabled: {
           type: Boolean,
           computed: "_isSubmitDisabled(detail.*)"
-        }, 
-         
+        },
+
         _typeInvalid: {
           type: Boolean,
           computed: "_isTypeInvalid(detail.detail_type)"
@@ -226,11 +226,11 @@
           type: Boolean,
           value: false
         },
-      }, 
+      },
 
-      behaviors: [ 
-        Polymer.PaperDialogBehavior, ActivityLinks 
-      ], 
+      behaviors: [
+        Polymer.PaperDialogBehavior, ActivityLinks
+      ],
       listeners: {
         'iron-overlay-opened' : '_initNewActivityDetailIfNeeded'
       },
@@ -270,13 +270,13 @@
         this.detail.email = this.user.email;
         this.detail.activity_master = this.masterId;
 
-        if (!this.detail.metric_reached) { 
+        if (!this.detail.metric_reached) {
           this.detail.metric_reached = 0;
         }
-        if (!this.detail.metric_indirect) { 
+        if (!this.detail.metric_indirect) {
           this.detail.metric_indirect = 0;
-        } 
-        if (!this.detail.metric_trained) { 
+        }
+        if (!this.detail.metric_trained) {
           this.detail.metric_trained = 0;
         }
         console.debug("[experts-activity-detail-create] _submitActivityDetail ", this.detail);
@@ -297,7 +297,7 @@
         this._initNewActivityDetail();
         this.close();
       },
-      cancel: function(){        
+      cancel: function(){
         this._currentStep=0;
         this._initNewActivityDetail();
         this.close();
@@ -307,9 +307,8 @@
         this._chosenActivityLink = obj.item.dataLink;
         this._activateMetrics = true;
       },
-                
-    }); 
 
-  </script> 
+    });
+
+  </script>
 </dom-module>
-     

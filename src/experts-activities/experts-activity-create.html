@@ -56,7 +56,7 @@
       }
       paper-input {
         width: 100%;
-      }      
+      }
     </style>
 
     <header>
@@ -69,27 +69,27 @@
       </paper-button>
     </header>
 
-    <paper-dialog-scrollable> 
-      <iron-pages 
-          id        = "ironpages" 
+    <paper-dialog-scrollable>
+      <iron-pages
+          id        = "ironpages"
           selected  = "{{_currentStep}}">
         <!-- Tab 0 -->
         <div>
           <section>
-            <div class="item"> 
+            <div class="item">
               Fill in the details below to add and track your activity.
             </div>
-            <div class="item"> 
+            <div class="item">
               <paper-input
                   id    = "title"
                   type  = "text"
                   label = "Activity Title"
-                  value = "{{ activity.title }}" 
+                  value = "{{ activity.title }}"
                   error-message="Activity title must be defined."
                   required auto-validate autofocus>
               </paper-input>
             </div>
-            <div class="item"> 
+            <div class="item">
               <paper-input
                   id    = "description"
                   type  = "text"
@@ -100,22 +100,22 @@
               </paper-input>
             </div>
           </section>
-        </div>  
+        </div>
         <!-- Tab 1 -->
         <div>
           <section>
-            <div class="item"> 
+            <div class="item">
               Choose product group(s) that relate to your completed activity.
               <div class="item_filter">
-                  <paper-input 
+                  <paper-input
                     id    = "filterForProducts"
-                    type  = "text" 
-                    label = "Type to filter product list..." 
+                    type  = "text"
+                    label = "Type to filter product list..."
                     value = "{{filterProduct}}">
               </div>
               <div class="product_groups item_value">
-                <template 
-                    is    = "dom-repeat" 
+                <template
+                    is    = "dom-repeat"
                     items = "[[productGroups]]"
                     filter="{{_filterProducts(filterProduct)}}"
                     as="product">
@@ -128,61 +128,61 @@
                       raised>
                     {{product.tag}}
                   </paper-button>
-                </template>   
+                </template>
               </div>
           </section>
         </div>
-        <!-- Tab 2 -->        
+        <!-- Tab 2 -->
         <div>
           <section>
-            <div class="item"> 
+            <div class="item">
               Begin by choosing one relevant activity group.
               <div class="groups item_value">
-                <template  
-                    is="dom-repeat" 
+                <template
+                    is="dom-repeat"
                     items="[[activityGroups]]">
-                  <paper-button 
-                      on-tap="_selectActivityGroup" 
-                      class="group" 
-                      id="{{item.id}}" 
-                      name="{{item.tag}}" 
+                  <paper-button
+                      on-tap="_selectActivityGroup"
+                      class="group"
+                      id="{{item.id}}"
+                      name="{{item.tag}}"
                       active="{{item.active}}"
                       title="{{item.description}}"
-                      toggles 
+                      toggles
                       raised>
-                    {{item.tag}} 
-                  </paper-button> 
-                </template> 
-              </div> 
-            </div> 
-              <div class="item"> 
+                    {{item.tag}}
+                  </paper-button>
+                </template>
+              </div>
+            </div>
+              <div class="item">
                 Now choose the relevant activity type (only one allowed).
-                <div 
+                <div
                     id="activitytypenodes"
                     class="types item_value"
                     invalid$="{{_typeInvalid}}">
-                  <template 
-                    is="dom-repeat" 
+                  <template
+                    is="dom-repeat"
                     items="[[_activityTypes]]"
                     as="type">
-                    <paper-button 
-                        on-tap="_selectActivityType" 
+                    <paper-button
+                        on-tap="_selectActivityType"
                         class$="type {{type.selected}} yeah"
-                        id="{{type.tag}}" 
+                        id="{{type.tag}}"
                         name="{{type.tag}}"
-                        raised> 
-                      {{type.tag}} 
-                    </paper-button> 
-                  </template> 
-                </div>  
-              </div> 
+                        raised>
+                      {{type.tag}}
+                    </paper-button>
+                  </template>
+                </div>
+              </div>
           </section>
-        </div>        
+        </div>
         <!-- Tab 3 -->
         <div>
-          
+
           <section id="details">
-            <div class="item"> 
+            <div class="item">
               Date and Location Information.
             </div>
 
@@ -207,7 +207,7 @@
             </paper-input>
           </section>
         </div>
-        <!-- Tab 4 -->        
+        <!-- Tab 4 -->
         <div class="activityLinkPanel">
           <section>
             <div class="item">
@@ -215,7 +215,7 @@
 
               <blockquote class="help"><iron-icon icon="info"></iron-icon> Example: if this activity were a talk you gave, that activity might have three supporting links (the talk event link, your slides, your social post), each with their own type of impact.</blockquote>
 
-              <p>Activities must contain at one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
+              <p>Activities must contain at least one supporting child link; you can enter additional links after the initial record is created on the edit screen.</p>
             </div>
             <div class="item">
               <div class="item_name">
@@ -224,10 +224,10 @@
                     selected-item-label="{{detail.detail_type}}"
                     label="Link source"
                     on-iron-select="_activityLinkSelected">
-                  <paper-listbox 
+                  <paper-listbox
                       class="dropdown-content">
                     <template is="dom-repeat" items="{{activityLinks}}" as="link" sort="{{_sort(activityLinks)}}">
-                      <paper-item 
+                      <paper-item
                           data-link="{{link}}"
                           label="{{link.label}}">
                         {{link.label}}
@@ -238,52 +238,52 @@
               </div>
             </div>
             <div hidden$="{{!_activateMetrics}}">
-              <div class="item">              
-                <paper-input  
-                  auto-validate  
-                  id="inputUrl" 
-                  label="URL" 
-                  type="text" 
+              <div class="item">
+                <paper-input
+                  auto-validate
+                  id="inputUrl"
+                  label="URL"
+                  type="text"
                   pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
                   error-message="Must be a valid URL."
                   invalid="{{_urlInvalid}}"
                   value="{{detail.url}}"
-                  required></paper-input> 
-              </div>    
-              <div class="item"> 
+                  required></paper-input>
+              </div>
+              <div class="item">
                 <div class="item_name">Activity metrics</div>
                 <template is="dom-if" if="{{_chosenActivityLink.metrics.direct}}">
                   <div class="item_value metric">
-                    <paper-input 
-                      id="metric_reached" 
-                      type="number" 
+                    <paper-input
+                      id="metric_reached"
+                      type="number"
                       label="How many people directly reached?"
                       value="{{ detail.metric_reached }}"
-                      min="0"> 
-                    </paper-input> 
-                  </div> 
+                      min="0">
+                    </paper-input>
+                  </div>
                 </template>
                 <template is="dom-if" if="{{_chosenActivityLink.metrics.trained}}">
                   <div class="item_value metric">
-                    <paper-input 
-                      id="metric_reached" 
-                      type="number" 
+                    <paper-input
+                      id="metric_reached"
+                      type="number"
                       label="How many people trained?"
                       value="{{ detail.metric_trained }}"
-                      min="0"> 
-                    </paper-input> 
-                  </div> 
+                      min="0">
+                    </paper-input>
+                  </div>
                 </template>
                 <template is="dom-if" if="{{_chosenActivityLink.metrics.indirect}}">
                   <div class="item_value metric">
-                    <paper-input 
+                    <paper-input
                       id="metric_reached"
                       type="number"
                       label="How many people indirectly reached?"
                       value="{{ detail.metric_indirect }}"
                       min="0">
-                    </paper-input> 
-                  </div> 
+                    </paper-input>
+                  </div>
                 </template>
               </div>
             </div>
@@ -291,21 +291,21 @@
         </div>
         <div>
           <h2>
-            <paper-spinner active></paper-spinner> Completing Data Save         
+            <paper-spinner active></paper-spinner> Completing Data Save
           </h2>
           <section>
             Please wait, we're inserting your data...
           </section>
-        </div> 
-      </iron-pages>  
+        </div>
+      </iron-pages>
     </paper-dialog-scrollable>
     <footer>
-      <paper-button 
+      <paper-button
           on-tap    = "next"
           hidden$   = "{{_lastStep}}">
         Continue
       </paper-button>
-      <paper-button 
+      <paper-button
           on-tap    = "finish"
           hidden$   = "{{!_lastStep}}"
           disabled  = "{{!_stepDisabled}}">
@@ -313,7 +313,7 @@
       </paper-button>
       <div
           class = "progress">
-        <div 
+        <div
             id      = "first"
             class   = "indicator"
             active$ = "{{_isCurrentStep(0, _currentStep)}}">
@@ -368,7 +368,7 @@
    ====================================
 -->
   <script>
-    Polymer({ 
+    Polymer({
       is          : 'experts-activity-create',
       properties  : {
         /**
@@ -392,8 +392,8 @@
               'activity_details': []
             };
           }
-        },  
-        /** 
+        },
+        /**
          * A first Activity Detail
          */
         detail           : {
@@ -408,10 +408,10 @@
               'metric_trained': 0
             };
           }
-        },        
+        },
         /**
-         * The allowed activity groups 
-         */  
+         * The allowed activity groups
+         */
         productGroups         : {
           type: Array,
           value: function() {
@@ -421,7 +421,7 @@
         detailTypes        : {
           type: Array,
           notify: true,
-          value: function(){ 
+          value: function(){
             return [
               "Google+",
               "Twitter",
@@ -435,7 +435,7 @@
         activityGroups        : {
           type: Array,
           notify: true,
-          value: function(){ 
+          value: function(){
             return [];
           },
         },
@@ -444,7 +444,7 @@
           value: function() {
             return [];
           }
-        },        
+        },
         _currentStep          : {
           type: Number,
           value: 0
@@ -459,7 +459,7 @@
         },
         _stepDisabled         : {
           type: Boolean,
-          computed: "_isStepDisabled(_currentStep, activity.*, detail.*)" 
+          computed: "_isStepDisabled(_currentStep, activity.*, detail.*)"
         },
         _activityTypesActive  : {
           type: Boolean,
@@ -476,7 +476,7 @@
       ready : function() {
         // this is a bit of a hack; listen for dom-changes when activity master selected
         // which populates the sub list and then trigger the focus to follow the new list
-        this.$.activitytypenodes.addEventListener('dom-change', 
+        this.$.activitytypenodes.addEventListener('dom-change',
           this._followActivityFocus.bind(this));
 
         // on dialog open, reset the form to base
@@ -522,7 +522,7 @@
           this.$$('.types paper-button:first-child').focus();
         } catch(e) {
           // this is going to fire twice; once on inist, once on open.
-          // Let it error; it'll work fine once it gets to the step 
+          // Let it error; it'll work fine once it gets to the step
         }
       },
       back                    : function() {
@@ -533,7 +533,7 @@
         if (this._currentStep === 0) {
           this.$.headerIcon.icon = "add-circle";
         }
-      },      
+      },
       next: function() {
         console.debug("[experts-activity-create] next - current tab: ", this._currentStep, this.activity );
         if (this._currentStep < this._numberOfSteps -1 && !this._isStepDisabled()) {
@@ -542,7 +542,7 @@
           this._focusStart();
         }
       },
-      finish                  : function(){   
+      finish                  : function(){
 
 
 
@@ -553,14 +553,14 @@
         //this.close();
         this._submitActivity();
       },
-      cancel                  : function(){        
+      cancel                  : function(){
         this._currentStep=0;
         this._initNewActivity();
         //console.debug("[experts-activity-create] close");
         this.close();
       },
 
-      _filterProducts: function(string) {  
+      _filterProducts: function(string) {
         if (!string) {
           // filter to null = disable filtering for buttons
           return null;
@@ -574,10 +574,10 @@
       },
 
       _selectActivityGroup     : function(e){
-        //console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);  
+        //console.debug("[experts-activity-create] _selectActivityGroup ", this.activityGroups);
 
         var _activityTypes = [];
-        
+
         var selectedFound = false;
 
         for (var i in this.activityGroups) {
@@ -591,20 +591,20 @@
                 }
               }
               if (!already) {
-                var type = { 
-                  tag: this.activityGroups[i].types[j] 
+                var type = {
+                  tag: this.activityGroups[i].types[j]
                 };
                 if (this.activity.activity_type && this.activity.activity_type == this.activityGroups[i].types[j] ) {
-                  type.selected = "selected"   
+                  type.selected = "selected"
                   selectedFound = true;
                 }
                 _activityTypes.push(type);
-              }  
+              }
             }
-          } 
+          }
         }
         if (!selectedFound) {
-          this.activity.activity_type=""  
+          this.activity.activity_type=""
         }
 
         this._activityTypes=_activityTypes.sort(function(a, b) {
@@ -618,16 +618,16 @@
         var tag = e.model.type.tag;
 
         console.debug("[experts-create] _selectActivityType", tag);
-          
+
         for (var i in this._activityTypes) {
           if (this._activityTypes[i].tag == tag) {
-            this.set(['_activityTypes',i,'selected'],"selected");  
-          } 
+            this.set(['_activityTypes',i,'selected'],"selected");
+          }
           if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
             console.debug("Let's delete ", this._activityTypes[i])
-            this.set(['_activityTypes',i,'selected'],""); 
-          } 
-        }  
+            this.set(['_activityTypes',i,'selected'],"");
+          }
+        }
         //console.debug("[experts-activity-create] _activityTypes", this._activityTypes);
         this.set("activity.activity_type", tag);
 
@@ -637,12 +637,12 @@
       _selectProductGroup      : function(e){
 
         var _selectedProductGroups = [];
-        
+
         for (var i in this.productGroups) {
           if (this.productGroups[i].active) {
             _selectedProductGroups.push(this.productGroups[i].tag);
           }
-        } 
+        }
 
         _selectedProductGroups  = _selectedProductGroups.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
@@ -662,14 +662,14 @@
       _isCurrentStep          : function(step) {
         // console.debug("[experts-activity-create] _isCurrentStep: ", {current: this._currentStep, step: step} );
         return (this._currentStep == step);
-      },   
+      },
       _createExpress          : function() {
         this.activity={"title":"Expert Tracking App","description":"Working in  this app","activity_types":["#experts","#opensourcecode"], "product_groups": [ "polymer" ],"city":"Brest","country":"France","date":"2016-07-31","url":"http://lostinbrittany.org","metric_reached":"42","metric_trained":"84","metric_indirect":"480"};
         this.finish();
       },
 
       // Probably use this later; leave genric for activityLinks for now
-      _sort: function(value) {  
+      _sort: function(value) {
         return function(a, b) {
           if (a.name === b.name) return 0;
           return a.name < b.name ? -1 : 1;
@@ -704,14 +704,14 @@
             this.$$(".groups paper-button:first-child").focus();
             break;
           case 3:
-            this.$.date.focus();            
+            this.$.date.focus();
             break;
           case 4:
             // TODO paper-dropdown-menu has a messed up focus; the below doesn't work
             this.$.linkSource.focus();
             break;
           default:
-            break;           
+            break;
         }
       },
       _isStepDisabled         : function() {
@@ -725,14 +725,14 @@
             return (!this.activity.activity_type)
             break;
           case 3:
-            return (!this.activity.date);      
+            return (!this.activity.date);
             break;
           case 4:
             return (this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
           default:
-            break;           
+            break;
         }
-      },  
+      },
 
       _submitActivity: function(evt, activity) {
         console.debug("[experts-activity-create] _doCreateActivity - activity", this.activity);
@@ -752,18 +752,18 @@
         this.activity =  this._apiActivityMaster;
         this.detail.activity_master = this.activity.id;
         this._submitActivityDetail();
-      },  
+      },
 
       _submitActivityDetail: function() {
         this.detail.email = this.user.email;
 
-        if (!this.detail.metric_reached) { 
+        if (!this.detail.metric_reached) {
           this.detail.metric_reached = 0;
         }
-        if (!this.detail.metric_indirect) { 
+        if (!this.detail.metric_indirect) {
           this.detail.metric_indirect = 0;
-        } 
-        if (!this.detail.metric_trained) { 
+        }
+        if (!this.detail.metric_trained) {
           this.detail.metric_trained = 0;
         }
         console.debug("[experts-activity-detail-create] _submitActivityDetail ", this.detail);
@@ -795,7 +795,7 @@
         this._chosenActivityLink = obj.item.dataLink;
         this._activateMetrics = true;
       },
-         
+
 
     });
   </script>
