@@ -8,18 +8,7 @@
     "src/experts-profile.html",
     "src/experts-activities.html"
   ],
-
   "sources": [
-    "src/**/*",
-    "images/**/*",
-    "bower.json"
-  ],
-  "includeDependencies": [
-    "manifest.json",
-    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
-  ],
-
-  "sourceGlobs": [
     "src/**/*",
     "images/**/*",
     "bower.json"
