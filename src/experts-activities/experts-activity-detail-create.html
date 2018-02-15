@@ -238,9 +238,10 @@
 
       },
       _isSubmitDisabled: function() {
-        console.log(this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
-        console.log(this.detail.detail_type, this.$.inputUrl.validate(), (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
-        return (this.detail.detail_type && this.$.inputUrl.validate() && (this.detail.metric_reached > 0 || this.detail.metric_indirect > 0 || this.detail.metric_trained > 0));
+        return this.detail.detail_type && this.$.inputUrl.validate() && this._metricExists();
+      },
+      _metricExists: function() {
+        return [this.detail.metric_reached, this.detail.metric_indirect, this.detail.metric_trained].some(metric => metric > 0);
       },
       _initNewActivityDetailIfNeeded: function() {
         if (!this.detail.url) {
@@ -251,11 +252,10 @@
             this.initial_detail_type = i;
           }
         }
-        console.debug("[experts-activity-detail-create] _initNewActivityDetailIfNeeded ",{ detail: this.detail, initial_detail_type: this.initial_detail_type});
       },
       _initNewActivityDetail: function() {
         this.detail = {
-          'detail_type': '',
+          'detail_type': 'Generic URL',
           'url': '',
           'metric_reached': 0,
           'metric_indirect': 0,
@@ -278,7 +278,6 @@
         if (!this.detail.metric_trained) {
           this.detail.metric_trained = 0;
         }
-        console.debug("[experts-activity-detail-create] _submitActivityDetail ", this.detail);
 
         var request = this.$.insertActivityDetail;
         request.body = JSON.stringify(this.detail);
@@ -302,7 +301,6 @@
         this.close();
       },
       _activityLinkSelected: function(evt, obj) {
-        console.debug("[experts-activity-create] _activityLinkSelected", obj.item.dataLink);
         this._chosenActivityLink = obj.item.dataLink;
         this._activateMetrics = true;
       },
