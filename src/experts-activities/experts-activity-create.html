@@ -191,6 +191,8 @@
                 type  = "date"
                 label = "Which date did this activity take place?"
                 value = "{{ activity.date }}"
+                max = "{{_currentDate}}"
+                min = "2015-01-01"
                 required auto-validate error-message="Please enter a date for this activity.">
             </paper-input>
             <paper-input
@@ -468,6 +470,12 @@
         _activateMetrics: {
           type: Boolean,
           value: false
+        },
+        _currentDate : {
+          type: String,
+          value : function() {
+            return new Date().toISOString().slice(0,10);
+          }
         },
       },
       behaviors               : [

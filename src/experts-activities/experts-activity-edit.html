@@ -39,7 +39,7 @@
 
 <dom-module id = "experts-activity-edit">
   <template>
-    <style include="iron-flex iron-flex-alignment shared-styles-dialog">    
+    <style include="iron-flex iron-flex-alignment shared-styles-dialog">
 
       #addActivityDetail {
         position          : absolute;
@@ -47,16 +47,16 @@
         top               : -30px;
         background-color  : var(--google-green-500);
         transition        : box-shadow 0.3s cubic-bezier(.25,.8,.25,1);
-        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);        
+        box-shadow        : 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
       }
       #addActivityDetail:hover {
         box-shadow        : 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-      } 
+      }
 
       paper-input {
-        width           : 95%;  
+        width           : 95%;
       }
-      
+
       .flexchild {
         @apply(--layout-flex);
       }
@@ -69,7 +69,7 @@
         cursor             : pointer;
         color              : var(--google-green-500);
         color: white;
-      }  
+      }
 
       /* hacky Justin against time :-( */
       paper-button iron-icon {
@@ -88,11 +88,11 @@
         color              : white;
         background-color   :  var(--google-blue-500);
       }
- 
+
       .container {
         position           : relative;
-      }  
-     
+      }
+
     </style>
 
     <header>
@@ -105,34 +105,37 @@
       </paper-button>
     </header>
 
-    <paper-dialog-scrollable> 
+    <paper-dialog-scrollable>
         <section class="layout horizontal">
           <div class="flex">
-            <paper-input 
-                label     = "Title" 
-                type      = "text" 
+            <paper-input
+                label     = "Title"
+                type      = "text"
                 value     = "{{activity.title}}"
                 maxlength = "128"
-                auto-validate 
+                auto-validate
                 error-message="Activity title must be defined."
                 required></paper-input>
           </div>
           <div class="flex">
-            <paper-input 
-                  label     = "Description" 
-                  type      = "text" 
+            <paper-input
+                  label     = "Description"
+                  type      = "text"
                   value     = "{{activity.description}}"
-                  auto-validate 
+                  auto-validate
                   error-message="Activity description must be defined."
                   required></paper-input>
           </div>
         </section>
         <section class="layout horizontal">
           <div class="flex">
-              <paper-input 
-                  type      = "date" 
-                  value     = "{{activity.date}}"
-                  maxlength = "128"
+              <date-validator validator-name="activity-date-validator"></date-validator>
+              <paper-input
+                  type = "date"
+                  value = "{{activity.date}}"
+                  max = "{{_currentDate}}"
+                  min = "2015-01-01"
+                  validator = "activity-date-validator"
                   label = "Which date did this activity take place?"
                   required auto-validate error-message="Please enter a date for this activity.">
               </paper-input>
@@ -151,59 +154,59 @@
           </div>
         </section>
 
-        <div class="item"> 
+        <div class="item">
           <div class="item_name">Activity groups</div>
           <div class="groups item_value">
-            <template  
-                is="dom-repeat" 
+            <template
+                is="dom-repeat"
                 items="[[activityGroups]]">
-              <paper-button 
-                  on-tap="_selectActivityGroup" 
-                  class="group" 
-                  id="{{item.id}}" 
-                  name="{{item.tag}}" 
-                  active="{{item.active}}" 
-                  toggles 
-                  raised> 
-                {{item.tag}} 
-              </paper-button> 
-            </template> 
-          </div> 
-        </div> 
-        <div class="item"> 
+              <paper-button
+                  on-tap="_selectActivityGroup"
+                  class="group"
+                  id="{{item.id}}"
+                  name="{{item.tag}}"
+                  active="{{item.active}}"
+                  toggles
+                  raised>
+                {{item.tag}}
+              </paper-button>
+            </template>
+          </div>
+        </div>
+        <div class="item">
           <div class="item_name">Activity type (only one allowed)</div>
-          <div 
+          <div
               class="types item_value"
               invalid$="{{_typeInvalid}}">
-            <template 
-              is="dom-repeat" 
+            <template
+              is="dom-repeat"
               items="[[_activityTypes]]"
               as="type">
-              <paper-button 
-                  on-tap="_selectActivityType" 
+              <paper-button
+                  on-tap="_selectActivityType"
                   class$="type {{type.selected}} yeah"
-                  id="{{type.tag}}" 
-                  name="{{type.tag}}" 
-                  raised> 
-                {{type.tag}} 
-              </paper-button> 
-            </template> 
-          </div>  
+                  id="{{type.tag}}"
+                  name="{{type.tag}}"
+                  raised>
+                {{type.tag}}
+              </paper-button>
+            </template>
+          </div>
         </div>
 
-        <div class="item"> 
+        <div class="item">
           <div class="item_name">Product Groups</div>
           <div class="item_filter">
               <paper-input v
                 id    = "filterForProducts"
-                type  = "text" 
-                label = "Type to filter product list..." 
+                type  = "text"
+                label = "Type to filter product list..."
                 value = "{{filterProduct}}">
           </div>
           <div class="product_groups item_value">
-            <template 
+            <template
                 id="productGroups"
-                is    = "dom-repeat" 
+                is    = "dom-repeat"
                 items = "[[productGroups]]"
                 filter="{{_filterProducts(filterProduct)}}"
                 as="product">
@@ -216,69 +219,69 @@
                   raised>
                 {{product.tag}}
               </paper-button>
-            </template>   
+            </template>
           </div>
-        </div> 
+        </div>
 
-        <div 
+        <div
           class = "container">
-          
-          <paper-fab
-              id          = "addActivityDetail" 
-              icon        = "add"
-              on-tap      = "_openCreateDetailDialog"></paper-fab>  
 
-          <div 
+          <paper-fab
+              id          = "addActivityDetail"
+              icon        = "add"
+              on-tap      = "_openCreateDetailDialog"></paper-fab>
+
+          <div
             class = "item">
-            <div 
+            <div
                 class = "item_name">
               Activity details
             </div>
           </div>
 
-          <experts-activity-detail-list 
+          <experts-activity-detail-list
               user                     = "[[user]]"
               edit-mode                = "true"
-              master-id                = "[[activity.id]]" 
+              master-id                = "[[activity.id]]"
               detail-list                = "[[activity.listActivityDetails]]"
               on-edit-activity-detail    = "_openEditDetailDialog"
               on-delecte-activity-detail = "_deleteActivityDetail" ></experts-activity-detail-list>
 
-          <template 
-            is = "dom-if" 
+          <template
+            is = "dom-if"
             if = "{{_editActivity}}">
-            <div 
-              class = "item"> 
-              <div 
-                class = "item_value submit">     
-                <paper-button  
-                  id        = "submit" 
+            <div
+              class = "item">
+              <div
+                class = "item_value submit">
+                <paper-button
+                  id        = "submit"
                   on-tap    = "_submitUpdateActivityMaster"
                   disabled$ ="{{_submitDisabled}}"
-                  raised > 
-                  Submit 
-                </paper-button> 
-              </div> 
-            </div> 
+                  raised >
+                  Submit
+                </paper-button>
+              </div>
+            </div>
           </template>
         </div>
     </paper-dialog-scrollable>
     <footer>
-      <paper-button  
+      <paper-button
         on-tap="_submitActivityEdit"
-        raised> 
+        raised>
         Save
-      </paper-button> 
+      </paper-button>
     </footer>
 
-      <experts-activity-detail-create 
+      <experts-activity-detail-create
           id                       = "createActivityDetail"
           user                     = "{{user}}"
           detail                     = "{{_aDetail}}"
           master-id                = "{{activity.id}}"
           activity-groups          = "{{activityGroups}}"
           product-groups           = "{{productGroups}}"
-          on-activity-detail-created = "_doAddActivityDetail"        
+          on-activity-detail-created = "_doAddActivityDetail"
           modal></experts-activity-detail-create>
 
       <iron-ajax
@@ -297,7 +300,7 @@
           content-type  = "application/json"
           handle-as     = "json"
           last-response = "{{_apiListActivityDetails}}"
-          on-response   = "_handleListActivityDetails"></iron-ajax>        
+          on-response   = "_handleListActivityDetails"></iron-ajax>
 
       <iron-ajax
         id            = "deleteActivityDetail"
@@ -313,9 +316,9 @@
     ====================================
 -->
   <script>
-    Polymer({ 
+    Polymer({
       is          : 'experts-activity-edit',
-      properties  : {     
+      properties  : {
         activity        : {
           type            : Object,
           notify          : true,
@@ -326,19 +329,19 @@
           value           : function() {
             return [];
           }
-        },        
+        },
         activityGroups  : {
           type            : 'array',
           notify          : true,
-          value           : function(){ 
+          value           : function(){
             return [];
           },
-        }, 
+        },
 
         user            : {
           type            : Object,
           value: null
-        },             
+        },
 
         _activityTypes  : {
           type            : Array,
@@ -349,14 +352,20 @@
         _isEditingActivityType  : {
           type            : Boolean,
           value           : false
-        }, 
+        },
         _isEditingProductGroups : {
           type            : Boolean,
           value           : false
-        }, 
+        },
         _isAddingProductGroup: {
           type: Boolean,
           value: false
+        },
+        _currentDate : {
+          type: String,
+          value : function() {
+            return new Date().toISOString().slice(0,10);
+          }
         },
       },
       behaviors: [
@@ -368,8 +377,8 @@
       /************************************************************************/
       ready       : function() {
       /**
-       * Attaching dialog to main body to make it live over the gray div 
-       * Bug that will be corrected 
+       * Attaching dialog to main body to make it live over the gray div
+       * Bug that will be corrected
        * https://github.com/PolymerElements/polymer-starter-kit/issues/154
        * https://github.com/PolymerElements/paper-dialog/issues/7
        */
@@ -382,7 +391,7 @@
         });
       },
 
-      _filterProducts: function(string) {  
+      _filterProducts: function(string) {
         if (!string) {
           // filter to null = disable filtering for buttons
           return null;
@@ -400,11 +409,11 @@
 
         // load table full of records
         this._listActivityDetails();
-        
+
         // Failsafe for older records
         if (!this.activity.product_groups) {
-          this.activity.product_groups = [];   
-        } 
+          this.activity.product_groups = [];
+        }
 
         // pull products, flip through, update seclections
         this._product_groups = JSON.parse(JSON.stringify(this.activity.product_groups));
@@ -420,10 +429,10 @@
         // pull activity type, select, display
         this._activity_type = this.activity.activity_type;
         this._activityTypes =  [
-          { 
-            tag: this._activity_type, 
-            selected: "selected" 
-          } 
+          {
+            tag: this._activity_type,
+            selected: "selected"
+          }
         ];
       },
 
@@ -459,19 +468,19 @@
         };
         request.generateRequest();
       },
-   
+
       _selectActivityGroup : function(e){
-        console.debug("[experts-activity-edit] _selectActivityGroup ", this.activityGroups);  
+        console.debug("[experts-activity-edit] _selectActivityGroup ", this.activityGroups);
         var _activityTypes = [];
         if (!this.activity.activity_type) {
           this.activity.activity_type="";
         } else {
-          var type = { 
-            tag: this.activity.activity_type, 
-            selected: "selected" 
-          }; 
-          _activityTypes.push(type); 
-        }         
+          var type = {
+            tag: this.activity.activity_type,
+            selected: "selected"
+          };
+          _activityTypes.push(type);
+        }
         for (var i in this.activityGroups) {
           if (this.activityGroups[i].active) {
             for (var j in this.activityGroups[i].types) {
@@ -483,11 +492,11 @@
                 }
               }
               if (!already) {
-                var type = { 
-                  tag: this.activityGroups[i].types[j] 
+                var type = {
+                  tag: this.activityGroups[i].types[j]
                 };
                 _activityTypes.push(type);
-              }  
+              }
             }
           }
         }
@@ -501,30 +510,30 @@
         var tag = e.model.type.tag;
 
         console.debug("[experts-create] _selectActivityType", tag);
-          
+
         for (var i in this._activityTypes) {
           if (this._activityTypes[i].tag == tag) {
-            this.set(['_activityTypes',i,'selected'],"selected");  
-          } 
+            this.set(['_activityTypes',i,'selected'],"selected");
+          }
           if (this._activityTypes[i].selected && this._activityTypes[i].tag != tag) {
             console.debug("Let's delete ", this._activityTypes[i])
-            this.set(['_activityTypes',i,'selected'],""); 
-          } 
-        }  
+            this.set(['_activityTypes',i,'selected'],"");
+          }
+        }
         console.debug("[experts-activity-edit] _activityTypes", this._activityTypes);
-             
+
         this._activity_type = tag;
         console.debug("[experts-activity-edit] _selectActivityType - selected activity type", this._activity_type);
       },
 
       _selectProductGroup      : function(e){
         var _selectedProductGroups = [];
-        
+
         for (var i in this.productGroups) {
           if (this.productGroups[i].active) {
             _selectedProductGroups.push(this.productGroups[i].tag);
           }
-        } 
+        }
 
         _selectedProductGroups  = _selectedProductGroups.sort(function(a, b) {
           return +(a.tag > b.tag) || +(a.tag === b.tag) - 1;
@@ -550,7 +559,7 @@
         }
         this.push ('activity.activity_details', detail.id);
         this._submitUpdateActivityMaster();
-      },      
+      },
 
       _deleteActivityDetail         : function(evt, detailId) {
         console.debug("[experts-activity-edit] _deleteActivityDetail", detailId);
@@ -577,7 +586,7 @@
         this.set('activity.listActivityDetails', this._apiListActivityDetails.items);
         this._resynchroActivityDetails();
       },
-      
+
       _handleActivityDetailDelete   : function() {
         this._listActivityDetails();
         this._resynchroActivityDetails();
@@ -603,7 +612,7 @@
         });
         var synchroNeeded = false;
         var context = this;
-        synchroNeeded = 
+        synchroNeeded =
           !activity_details.every(function(detailId) {
             if (!context.activity.activity_details) {
               return false;
@@ -617,7 +626,7 @@
           this.set('activity.activity_details', activity_details);
           console.debug("[experts-activity-record-detail] _resynchroActivityDetails - synchroNeeded", this.activity.activity_details);
           this._submitUpdateActivityMaster();
-        }  
+        }
       },
 
       _serializeList: function(list) {
@@ -633,4 +642,4 @@
       },
     });
   </script>
-</dom-module>        
+</dom-module>
