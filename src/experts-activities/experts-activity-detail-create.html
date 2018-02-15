@@ -100,12 +100,11 @@
           <div class="item">
             <paper-input
               auto-validate
-              pattern="https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)"
               error-message="Must be a valid URL."
               name="url"
               id="inputUrl"
               label="URL"
-              type="text"
+              type="url"
               value="{{detail.url}}"
               invalid="{{_urlInvalid}}"
               required></paper-input>
